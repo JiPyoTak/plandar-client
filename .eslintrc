@@ -1,0 +1,62 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "import"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:import/recommended",
+    "plugin:storybook/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": ["./tsconfig.json"],
+    "tsconfigRootDir": "./",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "ignorePatterns": ["dist", "vite.config.ts"],
+  "rules": {
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "parent"],
+        "pathGroups": [
+          {
+            "pattern": "{react,react/*,react-dom,react-dom/*,react-router-dom,react-router-dom/*}",
+            "group": "builtin",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "newlines-between": "always-and-inside-groups"
+      }
+    ],
+    "import/default": "off"
+  },
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "project": ["./tsconfig.json"],
+        "sourceType": "module"
+      }
+    }
+  }
+}
