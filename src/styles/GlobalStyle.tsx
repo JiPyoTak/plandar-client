@@ -1,13 +1,16 @@
 import { Global, css } from '@emotion/react';
 
+import { FONT_INITILIZE } from './font';
 import { reset } from '@/styles/reset';
 
 const GlobalStyle = () => (
   <Global
     styles={css`
       ${reset}
+      :root {
+        ${FONT_INITILIZE}
+      }
       * {
-        font-family: sans-serif !important;
         box-sizing: border-box;
       }
 
