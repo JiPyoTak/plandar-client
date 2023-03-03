@@ -6,7 +6,7 @@ interface IProps {
   text: string;
 }
 
-const Test = ({ text }: IProps) => {
+const TestZustand = ({ text }: IProps) => {
   const state = useIdStore();
   const { id, increasePopulation, reset } = state;
 
@@ -22,4 +22,4 @@ const Test = ({ text }: IProps) => {
   );
 };
 
-export default Test;
+export default TestZustand;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import Test from '@/components/Test';
+import Test from '@/components/TestZustand';
 
 export default {
   title: 'Example/Test',
