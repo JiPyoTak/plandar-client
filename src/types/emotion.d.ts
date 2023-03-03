@@ -1,4 +1,4 @@
-import { ThemeType } from '@/theme/theme';
+import { ThemeType } from '@/styles/theme';
 import '@emotion/react';
 
 declare module '@emotion/react' {

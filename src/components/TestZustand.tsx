@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useIdStore from '@/store/test';
+import useIdStore from '@/stores/test';
 
 interface IProps {
   text: string;

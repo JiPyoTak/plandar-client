@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import App from '@/App';
-import { theme } from '@/theme/theme';
+import { theme } from '@/styles/theme';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
