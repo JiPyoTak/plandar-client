@@ -20,6 +20,7 @@ lerna-debug.log*
 ## deployment
 dist/
 build/
+storybook-static/
 
 # Tests
 /coverage
