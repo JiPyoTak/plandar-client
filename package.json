@@ -3,7 +3,6 @@
   "name": "react-boilerplate",
   "description": "",
   "license": "MIT",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
