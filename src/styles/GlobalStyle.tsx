@@ -17,6 +17,11 @@ const GlobalStyle = () => (
       html {
         font-size: 30px;
       }
+
+      #root {
+        width: 100vw;
+        height: 100vh;
+      }
     `}
   />
 );
