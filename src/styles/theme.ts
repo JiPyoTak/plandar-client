@@ -1,11 +1,12 @@
 import { Theme } from '@emotion/react';
 
 export const theme: Theme = {
-  primary: '#52D681',
-  primary_light: '#B5FF7D',
-  primary_dark: '#00AD7C',
+  primary: '#00AD7C',
+  primary_light: '#52D681',
+  primary_light2: '#B5FF7D',
+  primary_light3: '#DCF0E7',
   point: '#FFF8B5',
-  placeholder: '#F8F8F8',
+  placeholder: '#868686',
   border1: '#F3F3F3',
   border2: '#DEDEDE',
   border3: '#ADADAD',
