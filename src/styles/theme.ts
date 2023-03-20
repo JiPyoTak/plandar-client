@@ -1,6 +1,4 @@
-import { Theme } from '@emotion/react';
-
-export const theme: Theme = {
+export const theme = {
   primary: '#00AD7C',
   primary_light: '#52D681',
   primary_light2: '#B5FF7D',
