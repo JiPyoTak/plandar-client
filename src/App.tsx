@@ -1,12 +1,14 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import styled from '@emotion/styled';
+
 import Home from '@/pages';
 import Test from '@/pages/Test';
 import GlobalStyle from '@/styles/GlobalStyle';
 
 const App = () => {
   return (
-    <div className="App">
+    <Wrapper id="App">
       <GlobalStyle />
       <BrowserRouter>
         <Routes>
@@ -14,8 +16,13 @@ const App = () => {
           <Route path="/test" element={<Test />} />
         </Routes>
       </BrowserRouter>
-    </div>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 export default App;
