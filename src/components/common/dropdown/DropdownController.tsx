@@ -20,13 +20,14 @@ const DropdownController = ({
       const functionalChild = child as React.ReactElement;
       const childType = functionalChild.type;
 
-      // type 이 Object 일 경우 = Component
+      // type 이 function 일 경우 = Functional Component
       // div, span과 같은 기존 DOM = string
       // React에서 사용하는 것 = symbol
       let newProps = { ...functionalChild.props };
-      if (typeof childType === 'object') {
+      if (typeof childType === 'function') {
         newProps = { ...newProps, isShow };
       }
+
       return cloneElement(functionalChild, newProps);
     }
     return child;
