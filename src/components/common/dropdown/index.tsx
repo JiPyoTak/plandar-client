@@ -1,5 +1,7 @@
 import React, { PropsWithChildren, useState, cloneElement } from 'react';
 
+import { css, keyframes } from '@emotion/react';
+
 import DropdownController from './DropdownController';
 
 type TDropdownProps = PropsWithChildren<{
@@ -39,10 +41,43 @@ const Dropdown: TDropdown = ({
   return (
     <>
       {controllerChildren}
-      {isShow ? itemChildren : undefined}
+      <div css={{ overflow: 'hidden' }}>
+        <div css={isShow ? slideOutAnimation : slideInAnimation}>
+          {itemChildren}
+        </div>
+      </div>
     </>
   );
 };
+
+const slideOutKeyframe = keyframes`
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+`;
+const slideOutAnimation = css`
+  animation: ${slideOutKeyframe} 0.4s ease;
+  animation-fill-mode: forwards;
+`;
+
+const slideInKeyframe = keyframes`
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-100%);
+
+  }
+`;
+const slideInAnimation = css`
+  animation: ${slideInKeyframe} 0.4s ease;
+  animation-fill-mode: forwards;
+`;
 
 Dropdown.Controller = DropdownController;
 export default Dropdown;
