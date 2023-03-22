@@ -17,9 +17,10 @@ const Dropdown: TDropdown = ({
   defaultVisibility,
 }: TDropdownProps) => {
   const [isShow, setIsShow] = useState<boolean>(defaultVisibility ?? true);
+  const [animationTrigger, setAnimationTrigger] = useState<boolean>(isShow);
 
   const toggleShow = () => {
-    setIsShow((prev) => !prev);
+    setAnimationTrigger((prev) => !prev);
   };
 
   children = children ?? [];
@@ -28,7 +29,7 @@ const Dropdown: TDropdown = ({
     .map((child, index) =>
       cloneElement(child, {
         ...child.props,
-        isShow,
+        isShow: animationTrigger,
         toggleShow,
         key: `Controller-${index}`,
       }),
@@ -42,8 +43,11 @@ const Dropdown: TDropdown = ({
     <>
       {controllerChildren}
       <div css={{ overflow: 'hidden' }}>
-        <div css={isShow ? slideOutAnimation : slideInAnimation}>
-          {itemChildren}
+        <div
+          css={animationTrigger ? slideOutAnimation : slideInAnimation}
+          onAnimationEnd={() => setIsShow(animationTrigger)}
+        >
+          {isShow || animationTrigger ? itemChildren : undefined}
         </div>
       </div>
     </>
