@@ -12,7 +12,7 @@ const DropdownController = ({
   toggleShow = () => undefined,
   children,
 }: TControllerProps) => {
-  const newChildren = Children.map(children, (child) => {
+  const newChildren = Children.map(children, (child, index) => {
     if (
       typeof child === 'object' &&
       Object.hasOwnProperty.call(child, '$$typeof')
@@ -28,7 +28,7 @@ const DropdownController = ({
         newProps = { ...newProps, isShow };
       }
 
-      return cloneElement(functionalChild, newProps);
+      return cloneElement(functionalChild, { newProps, key: index });
     }
     return child;
   }) as React.ReactNode[];
