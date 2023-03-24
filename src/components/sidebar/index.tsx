@@ -2,8 +2,14 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
+import SideTitle from './SideTitle';
+
 const SideBar: React.FC = () => {
-  return <Wrapper></Wrapper>;
+  return (
+    <Wrapper>
+      <SideTitle />
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.div`
