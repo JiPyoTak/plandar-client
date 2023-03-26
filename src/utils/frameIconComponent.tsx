@@ -13,11 +13,14 @@ const frameIconComponent =
     IconComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>,
   ): React.FC<TIconProps> =>
   ({ className, width, height, color }) => {
+    const sizeProps: { width?: string | number; height?: string | number } = {};
+    if (width) sizeProps.width = width;
+    if (height) sizeProps.height = height;
+
     return (
       <IconComponent
         className={className}
-        width={width}
-        height={height}
+        {...sizeProps}
         css={[
           color ? { '& *': { color, stroke: color } } : {},
           css`
