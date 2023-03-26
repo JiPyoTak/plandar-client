@@ -23,12 +23,12 @@ const DropdownController = ({
       // type 이 function 일 경우 = Functional Component
       // div, span과 같은 기존 DOM = string
       // React에서 사용하는 것 = symbol
-      let newProps = { ...functionalChild.props };
+      let newProps = { ...functionalChild.props, key: index };
       if (typeof childType === 'function') {
         newProps = { ...newProps, isShow };
       }
 
-      return cloneElement(functionalChild, { newProps, key: index });
+      return cloneElement(functionalChild, newProps);
     }
     return child;
   }) as React.ReactNode[];
@@ -37,6 +37,7 @@ const DropdownController = ({
 };
 
 const StylessButton = styled.button`
+  width: 100%;
   background: inherit;
   border: none;
   box-shadow: none;
