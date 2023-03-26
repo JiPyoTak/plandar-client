@@ -8,14 +8,13 @@ export type TIconProps = {
   height?: string | number;
   color?: string;
 };
-
 const frameIconComponent =
-  (path: string): React.FC<TIconProps> =>
+  (
+    IconComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>,
+  ): React.FC<TIconProps> =>
   ({ className, width, height, color }) => {
     return (
-      <img
-        src={path}
-        alt="icon"
+      <IconComponent
         className={className}
         width={width}
         height={height}
