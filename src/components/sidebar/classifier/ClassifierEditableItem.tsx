@@ -1,6 +1,8 @@
 import React from 'react';
 
-import ClassifierItem from './ClassifierItem';
+import ClassifierItem, {
+  CLASSIFIER_EDITABLE_ITEM_CLASS,
+} from './ClassifierItem';
 import { PencilIcon } from '@/components/icons';
 
 type TProps = React.ComponentProps<typeof ClassifierItem> & {
@@ -13,7 +15,7 @@ const ClassifierEditableItem: React.FC<TProps> = ({ onEdit, ...restProps }) => {
       {onEdit && (
         <PencilIcon
           onClick={onEdit}
-          className={'edit'}
+          className={CLASSIFIER_EDITABLE_ITEM_CLASS}
           width={20}
           height={20}
         />

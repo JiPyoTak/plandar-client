@@ -9,13 +9,17 @@ type TProps = PropsWithChildren<{
   text: string;
   isActive: boolean;
   color?: string;
-}>;
+}> &
+  React.HTMLAttributes<HTMLDivElement>;
+
+const CLASSIFIER_EDITABLE_ITEM_CLASS = 'classifier-item-edit';
 
 const ClassifierItem: React.FC<TProps> = ({
   isActive,
   color,
   text,
   children,
+  ...restProps
 }) => {
   const theme = useTheme();
 
@@ -24,13 +28,13 @@ const ClassifierItem: React.FC<TProps> = ({
   }
 
   return (
-    <Wrapper>
+    <Wrapper {...restProps}>
       <CircleDiv
         css={{ backgroundColor: isActive ? color : theme.background4 }}
       >
         <CheckIcon width={16.5} height={16.5} color={theme.white} />
       </CircleDiv>
-      <span>{text}</span>
+      <span css={{ flex: 1 }}>{text}</span>
       {children}
     </Wrapper>
   );
@@ -45,12 +49,14 @@ const Wrapper = styled.div`
   align-items: center;
   column-gap: 1rem;
 
-  & > .edit {
+  & > .${CLASSIFIER_EDITABLE_ITEM_CLASS} {
     visibility: hidden;
   }
-  &:hover > .edit {
+  &:hover > .${CLASSIFIER_EDITABLE_ITEM_CLASS} {
     visibility: visible;
   }
+
+  cursor: pointer;
 `;
 
 const CircleDiv = styled.div`
@@ -64,4 +70,5 @@ const CircleDiv = styled.div`
   border-radius: 50%;
 `;
 
+export { CLASSIFIER_EDITABLE_ITEM_CLASS };
 export default ClassifierItem;

@@ -11,6 +11,8 @@ type TProps = {
   isShow?: boolean;
 };
 
+const CLASSIFIER_TITLE_ICON_SIZE = 18;
+
 const ClassifierTitle: React.FC<TProps> = ({
   title,
   additionalIcon,
@@ -21,7 +23,11 @@ const ClassifierTitle: React.FC<TProps> = ({
       <div css={FONT_BOLD_3}>{title}</div>
       <div css={{ display: 'flex', columnGap: 5 }}>
         {additionalIcon}
-        <ChevronIcon width={18} height={18} type={isShow ? 'up' : 'down'} />
+        <ChevronIcon
+          width={CLASSIFIER_TITLE_ICON_SIZE}
+          height={CLASSIFIER_TITLE_ICON_SIZE}
+          type={isShow ? 'down' : 'up'}
+        />
       </div>
     </Wrapper>
   );
@@ -31,10 +37,12 @@ const Wrapper = styled.div`
   width: 100%;
   height: 2.875rem;
   padding: 0.75rem 1.5rem;
+  margin-top: 1.5rem;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
+export { CLASSIFIER_TITLE_ICON_SIZE };
 export default ClassifierTitle;
