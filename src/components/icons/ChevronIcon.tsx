@@ -15,10 +15,7 @@ const TYPE_TRANSFORM_STYLE = {
 } as const;
 const DefaultChevronIcon = frameIconComponent(IconComponent);
 
-const ChevronIcon: React.FC<TIconProps & Partial<TProps>> = ({
-  type,
-  ...restProps
-}) => {
+const ChevronIcon: React.FC<TIconProps & TProps> = ({ type, ...restProps }) => {
   return (
     <DefaultChevronIcon
       css={{
