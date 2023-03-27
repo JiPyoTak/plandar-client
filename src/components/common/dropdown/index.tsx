@@ -1,7 +1,5 @@
 import React, { PropsWithChildren, useState, cloneElement } from 'react';
 
-import { css, keyframes } from '@emotion/react';
-
 import DropdownController from './DropdownController';
 
 type TDropdownProps = PropsWithChildren<{
@@ -17,10 +15,9 @@ const Dropdown: TDropdown = ({
   defaultVisibility,
 }: TDropdownProps) => {
   const [isShow, setIsShow] = useState<boolean>(defaultVisibility ?? true);
-  const [animationTrigger, setAnimationTrigger] = useState<boolean>(isShow);
 
   const toggleShow = () => {
-    setAnimationTrigger((prev) => !prev);
+    setIsShow((prev) => !prev);
   };
 
   children = children ?? [];
@@ -29,7 +26,7 @@ const Dropdown: TDropdown = ({
     .map((child, index) =>
       cloneElement(child, {
         ...child.props,
-        isShow: animationTrigger,
+        isShow: isShow,
         toggleShow,
         key: `Controller-${index}`,
       }),
@@ -44,44 +41,20 @@ const Dropdown: TDropdown = ({
       {controllerChildren}
       <div css={{ overflow: 'hidden' }}>
         <div
-          css={animationTrigger ? slideOutAnimation : slideInAnimation}
-          onAnimationEnd={() => setIsShow(animationTrigger)}
+          css={[
+            {
+              paddingTop: '1px',
+              maxHeight: isShow ? '100vh' : '1px',
+              transition: 'max-height 0.35s ease-in-out',
+            },
+          ]}
         >
-          {isShow || animationTrigger ? itemChildren : undefined}
+          {itemChildren}
         </div>
       </div>
     </>
   );
 };
-
-const slideOutKeyframe = keyframes`
-  0% {
-    transform: translateY(-100%);
-  }
-
-  100% {
-    transform: translateY(0);
-  }
-`;
-const slideOutAnimation = css`
-  animation: ${slideOutKeyframe} 0.4s ease;
-  animation-fill-mode: forwards;
-`;
-
-const slideInKeyframe = keyframes`
-  0% {
-    transform: translateY(0);
-  }
-
-  100% {
-    transform: translateY(-100%);
-
-  }
-`;
-const slideInAnimation = css`
-  animation: ${slideInKeyframe} 0.4s ease;
-  animation-fill-mode: forwards;
-`;
 
 Dropdown.Controller = DropdownController;
 export default Dropdown;

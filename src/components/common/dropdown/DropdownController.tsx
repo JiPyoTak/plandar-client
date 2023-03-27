@@ -1,7 +1,5 @@
 import React, { Children, cloneElement, PropsWithChildren } from 'react';
 
-import styled from '@emotion/styled';
-
 type TControllerProps = PropsWithChildren<{
   isShow?: boolean;
   toggleShow?: () => void;
@@ -12,7 +10,7 @@ const DropdownController = ({
   toggleShow = () => undefined,
   children,
 }: TControllerProps) => {
-  const newChildren = Children.map(children, (child) => {
+  const newChildren = Children.map(children, (child, index) => {
     if (
       typeof child === 'object' &&
       Object.hasOwnProperty.call(child, '$$typeof')
@@ -23,7 +21,7 @@ const DropdownController = ({
       // type 이 function 일 경우 = Functional Component
       // div, span과 같은 기존 DOM = string
       // React에서 사용하는 것 = symbol
-      let newProps = { ...functionalChild.props };
+      let newProps = { ...functionalChild.props, key: index };
       if (typeof childType === 'function') {
         newProps = { ...newProps, isShow };
       }
@@ -33,17 +31,11 @@ const DropdownController = ({
     return child;
   }) as React.ReactNode[];
 
-  return <StylessButton onClick={toggleShow}>{newChildren}</StylessButton>;
+  return (
+    <button css={{ width: '100%' }} onClick={toggleShow}>
+      {newChildren}
+    </button>
+  );
 };
-
-const StylessButton = styled.button`
-  background: inherit;
-  border: none;
-  box-shadow: none;
-  border-radius: 0;
-  padding: 0;
-  overflow: visible;
-  cursor: pointer;
-`;
 
 export default DropdownController;

@@ -122,4 +122,13 @@ export const reset = css`
     border-collapse: collapse;
     border-spacing: 0;
   }
+  button {
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: inherit;
+    box-shadow: none;
+    overflow: visible;
+    cursor: pointer;
+  }
 `;

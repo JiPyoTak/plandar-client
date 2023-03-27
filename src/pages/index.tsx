@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import SideBar from '@/components/SideBar';
+import SideBar from '@/components/sidebar';
 
 const Home: React.FC = () => {
   return (
