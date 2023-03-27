@@ -4,7 +4,15 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [tsconfigPaths(), react()],
+  plugins: [
+    tsconfigPaths(),
+    react({
+      jsxImportSource: '@emotion/react',
+      babel: {
+        plugins: ['@emotion/babel-plugin'],
+      },
+    }),
+  ],
   server: {
     port: 3000,
   },
