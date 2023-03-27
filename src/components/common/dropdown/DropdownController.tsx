@@ -1,7 +1,5 @@
 import React, { Children, cloneElement, PropsWithChildren } from 'react';
 
-import styled from '@emotion/styled';
-
 type TControllerProps = PropsWithChildren<{
   isShow?: boolean;
   toggleShow?: () => void;
@@ -33,18 +31,11 @@ const DropdownController = ({
     return child;
   }) as React.ReactNode[];
 
-  return <StylessButton onClick={toggleShow}>{newChildren}</StylessButton>;
+  return (
+    <button css={{ width: '100%' }} onClick={toggleShow}>
+      {newChildren}
+    </button>
+  );
 };
-
-const StylessButton = styled.button`
-  width: 100%;
-  background: inherit;
-  border: none;
-  box-shadow: none;
-  border-radius: 0;
-  padding: 0;
-  overflow: visible;
-  cursor: pointer;
-`;
 
 export default DropdownController;
