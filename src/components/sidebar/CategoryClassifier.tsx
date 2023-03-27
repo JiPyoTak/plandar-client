@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Dropdown from '../common/dropdown';
 
 import { PlusIcon } from '@/components/icons';
-import ClassifierEditableItem from '@/components/sidebar/classifier/ClassifierEditableItem';
+import ClassifierItem from '@/components/sidebar/classifier/ClassifierItem';
 
 import ClassifierTitle, {
   CLASSIFIER_TITLE_ICON_SIZE,
@@ -46,7 +46,7 @@ const CategoryClassifier: React.FC = () => {
         />
       </Dropdown.Controller>
       {testCategory.map(({ id, title, color }) => (
-        <ClassifierEditableItem
+        <ClassifierItem
           key={id}
           onClick={() => toggleCategoryShow(id)}
           isActive={!hiddenCategories.has(id)}

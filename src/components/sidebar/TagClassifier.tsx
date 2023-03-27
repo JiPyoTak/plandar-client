@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 
 import Dropdown from '../common/dropdown';
 
-import ClassifierEditableItem from '@/components/sidebar/classifier/ClassifierEditableItem';
-
+import ClassifierItem from '@/components/sidebar/classifier/ClassifierItem';
 import ClassifierTitle from '@/components/sidebar/classifier/ClassifierTitle';
 import useTagClassifierState from '@/stores/classifier/tag';
 
@@ -21,7 +20,7 @@ const TagClassifier: React.FC = () => {
         <ClassifierTitle title={'태그'} />
       </Dropdown.Controller>
       {testTags.map(({ id, title }) => (
-        <ClassifierEditableItem
+        <ClassifierItem
           key={id}
           onClick={() => toggleTagShow(id)}
           isActive={!hiddenTags.has(id)}

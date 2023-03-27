@@ -1,16 +1,16 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { CheckIcon } from '@/components/icons';
+import { CheckIcon, PencilIcon } from '@/components/icons';
 
-type TProps = PropsWithChildren<{
+type TProps = {
   text: string;
   isActive: boolean;
   color?: string;
-}> &
-  React.HTMLAttributes<HTMLDivElement>;
+  onEdit?: (...args: unknown[]) => unknown;
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const CLASSIFIER_EDITABLE_ITEM_CLASS = 'classifier-item-edit';
 
@@ -18,7 +18,7 @@ const ClassifierItem: React.FC<TProps> = ({
   isActive,
   color,
   text,
-  children,
+  onEdit,
   ...restProps
 }) => {
   const theme = useTheme();
@@ -35,7 +35,15 @@ const ClassifierItem: React.FC<TProps> = ({
         <CheckIcon width={16.5} height={16.5} color={theme.white} />
       </CircleDiv>
       <span css={{ flex: 1 }}>{text}</span>
-      {children}
+      {onEdit && (
+        <button onClick={onEdit}>
+          <PencilIcon
+            className={CLASSIFIER_EDITABLE_ITEM_CLASS}
+            width={20}
+            height={20}
+          />
+        </button>
+      )}
     </Wrapper>
   );
 };
