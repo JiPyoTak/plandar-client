@@ -48,4 +48,4 @@ const Container = styled.div`
 
 BaseCalendar.Day = Day;
 
-export default memo(Base);
+export default memo(BaseCalendar);
