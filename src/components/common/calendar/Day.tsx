@@ -5,14 +5,14 @@ import styled from '@emotion/styled';
 import { TDateYMD } from '@/stores/date';
 import { ICalendarInfo } from '@/utils/getCalendarInfo';
 
-interface IProps2 extends ICalendarInfo {
+interface IProps extends ICalendarInfo {
   isSelected: boolean;
   onClick: (date: TDateYMD) => void;
 }
 
-type PickIsBoolean = Pick<IProps2, 'isToday' | 'isInMonth' | 'isWeekend'>;
+type PickIsBoolean = Pick<IProps, 'isToday' | 'isInMonth' | 'isWeekend'>;
 
-const Day: React.FC<IProps2> = (props) => {
+const Day: React.FC<IProps> = (props) => {
   const { day, month, year, onClick, ...isBooleans } = props;
 
   const onClickDay = () => {
