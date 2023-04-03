@@ -9,7 +9,7 @@ import DayOfWeek from '@/components/common/calendar/DayOfWeek';
 import useDateStore from '@/stores/date';
 import { decrease, increase } from '@/utils/monthHandler';
 
-const Calendar = () => {
+const Calendar: React.FC = () => {
   const dateState = useDateStore();
   const { onChangeDate: onChangeDay, year, month, day } = dateState;
 
