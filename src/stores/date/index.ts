@@ -1,6 +1,8 @@
 import moment from 'moment';
 import { create } from 'zustand';
 
+import { decrease, increase } from '@/utils/monthHandler';
+
 interface IDateStore {
   year: number;
   month: number;
@@ -18,54 +20,11 @@ const initialState = {
   day: new Date().getDate(),
 } as const;
 
-const compareDays = (props: TDateYMD) => {
-  const { year, month, day } = props;
-  const lastDay = parseInt(
-    moment({ year, month: month - 1 })
-      .endOf('month')
-      .format('D'),
-  );
-
-  return day > lastDay ? lastDay : day;
-};
-
 const useDateStore = create<IDateStore>((set) => ({
   ...initialState,
 
-  increaseMonth: () =>
-    set((state) => {
-      const newDate: TDateYMD = {
-        ...state,
-      };
-
-      if (state.month === 12) {
-        newDate.year = state.year + 1;
-        newDate.month = 1;
-      } else {
-        newDate.month = state.month + 1;
-      }
-
-      const day = compareDays(newDate);
-
-      return { ...newDate, day };
-    }),
-  decreaseMonth: () =>
-    set((state) => {
-      const newDate: TDateYMD = {
-        ...state,
-      };
-
-      if (state.month === 1) {
-        newDate.year = state.year - 1;
-        newDate.month = 12;
-      } else {
-        newDate.month = state.month - 1;
-      }
-
-      const day = compareDays(newDate);
-
-      return { ...newDate, day };
-    }),
+  increaseMonth: () => set(increase),
+  decreaseMonth: () => set(decrease),
   onChangeDate: (props: TDateYMD) => {
     set(props);
   },
