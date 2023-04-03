@@ -2,14 +2,16 @@ import React from 'react';
 
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import DWMButton from '@/components/buttons/DWMButton';
+import CalendarUnitButton from '@/components/buttons/CalendarUnitButton';
 
 export default {
-  title: 'Buttons/DWMButton',
-  component: DWMButton,
-} as ComponentMeta<typeof DWMButton>;
+  title: 'Buttons/CalendarUnitButton',
+  component: CalendarUnitButton,
+} as ComponentMeta<typeof CalendarUnitButton>;
 
-const Template: ComponentStory<typeof DWMButton> = () => <DWMButton />;
+const Template: ComponentStory<typeof CalendarUnitButton> = () => (
+  <CalendarUnitButton />
+);
 
 export const Primary = Template.bind({});
 Primary.args = {};

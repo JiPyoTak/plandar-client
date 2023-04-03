@@ -1,6 +1,6 @@
 import { Union } from './union';
-import { DWM } from '@/utils/constants';
+import { CALENDAR_UNIT } from '@/utils/constants';
 
-type TDWM = Union<typeof DWM>;
+type TCalendarUnit = Union<typeof CALENDAR_UNIT>;
 
-export type { TDWM };
+export type { TCalendarUnit };
