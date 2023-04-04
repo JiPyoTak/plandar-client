@@ -16,7 +16,7 @@ type StylishButtonProps = PropsWithChildren<{
 const SIZE: { [key in TSize]: string } = {
   small: 'fit-content',
   medium: '200px',
-  large: '300px',
+  large: '100%',
 } as const;
 
 const RADIUS_DIR: { [key in TDirection]: string } = {
