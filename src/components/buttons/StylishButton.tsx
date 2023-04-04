@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 
 import styled from '@emotion/styled';
 
-import { TSize } from '@/types';
+import { TDirection, TSize } from '@/types';
 
 type StylishButtonProps = PropsWithChildren<{
   onClick: () => void;
@@ -10,6 +10,7 @@ type StylishButtonProps = PropsWithChildren<{
   size?: TSize;
   color?: boolean;
   square?: boolean;
+  radiusDir?: TDirection;
 }>;
 
 const SIZE: { [key in TSize]: string } = {
@@ -18,13 +19,22 @@ const SIZE: { [key in TSize]: string } = {
   large: '300px',
 } as const;
 
+const RADIUS_DIR: { [key in TDirection]: string } = {
+  left: '5px 0 0 5px',
+  right: '0 5px 5px 0',
+  top: '5px 5px 0 0',
+  bottom: '0 0 5px 5px',
+  all: '5px',
+} as const;
+
 const StylishButton = ({
   children,
   onClick,
   size = 'medium',
   className,
-  square,
-  color,
+  square = false,
+  color = false,
+  radiusDir = 'all',
 }: StylishButtonProps) => {
   return (
     <Container
@@ -33,6 +43,7 @@ const StylishButton = ({
       size={size}
       isSquare={square}
       isColor={color}
+      radiusDir={radiusDir}
     >
       {children}
     </Container>
@@ -49,7 +60,6 @@ const StylishContainer = styled.button<{
   align-items: center;
   border: 1px solid ${({ theme }) => theme.border2};
   padding: 8px;
-  border-radius: 5px;
   background-color: ${({ theme }) => theme.background1};
 
   &:hover {
@@ -59,15 +69,19 @@ const StylishContainer = styled.button<{
 
 const Container = styled(StylishContainer)<{
   size: string;
-  isColor?: boolean;
-  isSquare?: boolean;
+  isColor: boolean;
+  isSquare: boolean;
+  radiusDir: TDirection;
 }>`
   width: ${({ size }) => SIZE[size] ?? size};
+  color: ${({ theme, isColor }) => (isColor ? theme.white : theme.black)};
   background-color: ${({ theme, isColor }) =>
     isColor ? theme.primary : theme.background1};
   border: 1px solid
     ${({ theme, isColor }) => (isColor ? theme.primary : theme.border2)};
   aspect-ratio: ${({ isSquare }) => (isSquare ? '1/1' : 'auto')};
+  border-radius: ${({ radiusDir }) => RADIUS_DIR[radiusDir]};
+
   &:hover {
     background-color: ${({ isColor, theme }) =>
       isColor ? theme.primary_dark : theme.background2};
