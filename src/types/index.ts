@@ -5,4 +5,6 @@ type TCalendarUnit = Union<typeof CALENDAR_UNIT>;
 
 type TSize = 'small' | 'medium' | 'large' | string;
 
-export type { TCalendarUnit, TSize };
+type TDirection = 'left' | 'right' | 'top' | 'bottom' | 'all';
+
+export type { TCalendarUnit, TSize, TDirection };
