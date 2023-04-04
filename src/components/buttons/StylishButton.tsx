@@ -2,49 +2,75 @@ import { PropsWithChildren } from 'react';
 
 import styled from '@emotion/styled';
 
+import { TSize } from '@/types';
+
 type StylishButtonProps = PropsWithChildren<{
   onClick: () => void;
-  backgroundColor?: string;
-  color?: string;
+  className?: string;
+  size?: TSize;
+  color?: boolean;
+  square?: boolean;
 }>;
+
+const SIZE: { [key in TSize]: string } = {
+  small: 'fit-content',
+  medium: '200px',
+  large: '300px',
+} as const;
+
 const StylishButton = ({
   children,
   onClick,
-  /*
-  backgroundColor,
+  size = 'medium',
+  className,
+  square,
   color,
-*/
-  ...rest
 }: StylishButtonProps) => {
-  console.log(rest);
   return (
-    <StylishWrapper
+    <Container
+      className={className}
       onClick={onClick}
-      /*
-      css={
-        backgroundColor && {
-          backgroundColor,
-        }
-      }
-*/
-      {...rest}
+      size={size}
+      isSquare={square}
+      isColor={color}
     >
       {children}
-    </StylishWrapper>
+    </Container>
   );
 };
 
-const StylishWrapper = styled.button`
+const StylishContainer = styled.button<{
+  size?: string;
+  color?: boolean;
+  square?: boolean;
+}>`
   display: flex;
   justify-content: center;
   align-items: center;
   border: 1px solid ${({ theme }) => theme.border2};
-  padding: 8px 16px;
-  border-radius: 8px;
+  padding: 8px;
+  border-radius: 5px;
   background-color: ${({ theme }) => theme.background1};
 
   &:hover {
     background-color: ${({ theme }) => theme.background2};
+  }
+`;
+
+const Container = styled(StylishContainer)<{
+  size: string;
+  isColor?: boolean;
+  isSquare?: boolean;
+}>`
+  width: ${({ size }) => SIZE[size] ?? size};
+  background-color: ${({ theme, isColor }) =>
+    isColor ? theme.primary : theme.background1};
+  border: 1px solid
+    ${({ theme, isColor }) => (isColor ? theme.primary : theme.border2)};
+  aspect-ratio: ${({ isSquare }) => (isSquare ? '1/1' : 'auto')};
+  &:hover {
+    background-color: ${({ isColor, theme }) =>
+      isColor ? theme.primary_dark : theme.background2};
   }
 `;
 
