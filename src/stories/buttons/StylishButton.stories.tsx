@@ -14,6 +14,7 @@ export default {
     color: { control: 'boolean' },
     square: { control: 'boolean' },
     radiusDir: { control: 'text' },
+    disabled: { control: 'boolean' },
   },
 } as ComponentMeta<typeof StylishButton>;
 

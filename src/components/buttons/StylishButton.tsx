@@ -1,17 +1,19 @@
 import { PropsWithChildren } from 'react';
 
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { TDirection, TSize } from '@/types';
 
-type StylishButtonProps = PropsWithChildren<{
+type StylishButtonProps = {
   onClick: () => void;
   className?: string;
   size?: TSize;
   color?: boolean;
   square?: boolean;
   radiusDir?: TDirection;
-}>;
+  disabled?: boolean;
+};
 
 const SIZE: { [key in TSize]: string } = {
   small: 'fit-content',
@@ -35,7 +37,9 @@ const StylishButton = ({
   square = false,
   color = false,
   radiusDir = 'all',
-}: StylishButtonProps) => {
+  disabled = false,
+}: PropsWithChildren<StylishButtonProps>) => {
+  const theme = useTheme();
   return (
     <Container
       className={className}
@@ -44,17 +48,22 @@ const StylishButton = ({
       isSquare={square}
       isColor={color}
       radiusDir={radiusDir}
+      disabled={disabled}
+      css={
+        disabled &&
+        css`
+          cursor: not-allowed;
+          &:hover {
+            background-color: ${color ? theme.primary : theme.background1};
+        `
+      }
     >
       {children}
     </Container>
   );
 };
 
-const StylishContainer = styled.button<{
-  size?: string;
-  color?: boolean;
-  square?: boolean;
-}>`
+const StylishContainer = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
