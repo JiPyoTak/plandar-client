@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -7,14 +7,13 @@ import { CrossIcon } from '@/components/icons';
 import { FONT_SIZE } from '@/styles/font/fontSize';
 import { FONT_WEIGHT } from '@/styles/font/fontWeight';
 
-type TagButtonProps = {
+type TTagButtonProps = PropsWithChildren<{
   onClick?: () => void;
-};
+}>;
 
-const TagButton = ({
-  children,
-  onClick,
-}: PropsWithChildren<TagButtonProps>) => {
+type TTagButton = React.FC<TTagButtonProps>;
+
+const TagButton: TTagButton = ({ children, onClick }: TTagButtonProps) => {
   const theme = useTheme();
   const [isHover, setIsHover] = useState(false);
   return (
