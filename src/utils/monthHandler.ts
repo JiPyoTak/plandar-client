@@ -1,7 +1,7 @@
 import { compareDays } from './compareDays';
 import { TDateYMD } from '@/stores/date';
 
-const increase = (state: TDateYMD) => {
+const increaseMonth = (state: TDateYMD) => {
   const newDate: TDateYMD = {
     ...state,
   };
@@ -18,7 +18,7 @@ const increase = (state: TDateYMD) => {
   return { ...newDate, day };
 };
 
-const decrease = (state: TDateYMD) => {
+const decreaseMonth = (state: TDateYMD) => {
   const newDate: TDateYMD = {
     ...state,
   };
@@ -35,4 +35,4 @@ const decrease = (state: TDateYMD) => {
   return { ...newDate, day };
 };
 
-export { increase, decrease };
+export { increaseMonth, decreaseMonth };

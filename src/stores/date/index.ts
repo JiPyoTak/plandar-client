@@ -1,15 +1,14 @@
-import moment from 'moment';
 import { create } from 'zustand';
 
-import { decrease, increase } from '@/utils/monthHandler';
+import { decreaseMonth, increaseMonth } from '@/utils/monthHandler';
 
 interface IDateStore {
   year: number;
   month: number;
   day: number;
-  increaseMonth: () => void;
-  decreaseMonth: () => void;
-  onChangeDate: (props: TDateYMD) => void;
+  increaseStoreMonth: () => void;
+  decreaseStoreMonth: () => void;
+  onChangeStoreDate: (props: TDateYMD) => void;
 }
 
 type TDateYMD = Pick<IDateStore, 'day' | 'month' | 'year'>;
@@ -23,9 +22,9 @@ const initialState = {
 const useDateStore = create<IDateStore>((set) => ({
   ...initialState,
 
-  increaseMonth: () => set(increase),
-  decreaseMonth: () => set(decrease),
-  onChangeDate: (props: TDateYMD) => {
+  increaseStoreMonth: () => set(increaseMonth),
+  decreaseStoreMonth: () => set(decreaseMonth),
+  onChangeStoreDate: (props: TDateYMD) => {
     set(props);
   },
 }));
