@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -15,18 +15,18 @@ type TTagButton = React.FC<TTagButtonProps>;
 
 const TagButton: TTagButton = ({ children, onClick }: TTagButtonProps) => {
   const theme = useTheme();
-  const [isHover, setIsHover] = useState(false);
   return (
-    <Container
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
-    >
+    <Container>
       {children}
       <DeleteButton>
         <CrossIcon
-          css={{ width: '100%', height: '100%' }}
+          css={{
+            width: '100%',
+            height: '100%',
+          }}
+          className="x-icon"
           onClick={onClick}
-          color={isHover ? theme.primary_light3 : theme.primary}
+          color={theme.primary}
         />
       </DeleteButton>
     </Container>
@@ -52,6 +52,10 @@ const Container = styled.span`
   &:hover {
     color: ${({ theme }) => theme.primary_light3};
     background-color: ${({ theme }) => theme.primary};
+
+    & .x-icon > path {
+      stroke: ${({ theme }) => theme.primary_light3};
+    }
   }
 `;
 
