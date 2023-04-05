@@ -10,7 +10,7 @@ const DirectionButtons: React.FC = () => {
         onClick={() => console.log('left')}
         radiusDir="left"
         size="small"
-        square={true}
+        isSquare={true}
       >
         <ChevronIcon type="left" />
       </StylishButton>
@@ -18,7 +18,7 @@ const DirectionButtons: React.FC = () => {
         onClick={() => console.log('right')}
         radiusDir="right"
         size="small"
-        square={true}
+        isSquare={true}
       >
         <ChevronIcon type="right" />
       </StylishButton>

@@ -11,8 +11,8 @@ export default {
     onClick: { control: 'function' },
     children: { control: 'text' },
     size: { control: 'text' },
-    color: { control: 'boolean' },
-    square: { control: 'boolean' },
+    isColor: { control: 'boolean' },
+    isSquare: { control: 'boolean' },
     radiusDir: { control: 'text' },
     disabled: { control: 'boolean' },
   },
@@ -25,13 +25,13 @@ const Template: ComponentStory<typeof StylishButton> = (args) => (
 export const Colored = Template.bind({});
 Colored.args = {
   onClick: () => console.log('clicked'),
-  color: true,
+  isColor: true,
   children: 'Hello World',
 };
 
 export const NonColor = Template.bind({});
 NonColor.args = {
   onClick: () => console.log('clicked'),
-  color: false,
+  isColor: false,
   children: 'Hello World',
 };

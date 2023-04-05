@@ -8,8 +8,8 @@ const PlusButton: React.FC = () => {
     <StylishButton
       onClick={() => console.log('plus')}
       size="small"
-      color={true}
-      square={true}
+      isColor={true}
+      isSquare={true}
     >
       <PlusIcon color="white" />
     </StylishButton>

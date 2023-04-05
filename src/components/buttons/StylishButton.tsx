@@ -9,8 +9,8 @@ type TStylishButtonProps = PropsWithChildren<{
   onClick: () => void;
   className?: string;
   size?: TSize;
-  color?: boolean;
-  square?: boolean;
+  isColor?: boolean;
+  isSquare?: boolean;
   radiusDir?: TDirection;
   disabled?: boolean;
 }>;
@@ -36,8 +36,8 @@ const StylishButton: TStylishButton = ({
   onClick,
   size = 'medium',
   className,
-  square = false,
-  color = false,
+  isSquare = false,
+  isColor = false,
   radiusDir = 'all',
   disabled = false,
 }: TStylishButtonProps) => {
@@ -47,8 +47,8 @@ const StylishButton: TStylishButton = ({
       className={className}
       onClick={onClick}
       size={size}
-      isSquare={square}
-      isColor={color}
+      isSquare={isSquare}
+      isColor={isColor}
       radiusDir={radiusDir}
       disabled={disabled}
       css={
@@ -56,7 +56,7 @@ const StylishButton: TStylishButton = ({
         css`
           cursor: not-allowed;
           &:hover {
-            background-color: ${color ? theme.primary : theme.background1};
+            background-color: ${isColor ? theme.primary : theme.background1};
         `
       }
     >
@@ -69,13 +69,7 @@ const StylishContainer = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid ${({ theme }) => theme.border2};
   padding: 8px;
-  background-color: ${({ theme }) => theme.background1};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.background2};
-  }
 `;
 
 const Container = styled(StylishContainer)<{
@@ -85,7 +79,7 @@ const Container = styled(StylishContainer)<{
   radiusDir: TDirection;
 }>`
   width: ${({ size }) => SIZE[size] ?? size};
-  color: ${({ theme, isColor }) => (isColor ? theme.white : theme.black)};
+  color: ${({ theme, isColor }) => (isColor ? theme.background2 : theme.black)};
   background-color: ${({ theme, isColor }) =>
     isColor ? theme.primary : theme.background1};
   border: 1px solid
