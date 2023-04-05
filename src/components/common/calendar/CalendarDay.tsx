@@ -12,7 +12,7 @@ interface IProps extends ICalendarInfo {
 
 type PickIsBoolean = Pick<IProps, 'isToday' | 'isInMonth' | 'isWeekend'>;
 
-const Day: React.FC<IProps> = (props) => {
+const CalendarDay: React.FC<IProps> = (props) => {
   const { day, month, year, onClick, ...isBooleans } = props;
 
   const onClickDay = () => {
@@ -72,4 +72,4 @@ const Container = styled.div<PickIsBoolean & { isSelected: boolean }>`
   }}
 `;
 
-export default memo(Day);
+export default memo(CalendarDay);
