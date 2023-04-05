@@ -12,7 +12,7 @@ interface IProps {
   decreaseMonth: () => void;
 }
 
-const CalendarHeader = (props: IProps) => {
+const CalendarHeader: React.FC<IProps> = (props) => {
   const { year, month, increaseMonth, decreaseMonth } = props;
 
   return (
