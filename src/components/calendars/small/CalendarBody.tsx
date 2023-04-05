@@ -1,17 +1,17 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 import styled from '@emotion/styled';
 
-import Day from '@/components/common/calendar/Day';
+import CalendarDay from '@/components/common/calendar/CalendarDay';
 import { TDateYMD } from '@/stores/date';
 import { getCalendarInfo } from '@/utils/getCalendarInfo';
 
 interface IProps {
   date: TDateYMD;
-  onChangeDay: (date: TDateYMD) => void;
+  onChangeDate: (date: TDateYMD) => void;
 }
 
-const CalendarBody = ({ date, onChangeDay }: IProps) => {
+const CalendarBody = ({ date, onChangeDate }: IProps) => {
   const calendarInfos = getCalendarInfo(date);
 
   return (
@@ -20,7 +20,7 @@ const CalendarBody = ({ date, onChangeDay }: IProps) => {
         <CalendarBody.Day
           {...dateInfo}
           isSelected={dateInfo.day === date.day && dateInfo.isInMonth}
-          onClick={onChangeDay}
+          onClick={onChangeDate}
           key={`${dateInfo.month}${dateInfo.day}`}
         />
       ))}
@@ -36,8 +36,10 @@ const Container = styled.div`
 
   align-items: stretch;
   justify-items: center;
+
+  user-select: none;
 `;
 
-CalendarBody.Day = Day;
+CalendarBody.Day = CalendarDay;
 
-export default memo(CalendarBody);
+export default CalendarBody;

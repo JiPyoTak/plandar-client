@@ -3,7 +3,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import Calendar from '@/components/Calendar/small/index';
+import Calendar from '@/components/calendars/small/index';
 
 export default {
   title: 'calendars/SmallCalendar',

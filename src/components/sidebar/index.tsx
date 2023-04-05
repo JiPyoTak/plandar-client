@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import Calendar from '../Calendar/small';
+import Calendar from '../calendars/small';
 
 import CategoryClassifier from './CategoryClassifier';
 import SideTitle from './SideTitle';

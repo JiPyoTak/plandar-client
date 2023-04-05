@@ -7,11 +7,10 @@ import CalendarHeader from './CalendarHeader';
 
 import DayOfWeek from '@/components/common/calendar/DayOfWeek';
 import useDateStore from '@/stores/date';
-import { decrease, increase } from '@/utils/monthHandler';
+import { decreaseMonth, increaseMonth } from '@/utils/monthHandler';
 
 const Calendar: React.FC = () => {
-  const dateState = useDateStore();
-  const { onChangeDate: onChangeDay, year, month, day } = dateState;
+  const { onChangeStoreDate, year, month, day } = useDateStore();
 
   const [date, setDate] = useState({ year, month, day });
 
@@ -19,12 +18,12 @@ const Calendar: React.FC = () => {
     setDate({ year, month, day });
   }, [year, month, day]);
 
-  const increaseMonth = () => {
-    setDate(increase);
+  const increaseCalendarMonth = () => {
+    setDate(increaseMonth);
   };
 
-  const decreaseMonth = () => {
-    setDate(decrease);
+  const decreaseCalendarMonth = () => {
+    setDate(decreaseMonth);
   };
 
   return (
@@ -32,11 +31,11 @@ const Calendar: React.FC = () => {
       <CalendarHeader
         year={date.year}
         month={date.month}
-        increaseMonth={increaseMonth}
-        decreaseMonth={decreaseMonth}
+        increaseMonth={increaseCalendarMonth}
+        decreaseMonth={decreaseCalendarMonth}
       />
       <DayOfWeek />
-      <CalendarBody date={date} onChangeDay={onChangeDay} />
+      <CalendarBody date={date} onChangeDate={onChangeStoreDate} />
     </Container>
   );
 };
