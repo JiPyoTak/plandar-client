@@ -4,9 +4,13 @@ import styled from '@emotion/styled';
 
 import { DAY_OF_WEEK_UNIT } from '@/utils/constants';
 
-const DayOfWeek = () => {
+interface IProps {
+  className?: string;
+}
+
+const DayOfWeek: React.FC<IProps> = ({ className }) => {
   return (
-    <Container>
+    <Container className={className}>
       {DAY_OF_WEEK_UNIT.map((day) => (
         <div
           key={day}
@@ -20,7 +24,6 @@ const DayOfWeek = () => {
 };
 
 const Container = styled.div`
-  width: 100%;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   align-items: stretch;
@@ -29,7 +32,6 @@ const Container = styled.div`
     color: ${({ theme }) => theme.text3};
   }
   & > div {
-    height: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
