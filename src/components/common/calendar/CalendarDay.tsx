@@ -15,7 +15,8 @@ type PickIsBoolean = Pick<IProps, 'isToday' | 'isInMonth' | 'isWeekend'>;
 const CalendarDay: React.FC<IProps> = (props) => {
   const { day, month, year, onClick, ...isBooleans } = props;
 
-  const onClickDay = () => {
+  const onClickDay: React.MouseEventHandler = (e) => {
+    e.stopPropagation();
     onClick({ day, month, year });
   };
 
