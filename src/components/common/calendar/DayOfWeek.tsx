@@ -2,12 +2,12 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-const DAY_OF_WEEK = ['일', '월', '화', '수', '목', '금', '토'] as const;
+import { DAY_OF_WEEK_UNIT } from '@/utils/constants';
 
 const DayOfWeek = () => {
   return (
     <Container>
-      {DAY_OF_WEEK.map((day) => (
+      {DAY_OF_WEEK_UNIT.map((day) => (
         <div
           key={day}
           className={day === '토' || day === '일' ? 'weekend' : ''}
