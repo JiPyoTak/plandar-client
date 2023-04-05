@@ -1,6 +1,6 @@
 {
   "version": "0.1.0",
-  "name": "react-boilerplate",
+  "name": "plandar-client",
   "description": "",
   "license": "MIT",
   "scripts": {
@@ -16,6 +16,7 @@
     "@tanstack/react-query": "^4.24.10",
     "@tanstack/react-query-devtools": "^4.24.12",
     "axios": "^1.3.4",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.1",
