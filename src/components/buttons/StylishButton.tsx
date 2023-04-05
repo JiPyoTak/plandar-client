@@ -1,11 +1,11 @@
-import { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { TDirection, TSize } from '@/types';
 
-type StylishButtonProps = {
+type TStylishButtonProps = PropsWithChildren<{
   onClick: () => void;
   className?: string;
   size?: TSize;
@@ -13,7 +13,9 @@ type StylishButtonProps = {
   square?: boolean;
   radiusDir?: TDirection;
   disabled?: boolean;
-};
+}>;
+
+type TStylishButton = React.FC<TStylishButtonProps>;
 
 const SIZE: { [key in TSize]: string } = {
   small: 'fit-content',
@@ -29,7 +31,7 @@ const RADIUS_DIR: { [key in TDirection]: string } = {
   all: '5px',
 } as const;
 
-const StylishButton = ({
+const StylishButton: TStylishButton = ({
   children,
   onClick,
   size = 'medium',
@@ -38,7 +40,7 @@ const StylishButton = ({
   color = false,
   radiusDir = 'all',
   disabled = false,
-}: PropsWithChildren<StylishButtonProps>) => {
+}: TStylishButtonProps) => {
   const theme = useTheme();
   return (
     <Container

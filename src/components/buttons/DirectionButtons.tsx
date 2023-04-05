@@ -3,7 +3,7 @@ import React from 'react';
 import StylishButton from '@/components/buttons/StylishButton';
 import ChevronIcon from '@/components/icons/ChevronIcon';
 
-const DirectionButtons = () => {
+const DirectionButtons: React.FC = () => {
   return (
     <div css={{ display: 'flex' }}>
       <StylishButton

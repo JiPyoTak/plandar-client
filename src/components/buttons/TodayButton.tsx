@@ -1,6 +1,8 @@
+import React from 'react';
+
 import StylishButton from '@/components/buttons/StylishButton';
 
-const TodayButton = () => {
+const TodayButton: React.FC = () => {
   return (
     <StylishButton
       onClick={() => console.log('오늘')}
