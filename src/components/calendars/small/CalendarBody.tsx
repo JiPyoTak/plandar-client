@@ -12,7 +12,7 @@ interface IProps {
 }
 
 const CalendarBody = ({ date, onChangeDate }: IProps) => {
-  const calendarInfos = getCalendarInfo(date);
+  const calendarInfos = getCalendarInfo(date).flatMap((week) => week);
 
   return (
     <Container>

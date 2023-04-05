@@ -12,7 +12,7 @@ interface ICalendarInfo {
 type IProps = Pick<ICalendarInfo, 'year' | 'month' | 'day'>;
 
 const getCalendarInfo = ({ year, month, day }: IProps) => {
-  const result: ICalendarInfo[] = [];
+  const result: ICalendarInfo[][] = [];
 
   const today = moment({
     year,
@@ -29,6 +29,7 @@ const getCalendarInfo = ({ year, month, day }: IProps) => {
   const currentWeek = lastWeek + (6 - (lastWeek - firstWeek + 1));
 
   for (let i = firstWeek; i <= currentWeek; i++) {
+    const weeks: ICalendarInfo[] = [];
     for (let j = 0; j < 7; j++) {
       const days = today
         .clone()
@@ -61,8 +62,9 @@ const getCalendarInfo = ({ year, month, day }: IProps) => {
         obj.isWeekend = true;
       }
 
-      result.push(obj);
+      weeks.push(obj);
     }
+    result.push(weeks);
   }
 
   return result;
