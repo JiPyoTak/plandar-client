@@ -1,0 +1,19 @@
+import React from 'react';
+
+import StylishButton from '@/components/buttons/StylishButton';
+import { PlusIcon } from '@/components/icons';
+
+const PlusButton: React.FC = () => {
+  return (
+    <StylishButton
+      onClick={() => console.log('plus')}
+      size="small"
+      isColor={true}
+      isSquare={true}
+    >
+      <PlusIcon color="white" />
+    </StylishButton>
+  );
+};
+
+export default PlusButton;

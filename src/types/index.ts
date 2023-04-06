@@ -3,4 +3,8 @@ import { CALENDAR_UNIT } from '@/utils/constants';
 
 type TCalendarUnit = Union<typeof CALENDAR_UNIT>;
 
-export type { TCalendarUnit };
+type TSize = 'small' | 'medium' | 'large' | string;
+
+type TDirection = 'left' | 'right' | 'top' | 'bottom' | 'all';
+
+export type { TCalendarUnit, TSize, TDirection };
