@@ -6,11 +6,11 @@ import CalendarBody from './CalendarBody';
 import CalendarHeader from './CalendarHeader';
 
 import DayOfWeek from '@/components/common/calendar/DayOfWeek';
-import useDateStore from '@/stores/date';
+import useDateState from '@/stores/date';
 import { decreaseMonth, increaseMonth } from '@/utils/monthHandler';
 
 const Calendar: React.FC = () => {
-  const { onChangeStoreDate, year, month, day } = useDateStore();
+  const { onChangeStoreDate, year, month, day } = useDateState();
 
   const [date, setDate] = useState({ year, month, day });
 

@@ -19,7 +19,7 @@ const initialState = {
   day: new Date().getDate(),
 } as const;
 
-const useDateStore = create<IDateStore>((set) => ({
+const useDateState = create<IDateStore>((set) => ({
   ...initialState,
 
   increaseStoreMonth: () => set(increaseMonth),
@@ -30,4 +30,4 @@ const useDateStore = create<IDateStore>((set) => ({
 }));
 
 export type { IDateStore, TDateYMD };
-export default useDateStore;
+export default useDateState;
