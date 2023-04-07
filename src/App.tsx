@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import styled from '@emotion/styled';
 
+import PrivateRoute from './components/common/PrivateRoute';
 import Login from './pages/Login';
 import Home from '@/pages';
 import Test from '@/pages/Test';
@@ -13,7 +14,9 @@ const App = () => {
       <GlobalStyle />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/" element={<Home />} />
+          </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/test" element={<Test />} />
         </Routes>
