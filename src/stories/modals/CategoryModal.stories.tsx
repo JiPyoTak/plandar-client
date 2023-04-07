@@ -1,0 +1,13 @@
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+
+import CategoryModal from '@/components/common/modal/CategoryModal';
+
+export default {
+  title: 'Modals/CategoryModal',
+  component: CategoryModal,
+} as ComponentMeta<typeof CategoryModal>;
+
+const Template: ComponentStory<typeof CategoryModal> = () => <CategoryModal />;
+
+export const Primary = Template.bind({});
+Primary.args = {};
