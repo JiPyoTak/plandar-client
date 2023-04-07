@@ -14,10 +14,18 @@ interface IDateStore {
   onChangeStoreDate: (props: TDateYMD) => void;
 }
 
+const getInitialDate = () => {
+  const today = moment();
+
+  return {
+    year: today.year(),
+    month: today.month() + 1,
+    day: today.date(),
+  };
+};
+
 const initialState = {
-  year: moment().year(),
-  month: moment().month() + 1,
-  day: moment().date(),
+  ...getInitialDate(),
 } as const;
 
 const useDateState = create<IDateStore>((set) => ({
