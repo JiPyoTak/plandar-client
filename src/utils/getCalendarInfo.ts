@@ -42,9 +42,9 @@ const getCalendarInfo = ({ year, month, day }: IProps) => {
         isToday: false,
         isWeekend: false,
         isInMonth: true,
-        year: parseInt(days.format('YYYY')),
-        month: parseInt(days.format('M')),
-        day: parseInt(days.format('D')),
+        year: days.year(),
+        month: days.month() + 1,
+        day: days.date(),
       };
 
       // 오늘 일때
@@ -53,7 +53,7 @@ const getCalendarInfo = ({ year, month, day }: IProps) => {
       }
 
       // 현재달에 속한 날짜가 아닐때
-      if (days.clone().format('M') !== today.clone().format('M')) {
+      if (days.month() + 1 !== today.month() + 1) {
         obj.isInMonth = false;
       }
 
