@@ -73,6 +73,8 @@ const Container = styled.div`
 
     background-color: ${({ theme }) => theme.background2};
 
+    transition: background-color 0.2s ease-in-out;
+
     &:hover {
       background-color: ${({ theme }) => theme.background3};
     }

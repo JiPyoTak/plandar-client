@@ -45,6 +45,7 @@ const Container = styled.div<TPickIsBoolean>`
   color: ${({ theme }) => theme.text1};
 
   cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 
   &.in_month {
     color: ${({ theme }) => theme.text3};
