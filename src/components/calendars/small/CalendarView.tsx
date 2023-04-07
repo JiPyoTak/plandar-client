@@ -11,13 +11,13 @@ interface IProps {
   onChangeDate: (date: TDateYMD) => void;
 }
 
-const CalendarBody = ({ date, onChangeDate }: IProps) => {
+const CalendarView = ({ date, onChangeDate }: IProps) => {
   const calendarInfos = getCalendarInfo(date).flatMap((week) => week);
 
   return (
     <Container>
       {calendarInfos.map((dateInfo) => (
-        <CalendarBody.Day
+        <CalendarView.Day
           {...dateInfo}
           isSelected={dateInfo.day === date.day && dateInfo.isInMonth}
           onClick={onChangeDate}
@@ -40,6 +40,6 @@ const Container = styled.div`
   user-select: none;
 `;
 
-CalendarBody.Day = CalendarDay;
+CalendarView.Day = CalendarDay;
 
-export default CalendarBody;
+export default CalendarView;
