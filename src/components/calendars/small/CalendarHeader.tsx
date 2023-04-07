@@ -2,18 +2,33 @@ import React, { memo } from 'react';
 
 import styled from '@emotion/styled';
 
+import moment from 'moment';
+
 import ChevronIcon from '@/components/icons/ChevronIcon';
-import { FONT_BOLD_4 } from '@/styles/font';
+import { TDateYMD } from '@/stores/date';
+import { FONT_REGULAR_4, FONT_REGULAR_6 } from '@/styles/font';
 
 interface IProps {
   year: number;
   month: number;
   increaseMonth: () => void;
   decreaseMonth: () => void;
+  onChangeStoreDate: (date: TDateYMD) => void;
 }
 
 const CalendarHeader: React.FC<IProps> = (props) => {
-  const { year, month, increaseMonth, decreaseMonth } = props;
+  const { year, month, increaseMonth, decreaseMonth, onChangeStoreDate } =
+    props;
+
+  const onClickToday = () => {
+    const today = moment();
+
+    onChangeStoreDate({
+      year: today.year(),
+      month: today.month() + 1,
+      day: today.date(),
+    });
+  };
 
   return (
     <Container>
@@ -26,6 +41,7 @@ const CalendarHeader: React.FC<IProps> = (props) => {
       <button onClick={increaseMonth}>
         <ChevronIcon type="right" />
       </button>
+      <button onClick={onClickToday}>오늘</button>
     </Container>
   );
 };
@@ -35,11 +51,14 @@ const Container = styled.div`
 
   display: flex;
   align-items: center;
+  gap: 0.3rem;
+
+  margin-bottom: 0.3rem;
 
   & > div {
     flex: 1;
-    font-size: ${FONT_BOLD_4};
     padding: 0 8px;
+    ${FONT_REGULAR_4}
   }
 
   & > button {
@@ -47,13 +66,21 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
 
-    width: 24px;
-    height: 24px;
+    height: 22px;
+
     border-radius: 5px;
+    padding: 2px;
+
+    background-color: ${({ theme }) => theme.background2};
 
     &:hover {
-      background-color: ${({ theme }) => theme.background2};
+      background-color: ${({ theme }) => theme.background3};
     }
+  }
+
+  & > button:last-of-type {
+    ${FONT_REGULAR_6}
+    padding: 0.5rem;
   }
 
   & svg {
