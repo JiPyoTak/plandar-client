@@ -1,20 +1,34 @@
 import React from 'react';
 
+import { Navigate } from 'react-router-dom';
+
 import { Theme, css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import GoogleButton from '@/components/buttons/GoogleButton';
 import KakaoButton from '@/components/buttons/KakaoButton';
 import Logo from '@/components/logo';
+import useUserStore from '@/stores/user';
 import { FONT_REGULAR_4 } from '@/styles/font';
+import { SERVER_URL } from '@/utils/constants';
 
 const Login: React.FC = () => {
+  const { user } = useUserStore();
+
+  if (user !== null) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <SectionContainer>
       <LoginBox>
-        <Logo />
-        <GoogleButton />
-        <KakaoButton />
+        <Logo css={{ marginBottom: '2rem' }} />
+        <a href={`${SERVER_URL}/auth/google`}>
+          <GoogleButton />
+        </a>
+        <a href={`${SERVER_URL}/auth/kakao`}>
+          <KakaoButton />
+        </a>
       </LoginBox>
       <Description>
         <span>바로 로그인을 해보세요!</span>
@@ -47,10 +61,6 @@ const LoginBox = styled.main`
   justify-content: center;
   align-items: center;
   row-gap: 1rem;
-
-  & > *:first-child {
-    margin-bottom: 2rem;
-  }
 
   ${({ theme }) => flexibleBorder(theme)}
 `;
