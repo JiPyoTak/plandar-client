@@ -62,7 +62,7 @@ const Container = styled.div<TPickIsBoolean>`
 
   &.is_today {
     color: ${({ theme }) => theme.white};
-    background-color: ${({ theme }) => theme.primary_dark};
+    background-color: ${({ theme }) => theme.primary};
   }
 
   &.hover {
