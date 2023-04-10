@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import CategoryModal from '@/components/common/modal/CategoryModal';
+import CategoryModal from '@/components/modal/CategoryModal';
 
 export default {
   title: 'Modals/CategoryModal',

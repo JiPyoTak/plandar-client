@@ -4,7 +4,7 @@ import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import ModalContainer from './index';
-import ColorPicker from '@/components/common/dropdown/ColorPicker';
+import ColorPicker from '@/components/common/ColorPicker';
 import { PencilIcon } from '@/components/icons';
 import { TSelectableColor } from '@/types';
 
@@ -18,7 +18,7 @@ const CategoryModal = () => {
       HeaderLeftComponent={
         <ColorPicker
           selectedColor={selectedColor}
-          onSelect={(color: TSelectableColor) => null}
+          onSelect={(color: TSelectableColor) => setSelectedColor(color)}
         />
       }
       HeaderRightComponent={
