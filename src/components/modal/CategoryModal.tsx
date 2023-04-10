@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
-import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import ModalContainer from './index';
 import ColorPicker from '@/components/common/ColorPicker';
-import { PencilIcon } from '@/components/icons';
+import Input from '@/components/common/Input';
+import { FONT_BOLD_1 } from '@/styles/font';
 import { TSelectableColor } from '@/types';
 
 const CategoryModal = () => {
-  const theme = useTheme();
+  const inputRef: React.RefObject<HTMLInputElement> =
+    useRef<HTMLInputElement>(null);
   const [selectedColor, setSelectedColor] =
     useState<TSelectableColor>('primary');
   return (
@@ -21,13 +22,12 @@ const CategoryModal = () => {
           onSelect={(color: TSelectableColor) => setSelectedColor(color)}
         />
       }
-      HeaderRightComponent={
-        <button>
-          <PencilIcon color={'black'} />
-        </button>
-      }
     >
-      바디입니다
+      <CategoryInput
+        ref={inputRef}
+        placeholder="카테고리 이름"
+        isInline={true}
+      />
     </Modal>
   );
 };
@@ -42,6 +42,11 @@ const Modal = styled(ModalContainer)`
   padding: 24px;
   box-shadow: 1px 10px 25px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
+`;
+
+const CategoryInput = styled(Input)`
+  padding: 15px 0;
+  ${FONT_BOLD_1};
 `;
 
 export default CategoryModal;
