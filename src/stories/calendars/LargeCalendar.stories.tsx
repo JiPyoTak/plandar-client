@@ -17,7 +17,9 @@ const Template3 = () => {
   return (
     <Container>
       <CalendarHeader />
-      <CalendarView />
+      <section>
+        <CalendarView />
+      </section>
     </Container>
   );
 };
@@ -28,6 +30,13 @@ const Container = styled.div`
   height: 100%;
 
   flex-direction: column;
+  background-color: ${({ theme }) => theme.primary_light3};
+
+  & > section {
+    flex: 1;
+    display: flex;
+    padding: 1rem;
+  }
 `;
 
 export const View = Template.bind({});
