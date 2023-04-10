@@ -11,7 +11,7 @@ const axiosRefreshAPI = (() => {
   axiosInstance.interceptors.response.use(
     (res: AxiosResponse) => res,
     async (error: AxiosError) => {
-      return error;
+      return Promise.reject(error);
     },
   );
 

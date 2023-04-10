@@ -39,9 +39,13 @@ const axiosAPI = (() => {
         return error;
       }
 
-      await axiosRefreshAPI();
+      try {
+        await axiosRefreshAPI();
 
-      return axiosInstance(config);
+        return axiosInstance(config);
+      } catch (refreshError) {
+        return refreshError;
+      }
     },
   );
 
