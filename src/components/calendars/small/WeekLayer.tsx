@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 interface IProps {
@@ -9,18 +8,12 @@ interface IProps {
 
 const WeekLayer: React.FC<IProps> = ({ weeks }) => {
   const top = weeks * 28;
+  const ref = useRef<HTMLDivElement>(null);
 
-  return (
-    <Container
-      top={top}
-      css={css`
-        ${top && `top: ${top}px;`}
-      `}
-    />
-  );
+  return <Container ref={ref} style={{ top }} />;
 };
 
-const Container = styled.div<{ top: number }>`
+const Container = styled.div`
   width: 100%;
   position: absolute;
   top: 0;
