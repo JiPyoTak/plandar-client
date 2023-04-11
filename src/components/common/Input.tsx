@@ -1,7 +1,9 @@
 import React, {
+  ButtonHTMLAttributes,
   ForwardedRef,
   forwardRef,
   ForwardRefRenderFunction,
+  InputHTMLAttributes,
   useState,
 } from 'react';
 
@@ -11,7 +13,7 @@ import styled from '@emotion/styled';
 import { CrossIcon, SearchIcon } from '@/components/icons';
 import { FONT_BOLD_4 } from '@/styles/font';
 
-type TInputProps = React.HTMLAttributes<HTMLInputElement> & {
+type TInputProps = InputHTMLAttributes<HTMLInputElement> & {
   isInline?: boolean;
   className?: string;
   isSearchIcon?: boolean;
@@ -29,7 +31,7 @@ const Input: TInput = (
   const [isFocus, setIsFocus] = useState(false);
 
   return (
-    <div css={{ position: 'relative' }}>
+    <div css={{ position: 'relative', width: '100%' }}>
       <InputComponent
         ref={ref}
         onFocus={() => setIsFocus(true)}
