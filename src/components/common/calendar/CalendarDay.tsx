@@ -3,73 +3,73 @@ import React, { memo } from 'react';
 import styled from '@emotion/styled';
 
 import { TDateYMD } from '@/stores/date';
+import { TPickIsBoolean } from '@/types';
 import { ICalendarInfo } from '@/utils/getCalendarInfo';
+import { getDayClassName } from '@/utils/getDayClassName';
 
 interface IProps extends ICalendarInfo {
   isSelected: boolean;
   onClick: (date: TDateYMD) => void;
 }
 
-type PickIsBoolean = Pick<IProps, 'isToday' | 'isInMonth' | 'isWeekend'>;
-
 const CalendarDay: React.FC<IProps> = (props) => {
   const { day, month, year, onClick, ...isBooleans } = props;
+  const className = getDayClassName(isBooleans);
 
-  const onClickDay = () => {
+  const onClickDay: React.MouseEventHandler = (e) => {
+    e.stopPropagation();
     onClick({ day, month, year });
   };
 
   return (
-    <Container {...isBooleans} onClick={onClickDay}>
+    <Container className={className} onClick={onClickDay} {...isBooleans}>
       <div>{day}</div>
     </Container>
   );
 };
 
-const Container = styled.div<PickIsBoolean & { isSelected: boolean }>`
-  cursor: pointer;
+const Container = styled.div<TPickIsBoolean>`
+  position: relative;
+
   border-radius: 100%;
 
-  width: 2rem;
-  height: 2rem;
+  width: 28px;
+  height: 28px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  font-size: 1rem;
+  font-size: 0.8rem;
 
-  ${({ isInMonth, isWeekend, isToday, isSelected, theme }) => {
-    let color = theme.text1;
-    let opacity = 1;
-    let backgroundColor = null;
+  color: ${({ theme }) => theme.text1};
 
-    if (!isInMonth) {
-      color = theme.text3;
-      opacity = 0.5;
-    }
-    if (isWeekend) {
-      color = theme.text3;
-    }
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 
-    if (isSelected) {
-      backgroundColor = theme.background3;
-    }
-    if (isToday) {
-      color = theme.white;
-      backgroundColor = theme.black;
-    }
+  &.in_month {
+    color: ${({ theme }) => theme.text3};
+    opacity: 0.5;
+  }
 
-    return `
-      color: ${color};
-      opacity: ${opacity};
-      ${backgroundColor ? `background-color: ${backgroundColor}` : ''};
-      &:hover {
-        ${backgroundColor ? '' : `background-color: ${theme.background3};`}
-        opacity: 0.7;
-      }
-    `;
-  }}
+  &.is_weekend {
+    color: ${({ theme }) => theme.text3};
+  }
+
+  &.is_selected {
+    background-color: ${({ theme }) => theme.emerald};
+  }
+
+  &.is_today {
+    color: ${({ theme }) => theme.white};
+    background-color: ${({ theme }) => theme.primary};
+  }
+
+  &.hover {
+    &:hover {
+      background-color: ${({ theme }) => theme.emerald_light};
+    }
+  }
 `;
 
 export default memo(CalendarDay);

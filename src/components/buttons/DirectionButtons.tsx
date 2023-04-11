@@ -3,11 +3,19 @@ import React from 'react';
 import StylishButton from '@/components/buttons/StylishButton';
 import ChevronIcon from '@/components/icons/ChevronIcon';
 
-const DirectionButtons: React.FC = () => {
+interface IProps {
+  onClickLeftButton: () => void;
+  onClickRightButton: () => void;
+}
+
+const DirectionButtons: React.FC<IProps> = ({
+  onClickLeftButton,
+  onClickRightButton,
+}) => {
   return (
     <div css={{ display: 'flex' }}>
       <StylishButton
-        onClick={() => console.log('left')}
+        onClick={onClickLeftButton}
         radiusDir="left"
         size="small"
         isSquare={true}
@@ -15,7 +23,7 @@ const DirectionButtons: React.FC = () => {
         <ChevronIcon type="left" />
       </StylishButton>
       <StylishButton
-        onClick={() => console.log('right')}
+        onClick={onClickRightButton}
         radiusDir="right"
         size="small"
         isSquare={true}

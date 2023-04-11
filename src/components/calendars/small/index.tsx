@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import CalendarBody from './CalendarBody';
 import CalendarHeader from './CalendarHeader';
+import CalendarView from './CalendarView';
 
 import DayOfWeek from '@/components/common/calendar/DayOfWeek';
-import useDateStore from '@/stores/date';
+import useDateState from '@/stores/date';
 import { decreaseMonth, increaseMonth } from '@/utils/monthHandler';
 
 const Calendar: React.FC = () => {
-  const { onChangeStoreDate, year, month, day } = useDateStore();
+  const { onChangeStoreDate, year, month, day } = useDateState();
 
   const [date, setDate] = useState({ year, month, day });
 
@@ -33,9 +33,10 @@ const Calendar: React.FC = () => {
         month={date.month}
         increaseMonth={increaseCalendarMonth}
         decreaseMonth={decreaseCalendarMonth}
+        onChangeStoreDate={onChangeStoreDate}
       />
       <DayOfWeek />
-      <CalendarBody date={date} onChangeDate={onChangeStoreDate} />
+      <CalendarView date={date} onChangeDate={onChangeStoreDate} />
     </Container>
   );
 };
@@ -46,7 +47,6 @@ const Container = styled.div`
 
   gap: 0.5rem;
   font-size: 0.8rem;
-  padding: 0 2rem 0 2rem;
 `;
 
 export default Calendar;
