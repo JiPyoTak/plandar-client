@@ -3,16 +3,25 @@ import React, { useRef, useState } from 'react';
 import styled from '@emotion/styled';
 
 import ModalContainer from './index';
+import StylishButton from '@/components/buttons/StylishButton';
 import ColorPicker from '@/components/common/ColorPicker';
 import Input from '@/components/common/Input';
 import { FONT_BOLD_1 } from '@/styles/font';
 import { TSelectableColor } from '@/types';
+
+const MOCK_CATEGORY = ['테스트 카테고리'];
+
+type TCategoryModalProps = {
+  isEdit?: boolean;
+  categoryName?: string;
+};
 
 const CategoryModal = () => {
   const inputRef: React.RefObject<HTMLInputElement> =
     useRef<HTMLInputElement>(null);
   const [selectedColor, setSelectedColor] =
     useState<TSelectableColor>('primary');
+
   return (
     <Modal
       isBgBlack={true}
@@ -28,6 +37,9 @@ const CategoryModal = () => {
         placeholder="카테고리 이름"
         isInline={true}
       />
+      <StylishButton onClick={() => console.log('수정')} isColor={true}>
+        수정
+      </StylishButton>
     </Modal>
   );
 };
