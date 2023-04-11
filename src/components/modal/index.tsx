@@ -30,14 +30,8 @@ const Modal: TModalPortal = ({
     throw new Error('모달창을 열 수 없습니다');
   }
   return createPortal(
-    <Container
-      css={
-        isBgBlack && {
-          backgroundColor: theme.black,
-          opacity: 0.7,
-        }
-      }
-    >
+    <Container>
+      {isBgBlack && <Background onClick={onClose} />}
       <Body className={className}>
         <Header>
           <HeaderLeft>{HeaderLeftComponent}</HeaderLeft>
@@ -59,6 +53,13 @@ const Container = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
+`;
+
+const Background = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: ${({ theme }) => theme.black};
+  opacity: 0.7;
 `;
 
 const Body = styled.div`
