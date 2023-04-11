@@ -7,7 +7,15 @@ export default {
   component: CategoryModal,
 } as ComponentMeta<typeof CategoryModal>;
 
-const Template: ComponentStory<typeof CategoryModal> = () => <CategoryModal />;
+const Template: ComponentStory<typeof CategoryModal> = (args) => (
+  <CategoryModal {...args} />
+);
 
-export const Primary = Template.bind({});
-Primary.args = {};
+export const Create = Template.bind({});
+Create.args = {};
+
+export const Update = Template.bind({});
+Update.args = {
+  isEdit: true,
+  categoryName: '테스트 카테고리',
+};
