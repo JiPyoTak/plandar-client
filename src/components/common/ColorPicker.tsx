@@ -86,6 +86,7 @@ const Popup = styled.div`
   grid-template-rows: repeat(2, 1fr);
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
+  z-index: 50;
 `;
 
 const ColorCircle = styled.div`
