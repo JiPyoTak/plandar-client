@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import moment from 'moment';
+
 import CalendarHeader from './CalendarHeader';
 import CalendarView from './CalendarView';
 
@@ -26,6 +28,17 @@ const Calendar: React.FC = () => {
     setDate(decreaseMonth);
   };
 
+  const onClickTodayButton = () => {
+    const today = moment();
+    const date = {
+      year: today.year(),
+      month: today.month() + 1,
+      day: today.date(),
+    };
+
+    setDate(date);
+  };
+
   return (
     <Container>
       <CalendarHeader
@@ -33,10 +46,14 @@ const Calendar: React.FC = () => {
         month={date.month}
         increaseMonth={increaseCalendarMonth}
         decreaseMonth={decreaseCalendarMonth}
-        onChangeStoreDate={onChangeStoreDate}
+        onClickTodayButton={onClickTodayButton}
       />
       <DayOfWeek />
-      <CalendarView date={date} onChangeDate={onChangeStoreDate} />
+      <CalendarView
+        date={date}
+        storeDate={{ year, month, day }}
+        onChangeDate={onChangeStoreDate}
+      />
     </Container>
   );
 };

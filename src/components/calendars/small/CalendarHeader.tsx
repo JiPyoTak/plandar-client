@@ -2,10 +2,7 @@ import React, { memo } from 'react';
 
 import styled from '@emotion/styled';
 
-import moment from 'moment';
-
 import ChevronIcon from '@/components/icons/ChevronIcon';
-import { TDateYMD } from '@/stores/date';
 import { FONT_REGULAR_4, FONT_REGULAR_6 } from '@/styles/font';
 
 interface IProps {
@@ -13,22 +10,12 @@ interface IProps {
   month: number;
   increaseMonth: () => void;
   decreaseMonth: () => void;
-  onChangeStoreDate: (date: TDateYMD) => void;
+  onClickTodayButton: () => void;
 }
 
 const CalendarHeader: React.FC<IProps> = (props) => {
-  const { year, month, increaseMonth, decreaseMonth, onChangeStoreDate } =
+  const { year, month, increaseMonth, decreaseMonth, onClickTodayButton } =
     props;
-
-  const onClickToday = () => {
-    const today = moment();
-
-    onChangeStoreDate({
-      year: today.year(),
-      month: today.month() + 1,
-      day: today.date(),
-    });
-  };
 
   return (
     <Container>
@@ -41,7 +28,7 @@ const CalendarHeader: React.FC<IProps> = (props) => {
       <button onClick={increaseMonth}>
         <ChevronIcon type="right" />
       </button>
-      <button onClick={onClickToday}>오늘</button>
+      <button onClick={onClickTodayButton}>오늘</button>
     </Container>
   );
 };
