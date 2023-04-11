@@ -4,8 +4,8 @@ import styled from '@emotion/styled';
 
 import moment from 'moment';
 
+import HeaderButtons from './HeaderButtons';
 import HeaderTitle from './HeaderTitle';
-import LeftButtons from './ReftButtons';
 import CalendarUnitButton from '@/components/buttons/CalendarUnitButton';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
@@ -18,7 +18,7 @@ const CalendarHeader = () => {
 
   return (
     <Container>
-      <LeftButtons />
+      <HeaderButtons />
       <HeaderTitle
         selectedCalendarUnit={selectedCalendarUnit}
         year={year}
@@ -41,6 +41,8 @@ const Container = styled.div`
 
   align-items: center;
   justify-content: space-between;
+
+  background-color: ${({ theme }) => theme.white};
 `;
 
 export default CalendarHeader;
