@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import CalendarCeil from './CalendarCeil';
+import CalendarCell from './CalendarCell';
 import useDateState from '@/stores/date';
 import { getCalendarInfo } from '@/utils/getCalendarInfo';
 
@@ -19,8 +19,10 @@ const CalendarBody = () => {
       {calendarInfos.map((week, i) => (
         <CalendarBody.Week key={`${week[0].day}${i}`}>
           {week.map((dateInfo) => (
-            <CalendarBody.Ceil
+            <CalendarBody.Cell
               key={`${dateInfo.month}${dateInfo.day}`}
+              isLastWeek={i === calendarInfos.length - 1}
+              isLastDay={dateInfo.day === week[week.length - 1].day}
               dateInfo={dateInfo}
               isSelected={dateInfo.day === day && dateInfo.isInMonth}
               onClickDayNumber={onChangeStoreDate}
@@ -48,7 +50,7 @@ const Week = styled.div`
   display: flex;
 `;
 
-CalendarBody.Ceil = CalendarCeil;
+CalendarBody.Cell = CalendarCell;
 CalendarBody.Week = Week;
 
 export default CalendarBody;
