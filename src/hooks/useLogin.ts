@@ -17,9 +17,9 @@ const useLogin = () => {
         if (success && data) {
           setUser(data);
         }
-
-        setIsLoading(false);
       } catch (e) {
+        // Do Nothing
+      } finally {
         setIsLoading(false);
       }
     })();
