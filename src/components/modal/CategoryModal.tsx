@@ -6,42 +6,49 @@ import ModalContainer from './index';
 import StylishButton from '@/components/buttons/StylishButton';
 import ColorPicker from '@/components/common/ColorPicker';
 import Input from '@/components/common/Input';
+import { useCategoryQuery } from '@/hooks/rq/category';
 import { FONT_BOLD_1, FONT_REGULAR_5 } from '@/styles/font';
-import { TSelectableColor } from '@/types';
-
-const MOCK_CATEGORY = ['테스트 카테고리'];
+import { TColor } from '@/types';
+import { SELECTABLE_COLOR } from '@/utils/constants';
 
 type TCategoryModalProps = {
+  onClose: () => void;
+  onDone: (obj: { categoryName: string; color: TColor }) => void;
   isEdit?: boolean;
   categoryName?: string;
-  onDone: (categoryName: string) => void;
+  color?: TColor;
 };
 
 type TCategoryModal = React.FC<TCategoryModalProps>;
 
 const CategoryModal: TCategoryModal = ({
+  onClose,
+  onDone,
   isEdit,
   categoryName: originalCategoryName = '',
-  onDone,
+  color: originalColor = SELECTABLE_COLOR[0],
 }: TCategoryModalProps) => {
+  const { data: categoryData } = useCategoryQuery();
   const inputRef: React.RefObject<HTMLInputElement> =
     useRef<HTMLInputElement>(null);
-  const [selectedColor, setSelectedColor] =
-    useState<TSelectableColor>('primary');
+  const [selectedColor, setSelectedColor] = useState<TColor>(originalColor);
   const [error, setError] = useState<string>('');
-  const [inputValue, setInputValue] = useState<string>(originalCategoryName);
+  const [newCategoryName, setNewCategoryName] =
+    useState<string>(originalCategoryName);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!checkCategoryValid()) return;
-    onDone(inputValue);
+    onDone({ categoryName: newCategoryName, color: selectedColor });
   };
 
   const checkCategoryValid = () => {
-    if (inputValue === originalCategoryName) {
+    if (newCategoryName === originalCategoryName) {
       setError('카테고리 이름을 변경해야 합니다.');
       return false;
-    } else if (MOCK_CATEGORY.includes(inputValue)) {
+    } else if (
+      categoryData?.some((category) => category.name === newCategoryName.trim())
+    ) {
       setError('중복된 이름의 카테고리가 있습니다');
       return false;
     }
@@ -50,11 +57,12 @@ const CategoryModal: TCategoryModal = ({
 
   return (
     <Modal
+      onClose={onClose}
       isBgBlack={true}
       HeaderLeftComponent={
         <ColorPicker
           selectedColor={selectedColor}
-          onSelect={(color: TSelectableColor) => setSelectedColor(color)}
+          onSelect={(color: TColor) => setSelectedColor(color)}
         />
       }
     >
@@ -63,9 +71,9 @@ const CategoryModal: TCategoryModal = ({
           ref={inputRef}
           type="text"
           onChange={(e: FormEvent<HTMLInputElement>) =>
-            setInputValue((e.target as HTMLInputElement).value)
+            setNewCategoryName((e.target as HTMLInputElement).value)
           }
-          value={inputValue}
+          value={newCategoryName}
           placeholder="카테고리 이름"
           isInline={true}
         />
@@ -74,7 +82,7 @@ const CategoryModal: TCategoryModal = ({
           type="submit"
           isColor={true}
           size="large"
-          disabled={!inputValue}
+          disabled={!newCategoryName}
         >
           {isEdit ? '수정' : '생성'}
         </StylishButton>
@@ -115,4 +123,5 @@ const Warning = styled.div`
   ${FONT_REGULAR_5}
 `;
 
+export type { TCategoryModalProps };
 export default CategoryModal;
