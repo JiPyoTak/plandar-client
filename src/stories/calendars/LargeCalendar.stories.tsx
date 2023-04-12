@@ -30,9 +30,9 @@ const Container = styled.div`
   height: 100%;
 
   flex-direction: column;
-  background-color: ${({ theme }) => theme.primary_light3};
 
   & > section {
+    background-color: ${({ theme }) => theme.primary_light3};
     flex: 1;
     display: flex;
     padding: 1rem;

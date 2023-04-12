@@ -1,57 +1,46 @@
-import React, { ReactElement, useRef } from 'react';
+import React from 'react';
 
 import styled from '@emotion/styled';
 
-import WeekLayer from './WeekLayer';
 import CalendarDay from '@/components/common/calendar/CalendarDay';
 import { TDateYMD } from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
-import { ICalendarInfo, getCalendarInfo } from '@/utils/getCalendarInfo';
+import { compareStoreDateToCalendarInfo } from '@/utils/compareStoreDateToCalendarInfo';
+import { getCalendarInfo } from '@/utils/getCalendarInfo';
 
 interface IProps {
   date: TDateYMD;
+  storeDate: TDateYMD;
   onChangeDate: (date: TDateYMD) => void;
 }
 
-const CalendarView: React.FC<IProps> = ({ date, onChangeDate }) => {
+const CalendarView: React.FC<IProps> = ({ date, storeDate, onChangeDate }) => {
   const { selectedCalendarUnit } = useCalendarUnitState();
-  const calendarInfos = getCalendarInfo(date);
-  const weeks = useRef(
-    calendarInfos.reduce((acc, cur, i) => {
-      const isSelected = cur.some(
-        (info) => info.day === date.day && info.isInMonth,
-      );
+  const calendarInfos = getCalendarInfo(date).flat();
 
-      return isSelected ? i : acc;
-    }, 0),
-  );
+  const weeks = calendarInfos.reduce((acc, cur, i) => {
+    const isSelected = compareStoreDateToCalendarInfo(cur, storeDate);
 
-  const paintCalendarDays = (dateInfos: ICalendarInfo[], i: number) => {
-    const Days: ReactElement[] = [];
-
-    for (let j = 0; j < dateInfos.length; j++) {
-      const dateInfo = dateInfos[j];
-      const isSelected = dateInfo.day === date.day && dateInfo.isInMonth;
-
-      if (isSelected && weeks.current !== i) weeks.current = i;
-
-      Days.push(
-        <CalendarDay
-          {...dateInfo}
-          isSelected={isSelected}
-          onClick={onChangeDate}
-          key={`${dateInfo.month}${dateInfo.day}`}
-        />,
-      );
-    }
-
-    return Days;
-  };
+    return isSelected ? Math.floor(i / 7) : acc;
+  }, -1);
 
   return (
     <Container>
-      {selectedCalendarUnit === '주' && <WeekLayer weeks={weeks.current} />}
-      {calendarInfos.map(paintCalendarDays)}
+      {calendarInfos.map((info, i) => {
+        const isWeeks =
+          Math.floor(i / 7) === weeks && selectedCalendarUnit === '주';
+        return (
+          <CalendarDay
+            {...info}
+            isWeeks={isWeeks}
+            isWeeksStart={isWeeks && i % 7 === 0}
+            isWeeksEnd={isWeeks && i % 7 === 6}
+            isSelected={compareStoreDateToCalendarInfo(info, storeDate)}
+            onClick={onChangeDate}
+            key={`${info.month}${info.day}`}
+          />
+        );
+      })}
     </Container>
   );
 };
