@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 
 import moment from 'moment';
 
+import TimetableHeader from './TimetableHeader';
 import useDateState from '@/stores/date';
 
 type TProps = {
@@ -19,7 +20,13 @@ const Timetable: React.FC<TProps> = ({ rangeAmount }) => {
     stateMoment.clone().add(index, 'days'),
   );
 
-  return <Container></Container>;
+  const showHeader = range > 1;
+
+  return (
+    <Container>
+      {showHeader && <TimetableHeader dateMoments={dateMoments} />}
+    </Container>
+  );
 };
 
 const Container = styled.div`
