@@ -2,17 +2,14 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import Calendar from '../calendars/small';
-
 import CategoryClassifier from './CategoryClassifier';
-import SideTitle from './SideTitle';
 import TagClassifier from './TagClassifier';
 import TypeClassifier from './TypeClassifier';
+import Calendar from '@/components/calendars/small';
 
 const SideBar: React.FC = () => {
   return (
     <Wrapper>
-      <SideTitle />
       <Calendar />
       <TypeClassifier />
       <CategoryClassifier />
@@ -22,10 +19,10 @@ const SideBar: React.FC = () => {
 };
 
 const Wrapper = styled.div`
-  width: 100%;
+  flex: 0 0 340px;
   height: 100%;
-
-  border-right: 1px solid ${({ theme }) => theme.border1};
+  background-color: ${({ theme }) => theme.white};
+  padding: 2rem;
 `;
 
 export default SideBar;

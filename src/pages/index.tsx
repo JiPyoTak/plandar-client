@@ -2,34 +2,56 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
+import MainCalendar from '@/components/calendars/large';
+import CalendarHeader from '@/components/common/calendar/CalendarHeader';
+import Logo from '@/components/logo';
 import SideBar from '@/components/sidebar';
 
 const Home: React.FC = () => {
   return (
-    <FlexWrapper>
-      <SideSizer>
+    <Container>
+      <Header>
+        <Logo />
+        <CalendarHeader />
+      </Header>
+      <MainContent>
         <SideBar />
-      </SideSizer>
-      <MainSizer></MainSizer>
-    </FlexWrapper>
+        <section>
+          <MainCalendar />
+        </section>
+      </MainContent>
+    </Container>
   );
 };
 
-const FlexWrapper = styled.div`
+const Container = styled.div`
   width: 100%;
   height: 100%;
 
   display: flex;
+  flex-direction: column;
+
+  background-color: ${({ theme }) => theme.primary_light3};
 `;
 
-const SideSizer = styled.aside`
-  flex: 0 0 332px;
-  height: 100%;
+const Header = styled.div`
+  display: flex;
+
+  background-color: ${({ theme }) => theme.white};
+  border-bottom: 1px solid ${({ theme }) => theme.border2};
 `;
 
-const MainSizer = styled.div`
+const MainContent = styled.div`
   flex: 1;
   height: 100%;
+  display: flex;
+
+  & > section {
+    flex: 1;
+    display: flex;
+
+    padding: 1rem;
+  }
 `;
 
 export default Home;
