@@ -7,6 +7,8 @@ type TSize = 'small' | 'medium' | 'large' | string;
 
 type TDirection = 'left' | 'right' | 'top' | 'bottom' | 'all';
 
+type TColor = `#${string}`;
+
 type TSelectableColor = Union<typeof SELECTABLE_COLOR>;
 
-export type { TCalendarUnit, TSize, TDirection, TSelectableColor };
+export type { TCalendarUnit, TSize, TDirection, TSelectableColor, TColor };
