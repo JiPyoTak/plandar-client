@@ -29,6 +29,7 @@ const CategoryClassifier: React.FC = () => {
 
   const { hiddenCategories, toggleCategoryShow } = useCategoryClassifierState();
 
+  // 카테고리 추가
   const onClickAdd = () => {
     setModalState({
       onClose: () => setModalState(null),
@@ -45,15 +46,17 @@ const CategoryClassifier: React.FC = () => {
     });
   };
 
+  // 카테고리 수정
   const onClickEdit = (id: number) => {
     const originalCategory = categoryData?.find(
       (category) => category.id === id,
     );
+    if (!originalCategory) return;
+
     setModalState({
       onClose: () => setModalState(null),
       isEdit: true,
-      categoryName: originalCategory?.name,
-      color: originalCategory?.color,
+      category: originalCategory,
       onDone: ({
         categoryName: name,
         color,

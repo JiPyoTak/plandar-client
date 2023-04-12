@@ -9,14 +9,14 @@ import Input from '@/components/common/Input';
 import { useCategoryQuery } from '@/hooks/rq/category';
 import { FONT_BOLD_1, FONT_REGULAR_5 } from '@/styles/font';
 import { TColor } from '@/types';
+import { ICategoryWithoutId } from '@/types/rq/category';
 import { SELECTABLE_COLOR } from '@/utils/constants';
 
 type TCategoryModalProps = {
   onClose: () => void;
   onDone: (obj: { categoryName: string; color: TColor }) => void;
   isEdit?: boolean;
-  categoryName?: string;
-  color?: TColor;
+  category?: ICategoryWithoutId & { id?: number };
 };
 
 type TCategoryModal = React.FC<TCategoryModalProps>;
@@ -25,29 +25,41 @@ const CategoryModal: TCategoryModal = ({
   onClose,
   onDone,
   isEdit,
-  categoryName: originalCategoryName = '',
-  color: originalColor = SELECTABLE_COLOR[0],
+  category: originalCategory = { name: '', color: SELECTABLE_COLOR[0] },
 }: TCategoryModalProps) => {
   const { data: categoryData } = useCategoryQuery();
   const inputRef: React.RefObject<HTMLInputElement> =
     useRef<HTMLInputElement>(null);
-  const [selectedColor, setSelectedColor] = useState<TColor>(originalColor);
+  const [selectedColor, setSelectedColor] = useState<TColor>(
+    originalCategory?.color,
+  );
   const [error, setError] = useState<string>('');
-  const [newCategoryName, setNewCategoryName] =
-    useState<string>(originalCategoryName);
+  const [newCategoryName, setNewCategoryName] = useState<string>(
+    originalCategory?.name,
+  );
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!checkCategoryValid()) return;
-    onDone({ categoryName: newCategoryName, color: selectedColor });
+    onDone({ categoryName: newCategoryName.trim(), color: selectedColor });
   };
 
   const checkCategoryValid = () => {
-    if (newCategoryName === originalCategoryName) {
-      setError('카테고리 이름을 변경해야 합니다.');
+    // 색상 혹은 이름 변경 여부 검사
+    if (
+      newCategoryName === originalCategory.name &&
+      selectedColor === originalCategory.color
+    ) {
+      setError('카테고리 이름 혹은 색상을 변경해야 합니다.');
       return false;
-    } else if (
-      categoryData?.some((category) => category.name === newCategoryName.trim())
+    }
+    // 동일한 이름의 카테고리가 존재하는지 검사
+    else if (
+      categoryData?.some(
+        (category) =>
+          category.id !== originalCategory?.id &&
+          category.name === newCategoryName.trim(),
+      )
     ) {
       setError('중복된 이름의 카테고리가 있습니다');
       return false;

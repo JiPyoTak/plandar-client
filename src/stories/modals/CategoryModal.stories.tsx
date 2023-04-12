@@ -1,6 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import CategoryModal from '@/components/modal/CategoryModal';
+import { SELECTABLE_COLOR } from '@/utils/constants';
 
 export default {
   title: 'Modals/CategoryModal',
@@ -17,5 +18,8 @@ Create.args = {};
 export const Update = Template.bind({});
 Update.args = {
   isEdit: true,
-  categoryName: '테스트 카테고리',
+  category: {
+    color: SELECTABLE_COLOR[0],
+    name: '테스트 카테고리',
+  },
 };
