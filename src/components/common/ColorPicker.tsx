@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -8,10 +8,10 @@ import ChevronIcon from '@/components/icons/ChevronIcon';
 import { TColor } from '@/types';
 import { SELECTABLE_COLOR } from '@/utils/constants';
 
-type TColorPickerProps = PropsWithChildren<{
+type TColorPickerProps = {
   selectedColor: TColor;
   onSelect: (color: TColor) => void;
-}>;
+};
 
 type TColorPicker = React.FC<TColorPickerProps>;
 
