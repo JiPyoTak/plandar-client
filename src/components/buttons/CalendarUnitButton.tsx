@@ -47,7 +47,7 @@ const CalendarUnitWrapper = styled.span`
   background-color: ${({ theme }) => theme.background3};
   border-radius: 100px;
   width: 158px;
-  height: 36px;
+  height: 40px;
 `;
 
 const CalendarUnitLabel = styled.span`
@@ -56,11 +56,11 @@ const CalendarUnitLabel = styled.span`
   z-index: 5;
   display: inline-block;
   background-color: white;
-  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   border-radius: 25px;
   width: 50px;
   height: 32px;
-  transition: left 0.4s ease-in-out;
+  transition: left 0.3s ease-in-out;
 `;
 
 const CalendarUnitText = styled.button`
@@ -73,7 +73,7 @@ const CalendarUnitText = styled.button`
   gap: 10px;
   width: 50px;
   height: 32px;
-  transition: color 0.4s ease-in-out;
+  transition: color 0.3s ease-in-out;
   color: ${({ theme }) => theme.text3};
 `;
 
