@@ -5,12 +5,12 @@ import styled from '@emotion/styled';
 
 import { CheckIcon } from '@/components/icons';
 import ChevronIcon from '@/components/icons/ChevronIcon';
-import { TSelectableColor } from '@/types';
+import { TColor } from '@/types';
 import { SELECTABLE_COLOR } from '@/utils/constants';
 
 type TColorPickerProps = PropsWithChildren<{
-  selectedColor: string;
-  onSelect: (color: TSelectableColor) => void;
+  selectedColor: TColor;
+  onSelect: (color: TColor) => void;
 }>;
 
 type TColorPicker = React.FC<TColorPickerProps>;
@@ -27,14 +27,14 @@ const ColorPicker: TColorPicker = ({
       <PickerButton onClick={() => setPopupOpened((prev) => !prev)}>
         <span
           css={{
-            backgroundColor: theme[selectedColor as keyof typeof theme],
+            backgroundColor: selectedColor,
           }}
         />
         <ChevronIcon css={{ width: 14 }} type="down" color="black" />
       </PickerButton>
       {popupOpened && (
         <Popup>
-          {SELECTABLE_COLOR.map((color: TSelectableColor) => (
+          {SELECTABLE_COLOR.map((color) => (
             <button
               onClick={() => {
                 onSelect(color);
@@ -43,7 +43,7 @@ const ColorPicker: TColorPicker = ({
               css={{ position: 'relative' }}
               key={color}
             >
-              <ColorCircle css={{ backgroundColor: theme[color] }} />
+              <ColorCircle css={{ backgroundColor: color }} />
               {selectedColor === color && <CheckMarker color={theme.white} />}
             </button>
           ))}

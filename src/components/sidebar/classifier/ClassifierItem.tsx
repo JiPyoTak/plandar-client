@@ -4,11 +4,13 @@ import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { CheckIcon, PencilIcon } from '@/components/icons';
+import { TColor } from '@/types';
+import { SELECTABLE_COLOR } from '@/utils/constants';
 
 type TProps = {
   text: string;
   isActive: boolean;
-  color?: string;
+  color?: TColor;
   onEdit?: (...args: unknown[]) => unknown;
 } & React.HTMLAttributes<HTMLDivElement>;
 
@@ -16,21 +18,19 @@ const CLASSIFIER_EDITABLE_ITEM_CLASS = 'classifier-item-edit';
 
 const ClassifierItem: React.FC<TProps> = ({
   isActive,
-  color,
+  color = SELECTABLE_COLOR[0],
   text,
   onEdit,
   ...restProps
 }) => {
   const theme = useTheme();
 
-  if (!color) {
-    color = theme.primary;
-  }
-
   return (
     <Wrapper {...restProps}>
       <CircleDiv
-        css={{ backgroundColor: isActive ? color : theme.background4 }}
+        css={{
+          backgroundColor: isActive ? color : theme.background4,
+        }}
       >
         <CheckIcon width={16.5} height={16.5} color={theme.white} />
       </CircleDiv>
