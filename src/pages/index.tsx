@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import MainCalendar from '@/components/calendars/large';
 import CalendarHeader from '@/components/common/calendar/CalendarHeader';
-import Logo from '@/components/logo';
+import Logo from '@/components/Logo';
 import SideBar from '@/components/sidebar';
 
 const Home: React.FC = () => {

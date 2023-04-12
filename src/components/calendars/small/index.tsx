@@ -2,17 +2,15 @@ import React, { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import moment from 'moment';
-
+import CalendarBody from './CalendarBody';
 import CalendarHeader from './CalendarHeader';
-import CalendarView from './CalendarView';
 
 import DayOfWeek from '@/components/common/calendar/DayOfWeek';
-import useDateState from '@/stores/date';
+import useDateStore from '@/stores/date';
 import { decreaseMonth, increaseMonth } from '@/utils/monthHandler';
 
 const Calendar: React.FC = () => {
-  const { onChangeStoreDate, year, month, day } = useDateState();
+  const { onChangeStoreDate, year, month, day } = useDateStore();
 
   const [date, setDate] = useState({ year, month, day });
 
@@ -28,17 +26,6 @@ const Calendar: React.FC = () => {
     setDate(decreaseMonth);
   };
 
-  const onClickTodayButton = () => {
-    const today = moment();
-    const date = {
-      year: today.year(),
-      month: today.month() + 1,
-      day: today.date(),
-    };
-
-    setDate(date);
-  };
-
   return (
     <Container>
       <CalendarHeader
@@ -46,14 +33,9 @@ const Calendar: React.FC = () => {
         month={date.month}
         increaseMonth={increaseCalendarMonth}
         decreaseMonth={decreaseCalendarMonth}
-        onClickTodayButton={onClickTodayButton}
       />
       <DayOfWeek />
-      <CalendarView
-        date={date}
-        storeDate={{ year, month, day }}
-        onChangeDate={onChangeStoreDate}
-      />
+      <CalendarBody date={date} onChangeDate={onChangeStoreDate} />
     </Container>
   );
 };
@@ -64,6 +46,7 @@ const Container = styled.div`
 
   gap: 0.5rem;
   font-size: 0.8rem;
+  padding: 0 2rem 0 2rem;
 `;
 
 export default Calendar;

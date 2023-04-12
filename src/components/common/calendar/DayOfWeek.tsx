@@ -2,25 +2,16 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import { TDayOfWeekUnit } from '@/types';
 import { DAY_OF_WEEK_UNIT } from '@/utils/constants';
 
-interface IProps {
-  className?: string;
-}
-
-const DAY_OF_WEEK: {
-  [key in TDayOfWeekUnit]?: string;
-} = {
-  일: 'sunday',
-  토: 'saturday',
-};
-
-const DayOfWeek: React.FC<IProps> = ({ className }) => {
+const DayOfWeek = () => {
   return (
-    <Container className={className}>
+    <Container>
       {DAY_OF_WEEK_UNIT.map((day) => (
-        <div key={day} className={DAY_OF_WEEK[day] ?? ''}>
+        <div
+          key={day}
+          className={day === '토' || day === '일' ? 'weekend' : ''}
+        >
           {day}
         </div>
       ))}
@@ -29,19 +20,16 @@ const DayOfWeek: React.FC<IProps> = ({ className }) => {
 };
 
 const Container = styled.div`
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   align-items: stretch;
 
-  & > .sunday {
-    color: ${({ theme }) => theme.red};
+  & > .weekend {
+    color: ${({ theme }) => theme.text3};
   }
-
-  & > .saturday {
-    color: ${({ theme }) => theme.blue_dark};
-  }
-
   & > div {
+    height: 18px;
     display: flex;
     align-items: center;
     justify-content: center;

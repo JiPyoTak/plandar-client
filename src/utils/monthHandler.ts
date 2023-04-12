@@ -1,4 +1,4 @@
-import { compareDays } from './dayHandler';
+import { compareDays } from './compareDays';
 import { TDateYMD } from '@/stores/date';
 
 const increaseMonth = (state: TDateYMD) => {

@@ -4,133 +4,72 @@ import styled from '@emotion/styled';
 
 import { TDateYMD } from '@/stores/date';
 import { ICalendarInfo } from '@/utils/getCalendarInfo';
-import { getDayClassName } from '@/utils/getDayClassName';
 
 interface IProps extends ICalendarInfo {
   isSelected: boolean;
-  isWeeks?: boolean;
-  isWeeksStart?: boolean;
-  isWeeksEnd?: boolean;
-  className?: string;
   onClick: (date: TDateYMD) => void;
 }
 
-const getClassNames = ({
-  isWeeks,
-  isWeeksStart,
-  isWeeksEnd,
-}: {
-  isWeeks?: boolean;
-  isWeeksStart?: boolean;
-  isWeeksEnd?: boolean;
-}) => {
-  const classNames = [];
-
-  if (isWeeks) classNames.push('is_weeks');
-  if (isWeeksStart) classNames.push('is_weeks_start');
-  if (isWeeksEnd) classNames.push('is_weeks_end');
-
-  return classNames.join(' ');
-};
+type PickIsBoolean = Pick<IProps, 'isToday' | 'isInMonth' | 'isWeekend'>;
 
 const CalendarDay: React.FC<IProps> = (props) => {
-  const {
-    day,
-    month,
-    year,
-    onClick,
-    isWeeks,
-    isWeeksStart,
-    isWeeksEnd,
-    className,
-    ...isBooleans
-  } = props;
-  const containerClassName = getClassNames({
-    isWeeks,
-    isWeeksStart,
-    isWeeksEnd,
-  });
-  const dayNumberClassName = getDayClassName(isBooleans);
+  const { day, month, year, onClick, ...isBooleans } = props;
 
-  const onClickDay: React.MouseEventHandler = (e) => {
-    e.stopPropagation();
+  const onClickDay = () => {
     onClick({ day, month, year });
   };
 
   return (
-    <Container className={`${containerClassName} ${className}`}>
-      <DayNumber className={dayNumberClassName} onClick={onClickDay}>
-        {day}
-      </DayNumber>
+    <Container {...isBooleans} onClick={onClickDay}>
+      <div>{day}</div>
     </Container>
   );
 };
 
-const Container = styled.div`
-  position: relative;
-  width: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  transition: background-color 0.2s, border-radius 0.2s;
-  padding: 0.2rem 0;
-
-  &.is_weeks {
-    background-color: ${({ theme }) => theme.emerald_light};
-  }
-
-  &.is_weeks_start {
-    border-top-left-radius: 1rem;
-    border-bottom-left-radius: 1rem;
-  }
-
-  &.is_weeks_end {
-    border-top-right-radius: 1rem;
-    border-bottom-right-radius: 1rem;
-  }
-`;
-
-const DayNumber = styled.button`
-  width: 28px;
-  height: 28px;
-
+const Container = styled.div<PickIsBoolean & { isSelected: boolean }>`
+  cursor: pointer;
   border-radius: 100%;
 
+  width: 2rem;
+  height: 2rem;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
-  font-size: 0.8rem;
+  font-size: 1rem;
 
-  color: ${({ theme }) => theme.text1};
+  ${({ isInMonth, isWeekend, isToday, isSelected, theme }) => {
+    let color = theme.text1;
+    let opacity = 1;
+    let backgroundColor = null;
 
-  cursor: pointer;
-  transition: background-color 0.2s;
-  background-color: transparent;
+    if (!isInMonth) {
+      color = theme.text3;
+      opacity = 0.5;
+    }
+    if (isWeekend) {
+      color = theme.text3;
+    }
 
-  &.in_month {
-    color: ${({ theme }) => theme.text3};
-    opacity: 0.5;
-  }
+    if (isSelected) {
+      backgroundColor = theme.background3;
+    }
+    if (isToday) {
+      color = theme.white;
+      backgroundColor = theme.black;
+    }
 
-  &.is_weekend {
-    color: ${({ theme }) => theme.text3};
-  }
-
-  &.is_selected {
-    background-color: ${({ theme }) => theme.emerald};
-  }
-
-  &.is_today {
-    color: ${({ theme }) => theme.white};
-    background-color: ${({ theme }) => theme.primary};
-  }
-
-  &.hover:hover {
-    background-color: ${({ theme }) => theme.emerald_light};
-  }
+    return `
+      color: ${color};
+      opacity: ${opacity};
+      ${backgroundColor ? `background-color: ${backgroundColor}` : ''};
+      &:hover {
+        ${backgroundColor ? '' : `background-color: ${theme.background3};`}
+        opacity: 0.7;
+      }
+    `;
+  }}
 `;
 
 export default memo(CalendarDay);
