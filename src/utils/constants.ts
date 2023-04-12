@@ -18,4 +18,13 @@ const SELECTABLE_COLOR: ReadonlyArray<TColor> = [
   'blue_dark',
 ].map((colorName) => theme[colorName as keyof typeof theme] as TColor);
 
-export { CALENDAR_UNIT, DAY_OF_WEEK_UNIT, SELECTABLE_COLOR };
+const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
+const ACCESS_TOKEN_KEY = import.meta.env.VITE_APP_ACCESS_TOKEN_KEY;
+
+export {
+  CALENDAR_UNIT,
+  DAY_OF_WEEK_UNIT,
+  SELECTABLE_COLOR,
+  SERVER_URL,
+  ACCESS_TOKEN_KEY,
+};
