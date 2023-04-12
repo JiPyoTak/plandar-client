@@ -3,7 +3,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Moment } from 'moment';
 
-import { TimetableGuide } from '@/styles/timetable';
+import { TIMETABLE_CELL_MIN_WIDTH, TimetableGuide } from '@/styles/timetable';
 
 type TProps = {
   dateMoments: Moment[];
@@ -21,6 +21,8 @@ const TimetableAllDay: React.FC<TProps> = ({ dateMoments }) => {
 };
 
 const Container = styled.div`
+  flex: 0;
+
   width: 100%;
   min-height: 1.75rem;
 
@@ -31,6 +33,8 @@ const Container = styled.div`
 
 const AllDayItem = styled.div`
   flex: 1;
+
+  min-width: ${TIMETABLE_CELL_MIN_WIDTH};
 `;
 
 export default TimetableAllDay;

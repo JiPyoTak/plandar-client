@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import moment, { Moment } from 'moment';
 
 import { FONT_BOLD_5, FONT_REGULAR_5 } from '@/styles/font';
-import { TimetableGuide } from '@/styles/timetable';
+import { TIMETABLE_CELL_MIN_WIDTH, TimetableGuide } from '@/styles/timetable';
 import { DAY_OF_WEEK_UNIT } from '@/utils/constants';
 
 type TProps = {
@@ -33,6 +33,8 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
 };
 
 const Container = styled.div`
+  flex: 0;
+
   width: 100%;
   height: 50px;
 
@@ -45,6 +47,7 @@ const SignDiv = styled.div`
   ${FONT_REGULAR_5}
 
   flex: 1;
+  min-width: ${TIMETABLE_CELL_MIN_WIDTH};
   padding: 0 1rem;
 
   display: flex;
