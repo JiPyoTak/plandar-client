@@ -12,7 +12,7 @@ interface ICalendarInfo {
 type IProps = Pick<ICalendarInfo, 'year' | 'month' | 'day'>;
 
 const getCalendarInfo = ({ year, month, day }: IProps) => {
-  const result: ICalendarInfo[] = [];
+  const result: ICalendarInfo[][] = [];
 
   const today = moment({
     year,
@@ -29,6 +29,7 @@ const getCalendarInfo = ({ year, month, day }: IProps) => {
   const currentWeek = lastWeek + (6 - (lastWeek - firstWeek + 1));
 
   for (let i = firstWeek; i <= currentWeek; i++) {
+    const weeks: ICalendarInfo[] = [];
     for (let j = 0; j < 7; j++) {
       const days = today
         .clone()
@@ -41,9 +42,9 @@ const getCalendarInfo = ({ year, month, day }: IProps) => {
         isToday: false,
         isWeekend: false,
         isInMonth: true,
-        year: parseInt(days.format('YYYY')),
-        month: parseInt(days.format('M')),
-        day: parseInt(days.format('D')),
+        year: days.year(),
+        month: days.month() + 1,
+        day: days.date(),
       };
 
       // 오늘 일때
@@ -52,7 +53,7 @@ const getCalendarInfo = ({ year, month, day }: IProps) => {
       }
 
       // 현재달에 속한 날짜가 아닐때
-      if (days.clone().format('M') !== today.clone().format('M')) {
+      if (days.month() + 1 !== today.month() + 1) {
         obj.isInMonth = false;
       }
 
@@ -61,8 +62,9 @@ const getCalendarInfo = ({ year, month, day }: IProps) => {
         obj.isWeekend = true;
       }
 
-      result.push(obj);
+      weeks.push(obj);
     }
+    result.push(weeks);
   }
 
   return result;
