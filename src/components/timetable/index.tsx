@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 
 import moment from 'moment';
 
+import TimetableAllDay from './TimetableAllDay';
 import TimetableHeader from './TimetableHeader';
 import useDateState from '@/stores/date';
 
@@ -25,6 +26,7 @@ const Timetable: React.FC<TProps> = ({ rangeAmount }) => {
   return (
     <Container>
       {showHeader && <TimetableHeader dateMoments={dateMoments} />}
+      <TimetableAllDay dateMoments={dateMoments} />
     </Container>
   );
 };
