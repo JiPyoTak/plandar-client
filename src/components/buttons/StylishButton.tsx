@@ -57,6 +57,7 @@ const StylishButton: TStylishButton = ({
           cursor: not-allowed;
           &:hover {
             background-color: ${isColor ? theme.primary : theme.background1};
+          }
         `
       }
     >

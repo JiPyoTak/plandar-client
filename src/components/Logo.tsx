@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 
 import { FONT_BOLD_1 } from '@/styles/font';
 
-const SideTitle: React.FC = () => {
+const Logo: React.FC = () => {
   return (
     <HyperlinkWrapper href={''}>
       <div
@@ -22,15 +22,15 @@ const SideTitle: React.FC = () => {
 };
 
 const HyperlinkWrapper = styled.a`
-  width: 100%;
-  height: 4.375rem;
+  flex: 0 0 340px;
+  height: 4rem;
   padding: 0.5rem 1rem;
   display: flex;
   align-items: center;
   column-gap: 1rem;
 
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.black};
   text-decoration: none;
 `;
 
-export default SideTitle;
+export default Logo;
