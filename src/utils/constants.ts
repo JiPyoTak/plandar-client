@@ -1,10 +1,11 @@
 import { theme } from '@/styles/theme';
+import { TColor } from '@/types';
 
 const CALENDAR_UNIT = ['일', '주', '월'] as const;
 
 const DAY_OF_WEEK_UNIT = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
-const SELECTABLE_COLOR: ReadonlyArray<keyof typeof theme> = [
+const SELECTABLE_COLOR: ReadonlyArray<TColor> = [
   'primary',
   'primary_dark',
   'red',
@@ -15,6 +16,6 @@ const SELECTABLE_COLOR: ReadonlyArray<keyof typeof theme> = [
   'emerald_dark2',
   'blue',
   'blue_dark',
-] as const;
+].map((colorName) => theme[colorName as keyof typeof theme] as TColor);
 
 export { CALENDAR_UNIT, DAY_OF_WEEK_UNIT, SELECTABLE_COLOR };
