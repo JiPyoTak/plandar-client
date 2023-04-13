@@ -5,10 +5,6 @@ import { Moment } from 'moment';
 
 import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
 
-const DAY_TO_MINUTE = 24 * 60;
-const TIME_VIEW_CELL_UNIT = 15;
-const TIME_VIEW_CELL_AMOUNT = Math.ceil(DAY_TO_MINUTE / TIME_VIEW_CELL_UNIT);
-
 type TProps = {
   dateMoments: Moment[];
 };

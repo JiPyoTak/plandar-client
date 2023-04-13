@@ -10,6 +10,7 @@ const TimetableGuide = styled.div`
   color: ${({ theme }) => theme.text4};
 
   text-align: end;
+  user-select: none;
 `;
 
 const TIMETABLE_SCROLL_STYLE = ({ theme }: { theme: Theme }) => css`
@@ -26,5 +27,11 @@ const TIMETABLE_SCROLL_STYLE = ({ theme }: { theme: Theme }) => css`
 `;
 
 const TIMETABLE_CELL_MIN_WIDTH = '4.875rem';
+const TIMETABLE_CELL_HEIGHT = '1rem';
 
-export { TimetableGuide, TIMETABLE_SCROLL_STYLE, TIMETABLE_CELL_MIN_WIDTH };
+export {
+  TimetableGuide,
+  TIMETABLE_SCROLL_STYLE,
+  TIMETABLE_CELL_MIN_WIDTH,
+  TIMETABLE_CELL_HEIGHT,
+};
