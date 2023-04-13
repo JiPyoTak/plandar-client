@@ -4,9 +4,9 @@ import styled from '@emotion/styled';
 
 import moment from 'moment';
 
-import TimetableAllDay from './TimetableAllDay';
-import TimetableHeader from './TimetableHeader';
-import TimetableView from './TimetableView';
+import TimetableAllDay from '@/components/timetable/TimetableAllDay';
+import TimetableHeader from '@/components/timetable/TimetableHeader';
+import TimetableView from '@/components/timetable/view';
 import useDateState from '@/stores/date';
 import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
 
