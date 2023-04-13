@@ -21,7 +21,7 @@ const TimetableAllDay: React.FC<TProps> = ({ dateMoments }) => {
 };
 
 const Container = styled.div`
-  flex: 0;
+  flex: 0 0 auto;
 
   width: 100%;
   min-height: 1.75rem;

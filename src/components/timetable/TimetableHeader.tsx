@@ -33,10 +33,9 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
 };
 
 const Container = styled.div`
-  flex: 0;
+  flex: 0 0 50px;
 
   width: 100%;
-  height: 50px;
 
   display: flex;
   border-bottom: 1px solid ${({ theme }) => theme.border2};
