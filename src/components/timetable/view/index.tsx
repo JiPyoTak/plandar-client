@@ -3,6 +3,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Moment } from 'moment';
 
+import TiemtableViewColumn from './TiemtableViewColumn';
 import TimetableTimeline from './TimetableTimeline';
 import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
 
@@ -14,6 +15,9 @@ const TimetableView: React.FC<TProps> = ({ dateMoments }) => {
   return (
     <Container>
       <TimetableTimeline />
+      {dateMoments.map((date) => {
+        return <TiemtableViewColumn date={date} />;
+      })}
     </Container>
   );
 };
