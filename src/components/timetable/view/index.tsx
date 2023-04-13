@@ -3,6 +3,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Moment } from 'moment';
 
+import TimetableTimeline from './TimetableTimeline';
 import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
 
 type TProps = {
@@ -10,7 +11,11 @@ type TProps = {
 };
 
 const TimetableView: React.FC<TProps> = ({ dateMoments }) => {
-  return <Container></Container>;
+  return (
+    <Container>
+      <TimetableTimeline />
+    </Container>
+  );
 };
 
 const Container = styled.div`
