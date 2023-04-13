@@ -62,10 +62,12 @@ const Background = styled.div`
   height: 100vh;
   background-color: ${({ theme }) => theme.black};
   opacity: 0.7;
+  z-index: 10;
 `;
 
 const Body = styled.div`
   background-color: ${({ theme }) => theme.white};
+  z-index: 20;
 `;
 
 const Header = styled.div`
