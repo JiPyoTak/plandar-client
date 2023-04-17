@@ -35,6 +35,6 @@ export const theme: { [key: string]: TColor } = {
   emerald_dark2: '#8EC3B0',
   white: '#FFFFFF',
   black: '#000000',
-};
+} satisfies { [key: string]: TColor };
 
 export type ThemeType = typeof theme;
