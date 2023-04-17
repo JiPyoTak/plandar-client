@@ -16,7 +16,7 @@ const SELECTABLE_COLOR: ReadonlyArray<TColor> = [
   'emerald_dark2',
   'blue',
   'blue_dark',
-].map((colorName) => theme[colorName as keyof typeof theme] as TColor);
+].map((colorName) => theme[colorName as keyof typeof theme]);
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 const ACCESS_TOKEN_KEY = import.meta.env.VITE_APP_ACCESS_TOKEN_KEY;
