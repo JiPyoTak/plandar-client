@@ -15,6 +15,10 @@ const TimetableCell: React.FC<TProps> = ({ className }) => {
 const Container = styled.div`
   width: 100%;
   height: ${TIMETABLE_CELL_HEIGHT};
+
+  &:nth-child(4n) {
+    border-bottom: 1px solid ${({ theme }) => theme.border2};
+  }
 `;
 
 export default TimetableCell;
