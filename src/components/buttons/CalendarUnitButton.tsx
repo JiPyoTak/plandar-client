@@ -67,7 +67,7 @@ const CalendarUnitText = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 5;
   background-color: transparent;
   padding: 10px;
   gap: 10px;
