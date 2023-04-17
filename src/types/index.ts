@@ -9,6 +9,8 @@ type TSize = 'small' | 'medium' | 'large' | string;
 
 type TDirection = 'left' | 'right' | 'top' | 'bottom' | 'all';
 
+type TColor = `#${string}`;
+
 type TPickIsBoolean = Pick<
   ICalendarInfo,
   'isToday' | 'isInMonth' | 'isWeekend'
@@ -19,5 +21,6 @@ export type {
   TSize,
   TDirection,
   TDayOfWeekUnit,
+  TColor,
   TPickIsBoolean,
 };

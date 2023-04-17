@@ -1,13 +1,16 @@
 import GlobalStyle from '../src/styles/GlobalStyle';
 import { theme } from '../src/styles/theme';
 import { ThemeProvider } from '@emotion/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export const decorators = [
   (Story) => (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <Story />
-    </ThemeProvider>
+    <QueryClientProvider client={new QueryClient()}>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Story />
+      </ThemeProvider>
+    </QueryClientProvider>
   ),
 ];
 export const parameters = {

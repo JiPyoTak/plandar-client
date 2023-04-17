@@ -4,24 +4,27 @@ import { ReactComponent as GoogleIconComponent } from '@/assets/google-icon.svg'
 import { ReactComponent as KakaoIconComponent } from '@/assets/kakao-icon.svg';
 import { ReactComponent as PencilIconComponent } from '@/assets/pencil-icon.svg';
 import { ReactComponent as PlusIconComponent } from '@/assets/plus-icon.svg';
+import { ReactComponent as SearchIconComponent } from '@/assets/search-icon.svg';
 import frameIconComponent from '@/utils/frameIconComponent';
 
 const ICON_COMPONENTS = {
   CheckIcon: CheckIconComponent,
-  CrossIcon: CrossIconComponent,
-  GoogleIcon: GoogleIconComponent,
-  KakaoIcon: KakaoIconComponent,
   PencilIcon: PencilIconComponent,
   PlusIcon: PlusIconComponent,
+  CrossIcon: CrossIconComponent,
+  SearchIcon: SearchIconComponent,
+  GoogleIcon: GoogleIconComponent,
+  KakaoIcon: KakaoIconComponent,
 } as const;
 
 export const {
   CheckIcon,
-  CrossIcon,
-  GoogleIcon,
-  KakaoIcon,
   PencilIcon,
   PlusIcon,
+  CrossIcon,
+  SearchIcon,
+  KakaoIcon,
+  GoogleIcon,
 } = Object.entries(ICON_COMPONENTS).reduce(
   (result, [key, IconComponent]) => ({
     ...result,
