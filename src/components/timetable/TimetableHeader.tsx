@@ -21,7 +21,15 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
 
   return (
     <Container>
-      <TimetableGuide css={{ marginTop: 'auto' }}>{timeZone}</TimetableGuide>
+      <TimetableGuide
+        css={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'flex-end',
+        }}
+      >
+        {timeZone}
+      </TimetableGuide>
       {dateMoments.map((date) => {
         const isToday = moment().format('YYYYMMDD') === date.format('YYYYMMDD');
 

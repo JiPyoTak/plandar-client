@@ -16,7 +16,15 @@ type TProps = {
 const TimetableAllDay: React.FC<TProps> = ({ dateMoments }) => {
   return (
     <Container>
-      <TimetableGuide css={{ margin: 'auto 0' }}>종일</TimetableGuide>
+      <TimetableGuide
+        css={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+        }}
+      >
+        종일
+      </TimetableGuide>
       {dateMoments.map(() => {
         return <AllDayItem></AllDayItem>;
       })}

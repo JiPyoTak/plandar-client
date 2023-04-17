@@ -7,8 +7,9 @@ const TimetableGuide = styled.div`
   ${FONT_BOLD_8}
 
   flex: 0 0 4rem;
-  color: ${({ theme }) => theme.text4};
 
+  color: ${({ theme }) => theme.text4};
+  background-color: ${({ theme }) => theme.background1};
   text-align: end;
   user-select: none;
 `;
@@ -17,6 +18,7 @@ const TIMETABLE_SCROLL_WIDTH = '8px';
 const TIMETABLE_SCROLL_STYLE = ({ theme }: { theme: Theme }) => css`
   &::-webkit-scrollbar {
     width: ${TIMETABLE_SCROLL_WIDTH};
+    height: ${TIMETABLE_SCROLL_WIDTH};
     background-color: ${theme.background4};
   }
   &::-webkit-scrollbar-thumb {
