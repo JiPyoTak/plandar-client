@@ -7,9 +7,12 @@ import CalendarHeader from '@/components/common/calendar/CalendarHeader';
 import Logo from '@/components/Logo';
 import SideBar from '@/components/sidebar';
 import Timetable from '@/components/timetable';
+import useCalendarUnitState from '@/stores/date/calendarUnit';
 import { SIDEBAR_WIDTH } from '@/styles/home';
 
 const Home: React.FC = () => {
+  const { selectedCalendarUnit } = useCalendarUnitState();
+
   return (
     <Container>
       <Header>
@@ -26,7 +29,9 @@ const Home: React.FC = () => {
         </div>
         <section className="content-main">
           <Backgrounder>
-            <MainCalendar />
+            {selectedCalendarUnit === '월' && <MainCalendar />}
+            {selectedCalendarUnit === '주' && <Timetable rangeAmount={7} />}
+            {selectedCalendarUnit === '일' && <Timetable rangeAmount={1} />}
           </Backgrounder>
         </section>
       </ContentSizer>
