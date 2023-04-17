@@ -17,13 +17,13 @@ const TimetableTimeline: React.FC = () => {
     <Container>
       {Array.from(Array(TIMELINE_CELL_AMOUNT), (_, index) => {
         const isFirst = index === 0;
-        const isAnteMeridium = index < 12;
+        const isAM = index < 12;
         const time = index > 12 ? index - 12 : index;
         return (
           <HourSpace>
             {!isFirst && (
               <HourSpan>
-                {isAnteMeridium ? '오전' : '오후'} {time}시
+                {isAM ? '오전' : '오후'} {time}시
               </HourSpan>
             )}
           </HourSpace>
