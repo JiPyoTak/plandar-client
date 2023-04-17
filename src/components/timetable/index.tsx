@@ -26,27 +26,18 @@ const Timetable: React.FC<TProps> = ({ rangeAmount }) => {
   const showHeader = range > 1;
 
   return (
-    <Scroller>
-      <Container>
-        {showHeader && <TimetableHeader dateMoments={dateMoments} />}
-        <TimetableAllDay dateMoments={dateMoments} />
-        <TimetableView dateMoments={dateMoments} />
-      </Container>
-    </Scroller>
+    <Container>
+      {showHeader && <TimetableHeader dateMoments={dateMoments} />}
+      <TimetableAllDay dateMoments={dateMoments} />
+      <TimetableView dateMoments={dateMoments} />
+    </Container>
   );
 };
 
-const Scroller = styled.div`
+const Container = styled.div`
   ${TIMETABLE_SCROLL_STYLE}
   width: 100%;
   height: 100%;
-
-  overflow-x: auto;
-  overflow-y: hidden;
-`;
-
-const Container = styled.div`
-  min-width: fit-content;
   min-height: 100%;
 
   display: flex;

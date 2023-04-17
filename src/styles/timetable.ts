@@ -7,6 +7,8 @@ const TimetableGuide = styled.div`
   ${FONT_BOLD_8}
 
   flex: 0 0 4rem;
+  position: sticky;
+  left: 0;
 
   color: ${({ theme }) => theme.text4};
   background-color: ${({ theme }) => theme.background1};
