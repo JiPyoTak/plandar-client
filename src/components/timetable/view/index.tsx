@@ -13,23 +13,28 @@ type TProps = {
 
 const TimetableView: React.FC<TProps> = ({ dateMoments }) => {
   return (
-    <Container>
-      <TimetableTimeline />
-      {dateMoments.map((date) => {
-        return <TiemtableViewColumn date={date} />;
-      })}
-    </Container>
+    <Scroller>
+      <Container>
+        <TimetableTimeline />
+        {dateMoments.map((date) => {
+          return <TiemtableViewColumn date={date} />;
+        })}
+      </Container>
+    </Scroller>
   );
 };
 
-const Container = styled.div`
+const Scroller = styled.div`
   ${TIMETABLE_SCROLL_STYLE}
 
-  flex: 1;
+  flex: 1 0 0;
+  min-width: 100%;
 
-  width: 100%;
-  height: 50px;
+  overflow-x: hidden;
+  overflow-y: auto;
+`;
 
+const Container = styled.div`
   display: flex;
 `;
 

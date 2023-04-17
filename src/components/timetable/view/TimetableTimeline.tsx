@@ -33,9 +33,7 @@ const TimetableTimeline: React.FC = () => {
   );
 };
 
-const Container = styled(TimetableGuide)`
-  height: 100%;
-`;
+const Container = styled(TimetableGuide)``;
 
 const HourSpace = styled.div`
   padding: 0 0.25rem;

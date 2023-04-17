@@ -19,7 +19,7 @@ const SideBar: React.FC = () => {
 };
 
 const Wrapper = styled.div`
-  flex: 0 0 340px;
+  width: 100%;
   height: 100%;
   background-color: ${({ theme }) => theme.white};
   padding: 2rem;

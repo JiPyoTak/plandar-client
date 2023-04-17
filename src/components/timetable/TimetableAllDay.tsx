@@ -3,7 +3,11 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Moment } from 'moment';
 
-import { TIMETABLE_CELL_MIN_WIDTH, TimetableGuide } from '@/styles/timetable';
+import {
+  TIMETABLE_CELL_MIN_WIDTH,
+  TIMETABLE_SCROLL_WIDTH,
+  TimetableGuide,
+} from '@/styles/timetable';
 
 type TProps = {
   dateMoments: Moment[];
@@ -21,10 +25,10 @@ const TimetableAllDay: React.FC<TProps> = ({ dateMoments }) => {
 };
 
 const Container = styled.div`
-  flex: 0 0 auto;
+  flex: 0 0 0;
 
-  width: 100%;
   min-height: 1.75rem;
+  padding-right: ${TIMETABLE_SCROLL_WIDTH};
 
   display: flex;
   border-bottom: 1px solid ${({ theme }) => theme.border2};
@@ -32,7 +36,7 @@ const Container = styled.div`
 `;
 
 const AllDayItem = styled.div`
-  flex: 1;
+  flex: 1 0 auto;
 
   min-width: ${TIMETABLE_CELL_MIN_WIDTH};
 `;

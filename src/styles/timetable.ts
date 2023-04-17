@@ -13,9 +13,10 @@ const TimetableGuide = styled.div`
   user-select: none;
 `;
 
+const TIMETABLE_SCROLL_WIDTH = '8px';
 const TIMETABLE_SCROLL_STYLE = ({ theme }: { theme: Theme }) => css`
   &::-webkit-scrollbar {
-    width: 0.75rem;
+    width: ${TIMETABLE_SCROLL_WIDTH};
     background-color: ${theme.background4};
   }
   &::-webkit-scrollbar-thumb {
@@ -31,6 +32,7 @@ const TIMETABLE_CELL_HEIGHT = '1rem';
 
 export {
   TimetableGuide,
+  TIMETABLE_SCROLL_WIDTH,
   TIMETABLE_SCROLL_STYLE,
   TIMETABLE_CELL_MIN_WIDTH,
   TIMETABLE_CELL_HEIGHT,

@@ -33,8 +33,7 @@ const TiemtableViewColumn: React.FC<TProps> = ({ date }) => {
 };
 
 const Container = styled.div`
-  flex: 1;
-
+  flex: 1 0 0;
   min-width: ${TIMETABLE_CELL_MIN_WIDTH};
 
   border-left: 1px solid ${({ theme }) => theme.border2};
