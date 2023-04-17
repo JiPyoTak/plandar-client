@@ -6,20 +6,21 @@ import styled from '@emotion/styled';
 type TCheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   checked: boolean;
+  id?: string;
 };
 
 type TCheckbox = React.FC<TCheckboxProps>;
 
-const Checkbox: TCheckbox = ({ label, checked, ...rest }: TCheckboxProps) => {
+const Checkbox: TCheckbox = ({
+  label,
+  checked,
+  id = 'all_day_checkbox',
+  ...rest
+}: TCheckboxProps) => {
   return (
     <Container>
-      <CheckboxInput
-        type="checkbox"
-        id="all_day_checkbox"
-        checked={checked}
-        {...rest}
-      />
-      <Label htmlFor="all_day_checkbox">
+      <CheckboxInput type="checkbox" id={id} checked={checked} {...rest} />
+      <Label htmlFor={id}>
         <CheckboxSquare />
         {label}
       </Label>
