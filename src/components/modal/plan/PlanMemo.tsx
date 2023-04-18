@@ -1,4 +1,8 @@
-import React, { TextareaHTMLAttributes, useRef } from 'react';
+import React, {
+  ChangeEventHandler,
+  TextareaHTMLAttributes,
+  useRef,
+} from 'react';
 
 import styled from '@emotion/styled';
 
@@ -22,19 +26,23 @@ const PlanMemo: TPlanMemo = ({ onChange, ...rest }: TPlanMemoProps) => {
     current.style.height = current.scrollHeight + 'px';
   };
 
+  const onChangeTextArea: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+    handleTextareaHeight();
+    if (e.target.value.length <= MAX_MEMO_LENGTH) {
+      onChange?.(e);
+    }
+  };
+
   return (
     <Container duration={0.5}>
       <Dropdown.Controller>
         <ClassifierTitle title="메모" titleIcon={<MemoIcon />} />
       </Dropdown.Controller>
-      <div css={{ overflow: 'hidden' }}>
+      <div>
         <TextArea
           placeholder={`메모를 최대 ${MAX_MEMO_LENGTH}자까지 입력할 수 있습니다`}
           ref={ref}
-          onChange={(e) => {
-            handleTextareaHeight();
-            if (e.target.value.length <= MAX_MEMO_LENGTH) onChange?.(e);
-          }}
+          onChange={onChangeTextArea}
           {...rest}
         />
       </div>
