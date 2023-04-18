@@ -2,8 +2,8 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
+import { DAY_OF_WEEK_UNIT } from '@/constants';
 import { TDayOfWeekUnit } from '@/types';
-import { DAY_OF_WEEK_UNIT } from '@/utils/constants';
 
 interface IProps {
   className?: string;

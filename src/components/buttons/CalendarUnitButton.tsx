@@ -4,8 +4,8 @@ import { useTheme } from '@emotion/react';
 
 import styled from '@emotion/styled';
 
+import { CALENDAR_UNIT } from '@/constants';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
-import { CALENDAR_UNIT } from '@/utils/constants';
 
 const labelLeft = {
   [CALENDAR_UNIT[0]]: '5px',

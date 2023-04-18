@@ -5,7 +5,7 @@ import axios, {
 } from 'axios';
 
 import { axiosRefreshAPI } from './refresh';
-import { ACCESS_TOKEN_KEY, SERVER_URL } from '@/utils/constants';
+import { ACCESS_TOKEN_KEY, SERVER_URL } from '@/constants';
 import { getCookie } from '@/utils/cookie';
 
 const axiosAPI = (() => {
