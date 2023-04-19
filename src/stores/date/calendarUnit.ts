@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
+import { CALENDAR_UNIT } from '@/constants';
 import { TCalendarUnit } from '@/types';
-import { CALENDAR_UNIT } from '@/utils/constants';
 
 interface ICalendarUnitState {
   selectedCalendarUnit: TCalendarUnit;
