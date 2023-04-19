@@ -10,7 +10,6 @@ const getViewPlans = (plan: IPlan, startDate: TDateYMD, endDate: TDateYMD) => {
   // 일정이 표시될 시작일을 구해야함
   const { id = -1, startTime, endTime } = plan;
 
-  // start가 현재 달보다 작은 달일 경우 현재 달의 첫번째 주의 첫번째 날로 설정
   const [currentStart, currentEnd] = [
     moment(startDate).startOf('d'),
     moment(endDate).endOf('d'),
@@ -38,7 +37,7 @@ const getViewPlans = (plan: IPlan, startDate: TDateYMD, endDate: TDateYMD) => {
   // 항상 절대적인 날짜 차이를 반환해야함
   const weekDayDiff =
     viewEnd.clone().endOf('w').diff(viewStart.clone().startOf('w'), 'days') + 1;
-  const weekDiff = Math.ceil(weekDayDiff / 7) || 1;
+  const weekDiff = Math.ceil(weekDayDiff / 7);
 
   // 주차를 돔
   for (let i = 0; i < weekDiff; i++) {
@@ -115,6 +114,15 @@ const sortAndReturnPlanViews = (viewPlans: IViewPlanInfo[]) => {
   return planViewsToCalendar;
 };
 
+const sortPlans = (a: IViewPlanInfo, b: IViewPlanInfo) => {
+  return (
+    a.startTime.diff(b.startTime) ||
+    Math.abs(b.endTime.diff(b.startTime.clone(), 'days')) -
+      Math.abs(a.endTime.diff(a.startTime.clone(), 'days')) ||
+    a.id - b.id
+  );
+};
+
 const getCalendarPlans = (
   plans: IPlan[],
   startDate: TDateYMD,
@@ -123,10 +131,7 @@ const getCalendarPlans = (
   const planViewsArr: IViewPlanInfo[] = plans
     .map((el) => getViewPlans(el, startDate, endDate))
     .flat()
-    .sort(
-      (a, b) =>
-        a.startTime.diff(b.startTime) || b.dayDiff - a.dayDiff || a.id - b.id,
-    );
+    .sort(sortPlans);
 
   const planViewsToCalendar: IIndexableViewPlan[][] =
     sortAndReturnPlanViews(planViewsArr);
