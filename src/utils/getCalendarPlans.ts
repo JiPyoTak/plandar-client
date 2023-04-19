@@ -1,23 +1,24 @@
 import moment from 'moment';
 
-import { getCurrentDateInMonth } from './dayHandler';
 import { TDateYMD } from '@/stores/date';
 import { IIndexableViewPlan, IViewPlanInfo } from '@/types';
 import { IPlan } from '@/types/rq/plan';
 
-const getViewPlans = (plan: IPlan, date: TDateYMD) => {
+const getViewPlans = (plan: IPlan, startDate: TDateYMD, endDate: TDateYMD) => {
   const result: IViewPlanInfo[] = [];
 
   // 일정이 표시될 시작일을 구해야함
-  const { year, month, day } = date;
+  // const { year, month, day } = date;
   const { id = -1, startTime, endTime } = plan;
 
   // start가 현재 달보다 작은 달일 경우 현재 달의 첫번째 주의 첫번째 날로 설정
-  const currentDate = moment({ year, month: month - 1, day });
-  const [currentStart, currentEnd] = getCurrentDateInMonth(currentDate);
+  const [currentStart, currentEnd] = [
+    moment(startDate).startOf('d'),
+    moment(endDate).endOf('d'),
+  ];
 
   let viewStart = moment(startTime).startOf('d');
-  let viewEnd = moment(endTime).startOf('d');
+  let viewEnd = moment(endTime).endOf('d');
 
   // 이번달에 첫번째 주의 시작 날짜보다 일정의 종료날짜가 더 빠르다면
   // 이번달에 마지막 주의 종료 날짜보다 일정의 시작날짜가 더 느리다면
@@ -66,7 +67,7 @@ const getViewPlans = (plan: IPlan, date: TDateYMD) => {
     }
 
     // 현재 달의 첫번째 주를 기준으로 몇번째 주인지
-    const weekByMonth =
+    const weekOfMonth =
       (newViewStart.clone().endOf('w').diff(currentStart, 'days') + 1) / 7 - 1;
 
     // 일정이 표시될 날짜의 차이
@@ -76,11 +77,11 @@ const getViewPlans = (plan: IPlan, date: TDateYMD) => {
     result.push({
       id,
       dayDiff,
-      weekByMonth,
+      weekOfMonth,
       viewStart: newViewStart.clone(),
       viewEnd: newViewEnd.clone(),
       startTime: moment(startTime).startOf('d'),
-      endTime: moment(endTime).startOf('d'),
+      endTime: moment(endTime).endOf('d'),
       dayOfWeek: newViewStart.day() + 1,
       plan: plan.id === -1 ? null : plan,
     });
@@ -89,25 +90,18 @@ const getViewPlans = (plan: IPlan, date: TDateYMD) => {
   return result;
 };
 
-const getCalendarPlans = (plans: IPlan[], date: TDateYMD) => {
-  const result: IViewPlanInfo[] = plans
-    .map((el) => getViewPlans(el, date))
-    .flat()
-    .sort(
-      (a, b) =>
-        a.startTime.diff(b.startTime) || b.dayDiff - a.dayDiff || a.id - b.id,
-    );
-
-  const planViews: IIndexableViewPlan[][] = Array.from({ length: 6 }, () =>
-    Array.from({ length: 7 }, () => ({})),
+const sortAndReturnPlanViews = (viewPlans: IViewPlanInfo[]) => {
+  const planViewsToCalendar: IIndexableViewPlan[][] = Array.from(
+    { length: 6 },
+    () => Array.from({ length: 7 }, () => ({})),
   );
 
-  result.forEach((planView) => {
-    const { weekByMonth, dayOfWeek, dayDiff } = planView;
+  viewPlans.forEach((planView) => {
+    const { weekOfMonth, dayOfWeek, dayDiff } = planView;
     let index = 0;
 
     for (let l = 0; l < dayDiff; l++) {
-      const dayInfo = planViews[weekByMonth][dayOfWeek + l - 1];
+      const dayInfo = planViewsToCalendar[weekOfMonth][dayOfWeek + l - 1];
 
       while (dayInfo[index] !== planView) {
         if (!dayInfo[index]) {
@@ -119,7 +113,26 @@ const getCalendarPlans = (plans: IPlan[], date: TDateYMD) => {
     }
   });
 
-  return planViews;
+  return planViewsToCalendar;
 };
 
-export { getViewPlans, getCalendarPlans };
+const getCalendarPlans = (
+  plans: IPlan[],
+  startDate: TDateYMD,
+  endDate: TDateYMD,
+) => {
+  const planViewsArr: IViewPlanInfo[] = plans
+    .map((el) => getViewPlans(el, startDate, endDate))
+    .flat()
+    .sort(
+      (a, b) =>
+        a.startTime.diff(b.startTime) || b.dayDiff - a.dayDiff || a.id - b.id,
+    );
+
+  const planViewsToCalendar: IIndexableViewPlan[][] =
+    sortAndReturnPlanViews(planViewsArr);
+
+  return planViewsToCalendar;
+};
+
+export { getViewPlans, getCalendarPlans, sortAndReturnPlanViews };
