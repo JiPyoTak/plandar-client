@@ -2,11 +2,8 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
+import { TIMETABLE_CELL_AMOUNT, TIMETABLE_CELL_PER_HOUR } from '@/constants';
 import { TIMETABLE_CELL_HEIGHT, TimetableGuide } from '@/styles/timetable';
-import {
-  TIMETABLE_CELL_AMOUNT,
-  TIMETABLE_CELL_PER_HOUR,
-} from '@/utils/constants';
 
 const TIMELINE_CELL_AMOUNT = Math.floor(
   TIMETABLE_CELL_AMOUNT / TIMETABLE_CELL_PER_HOUR,
@@ -20,7 +17,7 @@ const TimetableTimeline: React.FC = () => {
         const isAM = index < 12;
         const time = index > 12 ? index - 12 : index;
         return (
-          <HourSpace>
+          <HourSpace key={index}>
             {!isFirst && (
               <HourSpan>
                 {isAM ? '오전' : '오후'} {time}시

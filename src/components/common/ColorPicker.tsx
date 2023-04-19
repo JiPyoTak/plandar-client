@@ -5,8 +5,8 @@ import styled from '@emotion/styled';
 
 import { CheckIcon } from '@/components/icons';
 import ChevronIcon from '@/components/icons/ChevronIcon';
+import { SELECTABLE_COLOR } from '@/constants';
 import { TColor } from '@/types';
-import { SELECTABLE_COLOR } from '@/utils/constants';
 
 type TColorPickerProps = {
   selectedColor: TColor;

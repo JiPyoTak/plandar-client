@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 import { axiosAPI } from '@/apis/axios';
+import { SERVER_URL } from '@/constants';
 import { IUser } from '@/stores/user';
-import { SERVER_URL } from '@/utils/constants';
 
 const getUserAPI = async (): Promise<{ success: boolean; data: IUser }> => {
   const { data } = await axiosAPI.get(`/user`);

@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { Moment } from 'moment';
 
 import TimetableCell from './TimetableCell';
+import { TIMETABLE_CELL_AMOUNT } from '@/constants';
 import { TIMETABLE_CELL_MIN_WIDTH } from '@/styles/timetable';
-import { TIMETABLE_CELL_AMOUNT } from '@/utils/constants';
 
 type TProps = {
   date: Moment;
@@ -16,8 +15,8 @@ type TProps = {
 const TiemtableViewColumn: React.FC<TProps> = ({ date }) => {
   return (
     <Container>
-      {Array.from(Array(TIMETABLE_CELL_AMOUNT), () => {
-        return <TimetableCell />;
+      {Array.from(Array(TIMETABLE_CELL_AMOUNT), (_, index) => {
+        return <TimetableCell key={index} />;
       })}
     </Container>
   );

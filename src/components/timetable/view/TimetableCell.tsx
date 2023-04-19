@@ -16,7 +16,7 @@ const Container = styled.div`
   width: 100%;
   height: ${TIMETABLE_CELL_HEIGHT};
 
-  &:nth-child(4n) {
+  &:nth-of-type(4n) {
     border-bottom: 1px solid ${({ theme }) => theme.border2};
   }
 `;

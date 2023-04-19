@@ -25,8 +25,8 @@ const TimetableAllDay: React.FC<TProps> = ({ dateMoments }) => {
       >
         종일
       </TimetableGuide>
-      {dateMoments.map(() => {
-        return <AllDayItem></AllDayItem>;
+      {dateMoments.map((_, index) => {
+        return <AllDayItem key={index} />;
       })}
     </Container>
   );

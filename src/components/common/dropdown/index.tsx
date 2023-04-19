@@ -4,6 +4,8 @@ import DropdownController from './DropdownController';
 
 type TDropdownProps = PropsWithChildren<{
   defaultVisibility?: boolean;
+  className?: string;
+  duration?: number;
 }>;
 
 type TDropdown = React.FC<TDropdownProps> & {
@@ -13,6 +15,8 @@ type TDropdown = React.FC<TDropdownProps> & {
 const Dropdown: TDropdown = ({
   children,
   defaultVisibility,
+  className,
+  duration = 0.35,
 }: TDropdownProps) => {
   const [isShow, setIsShow] = useState<boolean>(defaultVisibility ?? true);
 
@@ -39,13 +43,14 @@ const Dropdown: TDropdown = ({
   return (
     <>
       {controllerChildren}
-      <div css={{ overflow: 'hidden' }}>
+      <div className={className}>
         <div
           css={[
             {
-              paddingTop: '1px',
-              maxHeight: isShow ? '100vh' : '1px',
-              transition: 'max-height 0.35s ease-in-out',
+              paddingTop: '0px',
+              maxHeight: isShow ? '100vh' : '0px',
+              overflow: 'hidden',
+              transition: `max-height ${duration}s ease-in-out`,
             },
           ]}
         >

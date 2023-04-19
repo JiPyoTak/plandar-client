@@ -3,13 +3,13 @@ import React from 'react';
 import styled from '@emotion/styled';
 import moment, { Moment } from 'moment';
 
+import { DAY_OF_WEEK_UNIT } from '@/constants';
 import { FONT_BOLD_5, FONT_REGULAR_5 } from '@/styles/font';
 import {
   TIMETABLE_CELL_MIN_WIDTH,
   TIMETABLE_SCROLL_WIDTH,
   TimetableGuide,
 } from '@/styles/timetable';
-import { DAY_OF_WEEK_UNIT } from '@/utils/constants';
 
 type TProps = {
   dateMoments: Moment[];
@@ -34,7 +34,7 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
         const isToday = moment().format('YYYYMMDD') === date.format('YYYYMMDD');
 
         return (
-          <SignDiv>
+          <SignDiv key={date.format('YYYYMMDD')}>
             <DayCircle isToday={isToday}>{date.date()}</DayCircle>
             <span>{DAY_OF_WEEK_UNIT[date.day()]}</span>
           </SignDiv>
