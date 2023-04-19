@@ -22,7 +22,15 @@ type TInputProps = InputHTMLAttributes<HTMLInputElement> & {
 type TInput = ForwardRefRenderFunction<HTMLInputElement, TInputProps>;
 
 const Input: TInput = (
-  { isInline, className, isSearchIcon, onClear, ...rest }: TInputProps,
+  {
+    isInline,
+    className,
+    isSearchIcon,
+    onClear,
+    onFocus,
+    onBlur,
+    ...rest
+  }: TInputProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) => {
   const theme = useTheme();
@@ -33,8 +41,14 @@ const Input: TInput = (
     <div css={{ position: 'relative', width: '100%' }}>
       <InputComponent
         ref={ref}
-        onFocus={() => setIsFocus(true)}
-        onBlur={() => setIsFocus(false)}
+        onFocus={(e) => {
+          onFocus?.(e);
+          setIsFocus(true);
+        }}
+        onBlur={(e) => {
+          onBlur?.(e);
+          setIsFocus(false);
+        }}
         className={className}
         css={isSearchIcon && { paddingLeft: 35 }}
         {...rest}
