@@ -74,17 +74,17 @@ const decreaseDayComparedFirstDay = (props: TDateYMD) => {
 };
 
 const getStartAndEndDateInMonth = (
-  currentDate: ICalendarInfo[][],
+  calendarInfo: ICalendarInfo[][],
 ): TDateYMD[] => {
   const startDate = {
-    year: currentDate[0][0].year,
-    month: currentDate[0][0].month - 1,
-    day: currentDate[0][0].day,
+    year: calendarInfo[0][0].year,
+    month: calendarInfo[0][0].month - 1,
+    day: calendarInfo[0][0].day,
   };
   const endDate = {
-    year: currentDate[5][6].year,
-    month: currentDate[5][6].month - 1,
-    day: currentDate[5][6].day,
+    year: calendarInfo[5][6].year,
+    month: calendarInfo[5][6].month - 1,
+    day: calendarInfo[5][6].day,
   };
 
   return [startDate, endDate];
