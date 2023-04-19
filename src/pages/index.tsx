@@ -73,7 +73,6 @@ const Header = styled.header`
 
 const ContentSizer = styled.div`
   flex: 1 0 0;
-  // Height에 대해서 넘어가지 않게 하는 hidden
   overflow: hidden;
 
   display: flex;
@@ -88,7 +87,6 @@ const ContentSizer = styled.div`
     height: 100%;
     padding: 1rem;
 
-    // Width에 대해서 넘어가지 않게 하는 hidden
     overflow: hidden;
   }
 `;
