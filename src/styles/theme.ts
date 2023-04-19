@@ -1,6 +1,6 @@
 import { TColor } from '@/types';
 
-export const theme: { [key: string]: TColor } = {
+export const theme = {
   primary: '#00AD7C',
   primary_dark: '#00936E',
   primary_light: '#52D681',
