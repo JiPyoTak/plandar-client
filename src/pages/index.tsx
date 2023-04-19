@@ -10,8 +10,16 @@ import Timetable from '@/components/timetable';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import { SIDEBAR_WIDTH } from '@/styles/home';
 
+const CALENDAR_COMPONENTS = {
+  월: MainCalendar,
+  주: Timetable,
+  일: Timetable,
+} as const;
+
 const Home: React.FC = () => {
   const { selectedCalendarUnit } = useCalendarUnitState();
+
+  const CalendarComponent = CALENDAR_COMPONENTS[selectedCalendarUnit];
 
   return (
     <Container>
@@ -29,9 +37,7 @@ const Home: React.FC = () => {
         </div>
         <section className="content-main">
           <Backgrounder>
-            {selectedCalendarUnit === '월' && <MainCalendar />}
-            {selectedCalendarUnit === '주' && <Timetable rangeAmount={7} />}
-            {selectedCalendarUnit === '일' && <Timetable rangeAmount={1} />}
+            <CalendarComponent />
           </Backgrounder>
         </section>
       </ContentSizer>
