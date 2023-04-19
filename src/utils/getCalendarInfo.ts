@@ -30,6 +30,7 @@ const getCalendarInfo = ({ year, month, day }: IProps) => {
 
   for (let i = firstWeek; i <= currentWeek; i++) {
     const weeks: ICalendarInfo[] = [];
+
     for (let j = 0; j < 7; j++) {
       const days = today
         .clone()
@@ -41,7 +42,7 @@ const getCalendarInfo = ({ year, month, day }: IProps) => {
       const obj: ICalendarInfo = {
         isToday: moment().isSame(days, 'day'),
         isWeekend: days.weekday() === 0 || days.weekday() === 6,
-        isInMonth: days.month() + 1 === today.month() + 1,
+        isInMonth: days.month() === today.month(),
         year: days.year(),
         month: days.month() + 1,
         day: days.date(),
@@ -49,6 +50,7 @@ const getCalendarInfo = ({ year, month, day }: IProps) => {
 
       weeks.push(obj);
     }
+
     result.push(weeks);
   }
 
