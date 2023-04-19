@@ -1,5 +1,4 @@
 import React, {
-  ButtonHTMLAttributes,
   ForwardedRef,
   forwardRef,
   ForwardRefRenderFunction,
@@ -7,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 
-import { useTheme } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { CrossIcon, SearchIcon } from '@/components/icons';
@@ -41,14 +40,24 @@ const Input: TInput = (
         {...rest}
       />
       {isSearchIcon && <SearchMarker color={theme.text3} />}
-      {onClear && isFocus && (
-        <ClearButton onClick={onClear}>
-          <CrossIcon className="x-icon" />
-        </ClearButton>
-      )}
+      <ClearButton
+        css={onClear && isFocus ? ClearButtonVisible : ClearButtonHidden}
+        onClick={onClear}
+      >
+        <CrossIcon className="x-icon" />
+      </ClearButton>
     </div>
   );
 };
+
+const ClearButtonVisible = css`
+  opacity: 1;
+`;
+
+const ClearButtonHidden = css`
+  opacity: 0;
+  cursor: default;
+`;
 
 const CommonInput = styled.input`
   width: 100%;
