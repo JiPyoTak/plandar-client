@@ -24,6 +24,7 @@ interface IViewPlanInfo {
   dayDiff: number;
   weekOfMonth: number;
   dayOfWeek: number;
+  dayDiffToCurrent: number;
   viewStart: Moment;
   viewEnd: Moment;
   startTime: Moment;

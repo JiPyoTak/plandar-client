@@ -72,14 +72,22 @@ const getViewPlans = (plan: IPlan, startDate: TDateYMD, endDate: TDateYMD) => {
     const dayDiff =
       Math.abs(newViewEnd.clone().diff(newViewStart.clone(), 'days')) + 1;
 
+    const currentStartTime = moment(startTime).startOf('d');
+    const currentEndTime = moment(endTime).endOf('d');
+
+    const dayDiffToCurrent = Math.abs(
+      currentEndTime.diff(currentStartTime.clone(), 'days'),
+    );
+
     result.push({
       id,
       dayDiff,
       weekOfMonth,
+      dayDiffToCurrent,
       viewStart: newViewStart.clone(),
       viewEnd: newViewEnd.clone(),
-      startTime: moment(startTime).startOf('d'),
-      endTime: moment(endTime).endOf('d'),
+      startTime: currentStartTime,
+      endTime: currentEndTime,
       dayOfWeek: newViewStart.day() + 1,
       plan: plan.id === -1 ? null : plan,
     });
@@ -101,7 +109,7 @@ const setIndexAndReturnPlanViews = (viewPlans: IViewPlanInfo[]) => {
     for (let l = 0; l < dayDiff; l++) {
       const dayInfo = planViewsToCalendar[weekOfMonth][dayOfWeek + l - 1];
 
-      while (dayInfo[index] !== planView) {
+      while (dayInfo[index]?.id !== planView.id) {
         if (!dayInfo[index]) {
           dayInfo[index] = planView;
         } else {
@@ -117,8 +125,7 @@ const setIndexAndReturnPlanViews = (viewPlans: IViewPlanInfo[]) => {
 const sortPlansCallback = (a: IViewPlanInfo, b: IViewPlanInfo) => {
   return (
     a.startTime.diff(b.startTime) ||
-    Math.abs(b.endTime.diff(b.startTime.clone(), 'days')) -
-      Math.abs(a.endTime.diff(a.startTime.clone(), 'days')) ||
+    b.dayDiffToCurrent - a.dayDiffToCurrent ||
     a.id - b.id
   );
 };
