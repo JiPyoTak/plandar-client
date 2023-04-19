@@ -6,11 +6,11 @@ import ModalContainer from './index';
 import StylishButton from '@/components/buttons/StylishButton';
 import ColorPicker from '@/components/common/ColorPicker';
 import Input from '@/components/common/Input';
+import { SELECTABLE_COLOR } from '@/constants';
 import { useCategoryQuery } from '@/hooks/rq/category';
 import { FONT_BOLD_1, FONT_REGULAR_5 } from '@/styles/font';
 import { TColor } from '@/types';
 import { ICategoryWithoutId } from '@/types/rq/category';
-import { SELECTABLE_COLOR } from '@/utils/constants';
 
 type TCategoryModalProps = {
   onClose: () => void;

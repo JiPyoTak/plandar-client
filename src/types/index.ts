@@ -1,5 +1,5 @@
 import { Union } from './union';
-import { CALENDAR_UNIT, DAY_OF_WEEK_UNIT } from '@/utils/constants';
+import { CALENDAR_UNIT, DAY_OF_WEEK_UNIT } from '@/constants';
 import { ICalendarInfo } from '@/utils/getCalendarInfo';
 
 type TCalendarUnit = Union<typeof CALENDAR_UNIT>;

@@ -4,8 +4,8 @@ import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { CheckIcon, PencilIcon } from '@/components/icons';
+import { SELECTABLE_COLOR } from '@/constants';
 import { TColor } from '@/types';
-import { SELECTABLE_COLOR } from '@/utils/constants';
 
 type TProps = {
   text: string;
