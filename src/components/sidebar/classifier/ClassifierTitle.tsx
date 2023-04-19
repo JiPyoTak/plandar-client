@@ -8,6 +8,7 @@ import { FONT_BOLD_3 } from '@/styles/font';
 type TProps = {
   title: string;
   additionalIcon?: ReactNode;
+  titleIcon?: ReactNode;
   isShow?: boolean;
 };
 
@@ -15,12 +16,16 @@ const CLASSIFIER_TITLE_ICON_SIZE = 18;
 
 const ClassifierTitle: React.FC<TProps> = ({
   title,
+  titleIcon,
   additionalIcon,
   isShow,
 }) => {
   return (
     <Wrapper>
-      <div css={FONT_BOLD_3}>{title}</div>
+      <Title>
+        {titleIcon}
+        {title}
+      </Title>
       <div css={{ display: 'flex', columnGap: 5 }}>
         {additionalIcon}
         <ChevronIcon
@@ -42,6 +47,13 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+const Title = styled.div`
+  display: flex;
+  justify-content: center;
+  column-gap: 8px;
+  ${FONT_BOLD_3}
 `;
 
 export { CLASSIFIER_TITLE_ICON_SIZE };

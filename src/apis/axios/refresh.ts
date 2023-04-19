@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
-import { SERVER_URL } from '@/utils/constants';
+import { SERVER_URL } from '@/constants';
 
 const axiosRefreshAPI = (() => {
   const axiosInstance = axios.create({

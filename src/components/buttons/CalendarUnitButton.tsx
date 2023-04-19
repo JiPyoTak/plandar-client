@@ -4,8 +4,8 @@ import { useTheme } from '@emotion/react';
 
 import styled from '@emotion/styled';
 
+import { CALENDAR_UNIT } from '@/constants';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
-import { CALENDAR_UNIT } from '@/utils/constants';
 
 const labelLeft = {
   [CALENDAR_UNIT[0]]: '5px',
@@ -67,7 +67,7 @@ const CalendarUnitText = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 5;
   background-color: transparent;
   padding: 10px;
   gap: 10px;

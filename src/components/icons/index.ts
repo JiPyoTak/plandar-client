@@ -2,26 +2,32 @@ import { ReactComponent as CheckIconComponent } from '@/assets/check-icon.svg';
 import { ReactComponent as CrossIconComponent } from '@/assets/cross-icon.svg';
 import { ReactComponent as GoogleIconComponent } from '@/assets/google-icon.svg';
 import { ReactComponent as KakaoIconComponent } from '@/assets/kakao-icon.svg';
+import { ReactComponent as MemoIconComponent } from '@/assets/memo-icon.svg';
 import { ReactComponent as PencilIconComponent } from '@/assets/pencil-icon.svg';
 import { ReactComponent as PlusIconComponent } from '@/assets/plus-icon.svg';
+import { ReactComponent as SearchIconComponent } from '@/assets/search-icon.svg';
 import frameIconComponent from '@/utils/frameIconComponent';
 
 const ICON_COMPONENTS = {
   CheckIcon: CheckIconComponent,
-  CrossIcon: CrossIconComponent,
-  GoogleIcon: GoogleIconComponent,
-  KakaoIcon: KakaoIconComponent,
   PencilIcon: PencilIconComponent,
   PlusIcon: PlusIconComponent,
+  CrossIcon: CrossIconComponent,
+  SearchIcon: SearchIconComponent,
+  GoogleIcon: GoogleIconComponent,
+  KakaoIcon: KakaoIconComponent,
+  MemoIcon: MemoIconComponent,
 } as const;
 
 export const {
   CheckIcon,
-  CrossIcon,
-  GoogleIcon,
-  KakaoIcon,
   PencilIcon,
   PlusIcon,
+  CrossIcon,
+  SearchIcon,
+  KakaoIcon,
+  GoogleIcon,
+  MemoIcon,
 } = Object.entries(ICON_COMPONENTS).reduce(
   (result, [key, IconComponent]) => ({
     ...result,
@@ -29,4 +35,5 @@ export const {
   }),
   {} as typeof ICON_COMPONENTS,
 );
+
 export * as ChevronIcon from './ChevronIcon';

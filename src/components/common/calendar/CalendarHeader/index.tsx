@@ -7,9 +7,9 @@ import moment from 'moment';
 import HeaderButtons from './HeaderButtons';
 import HeaderTitle from './HeaderTitle';
 import CalendarUnitButton from '@/components/buttons/CalendarUnitButton';
+import { DAY_OF_WEEK_UNIT } from '@/constants';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
-import { DAY_OF_WEEK_UNIT } from '@/utils/constants';
 
 const CalendarHeader = () => {
   const { year, month, day } = useDateState();

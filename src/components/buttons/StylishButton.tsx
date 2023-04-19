@@ -1,19 +1,18 @@
-import React, { PropsWithChildren } from 'react';
+import React, { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { TDirection, TSize } from '@/types';
 
-type TStylishButtonProps = PropsWithChildren<{
-  onClick: () => void;
-  className?: string;
-  size?: TSize;
-  isColor?: boolean;
-  isSquare?: boolean;
-  radiusDir?: TDirection;
-  disabled?: boolean;
-}>;
+type TStylishButtonProps = PropsWithChildren<
+  ButtonHTMLAttributes<HTMLButtonElement> & {
+    size?: TSize;
+    isColor?: boolean;
+    isSquare?: boolean;
+    radiusDir?: TDirection;
+  }
+>;
 
 type TStylishButton = React.FC<TStylishButtonProps>;
 
@@ -55,6 +54,7 @@ const StylishButton: TStylishButton = ({
         disabled &&
         css`
           cursor: not-allowed;
+          opacity: 0.5;
           &:hover {
             background-color: ${isColor ? theme.primary : theme.background1};
           }

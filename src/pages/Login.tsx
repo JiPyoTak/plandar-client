@@ -8,9 +8,9 @@ import styled from '@emotion/styled';
 import GoogleButton from '@/components/buttons/GoogleButton';
 import KakaoButton from '@/components/buttons/KakaoButton';
 import Logo from '@/components/logo';
+import { SERVER_URL } from '@/constants';
 import useUserStore from '@/stores/user';
 import { FONT_REGULAR_4 } from '@/styles/font';
-import { SERVER_URL } from '@/utils/constants';
 
 const Login: React.FC = () => {
   const { user } = useUserStore();
@@ -67,6 +67,7 @@ const LoginBox = styled.main`
 
 const Description = styled.section`
   margin-top: 1rem;
+
   & > * {
     width: 210px;
 
