@@ -8,7 +8,6 @@ const getViewPlans = (plan: IPlan, startDate: TDateYMD, endDate: TDateYMD) => {
   const result: IViewPlanInfo[] = [];
 
   // 일정이 표시될 시작일을 구해야함
-  // const { year, month, day } = date;
   const { id = -1, startTime, endTime } = plan;
 
   // start가 현재 달보다 작은 달일 경우 현재 달의 첫번째 주의 첫번째 날로 설정
