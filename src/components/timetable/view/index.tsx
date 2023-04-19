@@ -16,10 +16,9 @@ const TimetableView: React.FC<TProps> = ({ dateMoments }) => {
     <Scroller>
       <Container>
         <TimetableTimeline />
-        {dateMoments.map((date) => {
-          return (
-            <TiemtableViewColumn key={date.toDate().toString()} date={date} />
-          );
+        {dateMoments.map((dateMoment) => {
+          const key = dateMoment.toDate().toString();
+          return <TiemtableViewColumn key={key} dateMoment={dateMoment} />;
         })}
       </Container>
     </Scroller>

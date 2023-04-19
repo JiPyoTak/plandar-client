@@ -5,18 +5,23 @@ import styled from '@emotion/styled';
 import { Moment } from 'moment';
 
 import TimetableCell from './TimetableCell';
-import { TIMETABLE_CELL_AMOUNT } from '@/constants';
+import { TIMETABLE_CELL_AMOUNT, TIMETABLE_CELL_UNIT } from '@/constants';
 import { TIMETABLE_CELL_MIN_WIDTH } from '@/styles/timetable';
 
 type TProps = {
-  date: Moment;
+  dateMoment: Moment;
 };
 
-const TiemtableViewColumn: React.FC<TProps> = ({ date }) => {
+const TiemtableViewColumn: React.FC<TProps> = ({ dateMoment }) => {
   return (
     <Container>
       {Array.from(Array(TIMETABLE_CELL_AMOUNT), (_, index) => {
-        return <TimetableCell key={index} />;
+        const date = dateMoment.toDate();
+        date.setHours(Math.floor(index / TIMETABLE_CELL_AMOUNT));
+        date.setMinutes(
+          Math.floor((index % TIMETABLE_CELL_AMOUNT) * TIMETABLE_CELL_UNIT),
+        );
+        return <TimetableCell key={date.toString()} date={date} />;
       })}
     </Container>
   );
