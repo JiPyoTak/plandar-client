@@ -55,7 +55,9 @@ const Input: TInput = (
       />
       {isSearchIcon && <SearchMarker color={theme.text3} />}
       <ClearButton
+        type="button"
         css={onClear && isFocus ? ClearButtonVisible : ClearButtonHidden}
+        disabled={!onClear || !isFocus}
         onClick={onClear}
       >
         <CrossIcon className="x-icon" />
