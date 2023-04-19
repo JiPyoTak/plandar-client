@@ -88,7 +88,7 @@ const getViewPlans = (plan: IPlan, startDate: TDateYMD, endDate: TDateYMD) => {
   return result;
 };
 
-const sortAndReturnPlanViews = (viewPlans: IViewPlanInfo[]) => {
+const setIndexAndReturnPlanViews = (viewPlans: IViewPlanInfo[]) => {
   const planViewsToCalendar: IIndexableViewPlan[][] = Array.from(
     { length: 6 },
     () => Array.from({ length: 7 }, () => ({})),
@@ -114,7 +114,7 @@ const sortAndReturnPlanViews = (viewPlans: IViewPlanInfo[]) => {
   return planViewsToCalendar;
 };
 
-const sortPlans = (a: IViewPlanInfo, b: IViewPlanInfo) => {
+const sortPlansCallback = (a: IViewPlanInfo, b: IViewPlanInfo) => {
   return (
     a.startTime.diff(b.startTime) ||
     Math.abs(b.endTime.diff(b.startTime.clone(), 'days')) -
@@ -131,12 +131,12 @@ const getCalendarPlans = (
   const planViewsArr: IViewPlanInfo[] = plans
     .map((el) => getViewPlans(el, startDate, endDate))
     .flat()
-    .sort(sortPlans);
+    .sort(sortPlansCallback);
 
   const planViewsToCalendar: IIndexableViewPlan[][] =
-    sortAndReturnPlanViews(planViewsArr);
+    setIndexAndReturnPlanViews(planViewsArr);
 
   return planViewsToCalendar;
 };
 
-export { getViewPlans, getCalendarPlans, sortAndReturnPlanViews };
+export { getViewPlans, getCalendarPlans, setIndexAndReturnPlanViews };
