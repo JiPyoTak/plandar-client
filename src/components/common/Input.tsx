@@ -58,7 +58,7 @@ const Input: TInput = (
         type="button"
         css={onClear && isFocus ? ClearButtonVisible : ClearButtonHidden}
         disabled={!onClear || !isFocus}
-        onClick={onClear}
+        onMouseDown={onClear}
       >
         <CrossIcon className="x-icon" />
       </ClearButton>
