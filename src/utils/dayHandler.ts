@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 
 import { TDateYMD } from '@/stores/date';
 
@@ -72,4 +72,20 @@ const decreaseDayComparedFirstDay = (props: TDateYMD) => {
   return newState;
 };
 
-export { compareDays, increaseDayComparedLastDay, decreaseDayComparedFirstDay };
+const getCurrentDateInMonth = (moment: Moment) => {
+  const startDate = moment.clone().startOf('month').startOf('w');
+  const endDate = moment.clone().endOf('month').endOf('month').endOf('w');
+
+  if (endDate.diff(startDate, 'days') + 1 < 42) {
+    endDate.add(7, 'days');
+  }
+
+  return [startDate, endDate];
+};
+
+export {
+  compareDays,
+  increaseDayComparedLastDay,
+  decreaseDayComparedFirstDay,
+  getCurrentDateInMonth,
+};
