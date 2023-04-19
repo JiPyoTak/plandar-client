@@ -1,5 +1,6 @@
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 
+import { ICalendarInfo } from './getCalendarInfo';
 import { TDateYMD } from '@/stores/date';
 
 const compareDays = (props: TDateYMD) => {
@@ -72,13 +73,19 @@ const decreaseDayComparedFirstDay = (props: TDateYMD) => {
   return newState;
 };
 
-const getCurrentDateInMonth = (moment: Moment) => {
-  const startDate = moment.clone().startOf('month').startOf('w');
-  const endDate = moment.clone().endOf('month').endOf('month').endOf('w');
-
-  if (endDate.diff(startDate, 'days') + 1 < 42) {
-    endDate.add(7, 'days');
-  }
+const getStartAndEndDateInMonth = (
+  currentDate: ICalendarInfo[][],
+): TDateYMD[] => {
+  const startDate = {
+    year: currentDate[0][0].year,
+    month: currentDate[0][0].month - 1,
+    day: currentDate[0][0].day,
+  };
+  const endDate = {
+    year: currentDate[5][6].year,
+    month: currentDate[5][6].month - 1,
+    day: currentDate[5][6].day,
+  };
 
   return [startDate, endDate];
 };
@@ -87,5 +94,5 @@ export {
   compareDays,
   increaseDayComparedLastDay,
   decreaseDayComparedFirstDay,
-  getCurrentDateInMonth,
+  getStartAndEndDateInMonth,
 };
