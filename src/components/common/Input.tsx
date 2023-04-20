@@ -1,4 +1,5 @@
 import React, {
+  FocusEvent,
   ForwardedRef,
   forwardRef,
   ForwardRefRenderFunction,
@@ -37,18 +38,22 @@ const Input: TInput = (
   const InputComponent = isInline ? InlineInput : BoxInput;
   const [isFocus, setIsFocus] = useState(false);
 
+  const focusHandler = (e: FocusEvent<HTMLInputElement>) => {
+    onFocus?.(e);
+    setIsFocus(true);
+  };
+
+  const blurHandler = (e: FocusEvent<HTMLInputElement>) => {
+    onBlur?.(e);
+    setIsFocus(false);
+  };
+
   return (
     <div css={{ position: 'relative', width: '100%' }}>
       <InputComponent
         ref={ref}
-        onFocus={(e) => {
-          onFocus?.(e);
-          setIsFocus(true);
-        }}
-        onBlur={(e) => {
-          onBlur?.(e);
-          setIsFocus(false);
-        }}
+        onFocus={focusHandler}
+        onBlur={blurHandler}
         className={className}
         css={isSearchIcon && { paddingLeft: 35 }}
         {...rest}
