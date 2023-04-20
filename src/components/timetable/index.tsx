@@ -33,11 +33,25 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
   );
   const showHeader = range > 1;
 
+  const plans: any[] = [];
+  const [dayPlans, allDayPlans] = plans.reduce(
+    ([days, allDays], plan) => {
+      const { isAllDay, startTime, endTime } = plan;
+      const isSameDay =
+        new Date(startTime).toDateString() ===
+        new Date(endTime ?? -1).toDateString();
+
+      isAllDay || !isSameDay ? allDays.push(plan) : days.push(plan);
+      return [days, allDays];
+    },
+    [[], []] as (typeof plans)[],
+  );
+
   return (
     <Container>
       {showHeader && <TimetableHeader dateMoments={dateMoments} />}
-      <TimetableAllDay dateMoments={dateMoments} />
-      <TimetableView dateMoments={dateMoments} />
+      <TimetableAllDay dateMoments={dateMoments} allDayPlans={allDayPlans} />
+      <TimetableView dateMoments={dateMoments} dayPlans={dayPlans} />
     </Container>
   );
 };

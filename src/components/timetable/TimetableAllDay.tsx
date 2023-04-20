@@ -11,9 +11,10 @@ import {
 
 type TProps = {
   dateMoments: Moment[];
+  allDayPlans: any[];
 };
 
-const TimetableAllDay: React.FC<TProps> = ({ dateMoments }) => {
+const TimetableAllDay: React.FC<TProps> = ({ dateMoments, allDayPlans }) => {
   return (
     <Container>
       <TimetableGuide

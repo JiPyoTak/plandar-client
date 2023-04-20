@@ -3,22 +3,42 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Moment } from 'moment';
 
-import TiemtableViewColumn from './TiemtableViewColumn';
+import TimetableCellColumn from './TimetableCellColumn';
+import TimetablePlanColumn from './TimetablePlanColumn';
 import TimetableTimeline from './TimetableTimeline';
-import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
+import {
+  TIMETABLE_SCROLL_STYLE,
+  TIMETABLE_CELL_MIN_WIDTH,
+} from '@/styles/timetable';
 
 type TProps = {
   dateMoments: Moment[];
+  dayPlans: any[];
 };
 
-const TimetableView: React.FC<TProps> = ({ dateMoments }) => {
+const TimetableView: React.FC<TProps> = ({ dateMoments, dayPlans }) => {
+  const columnPlans = dateMoments.map((dateMoment) =>
+    dayPlans.filter(
+      ({ startTime }) =>
+        dateMoment.toDate().toDateString() ===
+        new Date(startTime).toDateString(),
+    ),
+  );
+
   return (
     <Scroller>
       <Container>
         <TimetableTimeline />
-        {dateMoments.map((dateMoment) => {
+        {dateMoments.map((dateMoment, i) => {
           const key = dateMoment.toDate().toString();
-          return <TiemtableViewColumn key={key} dateMoment={dateMoment} />;
+          const plans = columnPlans[i];
+
+          return (
+            <Column key={key}>
+              <TimetablePlanColumn plans={plans} />
+              <TimetableCellColumn dateMoment={dateMoment} />
+            </Column>
+          );
         })}
       </Container>
     </Scroller>
@@ -37,6 +57,13 @@ const Scroller = styled.div`
 
 const Container = styled.div`
   display: flex;
+`;
+
+const Column = styled.div`
+  flex: 1 0 0;
+  min-width: ${TIMETABLE_CELL_MIN_WIDTH};
+
+  border-left: 1px solid ${({ theme }) => theme.border2};
 `;
 
 export default TimetableView;
