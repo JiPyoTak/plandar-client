@@ -60,6 +60,16 @@ const Container = styled.button`
   &:hover {
     background-color: ${({ theme }) => theme.background3};
   }
+
+  &:first-child {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
 `;
 
 const CheckIconContainer = styled.div`
