@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useRef, useState } from 'react';
+import React, { ChangeEvent, FormEventHandler, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -8,6 +8,7 @@ import Input from '@/components/common/Input';
 import { TagIcon } from '@/components/icons';
 import ClassifierTitle from '@/components/sidebar/classifier/ClassifierTitle';
 import { MAX_CANDIDATE_LENGTH } from '@/constants';
+import useDebounce from '@/hooks/useDebounce';
 import { TAG_MOCK } from '@/utils/mock';
 import { Candidate } from 'components/modal/plan/Candidates';
 
@@ -16,20 +17,38 @@ const PlanTag: React.FC = () => {
   const [tagInput, setTagInput] = useState('');
   const [isCandidateOpened, setIsCandidateOpened] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>([
-    '테스트1',
-    '테스트2',
+    TAG_MOCK[0].name,
+    TAG_MOCK[1].name,
   ]);
+  const [filteredTags, setFilteredTags] = useState<string[]>([]);
 
+  // Debounce를 활용해서 태그 입력 시 태그 후보 필터링
+  const filterTags = useDebounce((newTag: string) => {
+    const filtered = TAG_MOCK.filter((tag) => tag.name.match(newTag))
+      .slice(0, MAX_CANDIDATE_LENGTH)
+      .map((tag) => tag.name);
+    setFilteredTags(filtered);
+  }, 300);
+
+  // selectedTags에 태그 추가
   const addTag = (tag?: string) => {
     if (!tag || selectedTags.length >= 5 || selectedTags.includes(tag)) return;
     setSelectedTags((prev) => [...prev, tag]);
     setTagInput('');
   };
 
+  // 입력창에서 Enter 누르면 태그 추가
   const onSubmit: FormEventHandler = (e) => {
     e.preventDefault();
     addTag(inputRef.current?.value);
+    setFilteredTags([]);
     inputRef.current?.blur();
+  };
+
+  // Input 컴포넌트의 onChange 이벤트 핸들러
+  const onInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setTagInput(e.target.value);
+    filterTags(e.target.value);
   };
 
   return (
@@ -47,9 +66,22 @@ const PlanTag: React.FC = () => {
           onFocus={() => setIsCandidateOpened(true)}
           onBlur={() => setIsCandidateOpened(false)}
           onClear={() => setTagInput('')}
-          onChange={(e) => setTagInput(e.target.value)}
+          onChange={onInput}
         />
       </form>
+      {/* 태그 후보군 팝업창 */}
+      {isCandidateOpened && tagInput && (
+        <Candidate.List type={'tag'}>
+          {filteredTags.map((candidate, index) => (
+            <Candidate.Item
+              key={`Candidate-${index}`}
+              onMouseDown={() => addTag(candidate)}
+              name={candidate}
+              isSelected={selectedTags.includes(candidate)}
+            />
+          ))}
+        </Candidate.List>
+      )}
       {/* 추가된 태그 버튼들 */}
       <TagButtonContainer>
         {selectedTags.map((tag) => (
@@ -63,23 +95,6 @@ const PlanTag: React.FC = () => {
           </TagButton>
         ))}
       </TagButtonContainer>
-      {/* 태그 후보군 팝업창 */}
-      {isCandidateOpened && tagInput && (
-        <Candidates type={'tag'}>
-          {TAG_MOCK.filter((tag) => tag.name.match(tagInput))
-            .slice(0, MAX_CANDIDATE_LENGTH)
-            .map((candidate, index) => (
-              <Candidate.Item
-                key={`Candidate-${index}`}
-                onMouseDown={() => {
-                  addTag(candidate.name);
-                }}
-                name={candidate.name}
-                isSelected={selectedTags.includes(candidate.name)}
-              />
-            ))}
-        </Candidates>
-      )}
     </Container>
   );
 };
@@ -87,11 +102,6 @@ const PlanTag: React.FC = () => {
 const Container = styled(Dropdown)`
   width: 100%;
   position: relative;
-`;
-
-const Candidates = styled(Candidate.List)`
-  position: absolute;
-  top: 40px;
 `;
 
 const TagButtonContainer = styled.div`
