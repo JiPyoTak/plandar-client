@@ -35,13 +35,13 @@ const PlanTag: React.FC = () => {
     if (!tag || selectedTags.length >= 5 || selectedTags.includes(tag)) return;
     setSelectedTags((prev) => [...prev, tag]);
     setTagInput('');
+    setFilteredTags([]);
   };
 
   // 입력창에서 Enter 누르면 태그 추가
   const onSubmit: FormEventHandler = (e) => {
     e.preventDefault();
     addTag(inputRef.current?.value);
-    setFilteredTags([]);
     inputRef.current?.blur();
   };
 
