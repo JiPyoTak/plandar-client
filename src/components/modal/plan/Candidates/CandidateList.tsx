@@ -1,5 +1,6 @@
 import React, { cloneElement, PropsWithChildren } from 'react';
 
+import { css, Theme, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import CandidateItem from '@/components/modal/plan/Candidates/CandidateItem';
@@ -16,6 +17,7 @@ const CandidateList: TCandidateList = ({
   className,
   type,
 }: TCandidateListProps) => {
+  const theme = useTheme();
   const itemChildren = Array.prototype.filter
     .call(children, (child) => child.type === CandidateItem)
     .map((child, index) =>
@@ -26,12 +28,19 @@ const CandidateList: TCandidateList = ({
       }),
     );
 
-  return <Container className={className}>{itemChildren}</Container>;
+  return (
+    <Container className={className} css={itemChildren.length && Border(theme)}>
+      {itemChildren}
+    </Container>
+  );
 };
+
+const Border = (theme: Theme) => css`
+  border: 1px solid ${theme.border1};
+`;
 
 const Container = styled.div`
   width: 100%;
-  border: 1px solid ${({ theme }) => theme.border1};
   border-radius: 5px;
 `;
 
