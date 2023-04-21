@@ -11,23 +11,29 @@ import { TIMETABLE_CELL_HEIGHT } from '@/styles/timetable';
 
 type TProps = {
   plan: any;
+  displayOrder: number;
+  entireOrder: number;
 };
 
-const TimetablePlan: React.FC<TProps> = ({ plan }) => {
+const TimetablePlan: React.FC<TProps> = ({
+  plan,
+  displayOrder,
+  entireOrder,
+}) => {
   const { title, startTime, endTime, color } = plan;
 
   return (
-    <div css={{ width: '100%', position: 'relative' }}>
-      <Container
-        css={[
-          cellTop(startTime),
-          cellHeight(startTime, endTime),
-          { backgroundColor: color },
-        ]}
-      >
-        <span css={FONT_REGULAR_7}>{title}</span>
-      </Container>
-    </div>
+    <Container
+      css={[
+        cellTop(startTime),
+        cellLeft(displayOrder, entireOrder),
+        cellWidth(displayOrder, entireOrder),
+        cellHeight(startTime, endTime),
+        { backgroundColor: color },
+      ]}
+    >
+      <span css={FONT_REGULAR_7}>{title}</span>
+    </Container>
   );
 };
 
@@ -42,6 +48,26 @@ const cellTop = (startTime: string) => {
   `;
 };
 
+const cellLeft = (displayOrder: number, entireOrder: number) => {
+  const percent = (displayOrder - 1) / entireOrder;
+
+  return css`
+    left: calc(100% * ${percent});
+  `;
+};
+
+const cellWidth = (displayOrder: number, entireOrder: number) => {
+  const originalPercent = 1 / entireOrder;
+  const additionalPercent = 0.7 / entireOrder;
+  const percent =
+    originalPercent +
+    ((displayOrder !== entireOrder && additionalPercent) || 0);
+
+  return css`
+    width: calc(100% * ${percent});
+  `;
+};
+
 const cellHeight = (startTime: string, endTime: string) => {
   const minutes = moment(endTime).diff(startTime, 'minute');
   const multipleOfHeight = minutes / TIMETABLE_CELL_UNIT;
@@ -52,8 +78,6 @@ const cellHeight = (startTime: string, endTime: string) => {
 };
 
 const Container = styled.div`
-  width: 100%;
-  height: calc(${TIMETABLE_CELL_HEIGHT});
   padding: 0.125rem 0.25rem;
 
   position: absolute;
@@ -61,6 +85,10 @@ const Container = styled.div`
   border-radius: 8px;
 
   z-index: 2;
+  border: 1px solid white;
+  &:hover {
+    z-index: 3;
+  }
 `;
 
 export default TimetablePlan;
