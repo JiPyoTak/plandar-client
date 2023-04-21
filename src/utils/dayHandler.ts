@@ -75,7 +75,7 @@ const decreaseDayComparedFirstDay = (props: TDateYMD) => {
 
 const getStartAndEndDateInMonth = (
   calendarInfo: ICalendarInfo[][],
-): TDateYMD[] => {
+): [TDateYMD, TDateYMD] => {
   const startDate = {
     year: calendarInfo[0][0].year,
     month: calendarInfo[0][0].month - 1,
