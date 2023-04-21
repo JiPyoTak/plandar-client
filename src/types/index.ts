@@ -21,10 +21,10 @@ type TPickIsBoolean = Pick<
 
 interface IViewPlanInfo {
   id: number;
-  dayDiff: number;
+  termInWeek: number;
   weekOfMonth: number;
   dayOfWeek: number;
-  dayDiffToCurrent: number;
+  termInMonth: number;
   viewStart: Moment;
   viewEnd: Moment;
   startTime: Moment;

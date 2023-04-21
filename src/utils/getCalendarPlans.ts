@@ -1,10 +1,14 @@
 import moment from 'moment';
 
 import { TDateYMD } from '@/stores/date';
-import { IIndexableViewPlan, IViewPlanInfo } from '@/types';
-import { IPlan } from '@/types/rq/plan';
+import { IViewPlanInfo } from '@/types';
+import { IPlan, IPlanWithoutIdAndTime } from '@/types/rq/plan';
 
-const getViewPlans = (plan: IPlan, startDate: TDateYMD, endDate: TDateYMD) => {
+const getViewPlans = <T extends IPlanWithoutIdAndTime>(
+  plan: T,
+  startDate: TDateYMD,
+  endDate: TDateYMD,
+) => {
   const result: IViewPlanInfo[] = [];
 
   // 일정이 표시될 시작일을 구해야함
@@ -16,7 +20,7 @@ const getViewPlans = (plan: IPlan, startDate: TDateYMD, endDate: TDateYMD) => {
   ];
 
   let viewStart = moment(startTime).startOf('d');
-  let viewEnd = moment(endTime).endOf('d');
+  let viewEnd = endTime ? moment(endTime).endOf('d') : currentEnd;
 
   // 이번달에 첫번째 주의 시작 날짜보다 일정의 종료날짜가 더 빠르다면
   // 이번달에 마지막 주의 종료 날짜보다 일정의 시작날짜가 더 느리다면
@@ -35,32 +39,35 @@ const getViewPlans = (plan: IPlan, startDate: TDateYMD, endDate: TDateYMD) => {
   }
 
   // 항상 절대적인 날짜 차이를 반환해야함
-  const weekDayDiff =
+  const weekDayAmount =
     viewEnd.clone().endOf('w').diff(viewStart.clone().startOf('w'), 'days') + 1;
-  const weekDiff = Math.ceil(weekDayDiff / 7);
+  const weekAmount = Math.ceil(weekDayAmount / 7);
+
+  const firstWeek = 0;
+  const lastWeek = weekAmount - 1;
 
   // 주차를 돔
-  for (let i = 0; i < weekDiff; i++) {
+  for (let week = 0; week < weekAmount; week++) {
     let newViewStart = null;
     let newViewEnd = null;
 
     // 시작날짜의 주차와 종료날짜의 주차 비교
-    if (weekDiff === 1) {
+    if (weekAmount === 1) {
       newViewStart = viewStart;
       newViewEnd = viewEnd;
     } else {
-      if (i === 0) {
+      if (week === firstWeek) {
         // 첫주
         newViewStart = viewStart;
         newViewEnd = viewStart.clone().endOf('w');
-      } else if (i === weekDiff - 1) {
+      } else if (week === lastWeek) {
         // 마지막주
         newViewStart = viewEnd.clone().startOf('w');
         newViewEnd = viewEnd;
       } else {
         // 중간주
-        newViewStart = viewStart.clone().add(i, 'w').startOf('w');
-        newViewEnd = viewStart.clone().add(i, 'w').endOf('w');
+        newViewStart = viewStart.clone().add(week, 'w').startOf('w');
+        newViewEnd = viewStart.clone().add(week, 'w').endOf('w');
       }
     }
 
@@ -69,27 +76,27 @@ const getViewPlans = (plan: IPlan, startDate: TDateYMD, endDate: TDateYMD) => {
       (newViewStart.clone().endOf('w').diff(currentStart, 'days') + 1) / 7 - 1;
 
     // 일정이 표시될 날짜의 차이
-    const dayDiff =
+    const termInWeek =
       Math.abs(newViewEnd.clone().diff(newViewStart.clone(), 'days')) + 1;
 
     const currentStartTime = moment(startTime).startOf('d');
     const currentEndTime = moment(endTime).endOf('d');
 
-    const dayDiffToCurrent = Math.abs(
+    const termInMonth = Math.abs(
       currentEndTime.diff(currentStartTime.clone(), 'days'),
     );
 
     result.push({
       id,
-      dayDiff,
+      termInWeek,
       weekOfMonth,
-      dayDiffToCurrent,
+      termInMonth,
       viewStart: newViewStart.clone(),
       viewEnd: newViewEnd.clone(),
       startTime: currentStartTime,
       endTime: currentEndTime,
       dayOfWeek: newViewStart.day() + 1,
-      plan: plan.id === -1 ? null : plan,
+      plan: plan.id === -1 ? null : (plan as unknown as IPlan),
     });
   }
 
@@ -97,16 +104,16 @@ const getViewPlans = (plan: IPlan, startDate: TDateYMD, endDate: TDateYMD) => {
 };
 
 const setIndexAndReturnPlanViews = (viewPlans: IViewPlanInfo[]) => {
-  const planViewsToCalendar: IIndexableViewPlan[][] = Array.from(
+  const planViewsToCalendar: IViewPlanInfo[][][] = Array.from(
     { length: 6 },
-    () => Array.from({ length: 7 }, () => ({})),
+    () => Array.from({ length: 7 }, () => []),
   );
 
   viewPlans.forEach((planView) => {
-    const { weekOfMonth, dayOfWeek, dayDiff } = planView;
+    const { weekOfMonth, dayOfWeek, termInWeek } = planView;
     let index = 0;
 
-    for (let l = 0; l < dayDiff; l++) {
+    for (let l = 0; l < termInWeek; l++) {
       const dayInfo = planViewsToCalendar[weekOfMonth][dayOfWeek + l - 1];
 
       while (dayInfo[index]?.id !== planView.id) {
@@ -125,13 +132,13 @@ const setIndexAndReturnPlanViews = (viewPlans: IViewPlanInfo[]) => {
 const sortPlansCallback = (a: IViewPlanInfo, b: IViewPlanInfo) => {
   return (
     a.startTime.diff(b.startTime) ||
-    b.dayDiffToCurrent - a.dayDiffToCurrent ||
+    b.termInMonth - a.termInMonth ||
     a.id - b.id
   );
 };
 
-const getCalendarPlans = (
-  plans: IPlan[],
+const getCalendarPlans = <T extends IPlanWithoutIdAndTime>(
+  plans: T[],
   startDate: TDateYMD,
   endDate: TDateYMD,
 ) => {
@@ -140,7 +147,7 @@ const getCalendarPlans = (
     .flat()
     .sort(sortPlansCallback);
 
-  const planViewsToCalendar: IIndexableViewPlan[][] =
+  const planViewsToCalendar: IViewPlanInfo[][][] =
     setIndexAndReturnPlanViews(planViewsArr);
 
   return planViewsToCalendar;
