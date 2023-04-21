@@ -1,16 +1,25 @@
 import { TColor } from '..';
 
-interface IPlan {
+export const EPlanType = {
+  EVENT: 'event',
+  TASK: 'task',
+  ALARM: 'alarm',
+} as const;
+
+interface IPlanWithoutIdAndTime {
   id: number;
-  title: string;
-  description: string;
-  color: TColor;
-  isAllDay: true;
-  type: string;
   startTime: string;
-  endTime: string;
-  categoryId: number;
+  endTime: string | null;
+}
+
+interface IPlan extends IPlanWithoutIdAndTime {
+  title: string;
+  description: string | null;
+  color: TColor;
+  isAllDay: boolean;
+  type: typeof EPlanType;
+  categoryId: number | null;
   tags: string[];
 }
 
-export type { IPlan };
+export type { IPlan, IPlanWithoutIdAndTime };
