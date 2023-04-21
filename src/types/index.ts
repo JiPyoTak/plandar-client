@@ -31,9 +31,6 @@ interface IViewPlanInfo {
   endTime: Moment;
   plan: IPlan | null;
 }
-interface IIndexableViewPlan {
-  [key: number]: IViewPlanInfo;
-}
 
 export type {
   TCalendarUnit,
@@ -43,5 +40,4 @@ export type {
   TColor,
   TPickIsBoolean,
   IViewPlanInfo,
-  IIndexableViewPlan,
 };
