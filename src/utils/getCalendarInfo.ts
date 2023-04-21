@@ -7,6 +7,7 @@ interface ICalendarInfo {
   year: number;
   month: number;
   day: number;
+  format: string;
 }
 
 type IProps = Pick<ICalendarInfo, 'year' | 'month' | 'day'>;
@@ -46,6 +47,7 @@ const getCalendarInfo = ({ year, month, day }: IProps) => {
         year: days.year(),
         month: days.month() + 1,
         day: days.date(),
+        format: days.format('YYYY-MM-DD'),
       };
 
       weeks.push(obj);
