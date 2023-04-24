@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 
 import PlanViewUnit from './PlanViewUnit';
 import useHoveredPlanIdState from '@/stores/plan/hoverdPlan';
@@ -26,6 +26,8 @@ const PlanViewInMonth: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
 
           if (plan.dayOfWeek !== j + 1) continue;
 
+          if (isDragging === false && selectedPlan?.id !== -1) continue;
+
           result.push(
             <PlanViewUnit
               key={`${plan.id}${k}`}
@@ -34,8 +36,11 @@ const PlanViewInMonth: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
               onMouseLeave={() => clearHoveredPlanId()}
               index={Number(k)}
               isSelected={selectedPlan?.id === plan.id}
-              isHoverd={hoveredPlanId === plan.id}
-              isDragging={isDragging}
+              isHovered={hoveredPlanId === plan.id}
+              isDragging={
+                (selectedPlan?.id === plan.id && selectedPlan?.id) === -1 ||
+                isDragging
+              }
             />,
           );
         }

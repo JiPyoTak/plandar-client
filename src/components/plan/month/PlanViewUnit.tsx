@@ -7,12 +7,13 @@ import ChevronIcon from '../../icons/ChevronIcon';
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { FONT_REGULAR_5 } from '@/styles/font';
 import { IViewPlanInfo, TColor } from '@/types';
+import { IPlanWithoutIdAndTime } from '@/types/rq/plan';
 
 interface IProps {
   index: number;
   view: IViewPlanInfo;
   isSelected: boolean;
-  isHoverd: boolean;
+  isHovered: boolean;
   isDragging?: boolean;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
@@ -22,14 +23,14 @@ const PlanViewUnit: React.FC<IProps> = (props) => {
   const {
     view,
     index,
-    isHoverd,
+    isHovered,
     isSelected,
     isDragging,
     onMouseEnter,
     onMouseLeave,
   } = props;
 
-  const { selectPlan } = useSelectedPlanState();
+  const { isDragging: d, selectPlan } = useSelectedPlanState();
 
   const isEqualStart = view.startTime.isSame(view.viewStart);
   const isEqualEnd = view.endTime.isSame(view.viewEnd);
@@ -37,8 +38,8 @@ const PlanViewUnit: React.FC<IProps> = (props) => {
   const className = [];
 
   if (isDragging) className.push('isDragging');
-  else if (isSelected) className.push('isSelected');
-  else if (isHoverd) className.push('isHovered');
+  if (isSelected && d) className.push('isSelected');
+  if (isHovered && !d) className.push('isHovered');
 
   const onMouseDown = () => {
     if (isDragging || isSelected || !view.plan) return;
@@ -89,7 +90,10 @@ const Container = styled.div<{ color?: TColor }>`
     display: flex;
     align-items: center;
 
-    background-color: ${({ theme, color }) => color ?? theme.primary};
+    background-color: ${({ theme, color }) => color ?? theme.primary_light};
+    transition: opacity 0.2s;
+
+    border-radius: 3px;
   }
 
   & > div > div {
@@ -103,10 +107,14 @@ const Container = styled.div<{ color?: TColor }>`
     border-radius: 3px;
     height: 20px;
 
+    transition: background-color 0.2s;
+
+    overflow: hidden;
+
     cursor: pointer;
   }
 
-  & > div.isSelected {
+  & > div.isSelected:not(.isDragging) {
     opacity: 0.3;
   }
 
@@ -115,9 +123,10 @@ const Container = styled.div<{ color?: TColor }>`
     box-shadow: 0 0 1px #1b1d1f33, 0 15px 25px #1b1d1f33, 0 5px 10px #1b1d1f1f;
   }
 
-  & > div.isHovered {
+  & > div.isHovered,
+  & > div.isDragging {
     & > div {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: rgba(0, 0, 0, 0.12);
     }
   }
 `;
