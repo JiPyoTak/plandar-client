@@ -1,5 +1,5 @@
 import React, {
-  ButtonHTMLAttributes,
+  FocusEvent,
   ForwardedRef,
   forwardRef,
   ForwardRefRenderFunction,
@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 
-import { useTheme } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { CrossIcon, SearchIcon } from '@/components/icons';
@@ -23,32 +23,62 @@ type TInputProps = InputHTMLAttributes<HTMLInputElement> & {
 type TInput = ForwardRefRenderFunction<HTMLInputElement, TInputProps>;
 
 const Input: TInput = (
-  { isInline, className, isSearchIcon, onClear, ...rest }: TInputProps,
+  {
+    isInline,
+    className,
+    isSearchIcon,
+    onClear,
+    onFocus,
+    onBlur,
+    ...rest
+  }: TInputProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) => {
   const theme = useTheme();
   const InputComponent = isInline ? InlineInput : BoxInput;
   const [isFocus, setIsFocus] = useState(false);
 
+  const focusHandler = (e: FocusEvent<HTMLInputElement>) => {
+    onFocus?.(e);
+    setIsFocus(true);
+  };
+
+  const blurHandler = (e: FocusEvent<HTMLInputElement>) => {
+    onBlur?.(e);
+    setIsFocus(false);
+  };
+
   return (
     <div css={{ position: 'relative', width: '100%' }}>
       <InputComponent
         ref={ref}
-        onFocus={() => setIsFocus(true)}
-        onBlur={() => setIsFocus(false)}
+        onFocus={focusHandler}
+        onBlur={blurHandler}
         className={className}
         css={isSearchIcon && { paddingLeft: 35 }}
         {...rest}
       />
       {isSearchIcon && <SearchMarker color={theme.text3} />}
-      {onClear && isFocus && (
-        <ClearButton onClick={onClear}>
-          <CrossIcon className="x-icon" />
-        </ClearButton>
-      )}
+      <ClearButton
+        type="button"
+        css={onClear && isFocus ? ClearButtonVisible : ClearButtonHidden}
+        disabled={!onClear || !isFocus}
+        onMouseDown={onClear}
+      >
+        <CrossIcon className="x-icon" />
+      </ClearButton>
     </div>
   );
 };
+
+const ClearButtonVisible = css`
+  opacity: 1;
+`;
+
+const ClearButtonHidden = css`
+  opacity: 0;
+  cursor: default;
+`;
 
 const CommonInput = styled.input`
   width: 100%;

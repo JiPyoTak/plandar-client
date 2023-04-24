@@ -24,8 +24,9 @@ const ACCESS_TOKEN_KEY = import.meta.env.VITE_APP_ACCESS_TOKEN_KEY;
 export {
   CALENDAR_UNIT,
   DAY_OF_WEEK_UNIT,
-  SELECTABLE_COLOR,
   SERVER_URL,
   ACCESS_TOKEN_KEY,
+  SELECTABLE_COLOR,
 };
 export * from './plan';
+export * from './timetable';
