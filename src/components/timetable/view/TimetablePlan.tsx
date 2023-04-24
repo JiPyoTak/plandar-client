@@ -8,26 +8,23 @@ import moment from 'moment';
 import { TIMETABLE_CELL_UNIT } from '@/constants';
 import { FONT_REGULAR_7 } from '@/styles/font';
 import { TIMETABLE_CELL_HEIGHT } from '@/styles/timetable';
+import { ITimePlan } from '@/types/rq/plan';
 
 type TProps = {
-  plan: any;
-  displayOrder: number;
-  entireOrder: number;
+  plan: ITimePlan;
+  rank: number;
+  total: number;
 };
 
-const TimetablePlan: React.FC<TProps> = ({
-  plan,
-  displayOrder,
-  entireOrder,
-}) => {
+const TimetablePlan: React.FC<TProps> = ({ plan, rank, total }) => {
   const { title, startTime, endTime, color } = plan;
 
   return (
     <Container
       css={[
         cellTop(startTime),
-        cellLeft(displayOrder, entireOrder),
-        cellWidth(displayOrder, entireOrder),
+        cellLeft(rank, total),
+        cellWidth(rank, total),
         cellHeight(startTime, endTime),
         { backgroundColor: color },
       ]}

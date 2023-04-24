@@ -8,10 +8,11 @@ import {
   TIMETABLE_SCROLL_WIDTH,
   TimetableGuide,
 } from '@/styles/timetable';
+import { IPlan } from '@/types/rq/plan';
 
 type TProps = {
   dateMoments: Moment[];
-  allDayPlans: any[];
+  allDayPlans: IPlan[];
 };
 
 const TimetableAllDay: React.FC<TProps> = ({ dateMoments, allDayPlans }) => {
