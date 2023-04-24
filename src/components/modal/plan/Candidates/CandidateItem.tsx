@@ -61,12 +61,12 @@ const Container = styled.button`
     background-color: ${({ theme }) => theme.background3};
   }
 
-  &:first-child {
+  &:first-of-type {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
   }
 
-  &:last-child {
+  &:last-of-type {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
   }
