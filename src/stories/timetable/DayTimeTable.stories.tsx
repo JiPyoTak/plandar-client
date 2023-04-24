@@ -7,6 +7,7 @@ import Timetable from '@/components/timetable';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import { IPlan } from '@/types/rq/plan';
+import { createRandomColor } from '@/utils/color';
 import { MONTH_PLANS_MOCK } from '@/utils/mock';
 export default {
   title: 'timetable/DayTimetable',
@@ -24,9 +25,7 @@ const createTempPlan = (planData: Partial<IPlan>) => {
     type: 'task',
     startTime: Date.now().toLocaleString(),
     endTime: null,
-    color: `#${Math.round(Math.random() * 0xffffff)
-      .toString(16)
-      .padStart(6, '0')}`,
+    color: createRandomColor(),
     categoryId: 1,
     tags: ['태그1', '태그2'],
     ...planData,
