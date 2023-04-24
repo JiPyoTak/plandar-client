@@ -7,6 +7,7 @@ interface ICalendarInfo {
   year: number;
   month: number;
   day: number;
+  format: string;
 }
 
 type IProps = Pick<ICalendarInfo, 'year' | 'month' | 'day'>;
@@ -30,6 +31,7 @@ const getCalendarInfo = ({ year, month, day }: IProps) => {
 
   for (let i = firstWeek; i <= currentWeek; i++) {
     const weeks: ICalendarInfo[] = [];
+
     for (let j = 0; j < 7; j++) {
       const days = today
         .clone()
@@ -39,31 +41,18 @@ const getCalendarInfo = ({ year, month, day }: IProps) => {
         .add(j, 'day');
 
       const obj: ICalendarInfo = {
-        isToday: false,
-        isWeekend: false,
-        isInMonth: true,
+        isToday: moment().isSame(days, 'day'),
+        isWeekend: days.weekday() === 0 || days.weekday() === 6,
+        isInMonth: days.month() === today.month(),
         year: days.year(),
         month: days.month() + 1,
         day: days.date(),
+        format: days.format('YYYY-MM-DD'),
       };
-
-      // 오늘 일때
-      if (moment().format('YYYYMMDD') === days.clone().format('YYYYMMDD')) {
-        obj.isToday = true;
-      }
-
-      // 현재달에 속한 날짜가 아닐때
-      if (days.month() + 1 !== today.month() + 1) {
-        obj.isInMonth = false;
-      }
-
-      // 주말일때
-      if (days.clone().weekday() === 0 || days.clone().weekday() === 6) {
-        obj.isWeekend = true;
-      }
 
       weeks.push(obj);
     }
+
     result.push(weeks);
   }
 

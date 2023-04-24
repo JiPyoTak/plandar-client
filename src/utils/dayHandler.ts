@@ -1,5 +1,6 @@
 import moment from 'moment';
 
+import { ICalendarInfo } from './getCalendarInfo';
 import { TDateYMD } from '@/stores/date';
 
 const compareDays = (props: TDateYMD) => {
@@ -72,4 +73,26 @@ const decreaseDayComparedFirstDay = (props: TDateYMD) => {
   return newState;
 };
 
-export { compareDays, increaseDayComparedLastDay, decreaseDayComparedFirstDay };
+const getStartAndEndDateInMonth = (
+  calendarInfo: ICalendarInfo[][],
+): [TDateYMD, TDateYMD] => {
+  const startDate = {
+    year: calendarInfo[0][0].year,
+    month: calendarInfo[0][0].month - 1,
+    day: calendarInfo[0][0].day,
+  };
+  const endDate = {
+    year: calendarInfo[5][6].year,
+    month: calendarInfo[5][6].month - 1,
+    day: calendarInfo[5][6].day,
+  };
+
+  return [startDate, endDate];
+};
+
+export {
+  compareDays,
+  increaseDayComparedLastDay,
+  decreaseDayComparedFirstDay,
+  getStartAndEndDateInMonth,
+};
