@@ -2,7 +2,10 @@ import { create } from 'zustand';
 
 import { IPlan, IPlanWithoutIdAndTime } from '@/types/rq/plan';
 
+export type IChangePlanViewType = 'create' | 'edit' | null;
+
 interface ISelectedPlanState {
+  type: IChangePlanViewType;
   // 기존 일정
   currentPlan: null | IPlan | IPlanWithoutIdAndTime;
   // view에 반영되는 일정
@@ -12,7 +15,10 @@ interface ISelectedPlanState {
 }
 
 interface ISelectedPlanAction {
-  selectPlan: (plan: IPlanWithoutIdAndTime | IPlan) => void;
+  selectPlan: (
+    plan: IPlanWithoutIdAndTime | IPlan,
+    type?: IChangePlanViewType,
+  ) => void;
   changeSelectedPlan: (cb: IChangeSelectedPlanCallback) => void;
   clearSelectedPlan: () => void;
   onDragEnd: () => void;
@@ -23,6 +29,7 @@ type IChangeSelectedPlanCallback = (
 ) => IPlan | IPlanWithoutIdAndTime | null;
 
 const initialState = {
+  type: null,
   currentPlan: null,
   selectedPlan: null,
   isDragging: false,
@@ -31,28 +38,27 @@ const initialState = {
 const useSelectedPlanState = create<ISelectedPlanState & ISelectedPlanAction>(
   (set) => ({
     ...initialState,
-    selectPlan: (plan: IPlanWithoutIdAndTime | IPlan | null) => {
-      console.log(plan);
+    selectPlan: (plan, type = 'create') => {
       set({
+        type,
         selectedPlan: plan,
         currentPlan: plan,
-        isDragging: plan ? true : false,
       });
     },
     clearSelectedPlan: () => {
-      set({ currentPlan: null, selectedPlan: null, isDragging: false });
+      set(initialState);
     },
-    changeSelectedPlan: (cb: IChangeSelectedPlanCallback) => {
+    changeSelectedPlan: (cb) => {
       set((state) => {
         const { selectedPlan, currentPlan } = state;
 
         if (!selectedPlan || !currentPlan) return state;
 
-        const newPlan = cb({ selectedPlan, currentPlan });
+        const newPlan = cb({ selectedPlan, currentPlan, type: state.type });
 
         if (!newPlan) return state;
 
-        return { ...state, selectedPlan: newPlan };
+        return { ...state, selectedPlan: newPlan, isDragging: true };
       });
     },
     onDragEnd: () => {
@@ -62,9 +68,9 @@ const useSelectedPlanState = create<ISelectedPlanState & ISelectedPlanAction>(
         if (!selectedPlan) return state;
 
         return {
+          ...initialState,
           currentPlan: selectedPlan.id === -1 ? currentPlan : null,
           selectedPlan: selectedPlan.id === -1 ? selectedPlan : null,
-          isDragging: false,
         };
       });
     },

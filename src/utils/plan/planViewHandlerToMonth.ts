@@ -2,6 +2,7 @@ import moment, { Moment } from 'moment';
 
 import { compareObjects } from '../compareObjects';
 
+import { IChangePlanViewType } from '@/stores/plan/selectedPlan';
 import { IPlan, IPlanWithoutIdAndTime } from '@/types/rq/plan';
 
 interface IBaseArgs {
@@ -17,11 +18,15 @@ interface IEditPlanView extends ICreatePlanView {
   currentPlan: IPlan | IPlanWithoutIdAndTime;
 }
 
+interface IChangePlanView extends IEditPlanView {
+  type: IChangePlanViewType;
+}
+
 const changePlanView =
   ({ currentDate, targetDate }: IBaseArgs) =>
-  ({ selectedPlan, currentPlan }: IEditPlanView) => {
+  ({ selectedPlan, currentPlan, type }: IChangePlanView) => {
     const newPlan =
-      selectedPlan.id === -1
+      type === 'create'
         ? createPlanView({ targetDate, currentDate, selectedPlan })
         : editPlanView({
             targetDate,
