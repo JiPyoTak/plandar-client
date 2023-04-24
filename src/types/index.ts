@@ -1,3 +1,6 @@
+import { Moment } from 'moment';
+
+import { IPlan } from './rq/plan';
 import { Union } from './union';
 import { CALENDAR_UNIT, DAY_OF_WEEK_UNIT } from '@/constants';
 import { ICalendarInfo } from '@/utils/getCalendarInfo';
@@ -16,6 +19,19 @@ type TPickIsBoolean = Pick<
   'isToday' | 'isInMonth' | 'isWeekend'
 > & { isSelected: boolean };
 
+interface IViewPlanInfo {
+  id: number;
+  termInWeek: number;
+  weekOfMonth: number;
+  dayOfWeek: number;
+  termInMonth: number;
+  viewStart: Moment;
+  viewEnd: Moment;
+  startTime: Moment;
+  endTime: Moment;
+  plan: IPlan | null;
+}
+
 export type {
   TCalendarUnit,
   TSize,
@@ -23,4 +39,5 @@ export type {
   TDayOfWeekUnit,
   TColor,
   TPickIsBoolean,
+  IViewPlanInfo,
 };
