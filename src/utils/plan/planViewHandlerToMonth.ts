@@ -65,7 +65,6 @@ const editPlanView = (props: IEditPlanView) => {
   const currentEnd = moment(currentPlan.endTime).utc();
 
   const termStart = currentDate.endOf('d').diff(currentPlan.startTime, 'd');
-
   const termEnd = Math.abs(
     currentDate.startOf('d').diff(currentPlan.endTime, 'd'),
   );
@@ -77,17 +76,21 @@ const editPlanView = (props: IEditPlanView) => {
     .hours(currentStart.hours())
     .minutes(currentStart.minutes());
 
-  const endTime = targetDate
-    .clone()
-    .add(termEnd, 'd')
-    .hours(currentEnd.hours())
-    .minutes(currentEnd.minutes());
+  const endTime = isNaN(termEnd)
+    ? null
+    : targetDate
+        .clone()
+        .add(termEnd, 'd')
+        .hours(currentEnd.hours())
+        .minutes(currentEnd.minutes());
 
-  return {
+  const newPlan = {
     ...selectedPlan,
     startTime: startTime.format(),
-    endTime: endTime.format(),
+    endTime: endTime?.format() || null,
   };
+
+  return newPlan;
 };
 
 export { createPlanView, editPlanView, changePlanView };
