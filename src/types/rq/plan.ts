@@ -17,7 +17,7 @@ interface IPlan extends IPlanWithoutIdAndTime {
   description: string | null;
   color: TColor;
   isAllDay: boolean;
-  type: typeof EPlanType;
+  type: (typeof EPlanType)[keyof typeof EPlanType];
   categoryId: number | null;
   tags: string[];
 }
