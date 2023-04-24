@@ -10,15 +10,16 @@ import {
   TIMETABLE_SCROLL_STYLE,
   TIMETABLE_CELL_MIN_WIDTH,
 } from '@/styles/timetable';
+import { ITimePlan } from '@/types/rq/plan';
 
 type TProps = {
   dateMoments: Moment[];
-  dayPlans: any[];
+  timePlans: ITimePlan[];
 };
 
-const TimetableView: React.FC<TProps> = ({ dateMoments, dayPlans }) => {
+const TimetableView: React.FC<TProps> = ({ dateMoments, timePlans }) => {
   const columnPlans = dateMoments.map((dateMoment) =>
-    dayPlans.filter(
+    timePlans.filter(
       ({ startTime }) =>
         dateMoment.toDate().toDateString() ===
         new Date(startTime).toDateString(),

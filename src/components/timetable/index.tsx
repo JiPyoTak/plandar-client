@@ -7,10 +7,10 @@ import moment from 'moment';
 import TimetableAllDay from '@/components/timetable/TimetableAllDay';
 import TimetableHeader from '@/components/timetable/TimetableHeader';
 import TimetableView from '@/components/timetable/view';
-import { DUMMY_APRIL_PLANS } from '@/constants/dummyPlans';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
+import { MONTH_PLANS_MOCK } from '@/utils/mock';
 import divideDayPlans from '@/utils/plan/day/divideDayPlans';
 
 type TProps = {
@@ -35,8 +35,10 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
   );
   const showHeader = range > 1;
 
+  // TODO : React-Query를 이용해 Plans 가져오기
+  const plans = MONTH_PLANS_MOCK[month];
+
   // 종일, 시간에 들어가야 할 일정 분류하기
-  const plans = DUMMY_APRIL_PLANS[month];
   const { timePlans, allDayPlans } = divideDayPlans(plans);
 
   return (
