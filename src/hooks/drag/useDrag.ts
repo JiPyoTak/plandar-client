@@ -28,14 +28,13 @@ const useDrag = () => {
   };
 
   const onMouseMove: MouseEventHandler = (e) => {
-    if (!isDragging) return;
+    if (!selectedPlan || !currentDateRef.current) return;
 
     const target = document
       .elementsFromPoint(e.clientX, e.clientY)
       .find((el) => el.classList.contains('dateTime')) as HTMLElement;
 
-    if (!selectedPlan || !target?.dataset?.date || !currentDateRef.current)
-      return;
+    if (!selectedPlan || !target?.dataset?.date) return;
 
     const currentDate = moment(currentDateRef.current);
     const targetDate = moment(target.dataset.date);
@@ -46,7 +45,7 @@ const useDrag = () => {
   };
 
   useEffect(() => {
-    if (!isDragging) return;
+    if (!selectedPlan || !currentDateRef.current) return;
 
     const onMouseUp = () => {
       currentDateRef.current = null;
@@ -58,9 +57,14 @@ const useDrag = () => {
     return () => {
       document.removeEventListener('mouseup', onMouseUp);
     };
-  }, [isDragging]);
+  }, [selectedPlan, currentDateRef.current]);
 
-  return [isDragging, changeCurrentDate, onMouseMove] as const;
+  return [
+    isDragging,
+    currentDateRef.current,
+    changeCurrentDate,
+    onMouseMove,
+  ] as const;
 };
 
 export default useDrag;
