@@ -30,7 +30,7 @@ const DayOfWeek = styled(DOW)`
 
   & > div {
     justify-content: flex-start;
-    padding: 1rem;
+    padding: 1rem 0.7rem;
   }
 `;
 
