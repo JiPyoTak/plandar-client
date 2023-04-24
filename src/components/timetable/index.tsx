@@ -37,13 +37,13 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
 
   // 종일, 시간에 들어가야 할 일정 분류하기
   const plans = DUMMY_APRIL_PLANS[month];
-  const { dayPlans, allDayPlans } = divideDayPlans(plans);
+  const { timePlans, allDayPlans } = divideDayPlans(plans);
 
   return (
     <Container>
       {showHeader && <TimetableHeader dateMoments={dateMoments} />}
       <TimetableAllDay dateMoments={dateMoments} allDayPlans={allDayPlans} />
-      <TimetableView dateMoments={dateMoments} dayPlans={dayPlans} />
+      <TimetableView dateMoments={dateMoments} timePlans={timePlans} />
     </Container>
   );
 };

@@ -1,18 +1,20 @@
-import { IPlan } from '@/types/rq/plan';
+import { IPlan, ITimePlan } from '@/types/rq/plan';
 
 const divideDayPlans = (plans: IPlan[]) => {
   return plans.reduce(
-    ({ dayPlans, allDayPlans }, plan) => {
+    ({ timePlans, allDayPlans }, plan) => {
       const { isAllDay, startTime, endTime } = plan;
       const isSameDay =
         new Date(startTime).toDateString() ===
         new Date(endTime ?? -1).toDateString();
 
-      isAllDay || !isSameDay ? allDayPlans.push(plan) : dayPlans.push(plan);
-      return { dayPlans, allDayPlans };
+      isAllDay || !isSameDay
+        ? allDayPlans.push(plan)
+        : timePlans.push(plan as ITimePlan);
+      return { timePlans, allDayPlans };
     },
-    { dayPlans: [], allDayPlans: [] } as {
-      dayPlans: IPlan[];
+    { timePlans: [], allDayPlans: [] } as {
+      timePlans: ITimePlan[];
       allDayPlans: IPlan[];
     },
   );
