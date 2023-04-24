@@ -25,7 +25,7 @@ const PlanTag: React.FC = () => {
   // Debounce를 활용해서 태그 입력 시 태그 후보 필터링
   const filterTags = useDebounce((newTag: string) => {
     const filtered = TAG_MOCK.filter((tag) => tag.name.match(newTag))
-      .slice(0, MAX_CANDIDATE_LENGTH)
+      .slice(0, MAX_CANDIDATE_LENGTH) // 최대 4개까지 보이도록
       .map((tag) => tag.name);
     setFilteredTags(filtered);
   }, 300);
@@ -35,7 +35,6 @@ const PlanTag: React.FC = () => {
     if (!tag || selectedTags.length >= 5 || selectedTags.includes(tag)) return;
     setSelectedTags((prev) => [...prev, tag]);
     setTagInput('');
-    setFilteredTags([]);
   };
 
   // 입력창에서 Enter 누르면 태그 추가
@@ -43,12 +42,22 @@ const PlanTag: React.FC = () => {
     e.preventDefault();
     addTag(inputRef.current?.value);
     inputRef.current?.blur();
+    setFilteredTags([]);
+  };
+
+  const onClear = () => {
+    setTagInput('');
+    setFilteredTags([]);
   };
 
   // Input 컴포넌트의 onChange 이벤트 핸들러
   const onInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setTagInput(e.target.value);
-    filterTags(e.target.value);
+    if (e.target.value === '') {
+      onClear();
+    } else {
+      setTagInput(e.target.value);
+      filterTags(e.target.value);
+    }
   };
 
   return (
@@ -65,7 +74,7 @@ const PlanTag: React.FC = () => {
           placeholder={'태그를 입력하세요'}
           onFocus={() => setIsCandidateOpened(true)}
           onBlur={() => setIsCandidateOpened(false)}
-          onClear={() => setTagInput('')}
+          onClear={onClear}
           onChange={onInput}
         />
       </form>
