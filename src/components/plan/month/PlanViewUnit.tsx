@@ -42,9 +42,14 @@ const PlanViewUnit: React.FC<IProps> = (props) => {
   if (isHovered && !d) className.push('isHovered');
 
   const onMouseDown = () => {
-    if (isDragging || isSelected || !view.plan) return;
+    const planInput: IPlanWithoutIdAndTime = {
+      id: view.id,
+      startTime: view.startTime.format(),
+      endTime: view.endTime.format(),
+      ...view.plan,
+    };
 
-    selectPlan(view.plan);
+    selectPlan(planInput, 'edit');
   };
 
   return (
