@@ -1,14 +1,17 @@
 import React from 'react';
 
-import { css } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import moment from 'moment';
 
 import { TIMETABLE_CELL_UNIT } from '@/constants';
-import { FONT_REGULAR_7 } from '@/styles/font';
+import { FONT_REGULAR_7, FONT_REGULAR_8 } from '@/styles/font';
 import { TIMETABLE_CELL_HEIGHT } from '@/styles/timetable';
+import { TColor } from '@/types';
 import { ITimePlan } from '@/types/rq/plan';
+import { isTextColorBrightWithBackgroundColor } from '@/utils/color';
+import { timeToString } from '@/utils/timeToString';
 
 type TProps = {
   plan: ITimePlan;
@@ -18,6 +21,7 @@ type TProps = {
 
 const TimetablePlan: React.FC<TProps> = ({ plan, rank, total }) => {
   const { title, startTime, endTime, color } = plan;
+  const theme = useTheme();
 
   return (
     <Container
@@ -26,10 +30,18 @@ const TimetablePlan: React.FC<TProps> = ({ plan, rank, total }) => {
         cellLeft(rank, total),
         cellWidth(rank, total),
         cellHeight(startTime, endTime),
-        { backgroundColor: color },
+        {
+          color: isTextColorBrightWithBackgroundColor(color)
+            ? theme.text2
+            : theme.white,
+          backgroundColor: color,
+        },
       ]}
     >
-      <span css={FONT_REGULAR_7}>{title}</span>
+      <TimeSpan backgroundColor={color}>
+        {timeToString(new Date(startTime))}
+      </TimeSpan>
+      <TitleSpan backgroundColor={color}>{title}</TitleSpan>
     </Container>
   );
 };
@@ -78,14 +90,43 @@ const Container = styled.div`
   padding: 0.125rem 0.25rem;
 
   position: absolute;
-
-  border-radius: 8px;
-
   z-index: 2;
+
   border: 1px solid white;
+  border-radius: 8px;
+  overflow: hidden;
+
   &:hover {
     z-index: 3;
   }
+`;
+
+const TimeSpan = styled.span<{ backgroundColor: TColor }>`
+  ${FONT_REGULAR_8}
+  margin-bottom: 0.25rem;
+
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: ${({ backgroundColor, theme }) =>
+    isTextColorBrightWithBackgroundColor(backgroundColor)
+      ? theme.text4
+      : theme.text3};
+`;
+
+const TitleSpan = styled.span<{ backgroundColor: TColor }>`
+  ${FONT_REGULAR_7}
+
+  display: block;
+  word-break: keep-all;
+  word-wrap: break-word;
+
+  color: ${({ backgroundColor, theme }) =>
+    isTextColorBrightWithBackgroundColor(backgroundColor)
+      ? theme.white
+      : theme.text2};
 `;
 
 export default TimetablePlan;
