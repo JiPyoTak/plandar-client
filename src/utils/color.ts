@@ -6,7 +6,7 @@ const createRandomColor = () => {
     .padStart(6, '0')}`;
 };
 
-const isTextColorBrightWithBackgroundColor = (backgroundColor: TColor) => {
+const isBgBright = (backgroundColor: TColor) => {
   const colorNum = parseInt(backgroundColor.substring(1), 16);
 
   const red = (colorNum >> 16) & 0xff;
@@ -17,4 +17,4 @@ const isTextColorBrightWithBackgroundColor = (backgroundColor: TColor) => {
   return luma < 127.5;
 };
 
-export { createRandomColor, isTextColorBrightWithBackgroundColor };
+export { createRandomColor, isBgBright };

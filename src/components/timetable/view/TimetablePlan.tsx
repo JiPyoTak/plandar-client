@@ -10,7 +10,7 @@ import { FONT_REGULAR_7, FONT_REGULAR_8 } from '@/styles/font';
 import { TIMETABLE_CELL_HEIGHT } from '@/styles/timetable';
 import { TColor } from '@/types';
 import { ITimePlan } from '@/types/rq/plan';
-import { isTextColorBrightWithBackgroundColor } from '@/utils/color';
+import { isBgBright } from '@/utils/color';
 import { timeToString } from '@/utils/timeToString';
 
 type TProps = {
@@ -31,9 +31,7 @@ const TimetablePlan: React.FC<TProps> = ({ plan, rank, total }) => {
         cellWidth(rank, total),
         cellHeight(startTime, endTime),
         {
-          color: isTextColorBrightWithBackgroundColor(color)
-            ? theme.text2
-            : theme.white,
+          color: isBgBright(color) ? theme.text2 : theme.white,
           backgroundColor: color,
         },
       ]}
@@ -111,9 +109,7 @@ const TimeSpan = styled.span<{ backgroundColor: TColor }>`
   white-space: nowrap;
 
   color: ${({ backgroundColor, theme }) =>
-    isTextColorBrightWithBackgroundColor(backgroundColor)
-      ? theme.text4
-      : theme.text3};
+    isBgBright(backgroundColor) ? theme.text4 : theme.text3};
 `;
 
 const TitleSpan = styled.span<{ backgroundColor: TColor }>`
@@ -124,9 +120,7 @@ const TitleSpan = styled.span<{ backgroundColor: TColor }>`
   word-wrap: break-word;
 
   color: ${({ backgroundColor, theme }) =>
-    isTextColorBrightWithBackgroundColor(backgroundColor)
-      ? theme.white
-      : theme.text2};
+    isBgBright(backgroundColor) ? theme.white : theme.text2};
 `;
 
 export default TimetablePlan;
