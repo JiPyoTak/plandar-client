@@ -13,7 +13,7 @@ const dateToTimetableMinute = (
   return rounder(dayMinutes / TIMETABLE_CELL_UNIT);
 };
 
-const getOrderInfoOfTimePlans = (plans: ITimePlan[]) => {
+const getOrderTimePlansInfo = (plans: ITimePlan[]) => {
   const dayCellAmount = Math.floor(DAY_TO_MINUTE / TIMETABLE_CELL_UNIT);
   const orderArrays: number[][] = Array.from(Array(dayCellAmount), () => []);
 
@@ -59,4 +59,4 @@ const getOrderInfoOfTimePlans = (plans: ITimePlan[]) => {
   });
 };
 
-export { getOrderInfoOfTimePlans };
+export { getOrderTimePlansInfo };
