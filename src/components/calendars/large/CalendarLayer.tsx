@@ -34,7 +34,7 @@ const Layer = styled.div`
   top: 36px;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 10;
 
   & > div {
     position: absolute;
