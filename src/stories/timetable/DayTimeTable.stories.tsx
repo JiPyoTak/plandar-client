@@ -7,7 +7,6 @@ import Timetable from '@/components/timetable';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import { IPlan } from '@/types/rq/plan';
-import { createRandomColor } from '@/utils/color';
 import { MONTH_PLANS_MOCK } from '@/utils/mock';
 export default {
   title: 'timetable/DayTimetable',
@@ -16,6 +15,12 @@ export default {
     rangeAmount: { control: 'number' },
   },
 } as ComponentMeta<typeof Timetable>;
+
+const createRandomColor = () => {
+  return `#${Math.round(Math.random() * 0xffffff)
+    .toString(16)
+    .padStart(6, '0')}`;
+};
 
 const createTempPlan = (planData: Partial<IPlan>) => {
   return {

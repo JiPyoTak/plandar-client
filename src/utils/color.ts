@@ -1,11 +1,5 @@
 import { TColor } from '@/types';
 
-const createRandomColor = () => {
-  return `#${Math.round(Math.random() * 0xffffff)
-    .toString(16)
-    .padStart(6, '0')}`;
-};
-
 const isBgBright = (backgroundColor: TColor) => {
   const colorNum = parseInt(backgroundColor.substring(1), 16);
 
@@ -17,4 +11,4 @@ const isBgBright = (backgroundColor: TColor) => {
   return luma < 127.5;
 };
 
-export { createRandomColor, isBgBright };
+export { isBgBright };
