@@ -37,9 +37,9 @@ const PlanViewUnit: React.FC<IProps> = (props) => {
 
   const className = [];
 
-  if (isDragging) className.push('isDragging');
-  if (isSelected && d) className.push('isSelected');
-  if (isHovered && !d) className.push('isHovered');
+  if (isDragging) className.push('is_dragging');
+  if (isSelected && d) className.push('is_selected');
+  if (isHovered && !d) className.push('is_hovered');
 
   const onMouseDown = () => {
     const planInput: IPlanWithoutIdAndTime = {
@@ -119,17 +119,17 @@ const Container = styled.div<{ color?: TColor }>`
     cursor: pointer;
   }
 
-  & > div.isSelected:not(.isDragging) {
+  & > div.is_selected:not(.is_dragging) {
     opacity: 0.3;
   }
 
-  & > div.isDragging {
+  & > div.is_dragging {
     z-index: 10;
     box-shadow: 0 0 1px #1b1d1f33, 0 15px 25px #1b1d1f33, 0 5px 10px #1b1d1f1f;
   }
 
-  & > div.isHovered,
-  & > div.isDragging {
+  & > div.is_hovered,
+  & > div.is_dragging {
     & > div {
       background-color: rgba(0, 0, 0, 0.12);
     }
