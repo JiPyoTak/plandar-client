@@ -33,27 +33,17 @@ const CandidateItem: TCandidateItem = ({
       >
         <CheckIconContainer>
           {isSelected && (
-            <CheckIcon color={theme.primary_light} width="17" height="17" />
+            <CheckIcon
+              css={{ width: 17, height: 17 }}
+              color={theme.primary_light}
+            />
           )}
         </CheckIconContainer>
         <Title>{name}</Title>
       </Container>
     );
   } else {
-    return (
-      <Container
-        css={isSelected && { backgroundColor: theme.background2 }}
-        {...rest}
-      >
-        <ColorCircle css={{ backgroundColor: color }} />
-        <Title>{name}</Title>
-        <CheckIconContainer>
-          {isSelected && (
-            <CheckIcon color={theme.primary_light} width="17" height="17" />
-          )}
-        </CheckIconContainer>
-      </Container>
-    );
+    return <div>아직 구현 못함</div>;
   }
 };
 
@@ -90,12 +80,6 @@ const CheckIconContainer = styled.div`
 const Title = styled.span`
   flex: 1;
   text-align: left;
-`;
-
-const ColorCircle = styled.span`
-  width: 20px;
-  height: 20px;
-  border-radius: 100%;
 `;
 
 export default CandidateItem;
