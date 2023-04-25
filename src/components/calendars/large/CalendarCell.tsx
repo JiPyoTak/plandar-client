@@ -61,8 +61,9 @@ const Container = styled.div<Pick<IProps, 'isLastDay' | 'isLastWeek'>>`
 
   cursor: pointer;
 
-  &.isDragging {
-    cursor: grabbing;
+  &.isDragging,
+  &.isDragging * {
+    cursor: grabbing !important;
   }
 `;
 
