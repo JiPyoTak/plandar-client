@@ -13,7 +13,7 @@ import { getCalendarInfo } from '@/utils/getCalendarInfo';
 import { getCalendarPlans } from '@/utils/getCalendarPlans';
 import { dummy } from '@/utils/plan/dummy';
 
-const CalendarBody = () => {
+const CalendarView = () => {
   const { selectedPlan, selectPlan } = useSelectedPlanState();
   const { onChangeStoreDate, year, month, day } = useDateState();
   const [isDragging, currentDate, changeCurrentDate, onMouseMove] = useDrag();
@@ -63,10 +63,10 @@ const CalendarBody = () => {
       onMouseDown={changeCurrentDate}
     >
       {calendarInfos.map((week, i) => (
-        <CalendarBody.Inner key={`${week[i].day}${i}`}>
-          <CalendarBody.Inner>
+        <CalendarView.Inner key={`${week[i].day}${i}`}>
+          <CalendarView.Inner>
             {week.map((dateInfo, j) => (
-              <CalendarBody.Cell
+              <CalendarView.Cell
                 key={`${dateInfo.month}${dateInfo.day}`}
                 height={calendarPlanViews[i][j].length * 24}
                 isLastWeek={i === calendarInfos.length - 1}
@@ -78,12 +78,12 @@ const CalendarBody = () => {
                 onMouseDown={onMouseDownCell}
               />
             ))}
-          </CalendarBody.Inner>
+          </CalendarView.Inner>
           <CalendarLayer
             calendarPlanView={calendarPlanViews?.[i]}
             selectedPlanView={selectedPlanViews?.[i]}
           />
-        </CalendarBody.Inner>
+        </CalendarView.Inner>
       ))}
     </Container>
   );
@@ -111,7 +111,7 @@ const Inner = styled.div`
   display: flex;
 `;
 
-CalendarBody.Cell = CalendarCell;
-CalendarBody.Inner = Inner;
+CalendarView.Cell = CalendarCell;
+CalendarView.Inner = Inner;
 
-export default CalendarBody;
+export default CalendarView;
