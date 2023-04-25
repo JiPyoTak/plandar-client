@@ -61,7 +61,7 @@ const CalendarDay: React.FC<IProps> = (props) => {
   };
 
   return (
-    <Container className={`${containerClassName}${className ?? ''}`}>
+    <Container className={`${containerClassName} ${className ?? ''}`}>
       <DayNumber
         className={dayNumberClassName}
         onClick={onClickDay}
