@@ -1,9 +1,14 @@
+import { SELECTABLE_COLOR } from '@/constants';
 import { ICategory } from '@/types/rq/category';
 import { IPlan } from '@/types/rq/plan';
 import { ITag } from '@/types/rq/tag';
 
 const CATEGORY_MOCK: ICategory[] = [
-  { id: 1, name: '테스트1', color: '#52d681' },
+  { id: 1, name: '카테고리1', color: SELECTABLE_COLOR[0] },
+  { id: 2, name: '카테고리2', color: SELECTABLE_COLOR[1] },
+  { id: 3, name: '카테고리3', color: SELECTABLE_COLOR[2] },
+  { id: 4, name: '카테고리4', color: SELECTABLE_COLOR[3] },
+  { id: 5, name: '카테고리5', color: SELECTABLE_COLOR[4] },
 ];
 
 const TAG_MOCK: ITag[] = [
