@@ -52,14 +52,21 @@ const CalendarDay: React.FC<IProps> = (props) => {
   });
   const dayNumberClassName = getDayClassName(isBooleans);
 
-  const onClickDay: React.MouseEventHandler = (e) => {
-    e.stopPropagation();
+  const onClickDay: React.MouseEventHandler = () => {
     onClick({ day, month, year });
   };
 
+  const onMouseDown: React.MouseEventHandler = (e) => {
+    e.stopPropagation();
+  };
+
   return (
-    <Container className={`${containerClassName} ${className}`}>
-      <DayNumber className={dayNumberClassName} onClick={onClickDay}>
+    <Container className={`${containerClassName} ${className ?? ''}`}>
+      <DayNumber
+        className={dayNumberClassName}
+        onClick={onClickDay}
+        onMouseDown={onMouseDown}
+      >
         {day}
       </DayNumber>
     </Container>

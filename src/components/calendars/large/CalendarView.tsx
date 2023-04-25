@@ -3,33 +3,85 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import CalendarCell from './CalendarCell';
+import CalendarLayer from './CalendarLayer';
+import useDrag, { MouseEventHandler } from '@/hooks/drag/useDrag';
 import useDateState from '@/stores/date';
+import useSelectedPlanState from '@/stores/plan/selectedPlan';
+import { getStartAndEndDateInMonth } from '@/utils/dayHandler';
 import { getCalendarInfo } from '@/utils/getCalendarInfo';
+import { getCalendarPlans } from '@/utils/getCalendarPlans';
+import { dummy } from '@/utils/plan/dummy';
 
-const CalendarBody = () => {
+const CalendarView = () => {
+  const { selectedPlan, selectPlan } = useSelectedPlanState();
   const { onChangeStoreDate, year, month, day } = useDateState();
-  const calendarInfos = getCalendarInfo({ year, month, day });
+  const [isDragging, currentDate, changeCurrentDate, onMouseMove] = useDrag();
 
-  const onClickDayContent = () => {
-    console.log('onClickDayContent');
+  const calendarInfos = getCalendarInfo({ year, month, day });
+  const dates = getStartAndEndDateInMonth(calendarInfos);
+  const selectedPlanArgs = selectedPlan ? [selectedPlan] : [];
+
+  const calendarPlanViews = getCalendarPlans(dummy, ...dates);
+  const selectedPlanViews = getCalendarPlans(selectedPlanArgs, ...dates);
+
+  const onMouseDownCell: MouseEventHandler = (e) => {
+    const targetDate = (
+      (e.target as HTMLElement).closest('.dateTime') as HTMLElement
+    )?.dataset?.date;
+
+    if (!targetDate) return;
+
+    const newPlan = {
+      id: -1,
+      startTime: targetDate,
+      endTime: targetDate,
+    };
+
+    selectPlan(newPlan);
   };
 
   return (
-    <Container>
+    <Container
+      className={isDragging ? 'isDragging' : ''}
+      onMouseMove={currentDate ? onMouseMove : undefined}
+      onMouseDown={changeCurrentDate}
+    >
       {calendarInfos.map((week, i) => (
-        <CalendarBody.Week key={`${week[0].day}${i}`}>
-          {week.map((dateInfo) => (
-            <CalendarBody.Cell
-              key={`${dateInfo.month}${dateInfo.day}`}
-              isLastWeek={i === calendarInfos.length - 1}
-              isLastDay={dateInfo.day === week[week.length - 1].day}
-              dateInfo={dateInfo}
-              isSelected={dateInfo.day === day && dateInfo.isInMonth}
-              onClickDayNumber={onChangeStoreDate}
-              onClickDayContent={onClickDayContent}
-            />
-          ))}
-        </CalendarBody.Week>
+        <Inner key={`${week[i].day}${i}`}>
+          <Inner>
+            {week.map((dateInfo, j) => (
+              <CalendarCell
+                key={`${dateInfo.month}${dateInfo.day}`}
+                height={calendarPlanViews[i][j].length * 24}
+                isLastWeek={i === calendarInfos.length - 1}
+                isLastDay={dateInfo.day === week[week.length - 1].day}
+                dateInfo={dateInfo}
+                format={dateInfo.format}
+                isSelected={dateInfo.day === day && dateInfo.isInMonth}
+                onClickDayNumber={onChangeStoreDate}
+                onMouseDown={onMouseDownCell}
+              />
+            ))}
+          </Inner>
+          <CalendarLayer
+            calendarPlanView={calendarPlanViews?.[i]}
+            selectedPlanView={selectedPlanViews?.[i]}
+          />
+          <OverlayWeek>
+            {week.map(({ year: y, month: m }, j) => (
+              <Inner
+                key={`${y}${m}${j}`}
+                css={{
+                  position: 'relative',
+                  backgroundColor:
+                    y !== year || m !== month
+                      ? 'rgba(255,255,255,.5)'
+                      : 'transparent',
+                }}
+              />
+            ))}
+          </OverlayWeek>
+        </Inner>
       ))}
     </Container>
   );
@@ -43,14 +95,31 @@ const Container = styled.div`
   display: flex;
   flex-flow: column;
   align-items: stretch;
+
+  &.isDragging,
+  &.isDragging * {
+    cursor: grabbing !important;
+  }
 `;
 
-const Week = styled.div`
+const Inner = styled.div`
+  position: relative;
+
   flex: 1;
   display: flex;
 `;
 
-CalendarBody.Cell = CalendarCell;
-CalendarBody.Week = Week;
+const OverlayWeek = styled.div`
+  z-index: 20;
 
-export default CalendarBody;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+`;
+
+export default CalendarView;

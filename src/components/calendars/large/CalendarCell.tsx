@@ -2,48 +2,55 @@ import React, { memo } from 'react';
 
 import styled from '@emotion/styled';
 
-import CeilContent from './CeilContent';
 import Day from '@/components/common/calendar/CalendarDay';
 import { TDateYMD } from '@/stores/date';
 import { ICalendarInfo } from '@/utils/getCalendarInfo';
 
 interface IProps {
+  height: number;
+  format: string;
+  dateInfo: ICalendarInfo;
   isLastWeek: boolean;
   isLastDay: boolean;
-  dateInfo: ICalendarInfo;
   isSelected: boolean;
+
   onClickDayNumber: (date: TDateYMD) => void;
-  onClickDayContent: () => void;
+  onMouseDown: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const CalendarCell: React.FC<IProps> = (props) => {
   const {
+    height,
     dateInfo,
     isSelected,
     isLastDay,
     isLastWeek,
+    format,
     onClickDayNumber,
-    onClickDayContent,
+    onMouseDown,
   } = props;
 
   return (
     <Container
-      onClick={onClickDayContent}
+      className="dateTime"
       isLastDay={isLastDay}
       isLastWeek={isLastWeek}
+      data-date={format}
+      onMouseDown={onMouseDown}
     >
       <CellDay
         {...dateInfo}
         isSelected={isSelected}
         onClick={onClickDayNumber}
       />
-      <CeilContent></CeilContent>
+      <div style={{ height }} />
+      <div></div>
     </Container>
   );
 };
 
 const Container = styled.div<Pick<IProps, 'isLastDay' | 'isLastWeek'>>`
-  width: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
 
@@ -52,16 +59,20 @@ const Container = styled.div<Pick<IProps, 'isLastDay' | 'isLastWeek'>>`
   ${({ isLastWeek, theme }) =>
     !isLastWeek && `border-bottom: 1px solid ${theme.border1};`}
 
-
-  padding: 0.5rem;
-
   cursor: pointer;
+
+  &.isDragging,
+  &.isDragging * {
+    cursor: grabbing !important;
+  }
 `;
 
 const CellDay = styled(Day)`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
+
+  padding: 4px;
 `;
 
 export default memo(CalendarCell);
