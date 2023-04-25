@@ -22,7 +22,7 @@ const CategoryCreate: TCategoryCreate = ({
   const { mutateAsync: createCategory } = useCategoryCreate();
   const newCategoryName = name.trim();
 
-  const onClick = async () => {
+  const onMouseDown = async () => {
     try {
       const newCategory = await createCategory({
         name: newCategoryName,
@@ -38,7 +38,7 @@ const CategoryCreate: TCategoryCreate = ({
   return (
     <Container>
       <span>"{newCategoryName}"</span>
-      <Button onMouseDown={onClick}>카테고리 생성하기</Button>
+      <Button onMouseDown={onMouseDown}>카테고리 생성하기</Button>
       <Warning>{error}</Warning>
     </Container>
   );
