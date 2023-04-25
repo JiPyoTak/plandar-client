@@ -8,7 +8,7 @@ const dateToTimetableMinute = (
 ) => {
   const date = new Date(dateString);
   const dayMinutes = date.getHours() * 60 + date.getMinutes();
-  const rounder = Math?.[rounderName ? 'ceil' : 'floor'];
+  const rounder = Math[rounderName ? 'ceil' : 'floor'];
 
   return rounder(dayMinutes / TIMETABLE_CELL_UNIT);
 };
