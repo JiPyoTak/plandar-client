@@ -3,22 +3,42 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Moment } from 'moment';
 
-import TiemtableViewColumn from './TiemtableViewColumn';
+import TimetableCellColumn from './TimetableCellColumn';
+import TimetablePlanColumn from './TimetablePlanColumn';
 import TimetableTimeline from './TimetableTimeline';
-import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
+import {
+  TIMETABLE_SCROLL_STYLE,
+  TIMETABLE_CELL_MIN_WIDTH,
+} from '@/styles/timetable';
+import { ITimePlan } from '@/types/rq/plan';
 
 type TProps = {
   dateMoments: Moment[];
+  timePlans: ITimePlan[];
 };
 
-const TimetableView: React.FC<TProps> = ({ dateMoments }) => {
+const TimetableView: React.FC<TProps> = ({ dateMoments, timePlans }) => {
+  const columnPlans = dateMoments.map((dateMoment) =>
+    timePlans.filter(
+      ({ startTime }) =>
+        dateMoment.toDate().toDateString() ===
+        new Date(startTime).toDateString(),
+    ),
+  );
+
   return (
     <Scroller>
       <Container>
         <TimetableTimeline />
-        {dateMoments.map((date) => {
+        {dateMoments.map((dateMoment, i) => {
+          const key = dateMoment.toDate().toString();
+          const plans = columnPlans[i];
+
           return (
-            <TiemtableViewColumn key={date.toDate().toString()} date={date} />
+            <Column key={key}>
+              <TimetablePlanColumn plans={plans} />
+              <TimetableCellColumn dateMoment={dateMoment} />
+            </Column>
           );
         })}
       </Container>
@@ -38,6 +58,13 @@ const Scroller = styled.div`
 
 const Container = styled.div`
   display: flex;
+`;
+
+const Column = styled.div`
+  flex: 1 0 0;
+  min-width: ${TIMETABLE_CELL_MIN_WIDTH};
+
+  border-left: 1px solid ${({ theme }) => theme.border2};
 `;
 
 export default TimetableView;
