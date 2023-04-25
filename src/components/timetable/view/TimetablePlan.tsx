@@ -11,7 +11,7 @@ import { TIMETABLE_CELL_HEIGHT, TIMETABLE_Z_INDEX } from '@/styles/timetable';
 import { TColor } from '@/types';
 import { ITimePlan } from '@/types/rq/plan';
 import { isBgBright } from '@/utils/color';
-import { timeToString } from '@/utils/timeToString';
+import { getTimeString } from '@/utils/date/getTimeString';
 
 type TProps = {
   plan: ITimePlan;
@@ -37,7 +37,7 @@ const TimetablePlan: React.FC<TProps> = ({ plan, rank, total }) => {
       ]}
     >
       <TimeSpan backgroundColor={color}>
-        {timeToString(new Date(startTime))}
+        {getTimeString(new Date(startTime))}
       </TimeSpan>
       <TitleSpan backgroundColor={color}>{title}</TitleSpan>
     </Container>

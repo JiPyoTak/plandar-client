@@ -6,7 +6,7 @@ import { Moment } from 'moment';
 import { TIMETABLE_CELL_AMOUNT, TIMETABLE_CELL_UNIT } from '@/constants';
 import { FONT_REGULAR_8 } from '@/styles/font';
 import { TIMETABLE_CELL_HEIGHT, TIMETABLE_Z_INDEX } from '@/styles/timetable';
-import { timeToString } from '@/utils/timeToString';
+import { getTimeString } from '@/utils/date/getTimeString';
 
 type TProps = {
   dateMoment: Moment;
@@ -23,7 +23,7 @@ const TimetableCellColumn: React.FC<TProps> = ({ dateMoment }) => {
         );
         return (
           <TimeCell key={date.toString()}>
-            <TimeSpan>{timeToString(date)}</TimeSpan>
+            <TimeSpan>{getTimeString(date)}</TimeSpan>
           </TimeCell>
         );
       })}
