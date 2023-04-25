@@ -22,4 +22,8 @@ interface IPlan extends IPlanWithoutIdAndTime {
   tags: string[];
 }
 
-export type { IPlan, IPlanWithoutIdAndTime };
+interface ITimePlan extends IPlan {
+  endTime: IPlan['startTime'];
+}
+
+export type { IPlan, IPlanWithoutIdAndTime, ITimePlan };

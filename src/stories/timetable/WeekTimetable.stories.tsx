@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
+
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import Timetable from '@/components/timetable';
+import useCalendarUnitState from '@/stores/date/calendarUnit';
 
 export default {
   title: 'timetable/DayTimetable',
@@ -10,12 +13,14 @@ export default {
   },
 } as ComponentMeta<typeof Timetable>;
 
-const Template: ComponentStory<typeof Timetable> = (args) => (
-  <Timetable {...args} />
-);
+const Template: ComponentStory<typeof Timetable> = (args) => {
+  const { selectCalendarUnit } = useCalendarUnitState();
+  useEffect(() => {
+    selectCalendarUnit('주');
+  }, []);
 
-export const DayTimeTable = Template.bind({});
-DayTimeTable.args = { rangeAmount: 1 };
+  return <Timetable {...args} />;
+};
 
 export const WeekTimeTable = Template.bind({});
 WeekTimeTable.args = { rangeAmount: 7 };
