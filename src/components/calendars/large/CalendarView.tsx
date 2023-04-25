@@ -25,7 +25,9 @@ const CalendarView = () => {
   const selectedPlanViews = getCalendarPlans(selectedPlanArgs, ...dates);
 
   const onMouseDownCell: MouseEventHandler = (e) => {
-    const targetDate = (e.target as HTMLElement).dataset?.date;
+    const targetDate = (
+      (e.target as HTMLElement).closest('.dateTime') as HTMLElement
+    )?.dataset?.date;
 
     if (!targetDate) return;
 
@@ -45,10 +47,10 @@ const CalendarView = () => {
       onMouseDown={changeCurrentDate}
     >
       {calendarInfos.map((week, i) => (
-        <CalendarView.Inner key={`${week[i].day}${i}`}>
-          <CalendarView.Inner>
+        <Inner key={`${week[i].day}${i}`}>
+          <Inner>
             {week.map((dateInfo, j) => (
-              <CalendarView.Cell
+              <CalendarCell
                 key={`${dateInfo.month}${dateInfo.day}`}
                 height={calendarPlanViews[i][j].length * 24}
                 isLastWeek={i === calendarInfos.length - 1}
@@ -60,12 +62,26 @@ const CalendarView = () => {
                 onMouseDown={onMouseDownCell}
               />
             ))}
-          </CalendarView.Inner>
+          </Inner>
           <CalendarLayer
             calendarPlanView={calendarPlanViews?.[i]}
             selectedPlanView={selectedPlanViews?.[i]}
           />
-        </CalendarView.Inner>
+          <OverlayWeek>
+            {week.map(({ year: y, month: m }, j) => (
+              <Inner
+                key={`${y}${m}${j}`}
+                css={{
+                  position: 'relative',
+                  backgroundColor:
+                    y !== year || m !== month
+                      ? 'rgba(255,255,255,.5)'
+                      : 'transparent',
+                }}
+              />
+            ))}
+          </OverlayWeek>
+        </Inner>
       ))}
     </Container>
   );
@@ -93,7 +109,17 @@ const Inner = styled.div`
   display: flex;
 `;
 
-CalendarView.Cell = CalendarCell;
-CalendarView.Inner = Inner;
+const OverlayWeek = styled.div`
+  z-index: 20;
+
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+`;
 
 export default CalendarView;
