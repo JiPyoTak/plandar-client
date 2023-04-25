@@ -27,15 +27,7 @@ const CalendarView = () => {
   >(null);
 
   const onMouseDownCell: MouseEventHandler = (e) => {
-    e.stopPropagation();
-
-    changeCurrentDate(e);
-
-    const target = document
-      .elementsFromPoint(e.clientX, e.clientY)
-      .find((el) => el.classList.contains('dateTime')) as HTMLElement;
-
-    const targetDate = target?.dataset?.date;
+    const targetDate = (e.target as HTMLElement).dataset?.date;
 
     if (!targetDate) return;
 
