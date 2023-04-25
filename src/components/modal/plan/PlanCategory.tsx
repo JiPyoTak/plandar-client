@@ -61,12 +61,12 @@ const PlanCategory: React.FC = () => {
   };
 
   const onInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value.trim();
+    const input = e.target.value;
     setCategoryInput(input);
     if (input === '') {
       onClear();
     } else {
-      filterCategories(input);
+      filterCategories(input.trim());
     }
   };
 
@@ -92,7 +92,7 @@ const PlanCategory: React.FC = () => {
           {filteredCategories.map((category) => (
             <Candidate.Item
               key={`Candidate-${category.name}`}
-              isSelected={category.id === selectedCategory?.id}
+              isSelected={category.name === selectedCategory?.name}
               name={category.name}
               color={category.color}
               onMouseDown={() => onSelectCategory(category)}
