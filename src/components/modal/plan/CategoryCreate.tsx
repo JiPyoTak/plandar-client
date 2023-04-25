@@ -9,7 +9,6 @@ import { ICategoryWithoutId } from '@/types/rq/category';
 
 type TCategoryCreateProps = {
   name: string;
-  onFocus: () => void;
   onSuccess: (newCategory: ICategoryWithoutId) => void;
 };
 
@@ -17,7 +16,6 @@ type TCategoryCreate = React.FC<TCategoryCreateProps>;
 
 const CategoryCreate: TCategoryCreate = ({
   name,
-  onFocus,
   onSuccess,
 }: TCategoryCreateProps) => {
   const [error, setError] = useState('');
@@ -38,7 +36,7 @@ const CategoryCreate: TCategoryCreate = ({
   };
 
   return (
-    <Container onFocus={onFocus}>
+    <Container>
       <span>"{newCategoryName}"</span>
       <Button onMouseDown={onClick}>카테고리 생성하기</Button>
       <Warning>{error}</Warning>
