@@ -30,11 +30,9 @@ const CalendarCell: React.FC<IProps> = (props) => {
     onMouseDown,
   } = props;
 
-  const classNames = ['dateTime'];
-
   return (
     <Container
-      className={classNames.join(' ')}
+      className="dateTime"
       isLastDay={isLastDay}
       isLastWeek={isLastWeek}
       data-date={format}
@@ -63,9 +61,8 @@ const Container = styled.div<Pick<IProps, 'isLastDay' | 'isLastWeek'>>`
 
   cursor: pointer;
 
-  &.isDragging,
-  &.isDragging * {
-    cursor: grabbing !important;
+  &.isDragging {
+    cursor: grabbing;
   }
 `;
 
