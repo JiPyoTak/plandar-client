@@ -81,7 +81,7 @@ const PlanCategory: React.FC = () => {
         value={categoryInput}
         // onFocus에 filterCategoriesCb인 이유는 debounce 없이 바로 적용되기 위함
         onFocus={() => filterCategoriesCb(inputRef.current?.value.trim() || '')}
-        onBlur={() => filteredType !== 'noMatch' && setFilteredType(null)}
+        onBlur={() => setFilteredType(null)}
         placeholder={'카테고리를 입력하세요'}
         onClear={onClear}
         onChange={onInput}
