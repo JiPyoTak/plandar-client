@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import styled from '@emotion/styled';
 
@@ -7,7 +7,6 @@ import CalendarLayer from './CalendarLayer';
 import useDrag, { MouseEventHandler } from '@/hooks/drag/useDrag';
 import useDateState from '@/stores/date';
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
-import { IViewPlanInfo } from '@/types';
 import { getStartAndEndDateInMonth } from '@/utils/dayHandler';
 import { getCalendarInfo } from '@/utils/getCalendarInfo';
 import { getCalendarPlans } from '@/utils/getCalendarPlans';
@@ -19,12 +18,11 @@ const CalendarView = () => {
   const [isDragging, currentDate, changeCurrentDate, onMouseMove] = useDrag();
 
   const calendarInfos = getCalendarInfo({ year, month, day });
-  const [startDate, endDate] = getStartAndEndDateInMonth(calendarInfos);
-  const calendarPlanViews = getCalendarPlans(dummy, startDate, endDate);
+  const dates = getStartAndEndDateInMonth(calendarInfos);
+  const selectedPlanArgs = selectedPlan ? [selectedPlan] : [];
 
-  const [selectedPlanViews, setSelectedPlanViews] = useState<
-    IViewPlanInfo[][][] | null
-  >(null);
+  const calendarPlanViews = getCalendarPlans(dummy, ...dates);
+  const selectedPlanViews = getCalendarPlans(selectedPlanArgs, ...dates);
 
   const onMouseDownCell: MouseEventHandler = (e) => {
     const targetDate = (e.target as HTMLElement).dataset?.date;
@@ -39,14 +37,6 @@ const CalendarView = () => {
 
     selectPlan(newPlan);
   };
-
-  useEffect(() => {
-    if (!selectedPlan) return setSelectedPlanViews(null);
-
-    const newPlan = getCalendarPlans([selectedPlan], startDate, endDate);
-
-    setSelectedPlanViews(newPlan);
-  }, [selectedPlan]);
 
   return (
     <Container
