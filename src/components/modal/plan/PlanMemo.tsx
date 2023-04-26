@@ -36,7 +36,15 @@ const PlanMemo: TPlanMemo = ({ onChange, ...rest }: TPlanMemoProps) => {
   return (
     <Container duration={0.5}>
       <Dropdown.Controller>
-        <ClassifierTitle title="메모" titleIcon={<MemoIcon />} />
+        <ClassifierTitle
+          title="메모"
+          titleIcon={<MemoIcon />}
+          additionalComponent={
+            <ContentLenDisplay>
+              {ref.current?.value.length ?? 0} / {MAX_MEMO_LENGTH}
+            </ContentLenDisplay>
+          }
+        />
       </Dropdown.Controller>
       <div>
         <TextArea
@@ -68,6 +76,11 @@ const TextArea = styled.textarea`
   &::placeholder {
     color: ${({ theme }) => theme.text3};
   }
+`;
+
+const ContentLenDisplay = styled.span`
+  margin-right: 5px;
+  color: ${({ theme }) => theme.text3};
 `;
 
 export default PlanMemo;
