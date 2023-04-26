@@ -135,7 +135,7 @@ const TagButtonContainer = styled.div`
 `;
 
 const SelectedTagUnit = styled.span`
-  margin-right: 5px;
+  margin-right: 15px;
   color: ${({ theme }) => theme.text3};
 `;
 

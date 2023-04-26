@@ -79,7 +79,7 @@ const TextArea = styled.textarea`
 `;
 
 const ContentLenDisplay = styled.span`
-  margin-right: 5px;
+  margin-right: 15px;
   color: ${({ theme }) => theme.text3};
 `;
 
