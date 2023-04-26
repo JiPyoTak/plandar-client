@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { MouseEvent, MouseEventHandler, useState } from 'react';
 
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -22,9 +22,20 @@ const ColorPicker: TColorPicker = ({
   const theme = useTheme();
   const [popupOpened, setPopupOpened] = useState(false);
 
+  const onClickPickerButton: MouseEventHandler = (e) => {
+    e.stopPropagation();
+    setPopupOpened((prev) => !prev);
+  };
+
+  const onClickColor = (e: MouseEvent<HTMLButtonElement>, color: TColor) => {
+    e.stopPropagation();
+    onSelect(color);
+    setPopupOpened(false);
+  };
+
   return (
     <span css={{ position: 'relative' }}>
-      <PickerButton onClick={() => setPopupOpened((prev) => !prev)}>
+      <PickerButton onClick={onClickPickerButton}>
         <span
           css={{
             backgroundColor: selectedColor,
@@ -36,10 +47,7 @@ const ColorPicker: TColorPicker = ({
         <Popup>
           {SELECTABLE_COLOR.map((color) => (
             <button
-              onClick={() => {
-                onSelect(color);
-                setPopupOpened(false);
-              }}
+              onClick={(e) => onClickColor(e, color)}
               css={{ position: 'relative' }}
               key={color}
             >
