@@ -16,7 +16,7 @@ const useDrag = () => {
   const changeCurrentDate: MouseEventHandler = (e) => {
     const target = document
       .elementsFromPoint(e.clientX, e.clientY)
-      .find((el) => el.classList.contains('dateTime')) as HTMLElement;
+      .find((el) => el.getAttribute('data-date')) as HTMLElement;
 
     if (!target) return;
 
@@ -32,7 +32,7 @@ const useDrag = () => {
 
     const target = document
       .elementsFromPoint(e.clientX, e.clientY)
-      .find((el) => el.classList.contains('dateTime')) as HTMLElement;
+      .find((el) => el.getAttribute('data-date')) as HTMLElement;
 
     if (!selectedPlan || !target?.dataset?.date) return;
 
