@@ -78,7 +78,7 @@ const CategoryClassifier: React.FC = () => {
         <Dropdown.Controller>
           <ClassifierTitle
             title={'카테고리'}
-            additionalIcon={
+            additionalComponent={
               <PlusIcon
                 onClick={onClickAdd}
                 width={CLASSIFIER_TITLE_ICON_SIZE}
