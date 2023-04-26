@@ -25,36 +25,33 @@ const CandidateItem: TCandidateItem = ({
 }: TCandidateItemProps) => {
   const theme = useTheme();
 
-  if (type === 'tag') {
-    return (
-      <Container
-        css={isSelected && { backgroundColor: theme.background2 }}
-        {...rest}
-      >
-        <CheckIconContainer>
-          {isSelected && (
-            <CheckIcon color={theme.primary_light} width="17" height="17" />
-          )}
-        </CheckIconContainer>
-        <Title>{name}</Title>
-      </Container>
-    );
-  } else {
-    return (
-      <Container
-        css={isSelected && { backgroundColor: theme.background2 }}
-        {...rest}
-      >
-        <ColorCircle css={{ backgroundColor: color }} />
-        <Title>{name}</Title>
-        <CheckIconContainer>
-          {isSelected && (
-            <CheckIcon color={theme.primary_light} width="17" height="17" />
-          )}
-        </CheckIconContainer>
-      </Container>
-    );
-  }
+  return (
+    <Container
+      css={isSelected && { backgroundColor: theme.background2 }}
+      {...rest}
+    >
+      {type === 'tag' ? (
+        <>
+          <CheckIconContainer>
+            {isSelected && (
+              <CheckIcon color={theme.primary_light} width="17" height="17" />
+            )}
+          </CheckIconContainer>
+          <Title>{name}</Title>
+        </>
+      ) : (
+        <>
+          <ColorCircle css={{ backgroundColor: color }} />
+          <Title>{name}</Title>
+          <CheckIconContainer>
+            {isSelected && (
+              <CheckIcon color={theme.primary_light} width="17" height="17" />
+            )}
+          </CheckIconContainer>
+        </>
+      )}
+    </Container>
+  );
 };
 
 const Container = styled.button`
