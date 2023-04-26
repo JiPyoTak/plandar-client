@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -14,16 +14,19 @@ type TCategoryCreateProps = {
 
 type TCategoryCreate = React.FC<TCategoryCreateProps>;
 
-const CategoryCreate: TCategoryCreate = ({
+const CategoryCreateForm: TCategoryCreate = ({
   name,
   onSuccess,
 }: TCategoryCreateProps) => {
   const [error, setError] = useState('');
+  const loadingRef = useRef(false);
   const { mutateAsync: createCategory } = useCategoryCreate();
   const newCategoryName = name.trim();
 
   const onMouseDown = async () => {
+    if (loadingRef.current) return;
     try {
+      loadingRef.current = true;
       const newCategory = await createCategory({
         name: newCategoryName,
         color: SELECTABLE_COLOR[0],
@@ -32,6 +35,8 @@ const CategoryCreate: TCategoryCreate = ({
     } catch (e) {
       setError('카테고리 생성에 실패했습니다.');
       // todo: 토스트 메시지 띄워주기
+    } finally {
+      loadingRef.current = false;
     }
   };
 
@@ -71,4 +76,4 @@ const Warning = styled.span`
   color: ${({ theme }) => theme.red};
 `;
 
-export default CategoryCreate;
+export default CategoryCreateForm;
