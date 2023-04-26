@@ -7,22 +7,34 @@ import { TIMETABLE_CELL_AMOUNT, TIMETABLE_CELL_UNIT } from '@/constants';
 import { FONT_REGULAR_8 } from '@/styles/font';
 import { TIMETABLE_CELL_HEIGHT, TIMETABLE_Z_INDEX } from '@/styles/timetable';
 import { getTimeString } from '@/utils/date/getTimeString';
+import { padZero } from '@/utils/padZero';
 
 type TProps = {
   dateMoment: Moment;
+  formattedDate: string;
 };
 
-const TimetableCellColumn: React.FC<TProps> = ({ dateMoment }) => {
+const TimetableCellColumn: React.FC<TProps> = ({
+  dateMoment,
+  formattedDate,
+}) => {
   return (
     <Container>
       {Array.from(Array(TIMETABLE_CELL_AMOUNT), (_, index) => {
         const date = dateMoment.toDate();
-        date.setHours(Math.floor(index / TIMETABLE_CELL_AMOUNT));
-        date.setMinutes(
-          Math.floor((index % TIMETABLE_CELL_AMOUNT) * TIMETABLE_CELL_UNIT),
+        const hour = Math.floor(index / TIMETABLE_CELL_AMOUNT);
+        const minute = Math.floor(
+          (index % TIMETABLE_CELL_AMOUNT) * TIMETABLE_CELL_UNIT,
         );
+        date.setHours(hour);
+        date.setMinutes(minute);
+
+        const dateString = `${formattedDate}T${padZero(hour)}:${padZero(
+          minute,
+        )}:00`;
+
         return (
-          <TimeCell key={date.toString()}>
+          <TimeCell key={date.toString()} data-date={dateString}>
             <TimeSpan>{getTimeString(date)}</TimeSpan>
           </TimeCell>
         );
