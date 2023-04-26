@@ -7,7 +7,7 @@ import Dropdown from '@/components/common/dropdown';
 import Input from '@/components/common/Input';
 import { TagIcon } from '@/components/icons';
 import ClassifierTitle from '@/components/sidebar/classifier/ClassifierTitle';
-import { MAX_CANDIDATE_LENGTH } from '@/constants';
+import { MAX_CANDIDATE_LENGTH, MAX_TAG_LENGTH } from '@/constants';
 import useDebounce from '@/hooks/useDebounce';
 import { TAG_MOCK } from '@/utils/mock';
 import { Candidate } from 'components/modal/plan/Candidates';
@@ -32,7 +32,12 @@ const PlanTag: React.FC = () => {
 
   // selectedTags에 태그 추가
   const addTag = (tag?: string) => {
-    if (!tag || selectedTags.length >= 5 || selectedTags.includes(tag)) return;
+    if (
+      !tag ||
+      selectedTags.length >= MAX_TAG_LENGTH ||
+      selectedTags.includes(tag)
+    )
+      return;
     setSelectedTags((prev) => [...prev, tag]);
     setTagInput('');
   };
@@ -63,7 +68,15 @@ const PlanTag: React.FC = () => {
   return (
     <Container>
       <Dropdown.Controller>
-        <ClassifierTitle title="태그" titleIcon={<TagIcon />} />
+        <ClassifierTitle
+          title="태그"
+          titleIcon={<TagIcon />}
+          additionalComponent={
+            <SelectedTagUnit>
+              {selectedTags.length} / {MAX_TAG_LENGTH}
+            </SelectedTagUnit>
+          }
+        />
       </Dropdown.Controller>
       {/* 입력창 */}
       <form onSubmit={onSubmit}>
@@ -119,6 +132,11 @@ const TagButtonContainer = styled.div`
   margin-top: 10px;
   width: 100%;
   gap: 4px;
+`;
+
+const SelectedTagUnit = styled.span`
+  margin-right: 5px;
+  color: ${({ theme }) => theme.text3};
 `;
 
 export default PlanTag;
