@@ -6,7 +6,7 @@ import Dropdown from '@/components/common/dropdown';
 import Input from '@/components/common/Input';
 import { CategoryIcon } from '@/components/icons';
 import { Candidate } from '@/components/modal/plan/Candidates';
-import CategoryCreate from '@/components/modal/plan/CategoryCreate';
+import CategoryCreateForm from '@/components/modal/plan/CategoryCreateForm';
 import ClassifierTitle from '@/components/sidebar/classifier/ClassifierTitle';
 import { MAX_CANDIDATE_LENGTH } from '@/constants';
 import { useCategoryQuery } from '@/hooks/rq/category';
@@ -42,13 +42,8 @@ const PlanCategory: React.FC = () => {
       .filter((category) => category.name.match(categoryName))
       .slice(0, MAX_CANDIDATE_LENGTH); // 최대 4개까지 보이도록
 
-    if (filtered.length > 0) {
-      setFilteredCategories(filtered);
-      setFilteredType('candidate');
-    } else {
-      setFilteredCategories([]);
-      setFilteredType('noMatch');
-    }
+    setFilteredCategories(filtered);
+    setFilteredType(filtered.length > 0 ? 'candidate' : 'noMatch');
   };
 
   // Debounce를 활용해서 카테고리 이름 입력시 카테고리 후보 필터링
@@ -101,7 +96,7 @@ const PlanCategory: React.FC = () => {
         </Candidate.List>
       )}
       {filteredType === 'noMatch' && categoryInput && (
-        <CategoryCreate name={categoryInput} onSuccess={onSelectCategory} />
+        <CategoryCreateForm name={categoryInput} onSuccess={onSelectCategory} />
       )}
     </Container>
   );
