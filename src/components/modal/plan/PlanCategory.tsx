@@ -6,7 +6,8 @@ import Dropdown from '@/components/common/dropdown';
 import Input from '@/components/common/Input';
 import { CategoryIcon } from '@/components/icons';
 import { Candidate } from '@/components/modal/plan/Candidates';
-import CategoryCreateForm from '@/components/modal/plan/CategoryCreateForm';
+import CategoryCreateForm from '@/components/modal/plan/category/CategoryCreateForm';
+import SelectedCategoryDisplay from '@/components/modal/plan/category/SelectedCategoryDisplay';
 import ClassifierTitle from '@/components/sidebar/classifier/ClassifierTitle';
 import { MAX_CANDIDATE_LENGTH } from '@/constants';
 import { useCategoryQuery } from '@/hooks/rq/category';
@@ -68,7 +69,18 @@ const PlanCategory: React.FC = () => {
   return (
     <Container>
       <Dropdown.Controller>
-        <ClassifierTitle title="카테고리" titleIcon={<CategoryIcon />} />
+        <ClassifierTitle
+          title="카테고리"
+          titleIcon={<CategoryIcon />}
+          additionalComponent={
+            selectedCategory && (
+              <SelectedCategoryDisplay
+                category={selectedCategory}
+                onUpdateCategory={setSelectedCategory}
+              />
+            )
+          }
+        />
       </Dropdown.Controller>
       <Input
         type="text"
@@ -106,4 +118,5 @@ const Container = styled(Dropdown)`
   width: 100%;
   position: relative;
 `;
+
 export default PlanCategory;
