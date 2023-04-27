@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 
 import ChevronIcon from '../../icons/ChevronIcon';
 
+import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { FONT_REGULAR_5 } from '@/styles/font';
 import { IViewPlanInfo, TColor } from '@/types';
@@ -15,7 +16,7 @@ interface IProps {
   isSelected: boolean;
   isHovered: boolean;
   isDragging?: boolean;
-  onMouseEnter: () => void;
+  onMouseEnter: (e: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave: () => void;
 }
 
@@ -31,6 +32,7 @@ const PlanViewUnit: React.FC<IProps> = (props) => {
   } = props;
 
   const { isDragging: d, selectPlan } = useSelectedPlanState();
+  const { clearHoveredPlan } = useHoveredPlanState();
 
   const isEqualStart = view.startTime.isSame(view.viewStart);
   const isEqualEnd = view.endTime.isSame(view.viewEnd);
@@ -49,6 +51,7 @@ const PlanViewUnit: React.FC<IProps> = (props) => {
       ...view.plan,
     };
 
+    clearHoveredPlan();
     selectPlan(planInput, 'edit');
   };
 
