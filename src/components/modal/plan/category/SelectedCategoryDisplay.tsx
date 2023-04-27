@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import ColorPicker from '@/components/common/ColorPicker';
@@ -18,6 +19,7 @@ const SelectedCategoryDisplay: TSelectedCategoryDisplay = ({
   category,
   onUpdateCategory,
 }: TSelectedCategoryDisplayProps) => {
+  const theme = useTheme();
   const { mutateAsync: updateCategory } = useCategoryUpdate();
 
   const onSelect = async (newColor: TColor) => {
@@ -42,8 +44,12 @@ const SelectedCategoryDisplay: TSelectedCategoryDisplay = ({
 
   return (
     <Container>
-      <ColorPicker selectedColor={category.color} onSelect={onSelect} />
-      <span>{category.name}</span>
+      <ColorPicker
+        selectedColor={category.color}
+        onSelect={onSelect}
+        additionalComponent={<CategoryName>{category.name}</CategoryName>}
+        css={{ border: `1px solid ${theme.border2}` }}
+      />
     </Container>
   );
 };
@@ -54,10 +60,11 @@ const Container = styled.div`
   justify-content: center;
   margin-right: 15px;
   gap: 5px;
+`;
 
-  & > span {
-    color: ${({ theme }) => theme.text3};
-  }
+const CategoryName = styled.div`
+  color: ${({ theme }) => theme.text3};
+  padding: 5px 0;
 `;
 
 export default SelectedCategoryDisplay;
