@@ -1,10 +1,14 @@
 import React from 'react';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import moment, { Moment } from 'moment';
 
+import CalendarDay from '../common/calendar/CalendarDay';
+
 import { DAY_OF_WEEK_UNIT } from '@/constants';
-import { FONT_BOLD_5, FONT_REGULAR_5 } from '@/styles/font';
+import useDateState from '@/stores/date';
+import { FONT_REGULAR_5 } from '@/styles/font';
 import {
   TIMETABLE_CELL_MIN_WIDTH,
   TIMETABLE_SCROLL_WIDTH,
@@ -18,6 +22,7 @@ type TProps = {
 const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
   const standardDay = dateMoments[0];
   const timeZone = `GMT${standardDay.format('Z')}`;
+  const { year, month, day, onChangeStoreDate } = useDateState();
 
   return (
     <Container>
@@ -30,13 +35,37 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
       >
         {timeZone}
       </TimetableGuide>
-      {dateMoments.map((date) => {
-        const isToday = moment().format('YYYYMMDD') === date.format('YYYYMMDD');
+      {dateMoments.map((dateMoment) => {
+        const dateInfo = {
+          year: dateMoment.get('year'),
+          month: dateMoment.get('month') + 1,
+          day: dateMoment.get('date'),
+        };
+        const format = 'YYYY-MM-DD';
+        const formattedDate = dateMoment.format(format);
+        const isToday = moment().format(format) === formattedDate;
+        const isWeekend =
+          dateMoment.weekday() === 0 || dateMoment.weekday() === 6;
+        const isSelected =
+          moment(`${year}-${month}-${day}`).format(format) === formattedDate;
 
         return (
-          <SignDiv key={date.format('YYYYMMDD')}>
-            <DayCircle isToday={isToday}>{date.date()}</DayCircle>
-            <span>{DAY_OF_WEEK_UNIT[date.day()]}</span>
+          <SignDiv key={formattedDate}>
+            <CalendarDay
+              css={css`
+                width: 1.75rem;
+                height: 1.75rem;
+                margin-right: 0.25rem;
+              `}
+              isToday={isToday}
+              isWeekend={isWeekend}
+              isInMonth={true}
+              isSelected={isSelected}
+              format={formattedDate}
+              onClick={() => onChangeStoreDate(dateInfo)}
+              {...dateInfo}
+            />
+            <span>{DAY_OF_WEEK_UNIT[dateMoment.day()]}</span>
           </SignDiv>
         );
       })}
@@ -65,27 +94,7 @@ const SignDiv = styled.div`
   flex-wrap: nowrap;
   align-items: center;
 
-  &:hover > div {
-    background-color: ${({ theme }) => theme.primary_light3};
-  }
   cursor: pointer;
-`;
-
-const DayCircle = styled.div<{ isToday: boolean }>`
-  ${FONT_BOLD_5}
-
-  width: 1.75rem;
-  height: 1.75rem;
-  margin-right: 0.25rem;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 50%;
-
-  ${({ isToday, theme }) =>
-    isToday ? `background-color: ${theme.primary}` : ''};
 `;
 
 export default TimetableHeader;

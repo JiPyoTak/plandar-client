@@ -7,11 +7,11 @@ import moment from 'moment';
 
 import { TIMETABLE_CELL_UNIT } from '@/constants';
 import { FONT_REGULAR_7, FONT_REGULAR_8 } from '@/styles/font';
-import { TIMETABLE_CELL_HEIGHT } from '@/styles/timetable';
+import { TIMETABLE_CELL_HEIGHT, TIMETABLE_Z_INDEX } from '@/styles/timetable';
 import { TColor } from '@/types';
 import { ITimePlan } from '@/types/rq/plan';
 import { isBgBright } from '@/utils/color';
-import { timeToString } from '@/utils/timeToString';
+import { getTimeString } from '@/utils/date/getTimeString';
 
 type TProps = {
   plan: ITimePlan;
@@ -37,7 +37,7 @@ const TimetablePlan: React.FC<TProps> = ({ plan, rank, total }) => {
       ]}
     >
       <TimeSpan backgroundColor={color}>
-        {timeToString(new Date(startTime))}
+        {getTimeString(new Date(startTime))}
       </TimeSpan>
       <TitleSpan backgroundColor={color}>{title}</TitleSpan>
     </Container>
@@ -88,14 +88,15 @@ const Container = styled.div`
   padding: 0.125rem 0.25rem;
 
   position: absolute;
-  z-index: 2;
+  z-index: ${TIMETABLE_Z_INDEX['timePlan']};
 
   border: 1px solid white;
   border-radius: 8px;
   overflow: hidden;
+  cursor: pointer;
 
   &:hover {
-    z-index: 3;
+    z-index: ${TIMETABLE_Z_INDEX['timePlanHover']};
   }
 `;
 
