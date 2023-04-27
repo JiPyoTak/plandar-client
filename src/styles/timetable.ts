@@ -34,10 +34,17 @@ const TIMETABLE_SCROLL_STYLE = ({ theme }: { theme: Theme }) => css`
 const TIMETABLE_CELL_MIN_WIDTH = '4.875rem';
 const TIMETABLE_CELL_HEIGHT = '1rem';
 
+const TIMETABLE_Z_INDEX = {
+  timePlan: 1,
+  timePlanHover: 2,
+  timeCellHover: 3,
+} as const;
+
 export {
   TimetableGuide,
   TIMETABLE_SCROLL_WIDTH,
   TIMETABLE_SCROLL_STYLE,
   TIMETABLE_CELL_MIN_WIDTH,
   TIMETABLE_CELL_HEIGHT,
+  TIMETABLE_Z_INDEX,
 };
