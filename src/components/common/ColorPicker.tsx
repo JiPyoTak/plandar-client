@@ -1,23 +1,31 @@
-import React, { MouseEvent, MouseEventHandler, useState } from 'react';
+import React, {
+  MouseEvent,
+  MouseEventHandler,
+  ReactNode,
+  useState,
+} from 'react';
 
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { CheckIcon } from '@/components/icons';
-import ChevronIcon from '@/components/icons/ChevronIcon';
 import { SELECTABLE_COLOR } from '@/constants';
 import { TColor } from '@/types';
 
 type TColorPickerProps = {
+  className?: string;
   selectedColor: TColor;
   onSelect: (color: TColor) => void;
+  additionalComponent?: ReactNode;
 };
 
 type TColorPicker = React.FC<TColorPickerProps>;
 
 const ColorPicker: TColorPicker = ({
+  className,
   selectedColor,
   onSelect,
+  additionalComponent,
 }: TColorPickerProps) => {
   const theme = useTheme();
   const [popupOpened, setPopupOpened] = useState(false);
@@ -35,13 +43,13 @@ const ColorPicker: TColorPicker = ({
 
   return (
     <span css={{ position: 'relative' }}>
-      <PickerButton onClick={onClickPickerButton}>
+      <PickerButton onClick={onClickPickerButton} className={className}>
         <span
           css={{
             backgroundColor: selectedColor,
           }}
         />
-        <ChevronIcon css={{ width: 14 }} type="down" color="black" />
+        {additionalComponent}
       </PickerButton>
       {popupOpened && (
         <Popup>
@@ -69,6 +77,7 @@ const PickerButton = styled.button`
   gap: 5px;
   padding: 0 5px;
   border-radius: 5px;
+
   &:hover {
     background-color: ${({ theme }) => theme.background3};
   }
