@@ -12,7 +12,7 @@ interface IProps {
 }
 
 const PlanViewInMonth: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
-  const { selectedPlan } = useDraggedPlanState();
+  const { draggedPlan } = useDraggedPlanState();
   const { hoveredPlanId, setHoveredPlanId, clearHoveredPlanId } =
     useHoveredPlanIdState();
 
@@ -26,7 +26,7 @@ const PlanViewInMonth: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
 
           if (plan.dayOfWeek !== j + 1) continue;
 
-          if (isDragging === false && selectedPlan?.id !== -1) continue;
+          if (isDragging === false && draggedPlan?.id !== -1) continue;
 
           result.push(
             <PlanViewUnit
@@ -35,10 +35,10 @@ const PlanViewInMonth: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
               onMouseEnter={() => setHoveredPlanId(plan.id)}
               onMouseLeave={() => clearHoveredPlanId()}
               index={Number(k)}
-              isSelected={selectedPlan?.id === plan.id}
+              isSelected={draggedPlan?.id === plan.id}
               isHovered={hoveredPlanId === plan.id}
               isDragging={
-                (selectedPlan?.id === plan.id && selectedPlan?.id) === -1 ||
+                (draggedPlan?.id === plan.id && draggedPlan?.id) === -1 ||
                 isDragging
               }
             />,

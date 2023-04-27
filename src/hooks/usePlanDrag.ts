@@ -8,10 +8,9 @@ export type MouseEventHandler = React.MouseEventHandler<HTMLDivElement>;
 
 const usePlanDrag = () => {
   const { selectedCalendarUnit } = useCalendarUnitState();
-  const { selectedPlan, onMoveMonthPlan, onDragEndPlan } =
-    useDraggedPlanState();
+  const { draggedPlan, onMoveMonthPlan, onDragEndPlan } = useDraggedPlanState();
   const currentDateRef = useRef<string | null>(null);
-  const selectedPlanRef = useRef<typeof selectedPlan>(selectedPlan);
+  const draggedPlanRef = useRef<typeof draggedPlan>(draggedPlan);
 
   const getDateOfMouse = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const { clientX, clientY } = event;
@@ -42,12 +41,12 @@ const usePlanDrag = () => {
   };
 
   useEffect(() => {
-    selectedPlanRef.current = selectedPlan;
-  }, [selectedPlan]);
+    draggedPlanRef.current = draggedPlan;
+  }, [draggedPlan]);
 
   useEffect(() => {
     const onMouseUp = () => {
-      if (currentDateRef.current && selectedPlanRef.current) {
+      if (currentDateRef.current && draggedPlanRef.current) {
         currentDateRef.current = null;
         onDragEndPlan();
       }

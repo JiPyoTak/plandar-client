@@ -15,7 +15,7 @@ interface IDraggedPlanState {
   // 기존 일정
   currentPlan: null | IPlan | IPlanWithoutIdAndTime;
   // view에 반영되는 일정
-  selectedPlan: null | IPlanWithoutIdAndTime | IPlan;
+  draggedPlan: null | IPlanWithoutIdAndTime | IPlan;
   // drag 중인지 아닌지
   isDragging: boolean;
 }
@@ -28,13 +28,13 @@ interface IDraggedPlanAction {
   onMoveMonthPlan: (args: TMovePlanProps) => void;
   onMoveDayPlan: (args: TMovePlanProps) => void;
   onDragEndPlan: () => void;
-  clearSelectedPlan: () => void;
+  clearDraggedPlan: () => void;
 }
 
 const initialState = {
   type: null,
   currentPlan: null,
-  selectedPlan: null,
+  draggedPlan: null,
   isDragging: false,
 } as const;
 
@@ -44,7 +44,7 @@ const useDraggedPlanState = create<IDraggedPlanState & IDraggedPlanAction>(
     selectPlan: (plan, type = 'create') => {
       set({
         type,
-        selectedPlan: plan,
+        draggedPlan: plan,
         currentPlan: plan,
       });
     },
@@ -53,8 +53,8 @@ const useDraggedPlanState = create<IDraggedPlanState & IDraggedPlanAction>(
       currentDate: currentDateString,
     }) => {
       set((state) => {
-        const { selectedPlan, currentPlan, type } = state;
-        if (!selectedPlan || !currentPlan) return state;
+        const { draggedPlan, currentPlan, type } = state;
+        if (!draggedPlan || !currentPlan) return state;
 
         const targetDate = moment(targetDateString);
         const currentDate = moment(currentDateString);
@@ -62,31 +62,31 @@ const useDraggedPlanState = create<IDraggedPlanState & IDraggedPlanAction>(
         const newPlan = changePlanView({
           targetDate,
           currentDate,
-          selectedPlan,
+          draggedPlan,
           currentPlan,
           type,
         });
 
         if (!newPlan) return state;
 
-        return { ...state, selectedPlan: newPlan, isDragging: true };
+        return { ...state, draggedPlan: newPlan, isDragging: true };
       });
     },
     onMoveDayPlan: () => set((state) => state),
     onDragEndPlan: () => {
       set((state) => {
-        const { selectedPlan, currentPlan } = state;
+        const { draggedPlan, currentPlan } = state;
 
-        if (!selectedPlan) return state;
+        if (!draggedPlan) return state;
 
         return {
           ...initialState,
-          currentPlan: selectedPlan.id === -1 ? currentPlan : null,
-          selectedPlan: selectedPlan.id === -1 ? selectedPlan : null,
+          currentPlan: draggedPlan.id === -1 ? currentPlan : null,
+          draggedPlan: draggedPlan.id === -1 ? draggedPlan : null,
         };
       });
     },
-    clearSelectedPlan: () => {
+    clearDraggedPlan: () => {
       set(initialState);
     },
   }),

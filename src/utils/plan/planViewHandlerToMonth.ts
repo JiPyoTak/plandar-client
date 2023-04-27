@@ -11,7 +11,7 @@ interface IBaseArgs {
 }
 
 interface ICreatePlanView extends IBaseArgs {
-  selectedPlan: IPlanWithoutIdAndTime | IPlan;
+  draggedPlan: IPlanWithoutIdAndTime | IPlan;
 }
 
 interface IEditPlanView extends ICreatePlanView {
@@ -25,21 +25,21 @@ interface IChangePlanView extends IEditPlanView {
 const changePlanView = ({
   currentDate,
   targetDate,
-  selectedPlan,
+  draggedPlan,
   currentPlan,
   type,
 }: IChangePlanView) => {
   const newPlan =
     type === 'create'
-      ? createPlanView({ targetDate, currentDate, selectedPlan })
+      ? createPlanView({ targetDate, currentDate, draggedPlan })
       : editPlanView({
           targetDate,
           currentDate,
-          selectedPlan,
+          draggedPlan,
           currentPlan,
         });
 
-  const isCompared = compareObjects(newPlan, selectedPlan);
+  const isCompared = compareObjects(newPlan, draggedPlan);
 
   if (isCompared) return null;
 
@@ -47,7 +47,7 @@ const changePlanView = ({
 };
 
 const createPlanView = (props: ICreatePlanView): IPlanWithoutIdAndTime => {
-  const { targetDate, currentDate, selectedPlan } = props;
+  const { targetDate, currentDate, draggedPlan } = props;
 
   let planStart = currentDate.clone().startOf('d');
   let planEnd = currentDate.clone().endOf('d');
@@ -59,7 +59,7 @@ const createPlanView = (props: ICreatePlanView): IPlanWithoutIdAndTime => {
   }
 
   const newPlan: IPlanWithoutIdAndTime = {
-    ...selectedPlan,
+    ...draggedPlan,
     startTime: planStart.format(),
     endTime: planEnd.format(),
   };
@@ -68,7 +68,7 @@ const createPlanView = (props: ICreatePlanView): IPlanWithoutIdAndTime => {
 };
 
 const editPlanView = (props: IEditPlanView) => {
-  const { targetDate, currentDate, selectedPlan, currentPlan } = props;
+  const { targetDate, currentDate, draggedPlan, currentPlan } = props;
 
   const currentStart = moment(currentPlan.startTime).utc();
   const currentEnd = moment(currentPlan.endTime).utc();
@@ -94,7 +94,7 @@ const editPlanView = (props: IEditPlanView) => {
         .minutes(currentEnd.minutes());
 
   const newPlan = {
-    ...selectedPlan,
+    ...draggedPlan,
     startTime: startTime.format(),
     endTime: endTime?.format() || null,
   };
