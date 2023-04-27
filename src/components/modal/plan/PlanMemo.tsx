@@ -11,6 +11,11 @@ import { MemoIcon } from '@/components/icons';
 import ClassifierTitle from '@/components/sidebar/classifier/ClassifierTitle';
 import { MAX_MEMO_LENGTH } from '@/constants';
 import { FONT_REGULAR_4 } from '@/styles/font';
+import {
+  ClassifierAdditionalFontStyle,
+  ClassifierAdditionalMarginRight,
+  PlanModalClassifierTitle,
+} from '@/styles/planModal';
 
 type TPlanMemoProps = TextareaHTMLAttributes<HTMLTextAreaElement>;
 
@@ -36,7 +41,7 @@ const PlanMemo: TPlanMemo = ({ onChange, ...rest }: TPlanMemoProps) => {
   return (
     <Container duration={0.5}>
       <Dropdown.Controller>
-        <ClassifierTitle
+        <PlanModalClassifierTitle
           title="메모"
           titleIcon={<MemoIcon />}
           additionalComponent={
@@ -79,8 +84,9 @@ const TextArea = styled.textarea`
 `;
 
 const ContentLenDisplay = styled.span`
-  margin-right: 15px;
+  margin-right: ${ClassifierAdditionalMarginRight};
   color: ${({ theme }) => theme.text3};
+  ${ClassifierAdditionalFontStyle}
 `;
 
 export default PlanMemo;

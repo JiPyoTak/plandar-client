@@ -6,9 +6,13 @@ import TagButton from '@/components/buttons/TagButton';
 import Dropdown from '@/components/common/dropdown';
 import Input from '@/components/common/Input';
 import { TagIcon } from '@/components/icons';
-import ClassifierTitle from '@/components/sidebar/classifier/ClassifierTitle';
 import { MAX_CANDIDATE_LENGTH, MAX_TAG_LENGTH } from '@/constants';
 import useDebounce from '@/hooks/useDebounce';
+import {
+  ClassifierAdditionalFontStyle,
+  ClassifierAdditionalMarginRight,
+  PlanModalClassifierTitle,
+} from '@/styles/planModal';
 import { TAG_MOCK } from '@/utils/mock';
 import { Candidate } from 'components/modal/plan/Candidates';
 
@@ -68,7 +72,7 @@ const PlanTag: React.FC = () => {
   return (
     <Container>
       <Dropdown.Controller>
-        <ClassifierTitle
+        <PlanModalClassifierTitle
           title="태그"
           titleIcon={<TagIcon />}
           additionalComponent={
@@ -135,8 +139,9 @@ const TagButtonContainer = styled.div`
 `;
 
 const SelectedTagUnit = styled.span`
-  margin-right: 15px;
+  margin-right: ${ClassifierAdditionalMarginRight};
   color: ${({ theme }) => theme.text3};
+  ${ClassifierAdditionalFontStyle}
 `;
 
 export default PlanTag;
