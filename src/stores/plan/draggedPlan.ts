@@ -1,10 +1,16 @@
+import moment from 'moment';
 import { create } from 'zustand';
 
 import { IPlan, IPlanWithoutIdAndTime } from '@/types/rq/plan';
+import { changePlanView } from '@/utils/plan/planViewHandlerToMonth';
 
 export type IChangePlanViewType = 'create' | 'edit' | null;
+type TMovePlanProps = {
+  targetDate: string;
+  currentDate: string;
+};
 
-interface ISelectedPlanState {
+interface IDraggedPlanState {
   type: IChangePlanViewType;
   // 기존 일정
   currentPlan: null | IPlan | IPlanWithoutIdAndTime;
@@ -14,19 +20,16 @@ interface ISelectedPlanState {
   isDragging: boolean;
 }
 
-interface ISelectedPlanAction {
+interface IDraggedPlanAction {
   selectPlan: (
     plan: IPlanWithoutIdAndTime | IPlan,
     type?: IChangePlanViewType,
   ) => void;
-  changeSelectedPlan: (cb: IChangeSelectedPlanCallback) => void;
+  onMoveMonthPlan: (args: TMovePlanProps) => void;
+  onMoveDayPlan: (args: TMovePlanProps) => void;
+  onDragEndPlan: () => void;
   clearSelectedPlan: () => void;
-  onDragEnd: () => void;
 }
-
-type IChangeSelectedPlanCallback = (
-  ...args: any[]
-) => IPlan | IPlanWithoutIdAndTime | null;
 
 const initialState = {
   type: null,
@@ -35,7 +38,7 @@ const initialState = {
   isDragging: false,
 } as const;
 
-const useSelectedPlanState = create<ISelectedPlanState & ISelectedPlanAction>(
+const useDraggedPlanState = create<IDraggedPlanState & IDraggedPlanAction>(
   (set) => ({
     ...initialState,
     selectPlan: (plan, type = 'create') => {
@@ -45,23 +48,32 @@ const useSelectedPlanState = create<ISelectedPlanState & ISelectedPlanAction>(
         currentPlan: plan,
       });
     },
-    clearSelectedPlan: () => {
-      set(initialState);
-    },
-    changeSelectedPlan: (cb) => {
+    onMoveMonthPlan: ({
+      targetDate: targetDateString,
+      currentDate: currentDateString,
+    }) => {
       set((state) => {
-        const { selectedPlan, currentPlan } = state;
-
+        const { selectedPlan, currentPlan, type } = state;
         if (!selectedPlan || !currentPlan) return state;
 
-        const newPlan = cb({ selectedPlan, currentPlan, type: state.type });
+        const targetDate = moment(targetDateString);
+        const currentDate = moment(currentDateString);
+
+        const newPlan = changePlanView({
+          targetDate,
+          currentDate,
+          selectedPlan,
+          currentPlan,
+          type,
+        });
 
         if (!newPlan) return state;
 
         return { ...state, selectedPlan: newPlan, isDragging: true };
       });
     },
-    onDragEnd: () => {
+    onMoveDayPlan: () => set((state) => state),
+    onDragEndPlan: () => {
       set((state) => {
         const { selectedPlan, currentPlan } = state;
 
@@ -74,7 +86,10 @@ const useSelectedPlanState = create<ISelectedPlanState & ISelectedPlanAction>(
         };
       });
     },
+    clearSelectedPlan: () => {
+      set(initialState);
+    },
   }),
 );
 
-export default useSelectedPlanState;
+export default useDraggedPlanState;

@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 
 import PlanViewUnit from './PlanViewUnit';
+import useSelectedPlanState from '@/stores/plan/draggedPlan';
 import useHoveredPlanIdState from '@/stores/plan/hoverdPlan';
-import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { IViewPlanInfo } from '@/types';
 
 interface IProps {

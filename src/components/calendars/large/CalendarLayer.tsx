@@ -3,7 +3,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import PlanViewInMonth from '@/components/plan/month';
-import useSelectedPlanState from '@/stores/plan/selectedPlan';
+import useSelectedPlanState from '@/stores/plan/draggedPlan';
 import { IViewPlanInfo } from '@/types';
 
 interface IProps {

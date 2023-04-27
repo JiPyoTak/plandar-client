@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import ChevronIcon from '../../icons/ChevronIcon';
 
-import useSelectedPlanState from '@/stores/plan/selectedPlan';
+import useSelectedPlanState from '@/stores/plan/draggedPlan';
 import { FONT_REGULAR_5 } from '@/styles/font';
 import { IViewPlanInfo, TColor } from '@/types';
 import { IPlanWithoutIdAndTime } from '@/types/rq/plan';
