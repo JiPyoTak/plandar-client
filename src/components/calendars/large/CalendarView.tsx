@@ -6,14 +6,14 @@ import CalendarCell from './CalendarCell';
 import CalendarLayer from './CalendarLayer';
 import usePlanDrag, { MouseEventHandler } from '@/hooks/usePlanDrag';
 import useDateState from '@/stores/date';
-import useSelectedPlanState from '@/stores/plan/draggedPlan';
+import useDraggedPlanState from '@/stores/plan/draggedPlan';
 import { getStartAndEndDateInMonth } from '@/utils/dayHandler';
 import { getCalendarInfo } from '@/utils/getCalendarInfo';
 import { getCalendarPlans } from '@/utils/getCalendarPlans';
 import { dummy } from '@/utils/plan/dummy';
 
 const CalendarView = () => {
-  const { selectedPlan, selectPlan, isDragging } = useSelectedPlanState();
+  const { selectedPlan, selectPlan, isDragging } = useDraggedPlanState();
   const { onChangeStoreDate, year, month, day } = useDateState();
   const { changeCurrentDate, currentDateRef, onMouseMove } = usePlanDrag();
 

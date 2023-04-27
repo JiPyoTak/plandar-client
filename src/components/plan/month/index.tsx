@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 import PlanViewUnit from './PlanViewUnit';
-import useSelectedPlanState from '@/stores/plan/draggedPlan';
+import useDraggedPlanState from '@/stores/plan/draggedPlan';
 import useHoveredPlanIdState from '@/stores/plan/hoverdPlan';
 import { IViewPlanInfo } from '@/types';
 
@@ -12,7 +12,7 @@ interface IProps {
 }
 
 const PlanViewInMonth: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
-  const { selectedPlan } = useSelectedPlanState();
+  const { selectedPlan } = useDraggedPlanState();
   const { hoveredPlanId, setHoveredPlanId, clearHoveredPlanId } =
     useHoveredPlanIdState();
 
