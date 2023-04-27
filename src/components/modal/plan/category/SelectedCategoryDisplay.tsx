@@ -1,10 +1,14 @@
 import React from 'react';
 
-import { useTheme } from '@emotion/react';
+import { css, Theme, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import ColorPicker from '@/components/common/ColorPicker';
 import { useCategoryUpdate } from '@/hooks/rq/category';
+import {
+  ClassifierAdditionalFontStyle,
+  ClassifierAdditionalMarginRight,
+} from '@/styles/planModal';
 import { TColor } from '@/types';
 import { ICategory, ICategoryWithoutId } from '@/types/rq/category';
 
@@ -48,23 +52,37 @@ const SelectedCategoryDisplay: TSelectedCategoryDisplay = ({
         selectedColor={category.color}
         onSelect={onSelect}
         additionalComponent={<CategoryName>{category.name}</CategoryName>}
-        css={{ border: `1px solid ${theme.border2}` }}
+        circleSize="small"
+        css={ColorPickerStyle(theme)}
       />
     </Container>
   );
 };
 
+const ColorPickerStyle = (theme: Theme) => css`
+  padding: 5px 9px;
+  background-color: ${theme.background2};
+
+  &:hover {
+    background-color: ${theme.background3};
+  }
+`;
+
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 15px;
+  margin-right: ${ClassifierAdditionalMarginRight};
   gap: 5px;
 `;
 
 const CategoryName = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: ${({ theme }) => theme.text3};
-  padding: 5px 0;
+  gap: 5px;
+  ${ClassifierAdditionalFontStyle}
 `;
 
 export default SelectedCategoryDisplay;
