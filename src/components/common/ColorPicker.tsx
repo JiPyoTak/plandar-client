@@ -17,15 +17,22 @@ type TColorPickerProps = {
   selectedColor: TColor;
   onSelect: (color: TColor) => void;
   additionalComponent?: ReactNode;
+  circleSize?: 'small' | 'middle';
 };
 
 type TColorPicker = React.FC<TColorPickerProps>;
+
+const CIRCLE_SIZE = {
+  small: '10px',
+  middle: '14px',
+};
 
 const ColorPicker: TColorPicker = ({
   className,
   selectedColor,
   onSelect,
   additionalComponent,
+  circleSize = 'middle',
 }: TColorPickerProps) => {
   const theme = useTheme();
   const [popupOpened, setPopupOpened] = useState(false);
@@ -47,6 +54,9 @@ const ColorPicker: TColorPicker = ({
         <span
           css={{
             backgroundColor: selectedColor,
+            width: CIRCLE_SIZE[circleSize],
+            height: CIRCLE_SIZE[circleSize],
+            borderRadius: '50%',
           }}
         />
         {additionalComponent}
@@ -80,12 +90,6 @@ const PickerButton = styled.button`
 
   &:hover {
     background-color: ${({ theme }) => theme.background3};
-  }
-
-  & > span {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
   }
 `;
 
