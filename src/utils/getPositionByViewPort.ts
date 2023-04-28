@@ -16,7 +16,7 @@ const getPositionByViewPort = (
     result.left = 10;
   }
 
-  const posTop = top - Math.abs(height / 2) + 10;
+  const posTop = top - Math.floor(height / 2) + 10;
 
   if (posTop <= 0) {
     result.top = 10;
