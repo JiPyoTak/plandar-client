@@ -3,7 +3,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import PlanViewInMonth from '@/components/plan/month';
-import useDraggedPlanState from '@/stores/plan/draggedPlan';
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { IViewPlanInfo } from '@/types';
 
 interface IProps {
@@ -12,7 +12,7 @@ interface IProps {
 }
 
 const CalendarLayer = ({ calendarPlanView, selectedPlanView }: IProps) => {
-  const { isDragging } = useDraggedPlanState();
+  const { isDragging } = useFocusedPlanState();
 
   return (
     <Layer>

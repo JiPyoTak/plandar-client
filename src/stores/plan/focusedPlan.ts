@@ -10,17 +10,17 @@ type TMovePlanProps = {
   currentDate: string;
 };
 
-interface IDraggedPlanState {
+interface IFocusedPlanState {
   type: IChangePlanViewType;
   // 기존 일정
   currentPlan: null | IPlan | IPlanWithoutIdAndTime;
   // view에 반영되는 일정
-  draggedPlan: null | IPlanWithoutIdAndTime | IPlan;
+  focusedPlan: null | IPlanWithoutIdAndTime | IPlan;
   // drag 중인지 아닌지
   isDragging: boolean;
 }
 
-interface IDraggedPlanAction {
+interface IFocusedPlanAction {
   selectPlan: (
     plan: IPlanWithoutIdAndTime | IPlan,
     type?: IChangePlanViewType,
@@ -34,17 +34,17 @@ interface IDraggedPlanAction {
 const initialState = {
   type: null,
   currentPlan: null,
-  draggedPlan: null,
+  focusedPlan: null,
   isDragging: false,
 } as const;
 
-const useDraggedPlanState = create<IDraggedPlanState & IDraggedPlanAction>(
+const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
   (set) => ({
     ...initialState,
     selectPlan: (plan, type = 'create') => {
       set({
         type,
-        draggedPlan: plan,
+        focusedPlan: plan,
         currentPlan: plan,
       });
     },
@@ -53,8 +53,8 @@ const useDraggedPlanState = create<IDraggedPlanState & IDraggedPlanAction>(
       currentDate: currentDateString,
     }) => {
       set((state) => {
-        const { draggedPlan, currentPlan, type } = state;
-        if (!draggedPlan || !currentPlan) return state;
+        const { focusedPlan, currentPlan, type } = state;
+        if (!focusedPlan || !currentPlan) return state;
 
         const targetDate = moment(targetDateString);
         const currentDate = moment(currentDateString);
@@ -62,27 +62,27 @@ const useDraggedPlanState = create<IDraggedPlanState & IDraggedPlanAction>(
         const newPlan = changePlanView({
           targetDate,
           currentDate,
-          draggedPlan,
+          focusedPlan,
           currentPlan,
           type,
         });
 
         if (!newPlan) return state;
 
-        return { ...state, draggedPlan: newPlan, isDragging: true };
+        return { ...state, focusedPlan: newPlan, isDragging: true };
       });
     },
     onMoveDayPlan: () => set((state) => state),
     onDragEndPlan: () => {
       set((state) => {
-        const { draggedPlan, currentPlan } = state;
+        const { focusedPlan, currentPlan } = state;
 
-        if (!draggedPlan) return state;
+        if (!focusedPlan) return state;
 
         return {
           ...initialState,
-          currentPlan: draggedPlan.id === -1 ? currentPlan : null,
-          draggedPlan: draggedPlan.id === -1 ? draggedPlan : null,
+          currentPlan: focusedPlan.id === -1 ? currentPlan : null,
+          focusedPlan: focusedPlan.id === -1 ? focusedPlan : null,
         };
       });
     },
@@ -92,4 +92,4 @@ const useDraggedPlanState = create<IDraggedPlanState & IDraggedPlanAction>(
   }),
 );
 
-export default useDraggedPlanState;
+export default useFocusedPlanState;

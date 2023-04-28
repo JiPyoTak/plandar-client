@@ -2,15 +2,15 @@ import { useEffect, useRef } from 'react';
 
 import { CALENDAR_UNIT } from '@/constants';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
-import useDraggedPlanState from '@/stores/plan/draggedPlan';
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
 
 export type MouseEventHandler = React.MouseEventHandler<HTMLDivElement>;
 
 const usePlanDrag = () => {
   const { selectedCalendarUnit } = useCalendarUnitState();
-  const { draggedPlan, onMoveMonthPlan, onDragEndPlan } = useDraggedPlanState();
+  const { focusedPlan, onMoveMonthPlan, onDragEndPlan } = useFocusedPlanState();
   const currentDateRef = useRef<string | null>(null);
-  const draggedPlanRef = useRef<typeof draggedPlan>(draggedPlan);
+  const focusedPlanRef = useRef<typeof focusedPlan>(focusedPlan);
 
   const getDateOfMouse = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const { clientX, clientY } = event;
@@ -41,12 +41,12 @@ const usePlanDrag = () => {
   };
 
   useEffect(() => {
-    draggedPlanRef.current = draggedPlan;
-  }, [draggedPlan]);
+    focusedPlanRef.current = focusedPlan;
+  }, [focusedPlan]);
 
   useEffect(() => {
     const onMouseUp = () => {
-      if (currentDateRef.current && draggedPlanRef.current) {
+      if (currentDateRef.current && focusedPlanRef.current) {
         currentDateRef.current = null;
         onDragEndPlan();
       }

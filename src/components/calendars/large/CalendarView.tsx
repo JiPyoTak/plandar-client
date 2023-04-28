@@ -6,20 +6,20 @@ import CalendarCell from './CalendarCell';
 import CalendarLayer from './CalendarLayer';
 import usePlanDrag, { MouseEventHandler } from '@/hooks/usePlanDrag';
 import useDateState from '@/stores/date';
-import useDraggedPlanState from '@/stores/plan/draggedPlan';
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { getStartAndEndDateInMonth } from '@/utils/dayHandler';
 import { getCalendarInfo } from '@/utils/getCalendarInfo';
 import { getCalendarPlans } from '@/utils/getCalendarPlans';
 import { dummy } from '@/utils/plan/dummy';
 
 const CalendarView = () => {
-  const { draggedPlan, selectPlan, isDragging } = useDraggedPlanState();
+  const { focusedPlan, selectPlan, isDragging } = useFocusedPlanState();
   const { onChangeStoreDate, year, month, day } = useDateState();
   const { changeCurrentDate, currentDateRef, onMouseMove } = usePlanDrag();
 
   const calendarInfos = getCalendarInfo({ year, month, day });
   const dates = getStartAndEndDateInMonth(calendarInfos);
-  const selectedPlanArgs = draggedPlan ? [draggedPlan] : [];
+  const selectedPlanArgs = focusedPlan ? [focusedPlan] : [];
 
   const calendarPlanViews = getCalendarPlans(dummy, ...dates);
   const selectedPlanViews = getCalendarPlans(selectedPlanArgs, ...dates);
