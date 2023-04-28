@@ -1,7 +1,5 @@
 import moment, { Moment } from 'moment';
 
-import { compareObjects } from '../compareObjects';
-
 import { IChangePlanViewType } from '@/stores/plan/draggedPlan';
 import { IPlan, IPlanWithoutIdAndTime } from '@/types/rq/plan';
 
@@ -38,10 +36,6 @@ const changePlanView = ({
           draggedPlan,
           currentPlan,
         });
-
-  const isCompared = compareObjects(newPlan, draggedPlan);
-
-  if (isCompared) return null;
 
   return newPlan;
 };
