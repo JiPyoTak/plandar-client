@@ -74,7 +74,7 @@ const PlanTag: React.FC = () => {
       <Dropdown.Controller>
         <PlanModalClassifierTitle
           title="태그"
-          titleIcon={<TagIcon />}
+          titleIcon={<TagIcon width="18" height="18" />}
           additionalComponent={
             <SelectedTagUnit>
               {selectedTags.length} / {MAX_TAG_LENGTH}

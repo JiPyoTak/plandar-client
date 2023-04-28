@@ -71,7 +71,7 @@ const PlanCategory: React.FC = () => {
       <Dropdown.Controller>
         <PlanModalClassifierTitle
           title="카테고리"
-          titleIcon={<CategoryIcon />}
+          titleIcon={<CategoryIcon width="18" height="18" />}
           additionalComponent={
             selectedCategory && (
               <SelectedCategoryDisplay
