@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 
 import PlanViewUnit from './PlanViewUnit';
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
-import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { IViewPlanInfo } from '@/types';
 
 interface IProps {
@@ -12,7 +12,7 @@ interface IProps {
 }
 
 const PlanViewInMonth: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
-  const { selectedPlan } = useSelectedPlanState();
+  const { focusedPlan } = useFocusedPlanState();
   const { hoveredPlan, setHoveredPlan, clearHoveredPlan } =
     useHoveredPlanState();
 
@@ -42,7 +42,7 @@ const PlanViewInMonth: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
 
           if (viewPlan.dayOfWeek !== j + 1) continue;
 
-          if (isDragging === false && selectedPlan?.id !== -1) continue;
+          if (isDragging === false && focusedPlan?.id !== -1) continue;
 
           result.push(
             <PlanViewUnit
@@ -51,10 +51,10 @@ const PlanViewInMonth: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
               onMouseEnter={(e) => onMouseEnter(e, viewPlan)}
               onMouseLeave={() => clearHoveredPlan()}
               index={Number(k)}
-              isSelected={selectedPlan?.id === viewPlan.id}
+              isSelected={focusedPlan?.id === viewPlan.id}
               isHovered={hoveredPlan?.id === viewPlan.id}
               isDragging={
-                (selectedPlan?.id === viewPlan.id && selectedPlan?.id) === -1 ||
+                (focusedPlan?.id === viewPlan.id && focusedPlan?.id) === -1 ||
                 isDragging
               }
             />,

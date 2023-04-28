@@ -2,7 +2,7 @@ import moment, { Moment } from 'moment';
 
 import { compareObjects } from '../compareObjects';
 
-import { IChangePlanViewType } from '@/stores/plan/selectedPlan';
+import { IChangePlanViewType } from '@/stores/plan/focusedPlan';
 import { IPlan, IPlanWithoutIdAndTime } from '@/types/rq/plan';
 
 interface IBaseArgs {
@@ -11,7 +11,7 @@ interface IBaseArgs {
 }
 
 interface ICreatePlanView extends IBaseArgs {
-  selectedPlan: IPlanWithoutIdAndTime | IPlan;
+  focusedPlan: IPlanWithoutIdAndTime | IPlan;
 }
 
 interface IEditPlanView extends ICreatePlanView {
@@ -22,28 +22,32 @@ interface IChangePlanView extends IEditPlanView {
   type: IChangePlanViewType;
 }
 
-const changePlanView =
-  ({ currentDate, targetDate }: IBaseArgs) =>
-  ({ selectedPlan, currentPlan, type }: IChangePlanView) => {
-    const newPlan =
-      type === 'create'
-        ? createPlanView({ targetDate, currentDate, selectedPlan })
-        : editPlanView({
-            targetDate,
-            currentDate,
-            selectedPlan,
-            currentPlan,
-          });
+const changePlanView = ({
+  currentDate,
+  targetDate,
+  focusedPlan,
+  currentPlan,
+  type,
+}: IChangePlanView) => {
+  const newPlan =
+    type === 'create'
+      ? createPlanView({ targetDate, currentDate, focusedPlan })
+      : editPlanView({
+          targetDate,
+          currentDate,
+          focusedPlan,
+          currentPlan,
+        });
 
-    const isCompared = compareObjects(newPlan, selectedPlan);
+  const isCompared = compareObjects(newPlan, focusedPlan);
 
-    if (isCompared) return null;
+  if (isCompared) return null;
 
-    return newPlan;
-  };
+  return newPlan;
+};
 
 const createPlanView = (props: ICreatePlanView): IPlanWithoutIdAndTime => {
-  const { targetDate, currentDate, selectedPlan } = props;
+  const { targetDate, currentDate, focusedPlan } = props;
 
   let planStart = currentDate.clone().startOf('d');
   let planEnd = currentDate.clone().endOf('d');
@@ -55,7 +59,7 @@ const createPlanView = (props: ICreatePlanView): IPlanWithoutIdAndTime => {
   }
 
   const newPlan: IPlanWithoutIdAndTime = {
-    ...selectedPlan,
+    ...focusedPlan,
     startTime: planStart.format(),
     endTime: planEnd.format(),
   };
@@ -64,7 +68,7 @@ const createPlanView = (props: ICreatePlanView): IPlanWithoutIdAndTime => {
 };
 
 const editPlanView = (props: IEditPlanView) => {
-  const { targetDate, currentDate, selectedPlan, currentPlan } = props;
+  const { targetDate, currentDate, focusedPlan, currentPlan } = props;
 
   const currentStart = moment(currentPlan.startTime).utc();
   const currentEnd = moment(currentPlan.endTime).utc();
@@ -90,7 +94,7 @@ const editPlanView = (props: IEditPlanView) => {
         .minutes(currentEnd.minutes());
 
   const newPlan = {
-    ...selectedPlan,
+    ...focusedPlan,
     startTime: startTime.format(),
     endTime: endTime?.format() || null,
   };

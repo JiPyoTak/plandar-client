@@ -4,8 +4,9 @@ import styled from '@emotion/styled';
 
 import ChevronIcon from '@/components/icons/ChevronIcon';
 
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
-import useSelectedPlanState from '@/stores/plan/selectedPlan';
+
 import { FONT_REGULAR_5 } from '@/styles/font';
 import { IViewPlanInfo, TColor } from '@/types';
 import { IPlanWithoutIdAndTime } from '@/types/rq/plan';
@@ -31,8 +32,8 @@ const PlanViewUnit: React.FC<IProps> = (props) => {
     onMouseLeave,
   } = props;
 
-  const { isDragging: d, selectPlan } = useSelectedPlanState();
   const { clearHoveredPlan } = useHoveredPlanState();
+  const { isDragging: d, selectPlan } = useFocusedPlanState();
 
   const isEqualStart = view.startTime.isSame(view.viewStart);
   const isEqualEnd = view.endTime.isSame(view.viewEnd);
