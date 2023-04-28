@@ -12,7 +12,7 @@ interface ICalendarUnitAction {
 }
 
 const initialState = {
-  selectedCalendarUnit: CALENDAR_UNIT[1],
+  selectedCalendarUnit: CALENDAR_UNIT[2],
 } as const;
 
 const useCalendarUnitState = create<ICalendarUnitState & ICalendarUnitAction>(

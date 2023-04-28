@@ -31,13 +31,16 @@ const TimetableView: React.FC<TProps> = ({ dateMoments, timePlans }) => {
       <Container>
         <TimetableTimeline />
         {dateMoments.map((dateMoment, i) => {
-          const key = dateMoment.toDate().toString();
+          const formattedDate = dateMoment.format('YYYY-MM-DD');
           const plans = columnPlans[i];
 
           return (
-            <Column key={key}>
+            <Column key={formattedDate}>
               <TimetablePlanColumn plans={plans} />
-              <TimetableCellColumn dateMoment={dateMoment} />
+              <TimetableCellColumn
+                dateMoment={dateMoment}
+                formattedDate={formattedDate}
+              />
             </Column>
           );
         })}

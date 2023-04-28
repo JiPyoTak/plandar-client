@@ -1,3 +1,5 @@
+import { padZero } from '@/utils/padZero';
+
 const getTimeString = (
   date: Date,
   { showMinutes }: { showMinutes?: boolean } = { showMinutes: true },
@@ -11,8 +13,8 @@ const getTimeString = (
   hourNum = isAM ? hourNum : hourNum - 12;
   if (hourNum === 0) hourNum = 12;
 
-  const hour = hourNum.toString().padStart(2, '0');
-  const minute = date.getMinutes().toString().padStart(2, '0');
+  const hour = padZero(hourNum);
+  const minute = padZero(date.getMinutes());
 
   return `${isAM ? '오전' : '오후'} ${hour}${
     showMinutes ? `:${minute}` : '시'

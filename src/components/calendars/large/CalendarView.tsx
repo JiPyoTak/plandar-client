@@ -4,22 +4,22 @@ import styled from '@emotion/styled';
 
 import CalendarCell from './CalendarCell';
 import CalendarLayer from './CalendarLayer';
-import useDrag, { MouseEventHandler } from '@/hooks/drag/useDrag';
+import usePlanDrag, { MouseEventHandler } from '@/hooks/usePlanDrag';
 import useDateState from '@/stores/date';
-import useSelectedPlanState from '@/stores/plan/selectedPlan';
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { getStartAndEndDateInMonth } from '@/utils/dayHandler';
 import { getCalendarInfo } from '@/utils/getCalendarInfo';
 import { getCalendarPlans } from '@/utils/getCalendarPlans';
 import { dummy } from '@/utils/plan/dummy';
 
 const CalendarView = () => {
-  const { selectedPlan, selectPlan } = useSelectedPlanState();
+  const { focusedPlan, selectPlan, isDragging } = useFocusedPlanState();
   const { onChangeStoreDate, year, month, day } = useDateState();
-  const [isDragging, currentDate, changeCurrentDate, onMouseMove] = useDrag();
+  const { changeCurrentDate, currentDateRef, onMouseMove } = usePlanDrag();
 
   const calendarInfos = getCalendarInfo({ year, month, day });
   const dates = getStartAndEndDateInMonth(calendarInfos);
-  const selectedPlanArgs = selectedPlan ? [selectedPlan] : [];
+  const selectedPlanArgs = focusedPlan ? [focusedPlan] : [];
 
   const calendarPlanViews = getCalendarPlans(dummy, ...dates);
   const selectedPlanViews = getCalendarPlans(selectedPlanArgs, ...dates);
@@ -43,7 +43,7 @@ const CalendarView = () => {
   return (
     <Container
       className={isDragging ? 'isDragging' : ''}
-      onMouseMove={currentDate ? onMouseMove : undefined}
+      onMouseMove={currentDateRef.current ? onMouseMove : undefined}
       onMouseDown={changeCurrentDate}
     >
       {calendarInfos.map((week, i) => (

@@ -8,6 +8,7 @@ import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import { IPlan } from '@/types/rq/plan';
 import { MONTH_PLANS_MOCK } from '@/utils/mock';
+import { padZero } from '@/utils/padZero';
 export default {
   title: 'timetable/DayTimetable',
   component: Timetable,
@@ -53,12 +54,8 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
         id,
         title: `임시 데이터 ${id}`,
         isAllDay: false,
-        startTime: `${year}-${month.toString().padStart(2, '0')}-${day
-          .toString()
-          .padStart(2, '0')}T03:00:00.000`,
-        endTime: `${year}-${month.toString().padStart(2, '0')}-${day
-          .toString()
-          .padStart(2, '0')}T05:00:00.000`,
+        startTime: `${year}-${padZero(month)}-${padZero(day)}T03:00:00.000`,
+        endTime: `${year}-${padZero(month)}-${padZero(day)}`,
       }),
     ];
 
@@ -67,16 +64,12 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
 
   const addRandomPlan = () => {
     const startHour = Math.round(Math.random() * 21);
-    const startMinute = Math.round(Math.random() * 59)
-      .toString()
-      .padStart(2, '0');
+    const startMinute = padZero(Math.round(Math.random() * 59));
 
-    const endHour = Math.round(Math.random() * (22 - startHour) + startHour + 1)
-      .toString()
-      .padStart(2, '0');
-    const endMinute = Math.round(Math.random() * 59)
-      .toString()
-      .padStart(2, '0');
+    const endHour = padZero(
+      Math.round(Math.random() * (22 - startHour) + startHour + 1),
+    );
+    const endMinute = padZero(Math.round(Math.random() * 59));
 
     MONTH_PLANS_MOCK[month] = [
       ...MONTH_PLANS_MOCK[month],
@@ -84,14 +77,12 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
         id,
         title: `임시 데이터 ${id}`,
         isAllDay: false,
-        startTime: `${year}-${month.toString().padStart(2, '0')}-${day
-          .toString()
-          .padStart(2, '0')}T${startHour
-          .toString()
-          .padStart(2, '0')}:${startMinute}:00.000`,
-        endTime: `${year}-${month.toString().padStart(2, '0')}-${day
-          .toString()
-          .padStart(2, '0')}T${endHour}:${endMinute}:00.000`,
+        startTime: `${year}-${padZero(month)}-${padZero(day)}T${padZero(
+          startHour,
+        )}:${startMinute}:00.000`,
+        endTime: `${year}-${padZero(month)}-${padZero(
+          day,
+        )}T${endHour}:${endMinute}:00.000`,
       }),
     ];
 
