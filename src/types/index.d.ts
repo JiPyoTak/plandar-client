@@ -29,7 +29,7 @@ interface IViewPlanInfo {
   viewEnd: Moment;
   startTime: Moment;
   endTime: Moment;
-  plan: IPlan;
+  plan: IPlan | null;
 }
 
 export type {

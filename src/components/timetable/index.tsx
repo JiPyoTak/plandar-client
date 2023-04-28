@@ -11,7 +11,7 @@ import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
 import { MONTH_PLANS_MOCK } from '@/utils/mock';
-import { divideDayPlans } from '@/utils/plan/day/divideDayPlans';
+import divideDayPlans from '@/utils/plan/day/divideDayPlans';
 
 type TProps = {
   rangeAmount?: number;

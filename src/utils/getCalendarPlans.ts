@@ -2,9 +2,9 @@ import moment from 'moment';
 
 import { TDateYMD } from '@/stores/date';
 import { IViewPlanInfo } from '@/types';
-import { IPlan } from '@/types/rq/plan';
+import { IPlan, IPlanWithoutIdAndTime } from '@/types/rq/plan';
 
-const getViewPlans = <T extends IPlan>(
+const getViewPlans = <T extends IPlanWithoutIdAndTime>(
   plan: T,
   startDate: TDateYMD,
   endDate: TDateYMD,
@@ -96,7 +96,7 @@ const getViewPlans = <T extends IPlan>(
       startTime: currentStartTime,
       endTime: currentEndTime,
       dayOfWeek: newViewStart.day() + 1,
-      plan,
+      plan: plan.id === -1 ? null : (plan as unknown as IPlan),
     });
   }
 
@@ -137,7 +137,7 @@ const sortPlansCallback = (a: IViewPlanInfo, b: IViewPlanInfo) => {
   );
 };
 
-const getCalendarPlans = <T extends IPlan>(
+const getCalendarPlans = <T extends IPlanWithoutIdAndTime>(
   plans: T[],
   startDate: TDateYMD,
   endDate: TDateYMD,

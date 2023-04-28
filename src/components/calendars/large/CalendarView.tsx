@@ -13,7 +13,7 @@ import { getCalendarPlans } from '@/utils/getCalendarPlans';
 import { dummy } from '@/utils/plan/dummy';
 
 const CalendarView = () => {
-  const { draggedPlan, createDragPlan, isDragging } = useDraggedPlanState();
+  const { draggedPlan, selectPlan, isDragging } = useDraggedPlanState();
   const { onChangeStoreDate, year, month, day } = useDateState();
   const { changeCurrentDate, currentDateRef, onMouseMove } = usePlanDrag();
 
@@ -31,10 +31,13 @@ const CalendarView = () => {
 
     if (!targetDate) return;
 
-    createDragPlan({
+    const newPlan = {
+      id: -1,
       startTime: targetDate,
       endTime: targetDate,
-    });
+    };
+
+    selectPlan(newPlan);
   };
 
   return (
