@@ -14,7 +14,7 @@ import {
 
 const PlanMemo: React.FC = () => {
   const ref = useRef<HTMLTextAreaElement>(null);
-  const [memo, setMemo] = useState('');
+  const [description, setDescription] = useState('');
 
   const handleTextareaHeight = () => {
     const current = ref.current;
@@ -26,7 +26,7 @@ const PlanMemo: React.FC = () => {
   const onChangeTextArea: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     handleTextareaHeight();
     if (e.target.value.length <= MAX_MEMO_LENGTH) {
-      setMemo(e.target.value);
+      setDescription(e.target.value);
     }
   };
 
@@ -38,7 +38,7 @@ const PlanMemo: React.FC = () => {
           titleIcon={<MemoIcon width="18" height="18" />}
           additionalComponent={
             <ContentLenDisplay>
-              {memo.length} / {MAX_MEMO_LENGTH}
+              {description.length} / {MAX_MEMO_LENGTH}
             </ContentLenDisplay>
           }
         />
@@ -47,7 +47,7 @@ const PlanMemo: React.FC = () => {
         <TextArea
           placeholder={`메모를 최대 ${MAX_MEMO_LENGTH}자까지 입력할 수 있습니다`}
           ref={ref}
-          value={memo}
+          value={description}
           onChange={onChangeTextArea}
         />
       </div>
