@@ -14,16 +14,14 @@ interface IHoveredPlanAction {
   clearHoveredPlan: () => void;
 }
 
-const RECT = {
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-};
-
 const initialState: IHoveredPlanState = {
   hoveredPlan: null,
-  rect: { ...RECT },
+  rect: {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
 } as const;
 
 const useHoveredPlanState = create<IHoveredPlanState & IHoveredPlanAction>(
