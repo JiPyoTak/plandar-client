@@ -12,7 +12,7 @@ const PlanAllDay = () => {
       <Checkbox
         label="종일"
         checked={isAllDay}
-        onClick={() => setIsAllDay((prev) => !prev)}
+        onChange={() => setIsAllDay((prev) => !prev)}
       />
     </Container>
   );
@@ -20,6 +20,7 @@ const PlanAllDay = () => {
 
 const Container = styled.div`
   width: 100%;
+  padding: 10px 0;
 `;
 
 export default PlanAllDay;
