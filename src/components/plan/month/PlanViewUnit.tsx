@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import ChevronIcon from '../../icons/ChevronIcon';
+import ChevronIcon from '@/components/icons/ChevronIcon';
 
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
