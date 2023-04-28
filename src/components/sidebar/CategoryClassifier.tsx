@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { MouseEvent, MouseEventHandler, useState } from 'react';
 
 import Dropdown from '../common/dropdown';
 
@@ -30,7 +30,8 @@ const CategoryClassifier: React.FC = () => {
   const { hiddenCategories, toggleCategoryShow } = useCategoryClassifierState();
 
   // 카테고리 추가
-  const onClickAdd = () => {
+  const onClickAdd: MouseEventHandler = (e) => {
+    e.stopPropagation();
     setModalState({
       onClose: () => setModalState(null),
       onDone: ({
@@ -78,12 +79,13 @@ const CategoryClassifier: React.FC = () => {
         <Dropdown.Controller>
           <ClassifierTitle
             title={'카테고리'}
-            additionalIcon={
-              <PlusIcon
-                onClick={onClickAdd}
-                width={CLASSIFIER_TITLE_ICON_SIZE}
-                height={CLASSIFIER_TITLE_ICON_SIZE}
-              />
+            additionalComponent={
+              <button onClick={onClickAdd}>
+                <PlusIcon
+                  width={CLASSIFIER_TITLE_ICON_SIZE}
+                  height={CLASSIFIER_TITLE_ICON_SIZE}
+                />
+              </button>
             }
           />
         </Dropdown.Controller>

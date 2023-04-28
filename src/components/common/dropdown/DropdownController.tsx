@@ -32,9 +32,10 @@ const DropdownController = ({
   }) as React.ReactNode[];
 
   return (
-    <button css={{ width: '100%' }} onClick={toggleShow}>
+    // newChildren에 button이 존재하면 error가 발생하여 button에서 div로 변경
+    <div css={{ width: '100%', cursor: 'pointer' }} onClick={toggleShow}>
       {newChildren}
-    </button>
+    </div>
   );
 };
 

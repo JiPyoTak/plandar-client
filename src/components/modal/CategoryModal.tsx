@@ -6,6 +6,7 @@ import ModalContainer from './index';
 import StylishButton from '@/components/buttons/StylishButton';
 import ColorPicker from '@/components/common/ColorPicker';
 import Input from '@/components/common/Input';
+import ChevronIcon from '@/components/icons/ChevronIcon';
 import { SELECTABLE_COLOR } from '@/constants';
 import { useCategoryQuery } from '@/hooks/rq/category';
 import { FONT_BOLD_1, FONT_REGULAR_5 } from '@/styles/font';
@@ -75,6 +76,9 @@ const CategoryModal: TCategoryModal = ({
         <ColorPicker
           selectedColor={selectedColor}
           onSelect={(color: TColor) => setSelectedColor(color)}
+          additionalComponent={
+            <ChevronIcon type="down" color="black" width="14" />
+          }
         />
       }
     >
