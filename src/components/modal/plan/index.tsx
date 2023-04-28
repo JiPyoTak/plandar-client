@@ -8,31 +8,36 @@ import StylishButton from '@/components/buttons/StylishButton';
 import ColorPicker from '@/components/common/ColorPicker';
 import Input from '@/components/common/Input';
 import ChevronIcon from '@/components/icons/ChevronIcon';
+import DateDisplay from '@/components/modal/plan/DateDisplay';
 import PlanAllDay from '@/components/modal/plan/PlanAllDay';
 import PlanCategory from '@/components/modal/plan/PlanCategory';
 import PlanMemo from '@/components/modal/plan/PlanMemo';
 import PlanTag from '@/components/modal/plan/PlanTag';
 import { SELECTABLE_COLOR } from '@/constants';
-import { useCategoryQuery } from '@/hooks/rq/category';
 import { FONT_BOLD_1 } from '@/styles/font';
 import { TColor } from '@/types';
 
 type TPlanModalProps = {
+  isEdit?: boolean;
   onClose: () => void;
   onDone: (obj: any) => void;
 };
 
 type TPlanModal = React.FC<TPlanModalProps>;
 
-const PlanModal: TPlanModal = ({ onClose, onDone }: TPlanModalProps) => {
-  const { data: categoryData } = useCategoryQuery();
+const PlanModal: TPlanModal = ({
+  isEdit = false,
+  onClose,
+  onDone,
+}: TPlanModalProps) => {
   const [selectedColor, setSelectedColor] = useState<TColor>(
     SELECTABLE_COLOR[0],
   );
   const [planName, setPlanName] = useState('');
 
   const onSubmit = () => {
-    console.log('클릭');
+    onDone(planName);
+    // todo: 일정생성 api 호출 및 onDone에 일정 데이터 넣어서 호출
   };
 
   return (
@@ -56,7 +61,9 @@ const PlanModal: TPlanModal = ({ onClose, onDone }: TPlanModalProps) => {
         value={planName}
         onChange={(e) => setPlanName(e.target.value)}
       />
+      <DateDisplay />
       <PlanAllDay />
+      <Hr />
       <PlanMemo />
       <Hr />
       <PlanCategory />
@@ -67,9 +74,9 @@ const PlanModal: TPlanModal = ({ onClose, onDone }: TPlanModalProps) => {
         size="large"
         onClick={onSubmit}
         css={{ marginTop: 20 }}
-        // disabled={!newCategoryName}
+        disabled={!planName}
       >
-        생성
+        {isEdit ? '수정' : '생성'}
       </StylishButton>
     </Modal>
   );
@@ -97,6 +104,6 @@ const Hr = styled.hr`
   width: 100%;
   height: 1px;
   border: none;
-  background-color: ${({ theme }) => theme.background3};
+  background-color: ${({ theme }) => theme.border1};
 `;
 export default PlanModal;
