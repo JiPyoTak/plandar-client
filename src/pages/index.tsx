@@ -9,7 +9,6 @@ import HoveredPlanModal from '@/components/modal/plan/Hovered';
 import SideBar from '@/components/sidebar';
 import Timetable from '@/components/timetable';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
-import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 import { SIDEBAR_WIDTH } from '@/styles/home';
 
 const CALENDAR_COMPONENTS = {
@@ -20,7 +19,6 @@ const CALENDAR_COMPONENTS = {
 
 const Home: React.FC = () => {
   const { selectedCalendarUnit } = useCalendarUnitState();
-  const { hoveredPlan } = useHoveredPlanState();
 
   const CalendarComponent = CALENDAR_COMPONENTS[selectedCalendarUnit];
 
@@ -46,7 +44,7 @@ const Home: React.FC = () => {
           </section>
         </ContentSizer>
       </Container>
-      {hoveredPlan && <HoveredPlanModal />}
+      <HoveredPlanModal />
     </>
   );
 };

@@ -29,11 +29,13 @@ const Hovered = () => {
   const { startTime, endTime, title, type } = hoveredPlan;
 
   return (
-    <HoveredModal ref={ref} isCloseBtn={false}>
-      <div>카테고리</div>
-      <div css={FONT_REGULAR_4}>{title}</div>
-      <TimeStamp startTime={startTime} endTime={endTime} type={type} />
-    </HoveredModal>
+    hoveredPlan && (
+      <HoveredModal ref={ref} isCloseBtn={false}>
+        <div>카테고리</div>
+        <div css={FONT_REGULAR_4}>{title}</div>
+        <TimeStamp startTime={startTime} endTime={endTime} type={type} />
+      </HoveredModal>
+    )
   );
 };
 
