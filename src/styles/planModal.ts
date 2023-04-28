@@ -7,8 +7,9 @@ const ClassifierAdditionalMarginRight = '5px';
 const ClassifierAdditionalFontStyle = FONT_REGULAR_7;
 
 const PlanModalClassifierTitle = styled(ClassifierTitle)`
-  padding-left: 0;
-  padding-right: 0;
+  padding: 21px 0;
+  margin-top: 0;
+  height: fit-content;
 `;
 
 export {
