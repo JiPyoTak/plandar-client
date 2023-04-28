@@ -7,7 +7,6 @@ import ChevronIcon from '../../icons/ChevronIcon';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { FONT_REGULAR_5 } from '@/styles/font';
 import { IViewPlanInfo, TColor } from '@/types';
-import { IPlanWithoutIdAndTime } from '@/types/rq/plan';
 
 interface IProps {
   index: number;
@@ -42,14 +41,14 @@ const PlanViewUnit: React.FC<IProps> = (props) => {
   if (isHovered && !d) className.push('is_hovered');
 
   const onMouseDown = () => {
-    const planInput: IPlanWithoutIdAndTime = {
+    const planInput = {
+      ...view.plan,
       id: view.id,
       startTime: view.startTime.format(),
       endTime: view.endTime.format(),
-      ...view.plan,
     };
 
-    selectPlan(planInput, 'edit');
+    selectPlan(planInput);
   };
 
   return (
