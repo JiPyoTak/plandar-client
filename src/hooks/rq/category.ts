@@ -41,7 +41,7 @@ const useCategoryCreate = () => {
   return useMutation(
     // api 호출
     (newCategory: ICategoryWithoutId) => {
-      return new Promise((resolve) => {
+      return new Promise<ICategoryWithoutId>((resolve) => {
         setTimeout(() => {
           resolve(newCategory);
         }, 100);

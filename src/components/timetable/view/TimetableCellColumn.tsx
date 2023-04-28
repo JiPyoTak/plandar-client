@@ -5,8 +5,8 @@ import { Moment } from 'moment';
 
 import { TIMETABLE_CELL_AMOUNT, TIMETABLE_CELL_UNIT } from '@/constants';
 import { FONT_REGULAR_8 } from '@/styles/font';
-import { TIMETABLE_CELL_HEIGHT } from '@/styles/timetable';
-import { timeToString } from '@/utils/timeToString';
+import { TIMETABLE_CELL_HEIGHT, TIMETABLE_Z_INDEX } from '@/styles/timetable';
+import { getTimeString } from '@/utils/date/getTimeString';
 
 type TProps = {
   dateMoment: Moment;
@@ -23,7 +23,7 @@ const TimetableCellColumn: React.FC<TProps> = ({ dateMoment }) => {
         );
         return (
           <TimeCell key={date.toString()}>
-            <TimeSpan>{timeToString(date)}</TimeSpan>
+            <TimeSpan>{getTimeString(date)}</TimeSpan>
           </TimeCell>
         );
       })}
@@ -34,7 +34,6 @@ const TimetableCellColumn: React.FC<TProps> = ({ dateMoment }) => {
 const Container = styled.div`
   width: 100%;
   position: relative;
-  z-index: 1;
 `;
 
 const TimeCell = styled.div`
@@ -45,8 +44,14 @@ const TimeCell = styled.div`
     border-bottom: 1px solid ${({ theme }) => theme.border2};
   }
 
+  & > span {
+    position: relative;
+  }
   &:hover > span {
-    visibility: visible;
+    z-index: ${TIMETABLE_Z_INDEX['timeCellHover']};
+
+    color: ${({ theme }) => theme.primary};
+    background-color: ${({ theme }) => theme.primary_light3};
     cursor: pointer;
   }
 `;
@@ -59,11 +64,12 @@ const TimeSpan = styled.span`
   padding: 0.1rem 0.3rem;
 
   display: block;
-  visibility: hidden;
 
-  color: ${({ theme }) => theme.primary};
-  background-color: ${({ theme }) => theme.primary_light3};
+  color: transparent;
+  background-color: transparent;
   border-radius: 4px;
+  transition-property: color, background-color;
+  transition-duration: 0.2s;
 `;
 
 export default TimetableCellColumn;

@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { TIMETABLE_CELL_AMOUNT, TIMETABLE_CELL_PER_HOUR } from '@/constants';
 import { TIMETABLE_CELL_HEIGHT, TimetableGuide } from '@/styles/timetable';
-import { timeToString } from '@/utils/timeToString';
+import { getTimeString } from '@/utils/date/getTimeString';
 
 const TIMELINE_CELL_AMOUNT = Math.floor(
   TIMETABLE_CELL_AMOUNT / TIMETABLE_CELL_PER_HOUR,
@@ -21,7 +21,7 @@ const TimetableTimeline: React.FC = () => {
         return (
           <HourSpace key={index}>
             {!isFirst && (
-              <HourSpan>{timeToString(date, { showMinutes: false })}</HourSpan>
+              <HourSpan>{getTimeString(date, { showMinutes: false })}</HourSpan>
             )}
           </HourSpace>
         );

@@ -1,45 +1,71 @@
-import React, { useState } from 'react';
+import React, {
+  MouseEvent,
+  MouseEventHandler,
+  ReactNode,
+  useState,
+} from 'react';
 
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { CheckIcon } from '@/components/icons';
-import ChevronIcon from '@/components/icons/ChevronIcon';
 import { SELECTABLE_COLOR } from '@/constants';
 import { TColor } from '@/types';
 
 type TColorPickerProps = {
+  className?: string;
   selectedColor: TColor;
   onSelect: (color: TColor) => void;
+  additionalComponent?: ReactNode;
+  circleSize?: 'small' | 'middle';
 };
 
 type TColorPicker = React.FC<TColorPickerProps>;
 
+const CIRCLE_SIZE = {
+  small: '10px',
+  middle: '14px',
+};
+
 const ColorPicker: TColorPicker = ({
+  className,
   selectedColor,
   onSelect,
+  additionalComponent,
+  circleSize = 'middle',
 }: TColorPickerProps) => {
   const theme = useTheme();
   const [popupOpened, setPopupOpened] = useState(false);
 
+  const onClickPickerButton: MouseEventHandler = (e) => {
+    e.stopPropagation();
+    setPopupOpened((prev) => !prev);
+  };
+
+  const onClickColor = (e: MouseEvent<HTMLButtonElement>, color: TColor) => {
+    e.stopPropagation();
+    onSelect(color);
+    setPopupOpened(false);
+  };
+
   return (
     <span css={{ position: 'relative' }}>
-      <PickerButton onClick={() => setPopupOpened((prev) => !prev)}>
+      <PickerButton onClick={onClickPickerButton} className={className}>
         <span
           css={{
             backgroundColor: selectedColor,
+            width: CIRCLE_SIZE[circleSize],
+            height: CIRCLE_SIZE[circleSize],
+            borderRadius: '50%',
           }}
         />
-        <ChevronIcon css={{ width: 14 }} type="down" color="black" />
+        {additionalComponent}
       </PickerButton>
       {popupOpened && (
         <Popup>
           {SELECTABLE_COLOR.map((color) => (
             <button
-              onClick={() => {
-                onSelect(color);
-                setPopupOpened(false);
-              }}
+              onClick={(e) => onClickColor(e, color)}
               css={{ position: 'relative' }}
               key={color}
             >
@@ -61,14 +87,9 @@ const PickerButton = styled.button`
   gap: 5px;
   padding: 0 5px;
   border-radius: 5px;
+
   &:hover {
     background-color: ${({ theme }) => theme.background3};
-  }
-
-  & > span {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
   }
 `;
 

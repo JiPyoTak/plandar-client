@@ -25,26 +25,33 @@ const CandidateItem: TCandidateItem = ({
 }: TCandidateItemProps) => {
   const theme = useTheme();
 
-  if (type === 'tag') {
-    return (
-      <Container
-        css={isSelected && { backgroundColor: theme.background2 }}
-        {...rest}
-      >
-        <CheckIconContainer>
-          {isSelected && (
-            <CheckIcon
-              css={{ width: 17, height: 17 }}
-              color={theme.primary_light}
-            />
-          )}
-        </CheckIconContainer>
-        <Title>{name}</Title>
-      </Container>
-    );
-  } else {
-    return <div>아직 구현 못함</div>;
-  }
+  return (
+    <Container
+      css={isSelected && { backgroundColor: theme.background2 }}
+      {...rest}
+    >
+      {type === 'tag' ? (
+        <>
+          <CheckIconContainer>
+            {isSelected && (
+              <CheckIcon color={theme.primary_light} width="17" height="17" />
+            )}
+          </CheckIconContainer>
+          <Title>{name}</Title>
+        </>
+      ) : (
+        <>
+          <ColorCircle css={{ backgroundColor: color }} />
+          <Title>{name}</Title>
+          <CheckIconContainer>
+            {isSelected && (
+              <CheckIcon color={theme.primary_light} width="17" height="17" />
+            )}
+          </CheckIconContainer>
+        </>
+      )}
+    </Container>
+  );
 };
 
 const Container = styled.button`
@@ -80,6 +87,12 @@ const CheckIconContainer = styled.div`
 const Title = styled.span`
   flex: 1;
   text-align: left;
+`;
+
+const ColorCircle = styled.span`
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
 `;
 
 export default CandidateItem;

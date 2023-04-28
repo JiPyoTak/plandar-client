@@ -1,9 +1,9 @@
-const timeToString = (
+const getTimeString = (
   date: Date,
   { showMinutes }: { showMinutes?: boolean } = { showMinutes: true },
 ) => {
   if (!(date instanceof Date))
-    throw Error(`timeToString : 올바른 Date 값을 넣어주세요`);
+    throw Error(`getTimeString : 올바른 Date 값을 넣어주세요`);
 
   let hourNum = date.getHours();
   const isAM = hourNum < 12;
@@ -19,4 +19,4 @@ const timeToString = (
   }`;
 };
 
-export { timeToString };
+export { getTimeString };
