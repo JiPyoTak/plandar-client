@@ -12,10 +12,12 @@ const Template: ComponentStory<typeof PlanModal> = (args) => (
 );
 
 export const Create = Template.bind({});
-Create.args = {};
+Create.args = {
+  onDone: (data) => console.log(data),
+};
 
 export const Update = Template.bind({});
 Update.args = {
-  // isEdit: true,
-  onDone: () => console.log('done'),
+  isEdit: true,
+  onDone: (data) => console.log(data),
 };
