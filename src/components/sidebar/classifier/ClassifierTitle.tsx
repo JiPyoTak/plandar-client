@@ -61,6 +61,7 @@ const Container = styled.div`
 const Title = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   column-gap: 8px;
   ${FONT_BOLD_3}
 `;
