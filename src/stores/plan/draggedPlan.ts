@@ -1,10 +1,11 @@
 import moment from 'moment';
 import { create } from 'zustand';
 
-import { IPlan, IPlanWithoutIdAndTime } from '@/types/rq/plan';
+import { IPlan } from '@/types/rq/plan';
 import { changePlanView } from '@/utils/plan/planViewHandlerToMonth';
 
 export type IChangePlanViewType = 'create' | 'edit' | null;
+
 type TMovePlanProps = {
   targetDate: string;
   currentDate: string;
@@ -13,18 +14,16 @@ type TMovePlanProps = {
 interface IDraggedPlanState {
   type: IChangePlanViewType;
   // 기존 일정
-  currentPlan: null | IPlan | IPlanWithoutIdAndTime;
+  currentPlan: null | IPlan;
   // view에 반영되는 일정
-  draggedPlan: null | IPlanWithoutIdAndTime | IPlan;
+  draggedPlan: null | IPlan;
   // drag 중인지 아닌지
   isDragging: boolean;
 }
 
 interface IDraggedPlanAction {
-  selectPlan: (
-    plan: IPlanWithoutIdAndTime | IPlan,
-    type?: IChangePlanViewType,
-  ) => void;
+  createDragPlan: (planData: Pick<IPlan, 'startTime'> & Partial<IPlan>) => void;
+  selectPlan: (plan: IPlan) => void;
   onMoveMonthPlan: (args: TMovePlanProps) => void;
   onMoveDayPlan: (args: TMovePlanProps) => void;
   onDragEndPlan: () => void;
@@ -41,10 +40,30 @@ const initialState = {
 const useDraggedPlanState = create<IDraggedPlanState & IDraggedPlanAction>(
   (set) => ({
     ...initialState,
-    selectPlan: (plan, type = 'create') => {
+    createDragPlan: (planData) => {
+      const newPlan = {
+        id: -1,
+        title: '새로운 일정',
+        description: null,
+        isAllDay: false,
+        type: 'task',
+        endTime: null,
+        color: '#52D681',
+        categoryId: null,
+        tags: [],
+        ...planData,
+      } satisfies IPlan;
+
       set({
-        type,
-        draggedPlan: plan,
+        type: 'create',
+        draggedPlan: newPlan,
+        currentPlan: newPlan,
+      });
+    },
+    selectPlan: (plan) => {
+      set({
+        type: 'edit',
+        draggedPlan: { ...plan },
         currentPlan: plan,
       });
     },
