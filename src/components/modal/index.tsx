@@ -42,7 +42,7 @@ const Modal: TModalPortal = (props, ref) => {
     >
       {isBgBlack && <Background onClick={onClose} />}
       <Body className={className} ref={ref}>
-        {(HeaderLeftComponent || HeaderRightComponent) && (
+        {(HeaderLeftComponent || HeaderRightComponent || isCloseBtn) && (
           <Header>
             <HeaderLeft>{HeaderLeftComponent}</HeaderLeft>
             <HeaderRight>
