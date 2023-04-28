@@ -6,17 +6,14 @@ export const EPlanType = {
   ALARM: 'alarm',
 } as const;
 
-interface IPlanWithoutIdAndTime {
+interface IPlan {
   id: number;
-  startTime: string;
-  endTime: string | null;
-}
-
-interface IPlan extends IPlanWithoutIdAndTime {
   title: string;
   description: string | null;
-  color: TColor;
   isAllDay: boolean;
+  color: TColor;
+  startTime: string;
+  endTime: string | null;
   type: (typeof EPlanType)[keyof typeof EPlanType];
   categoryId: number | null;
   tags: string[];
@@ -26,4 +23,4 @@ interface ITimePlan extends IPlan {
   endTime: IPlan['startTime'];
 }
 
-export type { IPlan, IPlanWithoutIdAndTime, ITimePlan };
+export type { IPlan, ITimePlan };
