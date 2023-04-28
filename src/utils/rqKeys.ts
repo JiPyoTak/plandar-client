@@ -1,3 +1,5 @@
 const CATEGORY_KEY = 'category';
 
-export { CATEGORY_KEY };
+const TAG_KEY = 'tag';
+
+export { CATEGORY_KEY, TAG_KEY };
