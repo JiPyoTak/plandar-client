@@ -42,17 +42,19 @@ const Modal: TModalPortal = (props, ref) => {
     >
       {isBgBlack && <Background onClick={onClose} />}
       <Body className={className} ref={ref}>
-        <Header>
-          <HeaderLeft>{HeaderLeftComponent}</HeaderLeft>
-          <HeaderRight>
-            {HeaderRightComponent}
-            {isCloseBtn && (
-              <button onClick={onClose}>
-                <CrossIcon color={theme.black} />
-              </button>
-            )}
-          </HeaderRight>
-        </Header>
+        {(HeaderLeftComponent || HeaderRightComponent) && (
+          <Header>
+            <HeaderLeft>{HeaderLeftComponent}</HeaderLeft>
+            <HeaderRight>
+              {HeaderRightComponent}
+              {isCloseBtn && (
+                <button onClick={onClose}>
+                  <CrossIcon color={theme.black} />
+                </button>
+              )}
+            </HeaderRight>
+          </Header>
+        )}
         {children}
       </Body>
     </Container>,
