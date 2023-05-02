@@ -8,10 +8,10 @@ import { CategoryIcon } from '@/components/icons';
 import { Candidate } from '@/components/modal/plan/Candidates';
 import CategoryCreateForm from '@/components/modal/plan/category/CategoryCreateForm';
 import SelectedCategoryDisplay from '@/components/modal/plan/category/SelectedCategoryDisplay';
-import ClassifierTitle from '@/components/sidebar/classifier/ClassifierTitle';
 import { MAX_CANDIDATE_LENGTH } from '@/constants';
 import { useCategoryQuery } from '@/hooks/rq/category';
 import useDebounce from '@/hooks/useDebounce';
+import { PlanModalClassifierTitle } from '@/styles/planModal';
 import { ICategory, ICategoryWithoutId } from '@/types/rq/category';
 
 // 입력과 일치하는 category 존재여부에 따라 다른 것을 보여주기 위해 정의한 타입
@@ -69,9 +69,9 @@ const PlanCategory: React.FC = () => {
   return (
     <Container>
       <Dropdown.Controller>
-        <ClassifierTitle
+        <PlanModalClassifierTitle
           title="카테고리"
-          titleIcon={<CategoryIcon />}
+          titleIcon={<CategoryIcon width="18" height="18" />}
           additionalComponent={
             selectedCategory && (
               <SelectedCategoryDisplay
