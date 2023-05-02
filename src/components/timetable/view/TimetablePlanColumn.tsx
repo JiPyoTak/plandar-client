@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TimetablePlan from './TimetablePlan';
+import TimePlan from '@/components/plan/TimePlan';
 import { ITimePlan } from '@/types/rq/plan';
 import { getOrderTimePlansInfo } from '@/utils/plan/day/getOrderTimePlansInfo';
 
@@ -15,7 +15,7 @@ const TimetablePlanColumn: React.FC<TProps> = ({ plans }) => {
     <div css={{ width: 'calc(100% - 0.75rem)', position: 'relative' }}>
       <div css={{ width: '100%', position: 'absolute' }}>
         {plans.map((plan, index) => (
-          <TimetablePlan
+          <TimePlan
             key={plan.id ?? `timetable-plan-${index}`}
             plan={plan}
             rank={orderInfos[index].rank}
