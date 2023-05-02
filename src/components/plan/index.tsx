@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import PlanViewUnit from './PlanViewUnit';
+import WeekPlan from '@/components/plan/WeekPlan';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 import { IViewPlanInfo } from '@/types';
@@ -45,7 +45,7 @@ const PlanViewInMonth: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
           if (isDragging === false && focusedPlan?.id !== -1) continue;
 
           result.push(
-            <PlanViewUnit
+            <WeekPlan
               key={`${viewPlan.id}${k}`}
               view={viewPlan}
               onMouseEnter={(e) => onMouseEnter(e, viewPlan)}
