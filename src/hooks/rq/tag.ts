@@ -1,38 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { updateCategoryAPI } from '@/apis/category';
+import { createTagAPI, getTagAPI } from '@/apis/tag';
 import { ITag, ITagWithoutId } from '@/types/rq/tag';
-import { TAG_MOCK } from '@/utils/mock';
 import { TAG_KEY } from '@/utils/rqKeys';
 
 // 카테고리 캐싱을 위한 키
 const KEY = [TAG_KEY];
-const useTagQuery = () => {
-  const queryClient = useQueryClient();
-  // 첫번째 인자: 쿼리 키
-  // 두번째 인자: 데이터를 가져오는 비동기 함수
-  return useQuery(KEY, async () => {
-    // 원래는 api를 호출해야하지만 **임시적**으로 아래와 같이 사용
-
-    const tags = queryClient.getQueryData<ITag[]>(KEY);
-
-    // 첫 호출 시에는 캐싱된 데이터가 없으므로 mock 데이터를 반환
-    if (!tags) {
-      return [...TAG_MOCK];
-    }
-    // 캐싱된 데이터에서 id === -1 인 것만 찾아서 새로운 id를 부여
-    else {
-      return tags.map((tag) => {
-        if (tag.id === -1) {
-          return {
-            ...tag,
-            id: Math.max(...tags.map((tag) => tag.id)) + 1,
-          };
-        }
-        return tag;
-      });
-    }
-  });
-};
+const useTagQuery = () => useQuery(KEY, getTagAPI);
 
 // 카테고리 추가
 const useTagCreate = () => {
@@ -40,13 +15,7 @@ const useTagCreate = () => {
 
   return useMutation(
     // api 호출
-    (newTag: ITagWithoutId) => {
-      return new Promise<ITagWithoutId>((resolve) => {
-        setTimeout(() => {
-          resolve(newTag);
-        }, 100);
-      });
-    },
+    createTagAPI,
     {
       onMutate: async (newTag: ITagWithoutId) => {
         // 기존 캐싱된 데이터 무효화
@@ -82,13 +51,7 @@ const useTagUpdate = () => {
 
   return useMutation(
     // api 호출
-    (newTag: ITag) => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(newTag);
-        }, 100);
-      });
-    },
+    updateCategoryAPI,
     {
       onMutate: async (newTag: ITag) => {
         // 기존 캐싱된 데이터 무효화
