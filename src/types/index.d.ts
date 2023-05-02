@@ -3,7 +3,7 @@ import { Moment } from 'moment';
 import { IPlan } from './rq/plan';
 import { Union } from './union';
 import { CALENDAR_UNIT, DAY_OF_WEEK_UNIT } from '@/constants';
-import { ICalendarInfo } from '@/utils/getCalendarInfo';
+import { ICalendarInfo } from '@/utils/calendar/getCalendarInfo';
 
 type TCalendarUnit = Union<typeof CALENDAR_UNIT>;
 type TDayOfWeekUnit = Union<typeof DAY_OF_WEEK_UNIT>;
