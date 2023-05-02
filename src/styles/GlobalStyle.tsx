@@ -22,6 +22,8 @@ const GlobalStyle: React.FC = () => {
         }
 
         body {
+          position: relative;
+
           width: 100vw;
           height: 100vh;
 
@@ -47,6 +49,13 @@ const GlobalStyle: React.FC = () => {
           border-radius: 2px;
           border: none;
           background-color: ${theme.placeholder};
+        }
+
+        #modal {
+          position: fixed;
+          top: 0;
+          left: 0;
+          z-index: 999;
         }
       `}
     />
