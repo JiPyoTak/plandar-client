@@ -18,7 +18,7 @@ const useCategoryCreate = () => {
 
   return useMutation(
     // api 호출
-    (newCategory: ICategoryWithoutId) => createCategoryAPI(newCategory),
+    createCategoryAPI,
     {
       onMutate: async (newCategory: ICategoryWithoutId) => {
         // 기존 캐싱된 데이터 무효화
@@ -57,7 +57,7 @@ const useCategoryUpdate = () => {
 
   return useMutation(
     // api 호출
-    (newCategory: ICategory) => updateCategoryAPI(newCategory),
+    updateCategoryAPI,
     {
       onMutate: async (newCategory: ICategory) => {
         // 기존 캐싱된 데이터 무효화
