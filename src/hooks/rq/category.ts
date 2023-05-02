@@ -10,12 +10,7 @@ import { CATEGORY_KEY } from '@/utils/rqKeys';
 
 // 카테고리 캐싱을 위한 키
 const KEY = [CATEGORY_KEY];
-const useCategoryQuery = () => {
-  const queryClient = useQueryClient();
-  // 첫번째 인자: 쿼리 키
-  // 두번째 인자: 데이터를 가져오는 비동기 함수
-  return useQuery(KEY, getCategoryAPI);
-};
+const useCategoryQuery = () => useQuery(KEY, getCategoryAPI);
 
 // 카테고리 추가
 const useCategoryCreate = () => {
