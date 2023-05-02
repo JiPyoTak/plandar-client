@@ -27,7 +27,9 @@ const axiosAPI = (() => {
   );
 
   axiosInstance.interceptors.response.use(
-    (res: AxiosResponse) => res,
+    (res: AxiosResponse) => {
+      return res.data.data;
+    },
     async (error: AxiosError) => {
       const { config, response } = error;
 
