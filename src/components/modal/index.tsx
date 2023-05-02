@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, forwardRef } from 'react';
 import { createPortal } from 'react-dom';
 
 import { useTheme } from '@emotion/react';
@@ -9,39 +9,52 @@ import { CrossIcon } from '@/components/icons';
 type TModalProps = PropsWithChildren<{
   onClose?: (args: any) => any;
   isBgBlack?: boolean;
+  isCloseBtn?: boolean;
   HeaderLeftComponent?: React.ReactNode;
   HeaderRightComponent?: React.ReactNode;
   className?: string;
 }>;
 
-type TModalPortal = React.FC<TModalProps>;
+type TModalPortal = React.ForwardRefRenderFunction<HTMLDivElement, TModalProps>;
 
-const Modal: TModalPortal = ({
-  children,
-  HeaderLeftComponent,
-  HeaderRightComponent,
-  onClose = () => null,
-  isBgBlack = false,
-  className,
-}: TModalProps) => {
+const Modal: TModalPortal = (props, ref) => {
+  const {
+    children,
+    HeaderLeftComponent,
+    HeaderRightComponent,
+    onClose = () => null,
+    isBgBlack = false,
+    isCloseBtn = true,
+    className,
+  } = props;
+
   const theme = useTheme();
   const modalElement = document.getElementById('modal');
   if (!modalElement) {
     throw new Error('모달창을 열 수 없습니다');
   }
   return createPortal(
-    <Container>
+    <Container
+      css={{
+        width: isBgBlack ? '100vw' : 0,
+        height: isBgBlack ? '100vh' : 0,
+      }}
+    >
       {isBgBlack && <Background onClick={onClose} />}
-      <Body className={className}>
-        <Header>
-          <HeaderLeft>{HeaderLeftComponent}</HeaderLeft>
-          <HeaderRight>
-            {HeaderRightComponent}
-            <button onClick={onClose}>
-              <CrossIcon color={theme.black} />
-            </button>
-          </HeaderRight>
-        </Header>
+      <Body className={className} ref={ref}>
+        {(HeaderLeftComponent || HeaderRightComponent || isCloseBtn) && (
+          <Header>
+            <HeaderLeft>{HeaderLeftComponent}</HeaderLeft>
+            <HeaderRight>
+              {HeaderRightComponent}
+              {isCloseBtn && (
+                <button onClick={onClose}>
+                  <CrossIcon color={theme.black} />
+                </button>
+              )}
+            </HeaderRight>
+          </Header>
+        )}
         {children}
       </Body>
     </Container>,
@@ -50,8 +63,9 @@ const Modal: TModalPortal = ({
 };
 
 const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
 `;
 
 const Background = styled.div`
@@ -66,6 +80,12 @@ const Background = styled.div`
 `;
 
 const Body = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  max-height: 90vh;
+
   background-color: ${({ theme }) => theme.white};
   z-index: 200;
 `;
@@ -88,4 +108,5 @@ const HeaderLeft = styled(HeaderComponent)`
 const HeaderRight = styled(HeaderComponent)`
   justify-content: flex-start;
 `;
-export default Modal;
+
+export default forwardRef(Modal);

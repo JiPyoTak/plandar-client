@@ -1,23 +1,20 @@
-import React, {
-  ChangeEventHandler,
-  TextareaHTMLAttributes,
-  useRef,
-} from 'react';
+import React, { ChangeEventHandler, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
 import Dropdown from '@/components/common/dropdown';
 import { MemoIcon } from '@/components/icons';
-import ClassifierTitle from '@/components/sidebar/classifier/ClassifierTitle';
 import { MAX_MEMO_LENGTH } from '@/constants';
 import { FONT_REGULAR_4 } from '@/styles/font';
+import {
+  ClassifierAdditionalFontStyle,
+  ClassifierAdditionalMarginRight,
+  PlanModalClassifierTitle,
+} from '@/styles/planModal';
 
-type TPlanMemoProps = TextareaHTMLAttributes<HTMLTextAreaElement>;
-
-type TPlanMemo = React.FC<TPlanMemoProps>;
-
-const PlanMemo: TPlanMemo = ({ onChange, ...rest }: TPlanMemoProps) => {
+const PlanMemo: React.FC = () => {
   const ref = useRef<HTMLTextAreaElement>(null);
+  const [description, setDescription] = useState('');
 
   const handleTextareaHeight = () => {
     const current = ref.current;
@@ -29,19 +26,19 @@ const PlanMemo: TPlanMemo = ({ onChange, ...rest }: TPlanMemoProps) => {
   const onChangeTextArea: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     handleTextareaHeight();
     if (e.target.value.length <= MAX_MEMO_LENGTH) {
-      onChange?.(e);
+      setDescription(e.target.value);
     }
   };
 
   return (
     <Container duration={0.5}>
       <Dropdown.Controller>
-        <ClassifierTitle
+        <PlanModalClassifierTitle
           title="메모"
-          titleIcon={<MemoIcon />}
+          titleIcon={<MemoIcon width="18" height="18" />}
           additionalComponent={
             <ContentLenDisplay>
-              {ref.current?.value.length ?? 0} / {MAX_MEMO_LENGTH}
+              {description.length} / {MAX_MEMO_LENGTH}
             </ContentLenDisplay>
           }
         />
@@ -50,8 +47,8 @@ const PlanMemo: TPlanMemo = ({ onChange, ...rest }: TPlanMemoProps) => {
         <TextArea
           placeholder={`메모를 최대 ${MAX_MEMO_LENGTH}자까지 입력할 수 있습니다`}
           ref={ref}
+          value={description}
           onChange={onChangeTextArea}
-          {...rest}
         />
       </div>
     </Container>
@@ -71,6 +68,7 @@ const TextArea = styled.textarea`
   font-family: inherit;
   line-height: 1.5;
   padding: 0 24px 0;
+  height: 18px;
   ${FONT_REGULAR_4}
 
   &::placeholder {
@@ -79,8 +77,9 @@ const TextArea = styled.textarea`
 `;
 
 const ContentLenDisplay = styled.span`
-  margin-right: 15px;
+  margin-right: ${ClassifierAdditionalMarginRight};
   color: ${({ theme }) => theme.text3};
+  ${ClassifierAdditionalFontStyle}
 `;
 
 export default PlanMemo;

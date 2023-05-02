@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import MainCalendar from '@/components/calendars/large';
 import CalendarHeader from '@/components/common/calendar/CalendarHeader';
 import Logo from '@/components/logo';
+import HoveredPlanModal from '@/components/modal/plan/Hovered';
 import SideBar from '@/components/sidebar';
 import Timetable from '@/components/timetable';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
@@ -22,26 +23,29 @@ const Home: React.FC = () => {
   const CalendarComponent = CALENDAR_COMPONENTS[selectedCalendarUnit];
 
   return (
-    <Container>
-      <Header>
-        <div className="header-side">
-          <Logo />
-        </div>
-        <div className="header-main">
-          <CalendarHeader />
-        </div>
-      </Header>
-      <ContentSizer>
-        <div className="content-side">
-          <SideBar />
-        </div>
-        <section className="content-main">
-          <Backgrounder>
-            <CalendarComponent />
-          </Backgrounder>
-        </section>
-      </ContentSizer>
-    </Container>
+    <>
+      <Container>
+        <Header>
+          <div className="header-side">
+            <Logo />
+          </div>
+          <div className="header-main">
+            <CalendarHeader />
+          </div>
+        </Header>
+        <ContentSizer>
+          <div className="content-side">
+            <SideBar />
+          </div>
+          <section className="content-main">
+            <Backgrounder>
+              <CalendarComponent />
+            </Backgrounder>
+          </section>
+        </ContentSizer>
+      </Container>
+      <HoveredPlanModal />
+    </>
   );
 };
 

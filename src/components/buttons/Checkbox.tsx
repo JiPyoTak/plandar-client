@@ -3,7 +3,10 @@ import React, { InputHTMLAttributes } from 'react';
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
+import { FONT_BOLD_3 } from '@/styles/font';
+
 type TCheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
+  className?: string;
   label?: string;
   checked: boolean;
   id?: string;
@@ -12,13 +15,14 @@ type TCheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
 type TCheckbox = React.FC<TCheckboxProps>;
 
 const Checkbox: TCheckbox = ({
+  className,
   label,
   checked,
   id = 'all_day_checkbox',
   ...rest
 }: TCheckboxProps) => {
   return (
-    <Container>
+    <Container className={className}>
       <CheckboxInput type="checkbox" id={id} checked={checked} {...rest} />
       <Label htmlFor={id}>
         <CheckboxSquare />
@@ -30,6 +34,7 @@ const Checkbox: TCheckbox = ({
 
 const Container = styled.div`
   display: flex;
+  width: fit-content;
 `;
 
 const checkboxCheck = keyframes`
@@ -67,6 +72,7 @@ const shrinkBounce = keyframes`
 const CheckboxInput = styled.input`
   width: 0;
   height: 0;
+  margin: 0;
 
   &:checked + label > span {
     border: 0.5em solid ${({ theme }) => theme.primary};
@@ -93,8 +99,9 @@ const Label = styled.label`
   column-gap: 8px;
   align-items: center;
   cursor: pointer;
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.black};
   transition: color 250ms cubic-bezier(0.4, 0, 0.23, 1);
+  ${FONT_BOLD_3}
 `;
 
 const CheckboxSquare = styled.span`

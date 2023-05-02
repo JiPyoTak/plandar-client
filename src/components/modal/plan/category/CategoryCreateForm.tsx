@@ -55,7 +55,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin: 20px 0;
+  margin: 20px 0 10px;
   width: 100%;
   text-align: center;
   color: ${({ theme }) => theme.placeholder};
