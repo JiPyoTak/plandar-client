@@ -4,8 +4,9 @@ import { axiosAPI } from '@/apis/axios';
 import { SERVER_URL } from '@/constants';
 import { IUser } from '@/stores/user';
 
-const getUserAPI = async (): Promise<{ success: boolean; data: IUser }> => {
-  const { data } = await axiosAPI.get(`/user`);
+const getUserAPI = async (): Promise<IUser> => {
+  const { data } = await axiosAPI.get<IUser>(`/user`);
+
   return data;
 };
 

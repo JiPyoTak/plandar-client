@@ -12,11 +12,9 @@ const useLogin = () => {
 
     (async function checkUser() {
       try {
-        const { success, data } = await getUserAPI();
+        const data = await getUserAPI();
 
-        if (success && data) {
-          setUser(data);
-        }
+        setUser(data);
       } catch (e) {
         // Do Nothing
       } finally {
