@@ -11,7 +11,7 @@ interface IProps {
   planViewsToWeek: IViewPlanInfo[][];
 }
 
-const PlanViewInMonth: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
+const CalendarPlans: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
   const { focusedPlan } = useFocusedPlanState();
   const { hoveredPlan, setHoveredPlan, clearHoveredPlan } =
     useHoveredPlanState();
@@ -67,4 +67,4 @@ const PlanViewInMonth: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
   );
 };
 
-export default memo(PlanViewInMonth);
+export default memo(CalendarPlans);

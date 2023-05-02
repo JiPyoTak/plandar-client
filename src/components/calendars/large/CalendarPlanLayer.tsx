@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import PlanViewInMonth from '@/components/plan';
+import CalendarPlans from '@/components/calendars/large/CalendarPlans';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { IViewPlanInfo } from '@/types';
 
@@ -11,25 +11,23 @@ interface IProps {
   selectedPlanView?: IViewPlanInfo[][];
 }
 
-const CalendarLayer = ({ calendarPlanView, selectedPlanView }: IProps) => {
+const CalendarPlanLayer = ({ calendarPlanView, selectedPlanView }: IProps) => {
   const { isDragging } = useFocusedPlanState();
 
   return (
-    <Layer>
-      {calendarPlanView && (
-        <PlanViewInMonth planViewsToWeek={calendarPlanView} />
-      )}
+    <Container>
+      {calendarPlanView && <CalendarPlans planViewsToWeek={calendarPlanView} />}
       {selectedPlanView && (
-        <PlanViewInMonth
+        <CalendarPlans
           planViewsToWeek={selectedPlanView}
           isDragging={isDragging}
         />
       )}
-    </Layer>
+    </Container>
   );
 };
 
-const Layer = styled.div`
+const Container = styled.div`
   position: absolute;
   top: 36px;
   left: 0;
@@ -42,4 +40,4 @@ const Layer = styled.div`
   }
 `;
 
-export default CalendarLayer;
+export default CalendarPlanLayer;

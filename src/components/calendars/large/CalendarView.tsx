@@ -2,8 +2,8 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import CalendarCell from './CalendarCell';
-import CalendarLayer from './CalendarLayer';
+import CalendarCell from '@/components/calendars/large/CalendarCell';
+import CalendarPlanLayer from '@/components/calendars/large/CalendarPlanLayer';
 import usePlanDrag, { MouseEventHandler } from '@/hooks/usePlanDrag';
 import useDateState from '@/stores/date';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
@@ -60,7 +60,7 @@ const CalendarView = () => {
               />
             ))}
           </Inner>
-          <CalendarLayer
+          <CalendarPlanLayer
             calendarPlanView={calendarPlanViews?.[i]}
             selectedPlanView={selectedPlanViews?.[i]}
           />
