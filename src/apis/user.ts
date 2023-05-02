@@ -5,7 +5,7 @@ import { SERVER_URL } from '@/constants';
 import { IUser } from '@/stores/user';
 
 const getUserAPI = async (): Promise<IUser> => {
-  const data = await axiosAPI.get<IUser>(`/user`);
+  const { data } = await axiosAPI.get<IUser>(`/user`);
 
   return data;
 };

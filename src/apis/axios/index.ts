@@ -8,28 +8,6 @@ import { axiosRefreshAPI } from './refresh';
 import { ACCESS_TOKEN_KEY, SERVER_URL } from '@/constants';
 import { getCookie } from '@/utils/cookie';
 
-declare module 'axios' {
-  export interface Axios {
-    get<T, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<T>;
-    delete<T, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<T>;
-    post<T, D = any>(
-      url: string,
-      data?: D,
-      config?: AxiosRequestConfig<D>,
-    ): Promise<T>;
-    put<T, D = any>(
-      url: string,
-      data?: D,
-      config?: AxiosRequestConfig<D>,
-    ): Promise<T>;
-    patch<T, D = any>(
-      url: string,
-      data?: D,
-      config?: AxiosRequestConfig<D>,
-    ): Promise<T>;
-  }
-}
-
 const axiosAPI = (() => {
   const axiosInstance = axios.create({
     baseURL: SERVER_URL,
@@ -50,7 +28,10 @@ const axiosAPI = (() => {
 
   axiosInstance.interceptors.response.use(
     (res: AxiosResponse) => {
-      return res.data.data;
+      return {
+        ...res,
+        data: res.data.data,
+      };
     },
     async (error: AxiosError) => {
       const { config, response } = error;

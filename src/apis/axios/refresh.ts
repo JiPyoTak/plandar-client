@@ -10,7 +10,10 @@ const axiosRefreshAPI = (() => {
 
   axiosInstance.interceptors.response.use(
     (res: AxiosResponse) => {
-      return res.data.data;
+      return {
+        ...res,
+        data: res.data.data,
+      };
     },
     async (error: AxiosError) => {
       return Promise.reject(error);
