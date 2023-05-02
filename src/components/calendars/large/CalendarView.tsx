@@ -7,9 +7,9 @@ import CalendarLayer from './CalendarLayer';
 import usePlanDrag, { MouseEventHandler } from '@/hooks/usePlanDrag';
 import useDateState from '@/stores/date';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
-import { getStartAndEndDateInMonth } from '@/utils/dayHandler';
-import { getCalendarInfo } from '@/utils/getCalendarInfo';
-import { getCalendarPlans } from '@/utils/getCalendarPlans';
+import { getStartAndEndDateInMonth } from '@/utils/calendar/dayHandler';
+import { getCalendarInfo } from '@/utils/calendar/getCalendarInfo';
+import { getCalendarPlans } from '@/utils/calendar/getCalendarPlans';
 import { dummy } from '@/utils/plan/dummy';
 
 const CalendarView = () => {

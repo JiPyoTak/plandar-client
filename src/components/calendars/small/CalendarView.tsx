@@ -5,8 +5,8 @@ import styled from '@emotion/styled';
 import CalendarDay from '@/components/common/calendar/CalendarDay';
 import { TDateYMD } from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
+import { getCalendarInfo } from '@/utils/calendar/getCalendarInfo';
 import { compareDate } from '@/utils/date/compareDate';
-import { getCalendarInfo } from '@/utils/getCalendarInfo';
 
 interface IProps {
   date: TDateYMD;
