@@ -85,7 +85,7 @@ const MONTH_PLANS_MOCK = new Proxy(
   {
     get(target, key, ...args) {
       if (!Object.prototype.hasOwnProperty.call(target, key)) {
-        return {};
+        return [];
       }
 
       return Reflect.get(target, key, ...args);
