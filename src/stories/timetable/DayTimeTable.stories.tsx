@@ -4,10 +4,10 @@ import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import Timetable from '@/components/timetable';
+import { MONTH_PLANS_MOCK } from '@/constants/mock';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import { IPlan } from '@/types/rq/plan';
-import { MONTH_PLANS_MOCK } from '@/utils/mock';
 import { padZero } from '@/utils/padZero';
 export default {
   title: 'timetable/DayTimetable',
