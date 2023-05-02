@@ -5,8 +5,8 @@ const divideDayPlans = (plans: IPlan[]) => {
   return plans.reduce(
     ({ timePlans, allDayPlans }, plan) => {
       isTimePlan(plan)
-        ? allDayPlans.push(plan)
-        : timePlans.push(plan as ITimePlan);
+        ? timePlans.push(plan as ITimePlan)
+        : allDayPlans.push(plan);
       return { timePlans, allDayPlans };
     },
     { timePlans: [], allDayPlans: [] } as {
