@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import CalendarDay from '@/components/common/calendar/CalendarDay';
 import { TDateYMD } from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
-import { compareStoreDateToCalendarInfo } from '@/utils/compareStoreDateToCalendarInfo';
+import { compareDate } from '@/utils/date/compareDate';
 import { getCalendarInfo } from '@/utils/getCalendarInfo';
 
 interface IProps {
@@ -19,7 +19,7 @@ const CalendarView: React.FC<IProps> = ({ date, storeDate, onChangeDate }) => {
   const calendarInfos = getCalendarInfo(date).flat();
 
   const weeks = calendarInfos.reduce((acc, cur, i) => {
-    const isSelected = compareStoreDateToCalendarInfo(cur, storeDate);
+    const isSelected = compareDate(cur, storeDate) && cur.isInMonth;
 
     return isSelected ? Math.floor(i / 7) : acc;
   }, -1);
@@ -35,7 +35,7 @@ const CalendarView: React.FC<IProps> = ({ date, storeDate, onChangeDate }) => {
             isWeeks={isWeeks}
             isWeeksStart={isWeeks && i % 7 === 0}
             isWeeksEnd={isWeeks && i % 7 === 6}
-            isSelected={compareStoreDateToCalendarInfo(info, storeDate)}
+            isSelected={compareDate(info, storeDate) && info.isInMonth}
             onClick={onChangeDate}
             key={`${info.month}${info.day}`}
           />
