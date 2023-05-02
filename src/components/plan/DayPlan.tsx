@@ -20,7 +20,7 @@ interface IProps {
   onMouseLeave: () => void;
 }
 
-const WeekPlan: React.FC<IProps> = (props) => {
+const DayPlan: React.FC<IProps> = (props) => {
   const {
     view,
     index,
@@ -153,4 +153,4 @@ const Icons = styled.div`
   text-align: center;
 `;
 
-export default WeekPlan;
+export default DayPlan;
