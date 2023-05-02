@@ -145,6 +145,7 @@ const Title = styled.div`
   overflow: hidden;
   flex: 1;
 `;
+
 const Icons = styled.div`
   height: fit-content;
   display: flex;

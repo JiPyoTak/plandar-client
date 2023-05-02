@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import PlanViewInMonth from '@/components/plan/month';
+import PlanViewInMonth from '@/components/plan';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { IViewPlanInfo } from '@/types';
 
