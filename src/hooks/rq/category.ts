@@ -6,7 +6,6 @@ import {
   updateCategoryAPI,
 } from '@/apis/category';
 import { ICategory, ICategoryWithoutId } from '@/types/rq/category';
-import { CATEGORY_MOCK } from '@/utils/mock';
 import { CATEGORY_KEY } from '@/utils/rqKeys';
 
 // 카테고리 캐싱을 위한 키
