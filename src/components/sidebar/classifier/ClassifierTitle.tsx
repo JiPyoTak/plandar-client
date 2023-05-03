@@ -7,6 +7,7 @@ import { FONT_BOLD_3 } from '@/styles/font';
 
 type TProps = {
   title: string;
+  className?: string;
   additionalComponent?: ReactNode;
   titleIcon?: ReactNode;
   isShow?: boolean;
@@ -15,13 +16,14 @@ type TProps = {
 const CLASSIFIER_TITLE_ICON_SIZE = 18;
 
 const ClassifierTitle: React.FC<TProps> = ({
+  className,
   title,
   titleIcon,
   additionalComponent,
   isShow,
 }) => {
   return (
-    <Wrapper>
+    <Container className={className}>
       <Title>
         {titleIcon}
         {title}
@@ -41,11 +43,11 @@ const ClassifierTitle: React.FC<TProps> = ({
           type={isShow ? 'down' : 'up'}
         />
       </div>
-    </Wrapper>
+    </Container>
   );
 };
 
-const Wrapper = styled.div`
+const Container = styled.div`
   width: 100%;
   height: 2.875rem;
   padding: 0.75rem 1.5rem;
@@ -59,6 +61,7 @@ const Wrapper = styled.div`
 const Title = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   column-gap: 8px;
   ${FONT_BOLD_3}
 `;
