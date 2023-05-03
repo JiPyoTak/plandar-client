@@ -19,7 +19,7 @@ type TProps = {
   total: number;
 };
 
-const TimetablePlan: React.FC<TProps> = ({ plan, rank, total }) => {
+const TimePlan: React.FC<TProps> = ({ plan, rank, total }) => {
   const { title, startTime, endTime, color } = plan;
   const theme = useTheme();
 
@@ -124,4 +124,4 @@ const TitleSpan = styled.span<{ backgroundColor: TColor }>`
     isBgBright(backgroundColor) ? theme.white : theme.text2};
 `;
 
-export default TimetablePlan;
+export default TimePlan;

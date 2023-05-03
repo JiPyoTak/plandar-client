@@ -12,7 +12,7 @@ import useCalendarUnitState from '@/stores/date/calendarUnit';
 import {
   decreaseDayComparedFirstDay,
   increaseDayComparedLastDay,
-} from '@/utils/dayHandler';
+} from '@/utils/calendar/dayHandler';
 
 // 일정 추가 버튼 클릭시: 현재 선택된 년, 월, 일을 기준으로 modal 생성
 // 좌우 버튼: 월 (이전달 다음달), 주 (선택된 일자를 기준으로 -7, +7), 일 (이전날 다음날)

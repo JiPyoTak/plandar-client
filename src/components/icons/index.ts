@@ -8,7 +8,7 @@ import { ReactComponent as PencilIconComponent } from '@/assets/pencil-icon.svg'
 import { ReactComponent as PlusIconComponent } from '@/assets/plus-icon.svg';
 import { ReactComponent as SearchIconComponent } from '@/assets/search-icon.svg';
 import { ReactComponent as TagIconComponent } from '@/assets/tag-icon.svg';
-import frameIconComponent from '@/utils/frameIconComponent';
+import IconFrameComponent from '@/components/common/IconFrameComponent';
 
 const ICON_COMPONENTS = {
   CheckIcon: CheckIconComponent,
@@ -37,7 +37,7 @@ export const {
 } = Object.entries(ICON_COMPONENTS).reduce(
   (result, [key, IconComponent]) => ({
     ...result,
-    [key]: frameIconComponent(IconComponent),
+    [key]: IconFrameComponent(IconComponent),
   }),
   {} as typeof ICON_COMPONENTS,
 );

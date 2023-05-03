@@ -9,6 +9,7 @@ import {
   TimetableGuide,
 } from '@/styles/timetable';
 import { IPlan } from '@/types/rq/plan';
+import { getCalendarPlans } from '@/utils/calendar/getCalendarPlans';
 
 type TProps = {
   dateMoments: Moment[];
@@ -16,6 +17,8 @@ type TProps = {
 };
 
 const TimetableAllDay: React.FC<TProps> = ({ dateMoments, allDayPlans }) => {
+  // const dayPlanViews = getCalendarPlans(allDayPlans, ...dates);
+
   return (
     <Container>
       <TimetableGuide

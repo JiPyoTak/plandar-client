@@ -7,13 +7,13 @@ import Dropdown from '@/components/common/dropdown';
 import Input from '@/components/common/Input';
 import { TagIcon } from '@/components/icons';
 import { MAX_CANDIDATE_LENGTH, MAX_TAG_LENGTH } from '@/constants';
+import { TAG_MOCK } from '@/constants/mock';
 import useDebounce from '@/hooks/useDebounce';
 import {
   ClassifierAdditionalFontStyle,
   ClassifierAdditionalMarginRight,
   PlanModalClassifierTitle,
 } from '@/styles/planModal';
-import { TAG_MOCK } from '@/utils/mock';
 import { Candidate } from 'components/modal/plan/Candidates';
 
 const PlanTag: React.FC = () => {

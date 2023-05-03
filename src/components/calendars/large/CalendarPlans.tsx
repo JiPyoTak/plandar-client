@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import PlanViewUnit from './PlanViewUnit';
+import DayPlan from '@/components/plan/DayPlan';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 import { IViewPlanInfo } from '@/types';
@@ -11,7 +11,7 @@ interface IProps {
   planViewsToWeek: IViewPlanInfo[][];
 }
 
-const PlanViewInMonth: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
+const CalendarPlans: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
   const { focusedPlan } = useFocusedPlanState();
   const { hoveredPlan, setHoveredPlan, clearHoveredPlan } =
     useHoveredPlanState();
@@ -45,7 +45,7 @@ const PlanViewInMonth: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
           if (isDragging === false && focusedPlan?.id !== -1) continue;
 
           result.push(
-            <PlanViewUnit
+            <DayPlan
               key={`${viewPlan.id}${k}`}
               view={viewPlan}
               onMouseEnter={(e) => onMouseEnter(e, viewPlan)}
@@ -67,4 +67,4 @@ const PlanViewInMonth: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
   );
 };
 
-export default memo(PlanViewInMonth);
+export default memo(CalendarPlans);

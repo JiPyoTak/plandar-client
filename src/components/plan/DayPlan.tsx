@@ -20,7 +20,7 @@ interface IProps {
   onMouseLeave: () => void;
 }
 
-const PlanViewUnit: React.FC<IProps> = (props) => {
+const DayPlan: React.FC<IProps> = (props) => {
   const {
     view,
     index,
@@ -145,6 +145,7 @@ const Title = styled.div`
   overflow: hidden;
   flex: 1;
 `;
+
 const Icons = styled.div`
   height: fit-content;
   display: flex;
@@ -152,4 +153,4 @@ const Icons = styled.div`
   text-align: center;
 `;
 
-export default PlanViewUnit;
+export default DayPlan;
