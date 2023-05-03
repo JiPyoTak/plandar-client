@@ -3,8 +3,8 @@ import React, { memo } from 'react';
 import styled from '@emotion/styled';
 
 import { TDateYMD } from '@/stores/date';
-import { ICalendarInfo } from '@/utils/getCalendarInfo';
-import { getDayClassName } from '@/utils/getDayClassName';
+import { ICalendarInfo } from '@/utils/calendar/getCalendarInfo';
+import { getDayClassName } from '@/utils/calendar/getDayClassName';
 
 interface IProps extends ICalendarInfo {
   isSelected: boolean;

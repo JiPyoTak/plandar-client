@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { create } from 'zustand';
 
-import { decreaseMonth, increaseMonth } from '@/utils/monthHandler';
+import { decreaseMonth, increaseMonth } from '@/utils/calendar/monthHandler';
 
 type TDateYMD = Pick<IDateStore, 'day' | 'month' | 'year'>;
 

@@ -7,7 +7,7 @@ import Modal from '@/components/modal';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 
 import { FONT_REGULAR_4, FONT_REGULAR_5 } from '@/styles/font';
-import { getPositionByViewPort } from '@/utils/getPositionByViewPort';
+import { getPositionByViewPort } from '@/utils/calendar/getPositionByViewPort';
 
 const Hovered = () => {
   const ref = useRef<HTMLDivElement>(null);

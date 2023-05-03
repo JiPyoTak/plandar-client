@@ -7,10 +7,10 @@ import moment from 'moment';
 import TimetableAllDay from '@/components/timetable/TimetableAllDay';
 import TimetableHeader from '@/components/timetable/TimetableHeader';
 import TimetableView from '@/components/timetable/view';
+import { MONTH_PLANS_MOCK } from '@/constants/mock';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
-import { MONTH_PLANS_MOCK } from '@/utils/mock';
 import { divideDayPlans } from '@/utils/plan/day/divideDayPlans';
 
 type TProps = {

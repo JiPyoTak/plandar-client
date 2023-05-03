@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import Day from '@/components/common/calendar/CalendarDay';
 import { TDateYMD } from '@/stores/date';
-import { ICalendarInfo } from '@/utils/getCalendarInfo';
+import { ICalendarInfo } from '@/utils/calendar/getCalendarInfo';
 
 interface IProps {
   height: number;

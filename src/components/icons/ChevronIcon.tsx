@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { ReactComponent as IconComponent } from '@/assets/chevron-icon.svg';
-import frameIconComponent, { TIconProps } from '@/utils/frameIconComponent';
+import IconFrameComponent, {
+  TIconProps,
+} from '@/components/common/IconFrameComponent';
 
 type TProps = {
   type?: 'up' | 'down' | 'left' | 'right';
@@ -13,7 +15,7 @@ const TYPE_TRANSFORM_STYLE = {
   left: 'rotate(0.25turn)',
   right: 'rotate(0.75turn)',
 } as const;
-const DefaultChevronIcon = frameIconComponent(IconComponent);
+const DefaultChevronIcon = IconFrameComponent(IconComponent);
 
 const ChevronIcon: React.FC<TIconProps & TProps> = ({ type, ...restProps }) => {
   return (
