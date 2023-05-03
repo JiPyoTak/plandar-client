@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
+import { createPlanMock } from '../plan/createPlanMock';
+
 import Timetable from '@/components/timetable';
 import { MONTH_PLANS_MOCK } from '@/constants/mock';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
-import { IPlan } from '@/types/rq/plan';
 import { padZero } from '@/utils/padZero';
 export default {
   title: 'timetable/DayTimetable',
@@ -16,27 +17,6 @@ export default {
     rangeAmount: { control: 'number' },
   },
 } as ComponentMeta<typeof Timetable>;
-
-const createRandomColor = () => {
-  return `#${Math.round(Math.random() * 0xffffff)
-    .toString(16)
-    .padStart(6, '0')}`;
-};
-
-const createTempPlan = (planData: Partial<IPlan>) => {
-  return {
-    title: `임시 데이터`,
-    description: '설명 보아서 무엇을 할 것인가',
-    isAllDay: true,
-    type: 'task',
-    startTime: Date.now().toLocaleString(),
-    endTime: null,
-    color: createRandomColor(),
-    categoryId: 1,
-    tags: ['태그1', '태그2'],
-    ...planData,
-  } as IPlan;
-};
 
 const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
   const [id, setId] = useState<number>(10);
@@ -50,7 +30,7 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
   const addSameTimePlan = () => {
     MONTH_PLANS_MOCK[month] = [
       ...MONTH_PLANS_MOCK[month],
-      createTempPlan({
+      createPlanMock({
         id,
         title: `임시 데이터 ${id}`,
         isAllDay: false,
@@ -73,7 +53,7 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
 
     MONTH_PLANS_MOCK[month] = [
       ...MONTH_PLANS_MOCK[month],
-      createTempPlan({
+      createPlanMock({
         id,
         title: `임시 데이터 ${id}`,
         isAllDay: false,
