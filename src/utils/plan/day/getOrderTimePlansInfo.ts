@@ -1,4 +1,4 @@
-import { sortTimePlans } from './sortTimePlans';
+import { sortPlans } from './sortPlans';
 import { DAY_TO_MINUTE, TIMETABLE_CELL_UNIT } from '@/constants';
 import { ITimePlan } from '@/types/rq/plan';
 
@@ -17,7 +17,7 @@ const getOrderTimePlansInfo = (plans: ITimePlan[]) => {
   const dayCellAmount = Math.floor(DAY_TO_MINUTE / TIMETABLE_CELL_UNIT);
   const orderArrays: number[][] = Array.from(Array(dayCellAmount), () => []);
 
-  plans.sort(sortTimePlans);
+  plans.sort(sortPlans);
 
   for (let planIndex = 0; planIndex < plans.length; planIndex++) {
     const plan = plans[planIndex];
