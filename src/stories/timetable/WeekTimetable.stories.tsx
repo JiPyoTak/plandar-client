@@ -22,5 +22,5 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
   return <Timetable {...args} />;
 };
 
-export const WeekTimeTable = Template.bind({});
-WeekTimeTable.args = { rangeAmount: 7 };
+export const WeekTimetable = Template.bind({});
+WeekTimetable.args = { rangeAmount: 7 };

@@ -116,5 +116,5 @@ const TestButton = styled.button`
   border-radius: 8px;
 `;
 
-export const DayTimeTable = AddableTemplate.bind({});
-DayTimeTable.args = { rangeAmount: 1 };
+export const DayTimetable = AddableTemplate.bind({});
+DayTimetable.args = { rangeAmount: 1 };
