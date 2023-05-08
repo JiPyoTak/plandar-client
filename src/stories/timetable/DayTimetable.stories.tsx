@@ -34,8 +34,12 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
         id,
         title: `임시 데이터 ${id}`,
         isAllDay: false,
-        startTime: `${year}-${padZero(month)}-${padZero(day)}T03:00:00.000`,
-        endTime: `${year}-${padZero(month)}-${padZero(day)}`,
+        startTime: new Date(
+          `${year}-${padZero(month)}-${padZero(day)}T03:00:00.000`,
+        ).toUTCString(),
+        endTime: new Date(
+          `${year}-${padZero(month)}-${padZero(day)}T06:00:00.000`,
+        ).toUTCString(),
       }),
     ];
 
@@ -57,12 +61,16 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
         id,
         title: `임시 데이터 ${id}`,
         isAllDay: false,
-        startTime: `${year}-${padZero(month)}-${padZero(day)}T${padZero(
-          startHour,
-        )}:${startMinute}:00.000`,
-        endTime: `${year}-${padZero(month)}-${padZero(
-          day,
-        )}T${endHour}:${endMinute}:00.000`,
+        startTime: new Date(
+          `${year}-${padZero(month)}-${padZero(day)}T${padZero(
+            startHour,
+          )}:${startMinute}:00.000`,
+        ).toUTCString(),
+        endTime: new Date(
+          `${year}-${padZero(month)}-${padZero(
+            day,
+          )}T${endHour}:${endMinute}:00.000`,
+        ).toUTCString(),
       }),
     ];
 
