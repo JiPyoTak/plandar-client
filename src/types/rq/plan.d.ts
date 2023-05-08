@@ -21,8 +21,4 @@ interface IPlan {
   tags: string[];
 }
 
-interface ITimePlan extends IPlan {
-  endTime: IPlan['startTime'];
-}
-
-export type { IPlan, TPlanType, ITimePlan };
+export type { IPlan, TPlanType };
