@@ -1,11 +1,11 @@
 import React from 'react';
 
 import TimePlan from '@/components/plan/TimePlan';
-import { ITimePlan } from '@/types/rq/plan';
+import Plan from '@/plan/Plan';
 import { getOrderTimePlansInfo } from '@/utils/plan/day/getOrderTimePlansInfo';
 
 type TProps = {
-  plans: ITimePlan[];
+  plans: Plan[];
 };
 
 const TimetablePlanColumn: React.FC<TProps> = ({ plans }) => {

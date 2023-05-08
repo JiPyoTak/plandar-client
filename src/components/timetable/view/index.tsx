@@ -6,15 +6,15 @@ import { Moment } from 'moment';
 import TimetableCellColumn from './TimetableCellColumn';
 import TimetablePlanColumn from './TimetablePlanColumn';
 import TimetableTimeline from './TimetableTimeline';
+import Plan from '@/plan/Plan';
 import {
   TIMETABLE_SCROLL_STYLE,
   TIMETABLE_CELL_MIN_WIDTH,
 } from '@/styles/timetable';
-import { ITimePlan } from '@/types/rq/plan';
 
 type TProps = {
   dateMoments: Moment[];
-  timePlans: ITimePlan[];
+  timePlans: Plan[];
 };
 
 const TimetableView: React.FC<TProps> = ({ dateMoments, timePlans }) => {
