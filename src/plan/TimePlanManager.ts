@@ -3,7 +3,7 @@ import PlanManager from './PlanManager';
 import type { IViewInfo } from './PlanManager';
 import { DAY_TO_MINUTE, TIMETABLE_CELL_UNIT } from '@/constants';
 
-interface ITimeViewInfo extends IViewInfo {
+export interface ITimeViewInfo extends IViewInfo {
   totalIndex: number;
 }
 
@@ -66,9 +66,16 @@ class TimePlanManager extends PlanManager<ITimeViewInfo> {
         0,
       );
 
+      const midnight = plan.startMoment.startOf('day');
+      const startMinutes = plan.startMoment.diff(midnight, 'minute');
+      const start = startMinutes / TIMETABLE_CELL_UNIT;
+
+      const planMinutes = plan.endMoment.diff(plan.startMoment, 'minute');
+      const term = planMinutes / TIMETABLE_CELL_UNIT;
+
       viewInfos.set(plan.id, {
-        term: endIndex - startIndex,
-        start: startIndex,
+        term,
+        start,
         index,
         totalIndex,
       });
