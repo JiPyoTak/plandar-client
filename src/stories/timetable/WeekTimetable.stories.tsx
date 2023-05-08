@@ -44,12 +44,8 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
         id,
         title: `임시 데이터 ${id}`,
         isAllDay: true,
-        startTime: new Date(
-          `${year}-${padZero(month)}-${padZero(startDay)}`,
-        ).toUTCString(),
-        endTime: new Date(
-          `${year}-${padZero(month)}-${padZero(endDay)}`,
-        ).toUTCString(),
+        startTime: `${year}-${padZero(month)}-${padZero(startDay)}`,
+        endTime: `${year}-${padZero(month)}-${padZero(endDay)}`,
       }),
     ];
 

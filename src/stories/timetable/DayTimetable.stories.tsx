@@ -34,12 +34,8 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
         id,
         title: `임시 데이터 ${id}`,
         isAllDay: false,
-        startTime: new Date(
-          `${year}-${padZero(month)}-${padZero(day)}T03:00:00.000`,
-        ).toUTCString(),
-        endTime: new Date(
-          `${year}-${padZero(month)}-${padZero(day)}T06:00:00.000`,
-        ).toUTCString(),
+        startTime: `${year}-${padZero(month)}-${padZero(day)}T03:00:00.000`,
+        endTime: `${year}-${padZero(month)}-${padZero(day)}T06:00:00.000`,
       }),
     ];
 
@@ -61,16 +57,12 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
         id,
         title: `임시 데이터 ${id}`,
         isAllDay: false,
-        startTime: new Date(
-          `${year}-${padZero(month)}-${padZero(day)}T${padZero(
-            startHour,
-          )}:${startMinute}:00.000`,
-        ).toUTCString(),
-        endTime: new Date(
-          `${year}-${padZero(month)}-${padZero(
-            day,
-          )}T${endHour}:${endMinute}:00.000`,
-        ).toUTCString(),
+        startTime: `${year}-${padZero(month)}-${padZero(day)}T${padZero(
+          startHour,
+        )}:${startMinute}:00.000`,
+        endTime: `${year}-${padZero(month)}-${padZero(
+          day,
+        )}T${endHour}:${endMinute}:00.000`,
       }),
     ];
 
@@ -86,7 +78,7 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
     <Container>
       <div className="day-timetable-controls">
         <TestButton onClick={addSameTimePlan}>
-          오전 3시 ~ 5시 일정 추가하기
+          오후 03시 ~ 06시 일정 추가하기
         </TestButton>
         <TestButton onClick={addRandomPlan}>랜덤 일정 추가하기</TestButton>
         <TestButton onClick={clearPlans}>해당 달의 일정 삭제하기</TestButton>
