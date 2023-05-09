@@ -8,6 +8,13 @@ export interface ITimeViewInfo extends IViewInfo {
 }
 
 class TimePlanManager extends PlanManager<ITimeViewInfo> {
+  viewInfos: Map<number, ITimeViewInfo>;
+
+  constructor(plans: Plan[]) {
+    super(plans);
+    this.viewInfos = this.getViewInfo();
+  }
+
   getPlanIndex(plan: Plan) {
     const startDate = new Date(plan.startTime);
     const startMinutes = startDate.getHours() * 60 + startDate.getMinutes();
@@ -20,13 +27,11 @@ class TimePlanManager extends PlanManager<ITimeViewInfo> {
     return [startIndex, endIndex];
   }
 
-  getViewInfo() {
+  getTimetableOrder() {
+    const plans = this.plans;
     // 24시간 * 60 / (15분 단위) = 96 칸에 대해서 순서 데이터(배열)을 가진다.
     const dayCellAmount = Math.floor(DAY_TO_MINUTE / TIMETABLE_CELL_UNIT);
     const orderArrays: number[][] = Array.from(Array(dayCellAmount), () => []);
-
-    // 플랜을 정렬한 뒤
-    const plans = this.sortPlans();
 
     // 일자로 위치할 수 있는 Index를 찾아 순서 데이터를 적용한다.
     for (let planIndex = 0; planIndex < plans.length; planIndex++) {
@@ -53,8 +58,14 @@ class TimePlanManager extends PlanManager<ITimeViewInfo> {
       );
     }
 
-    // View Info 값을 Map에 지정하기
+    return orderArrays;
+  }
+
+  getViewInfo() {
+    const plans = this.sortPlans();
+    const orderArrays = this.getTimetableOrder();
     const viewInfos = new Map<number, ITimeViewInfo>();
+
     plans.forEach((plan, planIndex) => {
       const [startIndex, endIndex] = this.getPlanIndex(plan);
       const rangeOrderArrays = orderArrays.slice(startIndex, endIndex);
