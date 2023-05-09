@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 
 import ChevronIcon from '@/components/icons/ChevronIcon';
 
+import Plan from '@/plan/Plan';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 
@@ -44,12 +45,14 @@ const DayPlan: React.FC<IProps> = (props) => {
   if (isHovered && !d) className.push('is_hovered');
 
   const onMouseDown = () => {
-    const planInput = {
+    // NOTICE: Plan Class로 이미 변경했을 것으로 판단됨
+    //// Calendar의 Plan Manager 완성 후 한번 확인할 것
+    const planInput = new Plan({
       ...view.plan,
       id: view.id,
       startTime: view.startTime.format(),
       endTime: view.endTime.format(),
-    };
+    });
 
     selectPlan(planInput);
     clearHoveredPlan();

@@ -1,11 +1,13 @@
 import moment from 'moment';
 
+import Plan from '@/plan/Plan';
+import { TColor } from '@/types';
 import { IPlan } from '@/types/rq/plan';
 
 const createRandomColor = () => {
   return `#${Math.round(Math.random() * 0xffffff)
     .toString(16)
-    .padStart(6, '0')}`;
+    .padStart(6, '0')}` as TColor;
 };
 
 const createPlanMock = (planData: Partial<IPlan>) => {
@@ -18,7 +20,8 @@ const createPlanMock = (planData: Partial<IPlan>) => {
     .toDate()
     .toUTCString();
 
-  return {
+  return new Plan({
+    id: Math.floor(Math.random() * 100),
     title: `임시 데이터`,
     description: '설명 보아서 무엇을 할 것인가',
     isAllDay: true,
@@ -29,7 +32,7 @@ const createPlanMock = (planData: Partial<IPlan>) => {
     ...planData,
     startTime,
     endTime,
-  } as IPlan;
+  });
 };
 
 export { createPlanMock };

@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 
-import { IPlan } from '@/types/rq/plan';
+import Plan from '@/plan/Plan';
 
 type TRect = 'top' | 'left' | 'right' | 'bottom';
 
 interface IHoveredPlanState {
-  hoveredPlan: IPlan | null;
+  hoveredPlan: Plan | null;
   rect: Record<TRect, number>;
 }
 
