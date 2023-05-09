@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { create } from 'zustand';
 
+import Plan from '@/plan/Plan';
 import { IPlan } from '@/types/rq/plan';
 import { changePlanView } from '@/utils/plan/planViewHandlerToMonth';
 
@@ -14,16 +15,16 @@ type TMovePlanProps = {
 interface IFocusedPlanState {
   type: IChangePlanViewType;
   // 기존 일정
-  currentPlan: null | IPlan;
+  currentPlan: null | Plan;
   // view에 반영되는 일정
-  focusedPlan: null | IPlan;
+  focusedPlan: null | Plan;
   // drag 중인지 아닌지
   isDragging: boolean;
 }
 
 interface IFocusedPlanAction {
   createDragPlan: (planData: Pick<IPlan, 'startTime'> & Partial<IPlan>) => void;
-  selectPlan: (plan: IPlan) => void;
+  selectPlan: (plan: Plan) => void;
   onMoveMonthPlan: (args: TMovePlanProps) => void;
   onMoveDayPlan: (args: TMovePlanProps) => void;
   onDragEndPlan: () => void;
@@ -41,7 +42,7 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
   (set) => ({
     ...initialState,
     createDragPlan: (planData) => {
-      const newPlan = {
+      const newPlan = new Plan({
         id: -1,
         title: '새로운 일정',
         description: null,
@@ -52,7 +53,7 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
         categoryId: null,
         tags: [],
         ...planData,
-      } satisfies IPlan;
+      });
 
       set({
         type: 'create',
@@ -63,7 +64,7 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
     selectPlan: (plan) => {
       set({
         type: 'edit',
-        focusedPlan: { ...plan },
+        focusedPlan: new Plan(plan),
         currentPlan: plan,
       });
     },
@@ -78,6 +79,7 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
         const targetDate = moment(targetDateString);
         const currentDate = moment(currentDateString);
 
+        // NOTICE : changePlanView 가 변경된 후 한 번 확인하기
         const newPlan = changePlanView({
           targetDate,
           currentDate,
@@ -88,7 +90,7 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
 
         if (!newPlan) return state;
 
-        return { ...state, focusedPlan: newPlan, isDragging: true };
+        return { ...state, focusedPlan: new Plan(newPlan), isDragging: true };
       });
     },
     onMoveDayPlan: () => set((state) => state),

@@ -3,33 +3,30 @@ import React from 'react';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import moment from 'moment';
-
-import { TIMETABLE_CELL_UNIT } from '@/constants';
+import Plan from '@/plan/Plan';
+import { ITimeViewInfo } from '@/plan/TimePlanManager';
 import { FONT_REGULAR_7, FONT_REGULAR_8 } from '@/styles/font';
 import { TIMETABLE_CELL_HEIGHT, TIMETABLE_Z_INDEX } from '@/styles/timetable';
 import { TColor } from '@/types';
-import { ITimePlan } from '@/types/rq/plan';
 import { isBgBright } from '@/utils/color';
 import { getTimeString } from '@/utils/date/getTimeString';
 
 type TProps = {
-  plan: ITimePlan;
-  rank: number;
-  total: number;
+  plan: Plan;
+  viewInfo: ITimeViewInfo;
 };
 
-const TimePlan: React.FC<TProps> = ({ plan, rank, total }) => {
-  const { title, startTime, endTime, color } = plan;
+const TimePlan: React.FC<TProps> = ({ plan, viewInfo }) => {
+  const { title, startTime, color } = plan;
   const theme = useTheme();
 
   return (
     <Container
       css={[
-        cellTop(startTime),
-        cellLeft(rank, total),
-        cellWidth(rank, total),
-        cellHeight(startTime, endTime),
+        cellTop(viewInfo),
+        cellLeft(viewInfo),
+        cellWidth(viewInfo),
+        cellHeight(viewInfo),
         {
           color: isBgBright(color) ? theme.text2 : theme.white,
           backgroundColor: color,
@@ -44,18 +41,16 @@ const TimePlan: React.FC<TProps> = ({ plan, rank, total }) => {
   );
 };
 
-const cellTop = (startTime: string) => {
-  const targetTime = moment(startTime);
-  const midnight = targetTime.clone().startOf('day');
-  const minutes = targetTime.diff(midnight, 'minute');
-  const multipleOfHeight = minutes / TIMETABLE_CELL_UNIT;
-
+const cellTop = ({ start }: ITimeViewInfo) => {
   return css`
-    top: calc(${TIMETABLE_CELL_HEIGHT} * ${multipleOfHeight});
+    top: calc(${TIMETABLE_CELL_HEIGHT} * ${start});
   `;
 };
 
-const cellLeft = (displayOrder: number, entireOrder: number) => {
+const cellLeft = ({
+  index: displayOrder,
+  totalIndex: entireOrder,
+}: ITimeViewInfo) => {
   const percent = (displayOrder - 1) / entireOrder;
 
   return css`
@@ -63,7 +58,10 @@ const cellLeft = (displayOrder: number, entireOrder: number) => {
   `;
 };
 
-const cellWidth = (displayOrder: number, entireOrder: number) => {
+const cellWidth = ({
+  index: displayOrder,
+  totalIndex: entireOrder,
+}: ITimeViewInfo) => {
   const originalPercent = 1 / entireOrder;
   const additionalPercent = 0.7 / entireOrder;
   const percent =
@@ -75,12 +73,9 @@ const cellWidth = (displayOrder: number, entireOrder: number) => {
   `;
 };
 
-const cellHeight = (startTime: string, endTime: string) => {
-  const minutes = moment(endTime).diff(startTime, 'minute');
-  const multipleOfHeight = minutes / TIMETABLE_CELL_UNIT;
-
+const cellHeight = ({ term }: ITimeViewInfo) => {
   return css`
-    height: calc(${TIMETABLE_CELL_HEIGHT} * ${multipleOfHeight});
+    height: calc(${TIMETABLE_CELL_HEIGHT} * ${term});
   `;
 };
 
