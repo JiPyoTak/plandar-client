@@ -20,6 +20,7 @@ interface IDaysPlanManagerProps {
 class DaysPlanManager extends PlanManager<IDayViewInfo> {
   startDate: Moment;
   endDate: Moment;
+  daysIndex: number[][] = [];
 
   constructor({ plans, start, end }: IDaysPlanManagerProps) {
     const [currentStart, currentEnd] = [
@@ -85,6 +86,8 @@ class DaysPlanManager extends PlanManager<IDayViewInfo> {
         }
       }
     });
+
+    this.daysIndex = rangeIndex;
   }
 
   getViewInfo() {
