@@ -8,11 +8,11 @@ export interface ITimeViewInfo extends IViewInfo {
 }
 
 class TimePlanManager extends PlanManager<ITimeViewInfo> {
-  viewInfos: Map<number, ITimeViewInfo>;
+  viewInfo: Map<number, ITimeViewInfo>;
 
   constructor(plans: Plan[]) {
     super(plans);
-    this.viewInfos = this.getViewInfo();
+    this.viewInfo = this.getViewInfo();
   }
 
   getPlanIndex(plan: Plan) {
@@ -64,7 +64,7 @@ class TimePlanManager extends PlanManager<ITimeViewInfo> {
   getViewInfo() {
     const plans = this.sortPlans();
     const orderArrays = this.getTimetableOrder();
-    const viewInfos = new Map<number, ITimeViewInfo>();
+    const viewInfo = new Map<number, ITimeViewInfo>();
 
     plans.forEach((plan, planIndex) => {
       const [startIndex, endIndex] = this.getPlanIndex(plan);
@@ -84,7 +84,7 @@ class TimePlanManager extends PlanManager<ITimeViewInfo> {
       const planMinutes = plan.endMoment.diff(plan.startMoment, 'minute');
       const term = planMinutes / TIMETABLE_CELL_UNIT;
 
-      viewInfos.set(plan.id, {
+      viewInfo.set(plan.id, {
         term,
         start,
         index,
@@ -92,7 +92,7 @@ class TimePlanManager extends PlanManager<ITimeViewInfo> {
       });
     });
 
-    return viewInfos;
+    return viewInfo;
   }
 }
 
