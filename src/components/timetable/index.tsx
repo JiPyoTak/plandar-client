@@ -11,7 +11,7 @@ import { MONTH_PLANS_MOCK } from '@/constants/mock';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
-import { divideDayPlans } from '@/utils/plan/day/divideDayPlans';
+import { divideTimePlans } from '@/utils/plan/divideTimePlans';
 
 type TProps = {
   rangeAmount?: number;
@@ -39,7 +39,7 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
   const plans = MONTH_PLANS_MOCK[month];
 
   // 종일, 시간에 들어가야 할 일정 분류하기
-  const { timePlans, allDayPlans } = divideDayPlans(plans);
+  const { timePlans, allDayPlans } = divideTimePlans(plans);
 
   return (
     <Container>

@@ -2,6 +2,8 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
+import moment from 'moment';
+
 import { TIMETABLE_CELL_AMOUNT, TIMETABLE_CELL_PER_HOUR } from '@/constants';
 import { TIMETABLE_CELL_HEIGHT, TimetableGuide } from '@/styles/timetable';
 import { getTimeString } from '@/utils/date/getTimeString';
@@ -15,8 +17,7 @@ const TimetableTimeline: React.FC = () => {
     <Container>
       {Array.from(Array(TIMELINE_CELL_AMOUNT), (_, index) => {
         const isFirst = index === 0;
-        const date = new Date();
-        date.setHours(index);
+        const date = moment().startOf('day').set('hour', index).toDate();
 
         return (
           <HourSpace key={index}>

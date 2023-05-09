@@ -6,23 +6,24 @@ import { Moment } from 'moment';
 import TimetableCellColumn from './TimetableCellColumn';
 import TimetablePlanColumn from './TimetablePlanColumn';
 import TimetableTimeline from './TimetableTimeline';
+import Plan from '@/plan/Plan';
 import {
   TIMETABLE_SCROLL_STYLE,
   TIMETABLE_CELL_MIN_WIDTH,
 } from '@/styles/timetable';
-import { ITimePlan } from '@/types/rq/plan';
 
 type TProps = {
   dateMoments: Moment[];
-  timePlans: ITimePlan[];
+  timePlans: Plan[];
 };
+
+const DATE_FORMAT = 'YYYY-MM-DD';
 
 const TimetableView: React.FC<TProps> = ({ dateMoments, timePlans }) => {
   const columnPlans = dateMoments.map((dateMoment) =>
     timePlans.filter(
-      ({ startTime }) =>
-        dateMoment.toDate().toDateString() ===
-        new Date(startTime).toDateString(),
+      ({ startMoment }) =>
+        dateMoment.format(DATE_FORMAT) === startMoment.format(DATE_FORMAT),
     ),
   );
 
@@ -31,7 +32,7 @@ const TimetableView: React.FC<TProps> = ({ dateMoments, timePlans }) => {
       <Container>
         <TimetableTimeline />
         {dateMoments.map((dateMoment, i) => {
-          const formattedDate = dateMoment.format('YYYY-MM-DD');
+          const formattedDate = dateMoment.format(DATE_FORMAT);
           const plans = columnPlans[i];
 
           return (

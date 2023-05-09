@@ -28,7 +28,7 @@ class Plan implements IPlan {
     });
   }
   get startMoment(): Moment {
-    return moment(this.startTime).utc();
+    return moment(this.startTime).local();
   }
 
   get endTime(): string {
@@ -41,7 +41,7 @@ class Plan implements IPlan {
     });
   }
   get endMoment(): Moment {
-    return moment(this.endTime).utc();
+    return moment(this.endTime).local();
   }
 
   set isAllDay(data: boolean) {

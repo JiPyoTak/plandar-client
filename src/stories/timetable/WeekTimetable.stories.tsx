@@ -34,7 +34,6 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
     const startOfWeek = moment(`${year}-${month}-${day}`)
       .startOf('week')
       .get('day');
-    const isAllDay = Math.round(Math.random()) === 1;
     const startDay = startOfWeek + Math.round(Math.random() * 6);
     const endDay =
       startDay + Math.round(Math.random() * (6 - (startDay - startOfWeek))) + 1;
@@ -44,25 +43,11 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
       createPlanMock({
         id,
         title: `임시 데이터 ${id}`,
-        isAllDay,
+        isAllDay: true,
         startTime: `${year}-${padZero(month)}-${padZero(startDay)}`,
-        endTime: isAllDay
-          ? null
-          : `${year}-${padZero(month)}-${padZero(endDay)}`,
+        endTime: `${year}-${padZero(month)}-${padZero(endDay)}`,
       }),
     ];
-
-    console.log(
-      createPlanMock({
-        id,
-        title: `임시 데이터 ${id}`,
-        isAllDay,
-        startTime: `${year}-${padZero(month)}-${padZero(startDay)}`,
-        endTime: isAllDay
-          ? null
-          : `${year}-${padZero(month)}-${padZero(endDay)}`,
-      }),
-    );
 
     setId((prevId) => prevId + 1);
   };
