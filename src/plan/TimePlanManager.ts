@@ -25,33 +25,33 @@ class TimePlanManager extends PlanManager<ITimeViewInfo> {
     return index;
   }
 
-  getPlanIndex(plan: Plan) {
-    return [
+  getPlanOrderArray(orderArrays: number[][], plan: Plan) {
+    const [startIndex, endIndex] = [
       Math.ceil(this.getTimetableIndex(plan.startMoment)),
       Math.ceil(this.getTimetableIndex(plan.endMoment)),
     ];
+
+    return orderArrays.slice(startIndex, endIndex);
   }
 
   getTimetableOrder() {
-    const plans = this.plans;
     // 24시간 * 60 / (15분 단위) = 96 칸에 대해서 순서 데이터(배열)을 가진다.
     const dayCellAmount = Math.floor(DAY_TO_MINUTE / TIMETABLE_CELL_UNIT);
     const orderArrays: number[][] = Array.from(Array(dayCellAmount), () => []);
 
     // 일자로 위치할 수 있는 Index를 찾아 순서 데이터를 적용한다.
+    const plans = this.plans;
     for (let planIndex = 0; planIndex < plans.length; planIndex++) {
       const plan = plans[planIndex];
-
-      const [startIndex, endIndex] = this.getPlanIndex(plan);
-      const rangeOrderArrays = orderArrays.slice(startIndex, endIndex);
+      const rangeOrderArrays = this.getPlanOrderArray(orderArrays, plan);
 
       let orderIndex = 0;
       while (orderIndex < plans.length) {
-        const hasSpace = rangeOrderArrays.every(
-          (orderArray) => orderArray[orderIndex] === undefined,
+        const isCellTaken = rangeOrderArrays.some(
+          (orderArray) => orderArray[orderIndex] !== undefined,
         );
 
-        if (hasSpace) {
+        if (!isCellTaken) {
           break;
         }
 
@@ -59,11 +59,29 @@ class TimePlanManager extends PlanManager<ITimeViewInfo> {
       }
 
       rangeOrderArrays.forEach(
-        (orderArray) => (orderArray[orderIndex] = planIndex),
+        (orderArray) => (orderArray[orderIndex] = plan.id),
       );
     }
 
     return orderArrays;
+  }
+
+  getPlanOrderInfo(orderArrays: number[][], plan: Plan) {
+    const rangeOrderArrays = this.getPlanOrderArray(orderArrays, plan);
+
+    let index = 0;
+    let totalIndex = 0;
+    for (let i = 0; i < rangeOrderArrays.length; i++) {
+      const orderArray = rangeOrderArrays[i];
+
+      if (!index) {
+        index = orderArray.findIndex((id) => id === plan.id) + 1;
+      }
+
+      totalIndex = Math.max(totalIndex, orderArray.length);
+    }
+
+    return { index, totalIndex };
   }
 
   getViewInfo() {
@@ -71,17 +89,8 @@ class TimePlanManager extends PlanManager<ITimeViewInfo> {
     const orderArrays = this.getTimetableOrder();
     const viewInfo = new Map<number, ITimeViewInfo>();
 
-    plans.forEach((plan, planIndex) => {
-      const [startIndex, endIndex] = this.getPlanIndex(plan);
-      const rangeOrderArrays = orderArrays.slice(startIndex, endIndex);
-
-      const index =
-        rangeOrderArrays[0].findIndex((index) => index === planIndex) + 1;
-      const totalIndex = rangeOrderArrays.reduce(
-        (total, orderArray) => Math.max(total, orderArray.length),
-        0,
-      );
-
+    plans.forEach((plan) => {
+      const { index, totalIndex } = this.getPlanOrderInfo(orderArrays, plan);
       const start = this.getTimetableIndex(plan.startMoment);
       const end = this.getTimetableIndex(plan.endMoment);
       const term = end - start;
