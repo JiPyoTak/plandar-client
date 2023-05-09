@@ -29,7 +29,7 @@ const PlanCategory: React.FC = () => {
   const [categoryInput, setCategoryInput] = useState('');
   const [filteredType, setFilteredType] = useState<TFilteredType | null>(null);
 
-  const onSelectCategory = (category: ICategoryWithoutId) => {
+  const onSelectCategory = (category: ICategory) => {
     setSelectedCategory(category);
     setFilteredCategories([]);
     setFilteredType(null);

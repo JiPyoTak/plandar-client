@@ -1,4 +1,4 @@
-import React, { MouseEvent, MouseEventHandler, useState } from 'react';
+import React, { MouseEventHandler, useState } from 'react';
 
 import Dropdown from '../common/dropdown';
 

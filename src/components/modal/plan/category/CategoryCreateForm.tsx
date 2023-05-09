@@ -5,11 +5,11 @@ import styled from '@emotion/styled';
 import { SELECTABLE_COLOR } from '@/constants';
 import { useCategoryCreate } from '@/hooks/rq/category';
 import { FONT_REGULAR_3 } from '@/styles/font';
-import { ICategoryWithoutId } from '@/types/rq/category';
+import { ICategory } from '@/types/rq/category';
 
 type TCategoryCreateProps = {
   name: string;
-  onSuccess: (newCategory: ICategoryWithoutId) => void;
+  onSuccess: (newCategory: ICategory) => void;
 };
 
 type TCategoryCreate = React.FC<TCategoryCreateProps>;

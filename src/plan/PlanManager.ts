@@ -9,13 +9,12 @@ export interface IViewInfo {
 }
 
 abstract class PlanManager<T extends IViewInfo> {
-  viewInfo: Map<Plan['id'], T>;
+  viewInfo: Map<Plan['id'], T> = new Map();
 
-  constructor(public plans: Plan[]) {
-    this.viewInfo = this.getViewInfo();
-  }
+  constructor(public plans: Plan[]) {}
 
   abstract getViewInfo(): Map<number, T>;
+
   sortPlans() {
     return this.plans.sort((planA, planB) => {
       const { id: aId, startTime: aST, endTime: aET } = planA;
