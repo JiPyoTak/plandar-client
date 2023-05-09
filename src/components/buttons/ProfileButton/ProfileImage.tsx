@@ -10,7 +10,6 @@ const DEFAULT_PROFILE = '/images/default-profile.png';
 
 const ProfileImage: React.FC = () => {
   const { user } = useUserStore();
-  console.log('user', user);
   const [imageState, setImageState] = useState<TImageState>('loading');
 
   return (
