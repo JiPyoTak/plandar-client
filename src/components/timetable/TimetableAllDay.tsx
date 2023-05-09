@@ -3,22 +3,19 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Moment } from 'moment';
 
+import Plan from '@/plan/Plan';
 import {
   TIMETABLE_CELL_MIN_WIDTH,
   TIMETABLE_SCROLL_WIDTH,
   TimetableGuide,
 } from '@/styles/timetable';
-import { IPlan } from '@/types/rq/plan';
-import { getCalendarPlans } from '@/utils/calendar/getCalendarPlans';
 
 type TProps = {
   dateMoments: Moment[];
-  allDayPlans: IPlan[];
+  allDayPlans: Plan[];
 };
 
 const TimetableAllDay: React.FC<TProps> = ({ dateMoments, allDayPlans }) => {
-  // const dayPlanViews = getCalendarPlans(allDayPlans, ...dates);
-
   return (
     <Container>
       <TimetableGuide
