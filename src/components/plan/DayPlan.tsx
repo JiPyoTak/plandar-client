@@ -1,29 +1,31 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 
 import styled from '@emotion/styled';
 
 import ChevronIcon from '@/components/icons/ChevronIcon';
 
+import { IDayViewInfo } from '@/plan/DaysPlanManager';
+import Plan from '@/plan/Plan';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 
 import { FONT_REGULAR_5 } from '@/styles/font';
-import { IViewPlanInfo, TColor } from '@/types';
+import { TColor } from '@/types';
 
 interface IProps {
-  index: number;
-  view: IViewPlanInfo;
-  isSelected: boolean;
-  isHovered: boolean;
+  view: IDayViewInfo;
+  plan: Plan;
+  isSelected?: boolean;
+  isHovered?: boolean;
   isDragging?: boolean;
-  onMouseEnter: (e: React.MouseEvent<HTMLDivElement>) => void;
-  onMouseLeave: () => void;
+  onMouseEnter: React.MouseEventHandler<HTMLDivElement>;
+  onMouseLeave: React.MouseEventHandler<HTMLDivElement>;
 }
 
 const DayPlan: React.FC<IProps> = (props) => {
   const {
+    plan,
     view,
-    index,
     isHovered,
     isSelected,
     isDragging,
@@ -31,39 +33,34 @@ const DayPlan: React.FC<IProps> = (props) => {
     onMouseLeave,
   } = props;
 
+  const { id, start, index, term, st, et } = view;
+
   const { clearHoveredPlan } = useHoveredPlanState();
-  const { isDragging: d, selectPlan } = useFocusedPlanState();
+  const { selectPlan } = useFocusedPlanState();
 
-  const isEqualStart = view.startTime.isSame(view.viewStart);
-  const isEqualEnd = view.endTime.isSame(view.viewEnd);
+  const isEqualStart = st.isSame(plan.startTime);
+  const isEqualEnd = et.isSame(plan.endTime);
 
-  const className = [];
+  const className: string[] = [];
 
   if (isDragging) className.push('is_dragging');
-  if (isSelected && d) className.push('is_selected');
-  if (isHovered && !d) className.push('is_hovered');
+  if (isSelected) className.push('is_selected');
+  if (isHovered) className.push('is_hovered');
 
-  const onMouseDown = () => {
-    const planInput = {
-      ...view.plan,
-      id: view.id,
-      startTime: view.startTime.format(),
-      endTime: view.endTime.format(),
-    };
-
-    selectPlan(planInput);
+  const onMouseDown = useCallback(() => {
+    selectPlan(plan);
     clearHoveredPlan();
-  };
+  }, [plan]);
 
   return (
     <Container
-      key={view.id}
+      key={id}
       style={{
-        left: `${(view.dayOfWeek - 1) * 14.2857}%`,
-        top: `${Number(index) * 24}px`,
-        width: `${view.termInWeek * 14.2857}%`,
+        left: `${start * 14.2857}%`,
+        top: `${index * 24}px`,
+        width: `${term * 14.2857}%`,
       }}
-      color={view.plan?.color}
+      color={plan.color}
     >
       <div
         className={className.join(' ')}
@@ -153,4 +150,4 @@ const Icons = styled.div`
   text-align: center;
 `;
 
-export default DayPlan;
+export default memo(DayPlan);
