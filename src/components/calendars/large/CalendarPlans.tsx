@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 
 import DayPlan from '@/components/plan/DayPlan';
+import Plan from '@/plan/Plan';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 import { IViewPlanInfo } from '@/types';
@@ -26,8 +27,9 @@ const CalendarPlans: React.FC<IProps> = ({ isDragging, planViewsToWeek }) => {
 
     const { top, left, right, bottom } = target.getBoundingClientRect();
 
+    // NOTICE : viewPlan이 바뀜에 따라 한 번 확인할 것
     setHoveredPlan({
-      hoveredPlan: viewPlan.plan,
+      hoveredPlan: new Plan(viewPlan.plan),
       rect: { top, left, right, bottom },
     });
   };
