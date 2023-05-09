@@ -1,7 +1,10 @@
+import { MomentInput } from 'moment';
+
 import Plan from './Plan';
 import PlanManager from './PlanManager';
 import type { IViewInfo } from './PlanManager';
 import { DAY_TO_MINUTE, TIMETABLE_CELL_UNIT } from '@/constants';
+import { getTimeMinute } from '@/utils/date/getTimeMinute';
 
 export interface ITimeViewInfo extends IViewInfo {
   totalIndex: number;
@@ -15,16 +18,18 @@ class TimePlanManager extends PlanManager<ITimeViewInfo> {
     this.viewInfo = this.getViewInfo();
   }
 
+  getTimetableIndex(date: MomentInput) {
+    const minutes = getTimeMinute(date);
+    const index = minutes / TIMETABLE_CELL_UNIT;
+
+    return index;
+  }
+
   getPlanIndex(plan: Plan) {
-    const startDate = new Date(plan.startTime);
-    const startMinutes = startDate.getHours() * 60 + startDate.getMinutes();
-    const startIndex = Math.ceil(startMinutes / TIMETABLE_CELL_UNIT);
-
-    const endDate = new Date(plan.endTime);
-    const endMinutes = endDate.getHours() * 60 + endDate.getMinutes();
-    const endIndex = Math.ceil(endMinutes / TIMETABLE_CELL_UNIT);
-
-    return [startIndex, endIndex];
+    return [
+      Math.ceil(this.getTimetableIndex(plan.startMoment)),
+      Math.ceil(this.getTimetableIndex(plan.endMoment)),
+    ];
   }
 
   getTimetableOrder() {
@@ -77,12 +82,9 @@ class TimePlanManager extends PlanManager<ITimeViewInfo> {
         0,
       );
 
-      const midnight = plan.startMoment.startOf('day');
-      const startMinutes = plan.startMoment.diff(midnight, 'minute');
-      const start = startMinutes / TIMETABLE_CELL_UNIT;
-
-      const planMinutes = plan.endMoment.diff(plan.startMoment, 'minute');
-      const term = planMinutes / TIMETABLE_CELL_UNIT;
+      const start = this.getTimetableIndex(plan.startMoment);
+      const end = this.getTimetableIndex(plan.endMoment);
+      const term = end - start;
 
       viewInfo.set(plan.id, {
         term,
