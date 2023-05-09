@@ -1,9 +1,9 @@
-import { IPlan } from '@/types/rq/plan';
+import Plan from '@/plan/Plan';
 
 const MONTH_PLANS_MOCK = new Proxy(
   {
     4: [
-      {
+      new Plan({
         id: 3,
         title: '3월의 세번째 데이터',
         description: '설명 보아서 무엇을 할 것인가',
@@ -14,8 +14,8 @@ const MONTH_PLANS_MOCK = new Proxy(
         color: '#FE9C08',
         categoryId: 1,
         tags: ['태그1', '태그2'],
-      },
-      {
+      }),
+      new Plan({
         id: 4,
         title: '4월의 첫번째 데이터',
         description: '설명 보아서 무엇을 할 것인가',
@@ -26,8 +26,8 @@ const MONTH_PLANS_MOCK = new Proxy(
         color: '#FE9C08',
         categoryId: 1,
         tags: ['태그1', '태그2'],
-      },
-      {
+      }),
+      new Plan({
         id: 5,
         title: '4월의 두번째 데이터',
         description: '설명 보아서 무엇을 할 것인가',
@@ -38,8 +38,8 @@ const MONTH_PLANS_MOCK = new Proxy(
         color: '#4593FC',
         categoryId: 1,
         tags: ['태그1', '태그2'],
-      },
-      {
+      }),
+      new Plan({
         id: 6,
         title: '4월의 세번째 데이터',
         description: '설명 보아서 무엇을 할 것인가',
@@ -50,8 +50,8 @@ const MONTH_PLANS_MOCK = new Proxy(
         color: '#F66570',
         categoryId: 1,
         tags: ['태그1', '태그2'],
-      },
-      {
+      }),
+      new Plan({
         id: 7,
         title: '4월의 네번째 데이터',
         description: '설명 보아서 무엇을 할 것인가',
@@ -62,8 +62,8 @@ const MONTH_PLANS_MOCK = new Proxy(
         color: '#FFE0B2',
         categoryId: 1,
         tags: ['태그1', '태그2'],
-      },
-      {
+      }),
+      new Plan({
         id: 8,
         title: '4월의 다섯번째 데이터',
         description: '설명 보아서 무엇을 할 것인가',
@@ -74,9 +74,9 @@ const MONTH_PLANS_MOCK = new Proxy(
         color: '#DEF5E5',
         categoryId: 1,
         tags: ['태그1', '태그2'],
-      },
+      }),
     ],
-  } as { [key: number]: IPlan[] },
+  } as { [key: number]: Plan[] },
   {
     get(target, key, ...args) {
       if (!Object.prototype.hasOwnProperty.call(target, key)) {
