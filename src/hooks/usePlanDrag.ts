@@ -1,32 +1,40 @@
 import { useEffect, useRef } from 'react';
 
-import { CALENDAR_UNIT } from '@/constants';
-import useCalendarUnitState from '@/stores/date/calendarUnit';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 
 export type MouseEventHandler = React.MouseEventHandler<HTMLDivElement>;
 
 const usePlanDrag = () => {
-  const { selectedCalendarUnit } = useCalendarUnitState();
-  const { focusedPlan, onMoveMonthPlan, onMoveDayPlan, onDragEndPlan } =
+  const { focusedPlan, onMoveMonthPlan, onMoveTimePlan, onDragEndPlan } =
     useFocusedPlanState();
   const currentDateRef = useRef<string | null>(null);
   const draggingDateRef = useRef<string | null>(null);
   const focusedPlanRef = useRef<typeof focusedPlan>(focusedPlan);
 
-  const getDateOfMouse = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const getDataOfMouse = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const { clientX, clientY } = event;
 
     const target = document
       .elementsFromPoint(clientX, clientY)
-      .find((el) => el.getAttribute('data-date'));
-    if (!target) return null;
+      .find(
+        (el) => el.getAttribute('data-date') || el.getAttribute('data-time'),
+      );
 
-    return target.getAttribute('data-date');
+    if (!target) {
+      return {
+        date: null,
+        time: null,
+      };
+    }
+
+    return {
+      date: target.getAttribute('data-date'),
+      time: target.getAttribute('data-time'),
+    };
   };
 
   const changeCurrentDate: MouseEventHandler = (event) => {
-    const targetDate = getDateOfMouse(event);
+    const { date: targetDate } = getDataOfMouse(event);
     if (!targetDate) return;
 
     currentDateRef.current = targetDate;
@@ -34,17 +42,19 @@ const usePlanDrag = () => {
   };
 
   const onMouseMove: MouseEventHandler = (event) => {
-    const targetDate = getDateOfMouse(event);
+    const { date, time } = getDataOfMouse(event);
+    const targetDate = date ?? time;
+
     const currentDate = currentDateRef.current;
     const draggingDate = draggingDateRef.current;
+
     if (!targetDate || !currentDate) return;
 
     // 현재 같은 곳을 드래깅하고 있다면 그대로
-    if (targetDate === draggingDate) return;
+    if (targetDate && targetDate === draggingDate) return;
     draggingDateRef.current = targetDate;
 
-    const isMonth = selectedCalendarUnit === CALENDAR_UNIT[2];
-    const movePlan = isMonth ? onMoveMonthPlan : onMoveDayPlan;
+    const movePlan = date ? onMoveMonthPlan : onMoveTimePlan;
     movePlan({ targetDate, currentDate });
   };
 
@@ -70,7 +80,7 @@ const usePlanDrag = () => {
   return {
     currentDateRef,
     changeCurrentDate,
-    getDateOfMouse,
+    getDataOfMouse,
     onMouseMove,
   };
 };

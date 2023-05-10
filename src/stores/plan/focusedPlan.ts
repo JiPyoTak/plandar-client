@@ -26,7 +26,7 @@ interface IFocusedPlanAction {
   createDragPlan: (planData: Pick<IPlan, 'startTime'> & Partial<IPlan>) => void;
   selectPlan: (plan: Plan) => void;
   onMoveMonthPlan: (args: TMovePlanProps) => void;
-  onMoveDayPlan: (args: TMovePlanProps) => void;
+  onMoveTimePlan: (args: TMovePlanProps) => void;
   onDragEndPlan: () => void;
   clearDraggedPlan: () => void;
 }
@@ -93,7 +93,7 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
         return { ...state, focusedPlan: new Plan(newPlan), isDragging: true };
       });
     },
-    onMoveDayPlan: () => set((state) => state),
+    onMoveTimePlan: () => set((state) => state),
     onDragEndPlan: () => {
       set((state) => {
         const { focusedPlan, currentPlan } = state;
