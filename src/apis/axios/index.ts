@@ -49,7 +49,7 @@ const axiosAPI = (() => {
 
         return axiosInstance(config);
       } catch (refreshError) {
-        return refreshError;
+        return Promise.reject(refreshError);
       }
     },
   );
