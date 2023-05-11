@@ -11,6 +11,9 @@ class Plan implements IPlan {
   type!: TPlanType;
   categoryId!: number | null;
   tags!: string[];
+  startTime!: string;
+  endTime!: string;
+  isAllDay!: boolean;
 
   constructor(data: IPlan) {
     for (const [key, value] of Object.entries(data)) {
@@ -23,47 +26,26 @@ class Plan implements IPlan {
     }
   }
 
-  get startTime(): string {
-    return this.startTime;
-  }
-  set startTime(data: MomentInput) {
-    Object.defineProperty(this, 'startTime', {
-      value: moment(data).toDate().toUTCString(),
-      configurable: true,
-      enumerable: true,
-      writable: true,
-    });
+  set _startTime(data: MomentInput) {
+    this.startTime = moment(data).toDate().toUTCString();
   }
   get startMoment(): Moment {
     return moment(this.startTime).local();
   }
 
-  get endTime(): string {
-    return this.endTime;
-  }
-  set endTime(data: MomentInput) {
-    Object.defineProperty(this, 'endTime', {
-      value: moment(data).toDate().toUTCString(),
-      configurable: true,
-      enumerable: true,
-      writable: true,
-    });
+  set _endTime(data: MomentInput) {
+    this.endTime = moment(data).toDate().toUTCString();
   }
   get endMoment(): Moment {
     return moment(this.endTime).local();
   }
 
-  set isAllDay(data: boolean) {
+  set _isAllDay(data: boolean) {
     if (data) {
-      this.startTime = this.startMoment.startOf('d').toDate();
-      this.endTime = this.endMoment.endOf('d').toDate();
+      this._startTime = this.startMoment.startOf('d').toDate();
+      this._endTime = this.endMoment.endOf('d').toDate();
     }
-    Object.defineProperty(this, 'isAllDay', {
-      value: data,
-      configurable: true,
-      enumerable: true,
-      writable: true,
-    });
+    this.isAllDay = data;
   }
 
   get isTimePlan() {
