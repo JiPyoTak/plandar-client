@@ -7,13 +7,13 @@ import TagClassifier from './TagClassifier';
 import TypeClassifier from './TypeClassifier';
 import Calendar from '@/components/calendars/small';
 import useDrawerState from '@/stores/drawer';
-import { SIDEBAR_INNER_WIDTH, SIDEBAR_OUTER_WIDTH } from '@/styles/home';
+import { SIDEBAR_WIDTH } from '@/styles/home';
 
 const SideBar: React.FC = () => {
   const { isOpened } = useDrawerState();
 
   return (
-    <Container css={{ width: isOpened ? SIDEBAR_OUTER_WIDTH : 0 }}>
+    <Container css={{ width: isOpened ? SIDEBAR_WIDTH : 0 }}>
       <InnerContainer>
         <Calendar />
         <TypeClassifier />
@@ -25,7 +25,7 @@ const SideBar: React.FC = () => {
 };
 
 const InnerContainer = styled.div`
-  width: ${SIDEBAR_INNER_WIDTH};
+  width: ${SIDEBAR_WIDTH};
   padding: 2rem;
 `;
 
