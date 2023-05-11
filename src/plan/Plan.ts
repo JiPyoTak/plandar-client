@@ -14,7 +14,12 @@ class Plan implements IPlan {
 
   constructor(data: IPlan) {
     for (const [key, value] of Object.entries(data)) {
-      Object.defineProperty(this, key, { value, enumerable: true });
+      Object.defineProperty(this, key, {
+        value,
+        configurable: true,
+        enumerable: true,
+        writable: true,
+      });
     }
   }
 
@@ -24,7 +29,9 @@ class Plan implements IPlan {
   set startTime(data: MomentInput) {
     Object.defineProperty(this, 'startTime', {
       value: moment(data).toDate().toUTCString(),
+      configurable: true,
       enumerable: true,
+      writable: true,
     });
   }
   get startMoment(): Moment {
@@ -37,7 +44,9 @@ class Plan implements IPlan {
   set endTime(data: MomentInput) {
     Object.defineProperty(this, 'endTime', {
       value: moment(data).toDate().toUTCString(),
+      configurable: true,
       enumerable: true,
+      writable: true,
     });
   }
   get endMoment(): Moment {
@@ -49,7 +58,12 @@ class Plan implements IPlan {
       this.startTime = this.startMoment.startOf('d').toDate();
       this.endTime = this.endMoment.endOf('d').toDate();
     }
-    Object.defineProperty(this, 'isAllDay', { value: data, enumerable: true });
+    Object.defineProperty(this, 'isAllDay', {
+      value: data,
+      configurable: true,
+      enumerable: true,
+      writable: true,
+    });
   }
 
   get isTimePlan() {
