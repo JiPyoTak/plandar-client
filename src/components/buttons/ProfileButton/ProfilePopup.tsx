@@ -1,15 +1,15 @@
 import styled from '@emotion/styled';
 
-import { logoutAPI } from '@/apis/user';
+import useLogout from '@/hooks/useLogout';
 import useUserStore from '@/stores/user';
 import { FONT_REGULAR_3, FONT_REGULAR_4, FONT_REGULAR_5 } from '@/styles/font';
 
 const ProfilePopup = () => {
-  const { user, reset } = useUserStore();
+  const { user } = useUserStore();
+  const logout = useLogout();
   const onLogout = async () => {
     try {
-      await logoutAPI();
-      reset();
+      await logout();
     } catch (e) {
       alert('로그아웃에 실패했습니다');
     }
