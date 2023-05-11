@@ -6,23 +6,34 @@ import CategoryClassifier from './CategoryClassifier';
 import TagClassifier from './TagClassifier';
 import TypeClassifier from './TypeClassifier';
 import Calendar from '@/components/calendars/small';
+import useDrawerState from '@/stores/drawer';
+import { SIDEBAR_INNER_WIDTH, SIDEBAR_OUTER_WIDTH } from '@/styles/home';
 
 const SideBar: React.FC = () => {
+  const { isOpened } = useDrawerState();
+
   return (
-    <Wrapper>
-      <Calendar />
-      <TypeClassifier />
-      <CategoryClassifier />
-      <TagClassifier />
-    </Wrapper>
+    <Container css={{ width: isOpened ? SIDEBAR_OUTER_WIDTH : 0 }}>
+      <InnerContainer>
+        <Calendar />
+        <TypeClassifier />
+        <CategoryClassifier />
+        <TagClassifier />
+      </InnerContainer>
+    </Container>
   );
 };
 
-const Wrapper = styled.div`
-  width: 100%;
+const InnerContainer = styled.div`
+  width: ${SIDEBAR_INNER_WIDTH};
+  padding: 2rem;
+`;
+
+const Container = styled.div`
   height: 100%;
   background-color: ${({ theme }) => theme.white};
-  padding: 2rem;
+  overflow: hidden;
+  transition: width 0.3s ease-in-out;
 `;
 
 export default SideBar;
