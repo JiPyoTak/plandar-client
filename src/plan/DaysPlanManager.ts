@@ -42,7 +42,7 @@ class DaysPlanManager extends PlanManager<IDayViewInfo> {
     this.viewInfo = this.getViewInfo();
   }
 
-  getViewPlan(plan: Plan): IDayViewInfo | null {
+  getViewPlan(plan: Plan): IDayViewInfo {
     const { startMoment, endMoment } = plan;
 
     const [currentStart, currentEnd] = [this.startDate, this.endDate];
@@ -99,8 +99,6 @@ class DaysPlanManager extends PlanManager<IDayViewInfo> {
       const plan = plans[i];
 
       const viewPlan = this.getViewPlan(plan);
-
-      if (!viewPlan) continue;
 
       viewPlans.set(plan.id, viewPlan);
     }
