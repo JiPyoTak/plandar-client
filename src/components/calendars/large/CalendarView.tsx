@@ -28,11 +28,13 @@ const CalendarView = () => {
     [dummy, calendarInfos],
   );
 
-  const focusedPlanArgs = focusedPlan ? [new Plan(focusedPlan)] : [];
-
   const focusedPlanManager = useMemo(
-    () => getDaysPlanManager(focusedPlanArgs, calendarInfos),
-    [focusedPlanArgs, calendarInfos],
+    () =>
+      getDaysPlanManager(
+        focusedPlan ? [new Plan(focusedPlan)] : [],
+        calendarInfos,
+      ),
+    [focusedPlan, calendarInfos],
   );
 
   const onMouseDownCell: React.MouseEventHandler = useCallback((e) => {
