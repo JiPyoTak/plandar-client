@@ -21,4 +21,6 @@ interface IPlan {
   tags: string[];
 }
 
-export type { IPlan, TPlanType };
+type TPlanInput = Omit<IPlan, 'id'>;
+
+export type { IPlan, TPlanType, TPlanInput };
