@@ -15,7 +15,7 @@ interface IPlan {
   isAllDay: boolean;
   color: TColor;
   startTime: string;
-  endTime: string | null;
+  endTime: string;
   type: TPlanType;
   categoryId: number | null;
   tags: string[];

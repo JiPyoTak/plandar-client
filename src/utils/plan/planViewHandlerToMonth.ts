@@ -79,18 +79,16 @@ const editPlanView = (props: IEditPlanView) => {
     .hours(currentStart.hours())
     .minutes(currentStart.minutes());
 
-  const endTime = isNaN(termEnd)
-    ? null
-    : targetDate
-        .clone()
-        .add(termEnd, 'd')
-        .hours(currentEnd.hours())
-        .minutes(currentEnd.minutes());
+  const endTime = targetDate
+    .clone()
+    .add(termEnd, 'd')
+    .hours(currentEnd.hours())
+    .minutes(currentEnd.minutes());
 
   const newPlan = {
     ...focusedPlan,
     startTime: startTime.format(),
-    endTime: endTime?.format() || null,
+    endTime: endTime.format(),
   };
 
   return newPlan;
