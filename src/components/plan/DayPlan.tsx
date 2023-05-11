@@ -78,7 +78,7 @@ const DayPlan: React.FC<IProps> = (props) => {
 const Container = styled.div<{ color?: TColor }>`
   position: absolute;
   padding: 0 8px;
-  /* transition: all 0.2s; */
+  transition: all 0.2s;
 
   & > div {
     display: flex;
