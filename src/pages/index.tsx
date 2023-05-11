@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { css } from '@emotion/react/dist/emotion-react.cjs';
 import styled from '@emotion/styled';
 
 import HamburgerButton from '@/components/buttons/HamburgerButton';
@@ -11,7 +10,7 @@ import HoveredPlanModal from '@/components/modal/plan/Hovered';
 import SideBar from '@/components/sidebar';
 import Timetable from '@/components/timetable';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
-import { SIDEBAR_INNER_WIDTH } from '@/styles/home';
+import { SIDEBAR_WIDTH } from '@/styles/home';
 
 const CALENDAR_COMPONENTS = {
   월: MainCalendar,
@@ -69,7 +68,7 @@ const Header = styled.header`
   border-bottom: 1px solid ${({ theme }) => theme.border2};
 
   & > .header-side {
-    flex: 0 0 ${SIDEBAR_INNER_WIDTH};
+    flex: 0 0 ${SIDEBAR_WIDTH};
     height: 100%;
     padding: 0.5rem 1rem;
 
@@ -90,7 +89,7 @@ const ContentSizer = styled.div`
   display: flex;
 
   & > .content-main {
-    width: 100%;
+    flex: 1 0 0;
     height: 100%;
     padding: 1rem;
     overflow: hidden;
