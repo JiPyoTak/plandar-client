@@ -4,26 +4,28 @@ import { TColor } from '@/types';
 import { IPlan, TPlanType } from '@/types/rq/plan';
 
 class Plan implements IPlan {
-  id!: number;
-  title!: string;
-  description!: string | null;
-  color!: TColor;
-  type!: TPlanType;
-  categoryId!: number | null;
-  tags!: string[];
-  startTime!: string;
-  endTime!: string;
-  isAllDay!: boolean;
+  id: number;
+  title: string;
+  description: string | null;
+  color: TColor;
+  type: TPlanType;
+  categoryId: number | null;
+  tags: string[];
+  startTime: string;
+  endTime: string;
+  isAllDay: boolean;
 
   constructor(data: IPlan) {
-    for (const [key, value] of Object.entries(data)) {
-      Object.defineProperty(this, key, {
-        value,
-        configurable: true,
-        enumerable: true,
-        writable: true,
-      });
-    }
+    this.id = data.id;
+    this.title = data.title;
+    this.description = data.description;
+    this.color = data.color;
+    this.type = data.type;
+    this.categoryId = data.categoryId;
+    this.tags = data.tags;
+    this.startTime = data.startTime;
+    this.endTime = data.endTime;
+    this.isAllDay = data.isAllDay;
   }
 
   set _startTime(data: MomentInput) {
