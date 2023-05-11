@@ -14,7 +14,7 @@ interface IProps {
 }
 
 const CalendarWeek = ({ week, index, daysIndex, onMouseDown }: IProps) => {
-  const { day, onChangeStoreDate } = useDateState();
+  const { day } = useDateState();
 
   return (
     <Container>
@@ -27,7 +27,6 @@ const CalendarWeek = ({ week, index, daysIndex, onMouseDown }: IProps) => {
           dateInfo={dateInfo}
           format={dateInfo.format}
           isSelected={dateInfo.day === day && dateInfo.isInMonth}
-          onClickDayNumber={onChangeStoreDate}
           onMouseDown={onMouseDown}
         />
       ))}
