@@ -1,3 +1,4 @@
-const SIDEBAR_WIDTH = '21.25rem';
+const SIDEBAR_INNER_WIDTH = '21.25rem';
+const SIDEBAR_OUTER_WIDTH = '27.25rem';
 
-export { SIDEBAR_WIDTH };
+export { SIDEBAR_INNER_WIDTH, SIDEBAR_OUTER_WIDTH };
