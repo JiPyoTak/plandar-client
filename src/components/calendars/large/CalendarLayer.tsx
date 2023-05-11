@@ -41,10 +41,6 @@ const CalendarLayer = ({ planManager }: IProps) => {
     clearHoveredPlan();
   }, []);
 
-  const onMouseLeave = useCallback(() => {
-    clearHoveredPlan();
-  }, []);
-
   return (
     <Container>
       {plans.map((plan, i) => {
@@ -61,7 +57,7 @@ const CalendarLayer = ({ planManager }: IProps) => {
             isHovered={hoveredPlan?.id === plan.id}
             onMouseEnter={onMouseEnter}
             onMouseDown={onMouseDown}
-            onMouseLeave={onMouseLeave}
+            onMouseLeave={clearHoveredPlan}
           />
         );
       })}
