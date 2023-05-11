@@ -1,30 +1,43 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import styled from '@emotion/styled';
 
-import CalendarCell from '@/components/calendars/large/CalendarCell';
-import CalendarPlanLayer from '@/components/calendars/large/CalendarPlanLayer';
-import usePlanDrag, { MouseEventHandler } from '@/hooks/usePlanDrag';
+import CalendarLayer from './CalendarLayer';
+import CalendarOverlay from './CalendarOverlay';
+import CalendarWeek from './CalendarWeek';
+import usePlanDrag from '@/hooks/usePlanDrag';
+import Plan from '@/plan/Plan';
 import useDateState from '@/stores/date';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
-import { getStartAndEndDateInMonth } from '@/utils/calendar/dayHandler';
 import { getCalendarInfo } from '@/utils/calendar/getCalendarInfo';
-import { getCalendarPlans } from '@/utils/calendar/getCalendarPlans';
 import { dummy } from '@/utils/plan/dummy';
+import { getDaysPlanManager } from '@/utils/plan/getDaysPlanManager';
 
 const CalendarView = () => {
-  const { focusedPlan, createDragPlan, isDragging } = useFocusedPlanState();
-  const { onChangeStoreDate, year, month, day } = useDateState();
-  const { changeCurrentDate, currentDateRef, onMouseMove } = usePlanDrag();
+  const { year, month, day } = useDateState();
+  const { focusedPlan, isDragging, createDragPlan } = useFocusedPlanState();
+  const { currentDateRef, onMouseMove, changeCurrentDate } = usePlanDrag();
 
-  const calendarInfos = getCalendarInfo({ year, month, day });
-  const dates = getStartAndEndDateInMonth(calendarInfos);
-  const selectedPlanArgs = focusedPlan ? [focusedPlan] : [];
+  const calendarInfos = useMemo(
+    () => getCalendarInfo({ year, month, day }),
+    [year, month, day],
+  );
 
-  const calendarPlanViews = getCalendarPlans(dummy, ...dates);
-  const selectedPlanViews = getCalendarPlans(selectedPlanArgs, ...dates);
+  const planManagers = useMemo(
+    () => getDaysPlanManager(dummy, calendarInfos),
+    [dummy, calendarInfos],
+  );
 
-  const onMouseDownCell: MouseEventHandler = (e) => {
+  const focusedPlanManager = useMemo(
+    () =>
+      getDaysPlanManager(
+        focusedPlan ? [new Plan(focusedPlan)] : [],
+        calendarInfos,
+      ),
+    [focusedPlan, calendarInfos],
+  );
+
+  const onMouseDownCell: React.MouseEventHandler = useCallback((e) => {
     const targetDate = (
       (e.target as HTMLElement).closest('.dateTime') as HTMLElement
     )?.dataset?.date;
@@ -35,7 +48,7 @@ const CalendarView = () => {
       startTime: targetDate,
       endTime: targetDate,
     });
-  };
+  }, []);
 
   return (
     <Container
@@ -45,39 +58,19 @@ const CalendarView = () => {
     >
       {calendarInfos.map((week, i) => (
         <Inner key={`${week[i].day}${i}`}>
-          <Inner>
-            {week.map((dateInfo, j) => (
-              <CalendarCell
-                key={`${dateInfo.month}${dateInfo.day}`}
-                height={calendarPlanViews[i][j].length * 24}
-                isLastWeek={i === calendarInfos.length - 1}
-                isLastDay={dateInfo.day === week[week.length - 1].day}
-                dateInfo={dateInfo}
-                format={dateInfo.format}
-                isSelected={dateInfo.day === day && dateInfo.isInMonth}
-                onClickDayNumber={onChangeStoreDate}
-                onMouseDown={onMouseDownCell}
-              />
-            ))}
-          </Inner>
-          <CalendarPlanLayer
-            calendarPlanView={calendarPlanViews?.[i]}
-            selectedPlanView={selectedPlanViews?.[i]}
+          <CalendarWeek
+            index={i}
+            week={week}
+            daysIndex={planManagers[i].daysIndex}
+            onMouseDown={onMouseDownCell}
           />
-          <OverlayWeek>
-            {week.map(({ year: y, month: m }, j) => (
-              <Inner
-                key={`${y}${m}${j}`}
-                css={{
-                  position: 'relative',
-                  backgroundColor:
-                    y !== year || m !== month
-                      ? 'rgba(255,255,255,.5)'
-                      : 'transparent',
-                }}
-              />
-            ))}
-          </OverlayWeek>
+          {planManagers[i].plans.length !== 0 && (
+            <CalendarLayer planManager={planManagers[i]} />
+          )}
+          {focusedPlan && isDragging && (
+            <CalendarLayer planManager={focusedPlanManager[i]} />
+          )}
+          <CalendarOverlay week={week} />
         </Inner>
       ))}
     </Container>
@@ -103,19 +96,6 @@ const Inner = styled.div`
   position: relative;
 
   flex: 1;
-  display: flex;
-`;
-
-const OverlayWeek = styled.div`
-  z-index: 20;
-
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
   display: flex;
 `;
 

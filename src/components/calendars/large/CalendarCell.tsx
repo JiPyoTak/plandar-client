@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 import styled from '@emotion/styled';
 
 import Day from '@/components/common/calendar/CalendarDay';
-import { TDateYMD } from '@/stores/date';
+import useDateState from '@/stores/date';
 import { ICalendarInfo } from '@/utils/calendar/getCalendarInfo';
 
 interface IProps {
@@ -14,7 +14,6 @@ interface IProps {
   isLastDay: boolean;
   isSelected: boolean;
 
-  onClickDayNumber: (date: TDateYMD) => void;
   onMouseDown: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
@@ -26,9 +25,10 @@ const CalendarCell: React.FC<IProps> = (props) => {
     isLastDay,
     isLastWeek,
     format,
-    onClickDayNumber,
     onMouseDown,
   } = props;
+
+  const onChangeStoreDate = useDateState((state) => state.onChangeStoreDate);
 
   return (
     <Container
@@ -41,7 +41,7 @@ const CalendarCell: React.FC<IProps> = (props) => {
       <CellDay
         {...dateInfo}
         isSelected={isSelected}
-        onClick={onClickDayNumber}
+        onClick={onChangeStoreDate}
       />
       <div style={{ height }} />
       <div></div>
