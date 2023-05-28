@@ -4,52 +4,50 @@ import { TColor } from '@/types';
 import { IPlan, TPlanType } from '@/types/rq/plan';
 
 class Plan implements IPlan {
-  id!: number;
-  title!: string;
-  description!: string | null;
-  color!: TColor;
-  type!: TPlanType;
-  categoryId!: number | null;
-  tags!: string[];
+  id: number;
+  title: string;
+  description: string | null;
+  color: TColor;
+  type: TPlanType;
+  categoryId: number | null;
+  tags: string[];
+  startTime: string;
+  endTime: string;
+  isAllDay: boolean;
 
   constructor(data: IPlan) {
-    for (const [key, value] of Object.entries(data)) {
-      Object.defineProperty(this, key, { value, enumerable: true });
-    }
+    this.id = data.id;
+    this.title = data.title;
+    this.description = data.description;
+    this.color = data.color;
+    this.type = data.type;
+    this.categoryId = data.categoryId;
+    this.tags = data.tags;
+    this.startTime = data.startTime;
+    this.endTime = data.endTime;
+    this.isAllDay = data.isAllDay;
   }
 
-  get startTime(): string {
-    return this.startTime;
-  }
-  set startTime(data: MomentInput) {
-    Object.defineProperty(this, 'startTime', {
-      value: moment(data).toDate().toUTCString(),
-      enumerable: true,
-    });
+  set _startTime(data: MomentInput) {
+    this.startTime = moment(data).toDate().toUTCString();
   }
   get startMoment(): Moment {
     return moment(this.startTime).local();
   }
 
-  get endTime(): string {
-    return this.endTime;
-  }
-  set endTime(data: MomentInput) {
-    Object.defineProperty(this, 'endTime', {
-      value: moment(data).toDate().toUTCString(),
-      enumerable: true,
-    });
+  set _endTime(data: MomentInput) {
+    this.endTime = moment(data).toDate().toUTCString();
   }
   get endMoment(): Moment {
     return moment(this.endTime).local();
   }
 
-  set isAllDay(data: boolean) {
+  set _isAllDay(data: boolean) {
     if (data) {
-      this.startTime = this.startMoment.startOf('d').toDate();
-      this.endTime = this.endMoment.endOf('d').toDate();
+      this._startTime = this.startMoment.startOf('d').toDate();
+      this._endTime = this.endMoment.endOf('d').toDate();
     }
-    Object.defineProperty(this, 'isAllDay', { value: data, enumerable: true });
+    this.isAllDay = data;
   }
 
   get isTimePlan() {

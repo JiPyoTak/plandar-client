@@ -23,7 +23,9 @@ interface IFocusedPlanState {
 }
 
 interface IFocusedPlanAction {
-  createDragPlan: (planData: Pick<IPlan, 'startTime'> & Partial<IPlan>) => void;
+  createDragPlan: (
+    planData: Pick<IPlan, 'startTime' | 'endTime'> & Partial<IPlan>,
+  ) => void;
   selectPlan: (plan: Plan) => void;
   onMoveMonthPlan: (args: TMovePlanProps) => void;
   onMoveTimePlan: (args: TMovePlanProps) => void;
@@ -48,7 +50,6 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
         description: null,
         isAllDay: false,
         type: 'task',
-        endTime: null,
         color: '#52D681',
         categoryId: null,
         tags: [],
