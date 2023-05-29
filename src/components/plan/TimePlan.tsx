@@ -5,6 +5,8 @@ import styled from '@emotion/styled';
 
 import Plan from '@/plan/Plan';
 import { ITimeViewInfo } from '@/plan/TimePlanManager';
+
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { FONT_REGULAR_7, FONT_REGULAR_8 } from '@/styles/font';
 import { TIMETABLE_CELL_HEIGHT, TIMETABLE_Z_INDEX } from '@/styles/timetable';
 import { TColor } from '@/types';
@@ -17,8 +19,11 @@ type TProps = {
 };
 
 const TimePlan: React.FC<TProps> = ({ plan, viewInfo }) => {
-  const { title, startTime, color } = plan;
+  const { id, title, startTime, color } = plan;
   const theme = useTheme();
+  const selectPlan = useFocusedPlanState((state) => state.selectPlan);
+  const focusedPlan = useFocusedPlanState((state) => state.focusedPlan);
+  const isDragged = id === focusedPlan?.id;
 
   return (
     <Container
@@ -28,10 +33,12 @@ const TimePlan: React.FC<TProps> = ({ plan, viewInfo }) => {
         cellWidth(viewInfo),
         cellHeight(viewInfo),
         {
+          opacity: isDragged ? 0.6 : 1,
           color: isBgBright(color) ? theme.text2 : theme.white,
           backgroundColor: color,
         },
       ]}
+      onMouseDown={() => selectPlan(plan)}
     >
       <TimeSpan backgroundColor={color}>
         {getTimeString(new Date(startTime))}
