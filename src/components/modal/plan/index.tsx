@@ -1,26 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import styled from '@emotion/styled';
+
+import { shallow } from 'zustand/shallow';
 
 import ModalContainer from '..';
 
 import StylishButton from '@/components/buttons/StylishButton';
-import ColorPicker from '@/components/common/ColorPicker';
-import Input from '@/components/common/Input';
-import ChevronIcon from '@/components/icons/ChevronIcon';
 import DateDisplay from '@/components/modal/plan/DateDisplay';
 import PlanAllDay from '@/components/modal/plan/PlanAllDay';
 import PlanCategory from '@/components/modal/plan/PlanCategory';
+import PlanColorPicker from '@/components/modal/plan/PlanColorPicker';
 import PlanMemo from '@/components/modal/plan/PlanMemo';
 import PlanTag from '@/components/modal/plan/PlanTag';
-import { SELECTABLE_COLOR } from '@/constants';
-import { FONT_BOLD_1 } from '@/styles/font';
-import { TColor } from '@/types';
+import PlanTitleInput from '@/components/modal/plan/PlanTitleInput';
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
 
 type TPlanModalProps = {
   isEdit?: boolean;
-  onClose: () => void;
-  onDone: (obj: any) => void;
+  onClose?: () => void;
+  onDone?: () => void;
 };
 
 type TPlanModal = React.FC<TPlanModalProps>;
@@ -30,37 +29,36 @@ const PlanModal: TPlanModal = ({
   onClose,
   onDone,
 }: TPlanModalProps) => {
-  const [selectedColor, setSelectedColor] = useState<TColor>(
-    SELECTABLE_COLOR[0],
+  const { openModal, clearPlan, isDisabled } = useFocusedPlanState(
+    ({ focusedPlan, isDragging, clearDraggedPlan }) => ({
+      openModal: !isDragging && !!focusedPlan,
+      clearPlan: clearDraggedPlan,
+      isDisabled: !focusedPlan?.startTime || !focusedPlan?.endTime,
+    }),
+    shallow,
   );
-  const [planName, setPlanName] = useState('');
+
+  const onCloseHandler = () => {
+    onClose?.();
+    clearPlan();
+  };
 
   const onSubmit = () => {
-    onDone(planName);
-    // todo: 일정생성 api 호출 및 onDone에 일정 데이터 넣어서 호출
+    // todo: 일정생성 api 호출
+    onDone?.();
   };
+
+  if (!openModal) {
+    return null;
+  }
 
   return (
     <Modal
-      onClose={onClose}
+      onClose={onCloseHandler}
       isBgBlack={true}
-      HeaderLeftComponent={
-        <ColorPicker
-          selectedColor={selectedColor}
-          onSelect={(color: TColor) => setSelectedColor(color)}
-          additionalComponent={
-            <ChevronIcon width="14" type="down" color="black" />
-          }
-        />
-      }
+      HeaderLeftComponent={<PlanColorPicker />}
     >
-      <PlanInput
-        type="text"
-        isInline={true}
-        placeholder="일정 제목"
-        value={planName}
-        onChange={(e) => setPlanName(e.target.value)}
-      />
+      <PlanTitleInput />
       <DateDisplay />
       <PlanAllDay />
       <Hr />
@@ -74,7 +72,7 @@ const PlanModal: TPlanModal = ({
         size="large"
         onClick={onSubmit}
         css={{ marginTop: 20 }}
-        disabled={!planName}
+        disabled={isDisabled}
       >
         {isEdit ? '수정' : '생성'}
       </StylishButton>
@@ -93,11 +91,6 @@ const Modal = styled(ModalContainer)`
   padding: 24px;
   box-shadow: 1px 10px 25px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
-`;
-
-const PlanInput = styled(Input)`
-  padding: 15px 0;
-  ${FONT_BOLD_1};
 `;
 
 const Hr = styled.hr`
