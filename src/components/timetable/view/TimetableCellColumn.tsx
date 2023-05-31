@@ -1,9 +1,14 @@
 import React from 'react';
 
 import styled from '@emotion/styled';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 
-import { TIMETABLE_CELL_AMOUNT, TIMETABLE_CELL_UNIT } from '@/constants';
+import {
+  TIMETABLE_CELL_AMOUNT,
+  TIMETABLE_CELL_PER_HOUR,
+  TIMETABLE_CELL_UNIT,
+} from '@/constants';
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { FONT_REGULAR_8 } from '@/styles/font';
 import { TIMETABLE_CELL_HEIGHT, TIMETABLE_Z_INDEX } from '@/styles/timetable';
 import { getTimeString } from '@/utils/date/getTimeString';
@@ -18,13 +23,30 @@ const TimetableCellColumn: React.FC<TProps> = ({
   dateMoment,
   formattedDate,
 }) => {
+  const createDragPlan = useFocusedPlanState((state) => state.createDragPlan);
+
+  const createNewPlan = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const target = (e.target as HTMLElement).closest('.date-time');
+    if (!target) return;
+
+    const targetDate = target.getAttribute('data-time');
+    if (!targetDate) return;
+
+    createDragPlan({
+      startTime: targetDate,
+      endTime: moment(targetDate)
+        .add(15, 'minute')
+        .format('YYYY-MM-DDThh:mm:ss'),
+    });
+  };
+
   return (
-    <Container>
+    <Container onMouseDown={createNewPlan}>
       {Array.from(Array(TIMETABLE_CELL_AMOUNT), (_, index) => {
         const date = dateMoment.toDate();
-        const hour = Math.floor(index / TIMETABLE_CELL_AMOUNT);
+        const hour = Math.floor(index / TIMETABLE_CELL_PER_HOUR);
         const minute = Math.floor(
-          (index % TIMETABLE_CELL_AMOUNT) * TIMETABLE_CELL_UNIT,
+          (index % TIMETABLE_CELL_PER_HOUR) * TIMETABLE_CELL_UNIT,
         );
         date.setHours(hour);
         date.setMinutes(minute);
@@ -34,7 +56,11 @@ const TimetableCellColumn: React.FC<TProps> = ({
         )}:00`;
 
         return (
-          <TimeCell key={date.toString()} data-date={dateString}>
+          <TimeCell
+            key={date.toString()}
+            className="date-time"
+            data-time={dateString}
+          >
             <TimeSpan>{getTimeString(date)}</TimeSpan>
           </TimeCell>
         );

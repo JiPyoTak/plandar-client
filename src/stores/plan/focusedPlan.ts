@@ -3,6 +3,7 @@ import { create } from 'zustand';
 
 import Plan from '@/plan/Plan';
 import { IPlan } from '@/types/rq/plan';
+import { getFocusedTimePlan } from '@/utils/plan/getFocusedTimePlan';
 import { changePlanView } from '@/utils/plan/planViewHandlerToMonth';
 
 export type IChangePlanViewType = 'create' | 'edit' | null;
@@ -28,7 +29,7 @@ interface IFocusedPlanAction {
   ) => void;
   selectPlan: (plan: Plan) => void;
   onMoveMonthPlan: (args: TMovePlanProps) => void;
-  onMoveDayPlan: (args: TMovePlanProps) => void;
+  onMoveTimePlan: (args: TMovePlanProps) => void;
   onDragEndPlan: () => void;
   clearDraggedPlan: () => void;
 }
@@ -94,7 +95,28 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
         return { ...state, focusedPlan: new Plan(newPlan), isDragging: true };
       });
     },
-    onMoveDayPlan: () => set((state) => state),
+    onMoveTimePlan: ({
+      targetDate: targetDateString,
+      currentDate: currentDateString,
+    }) => {
+      set((state) => {
+        const { focusedPlan, currentPlan, type } = state;
+        if (!focusedPlan || !currentPlan) return state;
+
+        const targetDate = moment(targetDateString);
+        const currentDate = moment(currentDateString);
+
+        const plan = getFocusedTimePlan({
+          targetDate,
+          currentDate,
+          focusedPlan,
+          currentPlan,
+          type,
+        });
+
+        return { ...state, focusedPlan: plan, isDragging: true };
+      });
+    },
     onDragEndPlan: () => {
       set((state) => {
         const { focusedPlan, currentPlan } = state;
