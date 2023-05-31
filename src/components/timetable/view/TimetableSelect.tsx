@@ -7,12 +7,17 @@ import useFocusedPlanState from '@/stores/plan/focusedPlan';
 
 const TimetableSelect: React.FC = () => {
   const viewMoment = useTimetableViewMoment();
-  const { focusedPlan } = useFocusedPlanState();
-  const isToday =
-    viewMoment.format('YYYY-MM-DD') ===
-    focusedPlan?.startMoment.format('YYYY-MM-DD');
+  const focusedPlan = useFocusedPlanState((state) => state.focusedPlan);
 
-  if (!isToday || !focusedPlan) return <></>;
+  if (!focusedPlan) return <></>;
+
+  const shouldRender = viewMoment.isBetween(
+    focusedPlan.startTime,
+    focusedPlan.endTime,
+    'date',
+    '[]',
+  );
+  if (!shouldRender) return <></>;
 
   const manager = new TimePlanManager([focusedPlan], viewMoment);
   const focusedViewInfo = manager.viewInfo.get(focusedPlan.id);
