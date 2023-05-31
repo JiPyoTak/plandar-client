@@ -14,9 +14,9 @@ const getColumnPlans = (dateMoments: Moment[], plans: Plan[]): Plan[][] => {
     startColumn.push(timePlan);
     planMap.set(startDay, startColumn);
 
-    const endDay = timePlan.startMoment.format(format);
+    const endDay = timePlan.endMoment.format(format);
     if (startDay !== endDay) {
-      const endColumn = planMap.get(startDay) || [];
+      const endColumn = planMap.get(endDay) || [];
 
       endColumn.push(timePlan);
       planMap.set(endDay, endColumn);
