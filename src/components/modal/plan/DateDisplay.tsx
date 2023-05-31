@@ -2,9 +2,39 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-// todo: store의 상태와 연동하여 날짜 보여주기, 현재는 임시 구현
+import { shallow } from 'zustand/shallow';
+
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
+
+const options = {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+} as const;
+
 const DateDisplay: React.FC = () => {
-  return <Container>일정 기간 표시</Container>;
+  const { startTime, endTime } = useFocusedPlanState((store) => {
+    const { focusedPlan } = store;
+    const startTime = Intl.DateTimeFormat(navigator.language, options).format(
+      new Date(focusedPlan?.startTime ?? Date.now()),
+    );
+    const endTime = Intl.DateTimeFormat(navigator.language, options).format(
+      new Date(focusedPlan?.endTime ?? Date.now() + 1000 * 60 * 60),
+    );
+    return {
+      startTime,
+      endTime,
+    };
+  }, shallow);
+
+  return (
+    <Container>
+      {startTime} ~ {endTime}
+    </Container>
+  );
 };
 
 const Container = styled.div`
