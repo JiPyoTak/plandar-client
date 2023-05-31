@@ -1,19 +1,23 @@
-import { useState } from 'react';
-
 import styled from '@emotion/styled';
 
 import Checkbox from '@/components/buttons/Checkbox';
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
 
 const PlanAllDay = () => {
-  const [isAllDay, setIsAllDay] = useState(false);
+  const [isAllDay, toggleIsAllDay] = useFocusedPlanState(
+    (store) => {
+      const { focusedPlan, updateFocusedPlan } = store;
+      const toggleIsAllDay = () =>
+        updateFocusedPlan({ isAllDay: !focusedPlan?.isAllDay });
+
+      return [focusedPlan ? focusedPlan.isAllDay : false, toggleIsAllDay];
+    },
+    (prev, cur) => prev[0] === cur[0],
+  );
 
   return (
     <Container>
-      <Checkbox
-        label="종일"
-        checked={isAllDay}
-        onChange={() => setIsAllDay((prev) => !prev)}
-      />
+      <Checkbox label="종일" checked={isAllDay} onChange={toggleIsAllDay} />
     </Container>
   );
 };
