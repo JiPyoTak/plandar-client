@@ -29,7 +29,7 @@ const executeCallbackByDate = (
     endYMD.year * 12 + endYMD.month - (startYMD.year * 12 + startYMD.month);
 
   // 일정의 시작, 끝 날짜를 기준으로 해당 일정이 포함되는 달의 일정을 모두 가져옴
-  for (let i = -1; i < diff; i++) {
+  for (let i = 0; i <= diff; i++) {
     const YMD = {
       year: startYMD.year + Math.floor((startYMD.month + i) / 12),
       month: ((startYMD.month + i) % 12) + 1,
@@ -44,8 +44,18 @@ const executeCallbackByDate = (
 };
 
 const useGetPlansQuery = ({ timemin, timemax }: IGetPlansPayload) => {
-  return useQuery<IPlan[]>(['plans', { timemin, timemax }], () =>
-    getPlansApi({ timemin, timemax }),
+  const queryClient = useQueryClient();
+
+  return useQuery<IPlan[]>(
+    ['plans', { timemin, timemax }],
+    () => getPlansApi({ timemin, timemax }),
+    {
+      onSuccess(data) {
+        for (let i = 0; i < data.length; i++) {
+          queryClient.setQueryData(['plan', { id: data[i].id }], data[i]);
+        }
+      },
+    },
   );
 };
 
@@ -74,6 +84,7 @@ const useCreatePlanMutation = () => {
       };
 
       executeCallbackByDate(startTime, endTime, addQueriesData);
+      queryClient.setQueryData(['plan', { id: data.id }], data);
     },
   });
 };
