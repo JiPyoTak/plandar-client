@@ -18,7 +18,7 @@ const TimetableSelect: React.FC<TProps> = ({ dateMoment }) => {
 
   if (!isToday || !focusedPlan) return <></>;
 
-  const manager = new TimePlanManager([focusedPlan]);
+  const manager = new TimePlanManager([focusedPlan], dateMoment);
   const focusedViewInfo = manager.viewInfo.get(focusedPlan.id);
   if (!focusedViewInfo)
     throw new Error('Timetable View Info Error! : focusedPlan');

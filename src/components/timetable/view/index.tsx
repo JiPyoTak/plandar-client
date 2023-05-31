@@ -41,7 +41,7 @@ const TimetableView: React.FC<TProps> = ({ dateMoments, timePlans }) => {
               onMouseMove={currentDateRef.current ? onMouseMove : undefined}
               onMouseDown={changeCurrentDate}
             >
-              <TimetablePlanColumn plans={plans} />
+              <TimetablePlanColumn dateMoment={dateMoment} plans={plans} />
               <TimetableSelect dateMoment={dateMoment} />
               <TimetableCellColumn
                 dateMoment={dateMoment}
