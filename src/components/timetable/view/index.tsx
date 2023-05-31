@@ -8,6 +8,7 @@ import TimetablePlanColumn from './TimetablePlanColumn';
 import TimetableSelect from './TimetableSelect';
 import TimetableTimeline from './TimetableTimeline';
 import usePlanDrag from '@/hooks/usePlanDrag';
+import { TimetableViewMomentProvider } from '@/hooks/useTimetableViewMoment';
 import Plan from '@/plan/Plan';
 import {
   TIMETABLE_SCROLL_STYLE,
@@ -41,12 +42,11 @@ const TimetableView: React.FC<TProps> = ({ dateMoments, timePlans }) => {
               onMouseMove={currentDateRef.current ? onMouseMove : undefined}
               onMouseDown={changeCurrentDate}
             >
-              <TimetablePlanColumn dateMoment={dateMoment} plans={plans} />
-              <TimetableSelect dateMoment={dateMoment} />
-              <TimetableCellColumn
-                dateMoment={dateMoment}
-                formattedDate={formattedDate}
-              />
+              <TimetableViewMomentProvider value={dateMoment}>
+                <TimetablePlanColumn plans={plans} />
+                <TimetableSelect />
+                <TimetableCellColumn formattedDate={formattedDate} />
+              </TimetableViewMomentProvider>
             </Column>
           );
         })}

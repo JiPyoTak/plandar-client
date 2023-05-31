@@ -1,13 +1,14 @@
 import React from 'react';
 
 import styled from '@emotion/styled';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 
 import {
   TIMETABLE_CELL_AMOUNT,
   TIMETABLE_CELL_PER_HOUR,
   TIMETABLE_CELL_UNIT,
 } from '@/constants';
+import useTimetableViewMoment from '@/hooks/useTimetableViewMoment';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { FONT_REGULAR_8 } from '@/styles/font';
 import { TIMETABLE_CELL_HEIGHT, TIMETABLE_Z_INDEX } from '@/styles/timetable';
@@ -15,14 +16,11 @@ import { getTimeString } from '@/utils/date/getTimeString';
 import { padZero } from '@/utils/padZero';
 
 type TProps = {
-  dateMoment: Moment;
   formattedDate: string;
 };
 
-const TimetableCellColumn: React.FC<TProps> = ({
-  dateMoment,
-  formattedDate,
-}) => {
+const TimetableCellColumn: React.FC<TProps> = ({ formattedDate }) => {
+  const viewMoment = useTimetableViewMoment();
   const createDragPlan = useFocusedPlanState((state) => state.createDragPlan);
 
   const createNewPlan = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -43,7 +41,7 @@ const TimetableCellColumn: React.FC<TProps> = ({
   return (
     <Container onMouseDown={createNewPlan}>
       {Array.from(Array(TIMETABLE_CELL_AMOUNT), (_, index) => {
-        const date = dateMoment.toDate();
+        const date = viewMoment.toDate();
         const hour = Math.floor(index / TIMETABLE_CELL_PER_HOUR);
         const minute = Math.floor(
           (index % TIMETABLE_CELL_PER_HOUR) * TIMETABLE_CELL_UNIT,
