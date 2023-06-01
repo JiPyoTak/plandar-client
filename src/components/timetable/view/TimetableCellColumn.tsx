@@ -13,13 +13,8 @@ import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { FONT_REGULAR_8 } from '@/styles/font';
 import { TIMETABLE_CELL_HEIGHT, TIMETABLE_Z_INDEX } from '@/styles/timetable';
 import { getTimeString } from '@/utils/date/getTimeString';
-import { padZero } from '@/utils/padZero';
 
-type TProps = {
-  formattedDate: string;
-};
-
-const TimetableCellColumn: React.FC<TProps> = ({ formattedDate }) => {
+const TimetableCellColumn: React.FC = () => {
   const viewMoment = useTimetableViewMoment();
   const createDragPlan = useFocusedPlanState((state) => state.createDragPlan);
 
@@ -49,15 +44,16 @@ const TimetableCellColumn: React.FC<TProps> = ({ formattedDate }) => {
         date.setHours(hour);
         date.setMinutes(minute);
 
-        const dateString = `${formattedDate}T${padZero(hour)}:${padZero(
-          minute,
-        )}:00`;
+        const cellTime = moment(viewMoment);
+        cellTime.set('hour', hour);
+        cellTime.set('minute', minute);
+        cellTime.set('second', 0);
 
         return (
           <TimeCell
             key={date.toString()}
             className="date-time"
-            data-time={dateString}
+            data-time={cellTime.toString()}
           >
             <TimeSpan>{getTimeString(date)}</TimeSpan>
           </TimeCell>

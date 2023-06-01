@@ -21,8 +21,6 @@ type TProps = {
   timePlans: Plan[];
 };
 
-const DATE_FORMAT = 'YYYY-MM-DD';
-
 const TimetableView: React.FC<TProps> = ({ dateMoments, timePlans }) => {
   const { currentDateRef, onMouseMove, changeCurrentDate } = usePlanDrag();
 
@@ -33,19 +31,18 @@ const TimetableView: React.FC<TProps> = ({ dateMoments, timePlans }) => {
       <Container>
         <TimetableTimeline />
         {dateMoments.map((dateMoment, i) => {
-          const formattedDate = dateMoment.format(DATE_FORMAT);
           const plans = columnPlans[i];
 
           return (
             <Column
-              key={formattedDate}
+              key={dateMoment.toString()}
               onMouseMove={currentDateRef.current ? onMouseMove : undefined}
               onMouseDown={changeCurrentDate}
             >
               <TimetableViewMomentProvider value={dateMoment}>
                 <TimetablePlanColumn plans={plans} />
                 <TimetableSelect />
-                <TimetableCellColumn formattedDate={formattedDate} />
+                <TimetableCellColumn />
               </TimetableViewMomentProvider>
             </Column>
           );
