@@ -1,4 +1,4 @@
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 
 import { TIMETABLE_CELL_UNIT } from '@/constants';
 import Plan from '@/plan/Plan';
@@ -23,12 +23,13 @@ const getFocusedTimePlan = (props: TProps) => {
 const getCreatedTimePlan = (props: TProps) => {
   const { targetDate, currentDate, focusedPlan } = props;
 
-  let startTime = currentDate.clone();
-  let endTime = targetDate.clone().add('minute', TIMETABLE_CELL_UNIT);
+  let startTime = moment(currentDate);
+  let endTime = moment(targetDate);
 
   if (startTime.isAfter(endTime)) {
     [startTime, endTime] = [endTime, startTime];
   }
+  endTime.add(TIMETABLE_CELL_UNIT, 'minutes');
 
   const plan = new Plan(focusedPlan);
   plan._startTime = startTime;
