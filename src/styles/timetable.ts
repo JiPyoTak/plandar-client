@@ -35,9 +35,9 @@ const TIMETABLE_CELL_MIN_WIDTH = '4.875rem';
 const TIMETABLE_CELL_HEIGHT = '1rem';
 
 const TIMETABLE_Z_INDEX = {
-  timePlan: 1,
-  timePlanHover: 2,
-  timeCellHover: 3,
+  timePlan: 2,
+  timePlanHover: 3,
+  timeCellHover: 1,
 } as const;
 
 export {
