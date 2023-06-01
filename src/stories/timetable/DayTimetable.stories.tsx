@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
+import moment from 'moment';
+
 import { createPlanMock } from '../plan/createPlanMock';
 
 import Timetable from '@/components/timetable';
@@ -42,14 +44,15 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
     setId((prevId) => prevId + 1);
   };
 
-  const addRandomPlan = () => {
+  const addRandomTimePlan = () => {
     const startHour = Math.round(Math.random() * 21);
     const startMinute = padZero(Math.round(Math.random() * 59));
+    const startTime = `${year}-${padZero(month)}-${padZero(day)}T${padZero(
+      startHour,
+    )}:${startMinute}:00.000`;
 
-    const endHour = padZero(
-      Math.round(Math.random() * (22 - startHour) + startHour + 1),
-    );
-    const endMinute = padZero(Math.round(Math.random() * 59));
+    const periodMinutes = Math.round(Math.random() * 24 * 60);
+    const endTime = moment(startTime).add(periodMinutes, 'minutes');
 
     MONTH_PLANS_MOCK[month] = [
       ...MONTH_PLANS_MOCK[month],
@@ -57,12 +60,8 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
         id,
         title: `임시 데이터 ${id}`,
         isAllDay: false,
-        startTime: `${year}-${padZero(month)}-${padZero(day)}T${padZero(
-          startHour,
-        )}:${startMinute}:00.000`,
-        endTime: `${year}-${padZero(month)}-${padZero(
-          day,
-        )}T${endHour}:${endMinute}:00.000`,
+        startTime,
+        endTime,
       }),
     ];
 
@@ -80,7 +79,7 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
         <TestButton onClick={addSameTimePlan}>
           오후 03시 ~ 06시 일정 추가하기
         </TestButton>
-        <TestButton onClick={addRandomPlan}>랜덤 일정 추가하기</TestButton>
+        <TestButton onClick={addRandomTimePlan}>랜덤 일정 추가하기</TestButton>
         <TestButton onClick={clearPlans}>해당 달의 일정 삭제하기</TestButton>
       </div>
       <div className="day-timetable-main">

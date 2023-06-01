@@ -1,10 +1,11 @@
-import { MomentInput } from 'moment';
+import moment, { Moment, MomentInput } from 'moment';
 
 import Plan from './Plan';
 import PlanManager from './PlanManager';
 import type { IViewInfo } from './PlanManager';
 import { DAY_TO_MINUTE, TIMETABLE_CELL_UNIT } from '@/constants';
-import { getTimeMinute } from '@/utils/date/getTimeMinute';
+
+const MAX_DAY_MINUTES = 24 * 60;
 
 export interface ITimeViewInfo extends IViewInfo {
   totalIndex: number;
@@ -12,16 +13,25 @@ export interface ITimeViewInfo extends IViewInfo {
 
 class TimePlanManager extends PlanManager<ITimeViewInfo> {
   viewInfo: Map<number, ITimeViewInfo>;
+  viewMoment: Moment;
 
-  constructor(plans: Plan[]) {
+  constructor(plans: Plan[], viewDate: MomentInput) {
     super(plans);
+    this.viewMoment = moment(viewDate).startOf('day');
     this.viewInfo = this.getViewInfo();
   }
 
   getTimetableIndex(date: MomentInput) {
-    const minutes = getTimeMinute(date);
-    const index = minutes / TIMETABLE_CELL_UNIT;
+    const targetMoment = moment(date);
 
+    let minutes = targetMoment.diff(this.viewMoment, 'minute');
+    if (minutes < 0) {
+      minutes = 0;
+    } else if (minutes > MAX_DAY_MINUTES) {
+      minutes = MAX_DAY_MINUTES;
+    }
+
+    const index = minutes / TIMETABLE_CELL_UNIT;
     return index;
   }
 

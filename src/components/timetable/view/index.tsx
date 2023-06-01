@@ -8,11 +8,13 @@ import TimetablePlanColumn from './TimetablePlanColumn';
 import TimetableSelect from './TimetableSelect';
 import TimetableTimeline from './TimetableTimeline';
 import usePlanDrag from '@/hooks/usePlanDrag';
+import { TimetableViewMomentProvider } from '@/hooks/useTimetableViewMoment';
 import Plan from '@/plan/Plan';
 import {
   TIMETABLE_SCROLL_STYLE,
   TIMETABLE_CELL_MIN_WIDTH,
 } from '@/styles/timetable';
+import getColumnPlans from '@/utils/plan/getColumnPlans';
 
 type TProps = {
   dateMoments: Moment[];
@@ -24,12 +26,7 @@ const DATE_FORMAT = 'YYYY-MM-DD';
 const TimetableView: React.FC<TProps> = ({ dateMoments, timePlans }) => {
   const { currentDateRef, onMouseMove, changeCurrentDate } = usePlanDrag();
 
-  const columnPlans = dateMoments.map((dateMoment) =>
-    timePlans.filter(
-      ({ startMoment }) =>
-        dateMoment.format(DATE_FORMAT) === startMoment.format(DATE_FORMAT),
-    ),
-  );
+  const columnPlans = getColumnPlans(dateMoments, timePlans);
 
   return (
     <Scroller>
@@ -45,12 +42,11 @@ const TimetableView: React.FC<TProps> = ({ dateMoments, timePlans }) => {
               onMouseMove={currentDateRef.current ? onMouseMove : undefined}
               onMouseDown={changeCurrentDate}
             >
-              <TimetablePlanColumn plans={plans} />
-              <TimetableSelect dateMoment={dateMoment} />
-              <TimetableCellColumn
-                dateMoment={dateMoment}
-                formattedDate={formattedDate}
-              />
+              <TimetableViewMomentProvider value={dateMoment}>
+                <TimetablePlanColumn plans={plans} />
+                <TimetableSelect />
+                <TimetableCellColumn formattedDate={formattedDate} />
+              </TimetableViewMomentProvider>
             </Column>
           );
         })}
