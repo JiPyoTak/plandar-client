@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import styled from '@emotion/styled';
 import moment from 'moment';
@@ -104,4 +104,4 @@ const TimeSpan = styled.span`
   transition-duration: 0.2s;
 `;
 
-export default TimetableCellColumn;
+export default memo(TimetableCellColumn);

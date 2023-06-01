@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import TimePlan from '@/components/plan/TimePlan';
 import useTimetableViewMoment from '@/hooks/useTimetableViewMoment';
@@ -33,4 +33,4 @@ const TimetableSelect: React.FC = () => {
   );
 };
 
-export default TimetableSelect;
+export default memo(TimetableSelect);
