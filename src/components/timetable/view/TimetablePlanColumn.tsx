@@ -1,6 +1,7 @@
 import React from 'react';
 
 import TimePlan from '@/components/plan/TimePlan';
+import useTimetableViewMoment from '@/hooks/useTimetableViewMoment';
 import Plan from '@/plan/Plan';
 import TimePlanManager from '@/plan/TimePlanManager';
 
@@ -9,7 +10,8 @@ type TProps = {
 };
 
 const TimetablePlanColumn: React.FC<TProps> = ({ plans }) => {
-  const planManager = new TimePlanManager(plans);
+  const viewMoment = useTimetableViewMoment();
+  const planManager = new TimePlanManager(plans, viewMoment);
 
   return (
     <div css={{ width: 'calc(100% - 0.75rem)', position: 'relative' }}>

@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { MomentInput } from 'moment';
 
 import Plan from '@/plan/Plan';
 import { TColor } from '@/types';
@@ -10,17 +10,12 @@ const createRandomColor = () => {
     .padStart(6, '0')}` as TColor;
 };
 
-const createPlanMock = (planData: Partial<IPlan>) => {
-  const startTime = moment(planData.startTime ?? Date.now())
-    .local(true)
-    .toDate()
-    .toUTCString();
-  const endTime = moment(planData.endTime ?? Date.now())
-    .local(true)
-    .toDate()
-    .toUTCString();
-
-  return new Plan({
+const createPlanMock = ({
+  startTime,
+  endTime,
+  ...planData
+}: Partial<IPlan> | { startTime?: MomentInput; endTime?: MomentInput }) => {
+  const mockedPlan = new Plan({
     id: Math.floor(Math.random() * 100),
     title: `임시 데이터`,
     description: '설명 보아서 무엇을 할 것인가',
@@ -29,10 +24,15 @@ const createPlanMock = (planData: Partial<IPlan>) => {
     color: createRandomColor(),
     categoryId: 1,
     tags: ['태그1', '태그2'],
+    startTime: '',
+    endTime: '',
     ...planData,
-    startTime,
-    endTime,
   });
+
+  mockedPlan._startTime = startTime ?? Date.now();
+  mockedPlan._endTime = endTime ?? Date.now();
+
+  return mockedPlan;
 };
 
 export { createPlanMock };
