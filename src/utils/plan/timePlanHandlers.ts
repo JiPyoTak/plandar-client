@@ -42,20 +42,8 @@ const getMovedTimePlan = (props: TProps) => {
   return plan;
 };
 
-const getEditedTimePlan = (props: TProps) => {
-  const { targetDate, currentDate, focusedPlan, currentPlan } = props;
-
-  const minuteDiff = moment(targetDate).diff(currentDate, 'minute');
-
-  const plan = new Plan(focusedPlan);
-  plan._startTime = currentPlan.startMoment.add(minuteDiff, 'minutes');
-  plan._endTime = currentPlan.endMoment.add(minuteDiff, 'minutes');
-
-  return plan;
-};
-
 export const timePlanHandlers = {
   create: getCreatedTimePlan,
   move: getMovedTimePlan,
-  edit: getEditedTimePlan,
+  edit: getCreatedTimePlan,
 };

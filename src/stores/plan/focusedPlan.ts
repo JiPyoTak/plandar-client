@@ -28,6 +28,7 @@ interface IFocusedPlanAction {
     planData: Pick<IPlan, 'startTime' | 'endTime'> & Partial<IPlan>,
   ) => void;
   moveDragPlan: (plan: Plan) => void;
+  editDragPlan: (plan: Plan) => void;
   onMoveMonthPlan: (args: TMovePlanProps) => void;
   onDragTimePlan: (args: TMovePlanProps) => void;
   onDragEndPlan: () => void;
@@ -70,6 +71,13 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
         currentPlan: plan,
       });
     },
+    editDragPlan: (plan) => {
+      set({
+        type: 'edit',
+        focusedPlan: new Plan(plan),
+        currentPlan: plan,
+      });
+    },
     onMoveMonthPlan: ({
       targetDate: targetDateString,
       currentDate: currentDateString,
@@ -105,7 +113,10 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
 
         const plan = timePlanHandlers[type]({
           targetDate: moment(targetDateString),
-          currentDate: moment(currentDateString),
+          currentDate:
+            type === 'edit'
+              ? currentPlan.startMoment
+              : moment(currentDateString),
           focusedPlan,
           currentPlan,
           type,

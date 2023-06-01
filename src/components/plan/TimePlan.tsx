@@ -23,9 +23,19 @@ const TimePlan: React.FC<TProps> = ({ plan, viewInfo, isFocused }) => {
   const { title, startTime, color } = plan;
   const theme = useTheme();
   const moveDragPlan = useFocusedPlanState((state) => state.moveDragPlan);
+  const editDragPlan = useFocusedPlanState((state) => state.editDragPlan);
 
   const onMouseDownPlan = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    moveDragPlan(plan);
+    const target = e.target as HTMLElement | null;
+    if (!target) return;
+
+    const type = target.getAttribute('data-type');
+
+    if (type === 'resizer') {
+      editDragPlan(plan);
+    } else {
+      moveDragPlan(plan);
+    }
   };
 
   return (
@@ -131,7 +141,7 @@ const TitleSpan = styled.span<{ backgroundColor: TColor }>`
 
 const ScrollTargeter = styled.div`
   width: 100%;
-  height: 1rem;
+  height: 0.5rem;
   position: absolute;
   bottom: 0;
   cursor: ns-resize;
