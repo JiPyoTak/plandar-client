@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -16,14 +16,13 @@ import { getTimeString } from '@/utils/date/getTimeString';
 type TProps = {
   plan: Plan;
   viewInfo: ITimeViewInfo;
+  isFocused?: boolean;
 };
 
-const TimePlan: React.FC<TProps> = ({ plan, viewInfo }) => {
-  const { id, title, startTime, color } = plan;
+const TimePlan: React.FC<TProps> = ({ plan, viewInfo, isFocused }) => {
+  const { title, startTime, color } = plan;
   const theme = useTheme();
   const selectPlan = useFocusedPlanState((state) => state.selectPlan);
-  const focusedPlan = useFocusedPlanState((state) => state.focusedPlan);
-  const isDragged = id === focusedPlan?.id;
 
   return (
     <Container
@@ -33,7 +32,7 @@ const TimePlan: React.FC<TProps> = ({ plan, viewInfo }) => {
         cellWidth(viewInfo),
         cellHeight(viewInfo),
         {
-          opacity: isDragged ? 0.6 : 1,
+          opacity: isFocused ? 0.6 : 1,
           color: isBgBright(color) ? theme.text2 : theme.white,
           backgroundColor: color,
         },
@@ -126,4 +125,4 @@ const TitleSpan = styled.span<{ backgroundColor: TColor }>`
     isBgBright(backgroundColor) ? theme.white : theme.text2};
 `;
 
-export default TimePlan;
+export default memo(TimePlan);
