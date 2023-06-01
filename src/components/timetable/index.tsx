@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 
 import moment from 'moment';
 
+import TimetableTimeline from './TimetableTimeline';
 import TimetableAllDay from '@/components/timetable/TimetableAllDay';
 import TimetableHeader from '@/components/timetable/TimetableHeader';
 import TimetableView from '@/components/timetable/view';
@@ -45,7 +46,12 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
     <Container>
       {showHeader && <TimetableHeader dateMoments={dateMoments} />}
       <TimetableAllDay dateMoments={dateMoments} allDayPlans={allDayPlans} />
-      <TimetableView dateMoments={dateMoments} timePlans={timePlans} />
+      <Scroller>
+        <FlexibleDiv>
+          <TimetableTimeline />
+          <TimetableView dateMoments={dateMoments} timePlans={timePlans} />
+        </FlexibleDiv>
+      </Scroller>
     </Container>
   );
 };
@@ -60,6 +66,20 @@ const Container = styled.div`
   flex-direction: column;
 
   user-select: none;
+`;
+
+const Scroller = styled.div`
+  ${TIMETABLE_SCROLL_STYLE}
+
+  flex: 1 0 0;
+  min-width: 100%;
+
+  overflow-x: auto;
+  overflow-y: auto;
+`;
+
+const FlexibleDiv = styled.div`
+  display: flex;
 `;
 
 export default Timetable;
