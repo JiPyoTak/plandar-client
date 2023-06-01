@@ -22,7 +22,11 @@ type TProps = {
 const TimePlan: React.FC<TProps> = ({ plan, viewInfo, isFocused }) => {
   const { title, startTime, color } = plan;
   const theme = useTheme();
-  const selectPlan = useFocusedPlanState((state) => state.selectPlan);
+  const moveDragPlan = useFocusedPlanState((state) => state.moveDragPlan);
+
+  const onMouseDownPlan = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    moveDragPlan(plan);
+  };
 
   return (
     <Container
@@ -37,12 +41,13 @@ const TimePlan: React.FC<TProps> = ({ plan, viewInfo, isFocused }) => {
           backgroundColor: color,
         },
       ]}
-      onMouseDown={() => selectPlan(plan)}
+      onMouseDown={onMouseDownPlan}
     >
       <TimeSpan backgroundColor={color}>
         {getTimeString(new Date(startTime))}
       </TimeSpan>
       <TitleSpan backgroundColor={color}>{title}</TitleSpan>
+      <ScrollTargeter data-type="resizer" />
     </Container>
   );
 };
@@ -86,8 +91,6 @@ const cellHeight = ({ term }: ITimeViewInfo) => {
 };
 
 const Container = styled.div`
-  padding: 0.125rem 0.25rem;
-
   position: absolute;
   z-index: ${TIMETABLE_Z_INDEX['timePlan']};
 
@@ -103,7 +106,7 @@ const Container = styled.div`
 
 const TimeSpan = styled.span<{ backgroundColor: TColor }>`
   ${FONT_REGULAR_8}
-  margin-bottom: 0.25rem;
+  margin: 0.375rem 0.375rem 0.25rem;
 
   display: block;
   overflow: hidden;
@@ -116,6 +119,7 @@ const TimeSpan = styled.span<{ backgroundColor: TColor }>`
 
 const TitleSpan = styled.span<{ backgroundColor: TColor }>`
   ${FONT_REGULAR_7}
+  margin: 0 0.375rem;
 
   display: block;
   word-break: keep-all;
@@ -123,6 +127,14 @@ const TitleSpan = styled.span<{ backgroundColor: TColor }>`
 
   color: ${({ backgroundColor, theme }) =>
     isBgBright(backgroundColor) ? theme.white : theme.text2};
+`;
+
+const ScrollTargeter = styled.div`
+  width: 100%;
+  height: 1rem;
+  position: absolute;
+  bottom: 0;
+  cursor: ns-resize;
 `;
 
 export default memo(TimePlan);

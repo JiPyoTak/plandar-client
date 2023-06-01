@@ -1,12 +1,22 @@
 import { useEffect, useRef } from 'react';
 
+import { shallow } from 'zustand/shallow';
+
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 
 export type MouseEventHandler = React.MouseEventHandler<HTMLDivElement>;
 
 const usePlanDrag = () => {
-  const { focusedPlan, onMoveMonthPlan, onMoveTimePlan, onDragEndPlan } =
-    useFocusedPlanState();
+  const { focusedPlan, onMoveMonthPlan, onDragTimePlan, onDragEndPlan } =
+    useFocusedPlanState(
+      (state) => ({
+        focusedPlan: state.focusedPlan,
+        onMoveMonthPlan: state.onMoveMonthPlan,
+        onDragTimePlan: state.onDragTimePlan,
+        onDragEndPlan: state.onDragEndPlan,
+      }),
+      shallow,
+    );
   const currentDateRef = useRef<string | null>(null);
   const draggingDateRef = useRef<string | null>(null);
   const focusedPlanRef = useRef<typeof focusedPlan>(focusedPlan);
@@ -66,8 +76,8 @@ const usePlanDrag = () => {
     if (targetDate && targetDate === draggingDate) return;
     draggingDateRef.current = targetDate;
 
-    const movePlan = isDayPlan ? onMoveMonthPlan : onMoveTimePlan;
-    movePlan({ targetDate, currentDate });
+    const dragPlan = isDayPlan ? onMoveMonthPlan : onDragTimePlan;
+    dragPlan({ targetDate, currentDate });
   };
 
   useEffect(() => {

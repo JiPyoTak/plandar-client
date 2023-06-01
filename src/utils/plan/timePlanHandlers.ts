@@ -12,14 +12,6 @@ type TProps = {
   type: IChangePlanViewType;
 };
 
-const getFocusedTimePlan = (props: TProps) => {
-  const { type } = props;
-
-  return type === 'create'
-    ? getCreatedTimePlan(props)
-    : getEditedTimePlan(props);
-};
-
 const getCreatedTimePlan = (props: TProps) => {
   const { targetDate, currentDate, focusedPlan } = props;
 
@@ -38,6 +30,18 @@ const getCreatedTimePlan = (props: TProps) => {
   return plan;
 };
 
+const getMovedTimePlan = (props: TProps) => {
+  const { targetDate, currentDate, focusedPlan, currentPlan } = props;
+
+  const minuteDiff = moment(targetDate).diff(currentDate, 'minute');
+
+  const plan = new Plan(focusedPlan);
+  plan._startTime = currentPlan.startMoment.add(minuteDiff, 'minutes');
+  plan._endTime = currentPlan.endMoment.add(minuteDiff, 'minutes');
+
+  return plan;
+};
+
 const getEditedTimePlan = (props: TProps) => {
   const { targetDate, currentDate, focusedPlan, currentPlan } = props;
 
@@ -50,4 +54,8 @@ const getEditedTimePlan = (props: TProps) => {
   return plan;
 };
 
-export { getFocusedTimePlan };
+export const timePlanHandlers = {
+  create: getCreatedTimePlan,
+  move: getMovedTimePlan,
+  edit: getEditedTimePlan,
+};
