@@ -43,6 +43,38 @@ const executeCallbackByDate = (
   }
 };
 
+const addQueriesData = (data: IPlan) => (timemin: string, timemax: string) => {
+  const queryClient = useQueryClient();
+
+  const prevData = queryClient.getQueryData<IPlan[] | undefined>([
+    'plans',
+    { timemin, timemax },
+  ]);
+
+  if (!prevData) return;
+
+  queryClient.setQueriesData(
+    ['plans', { timemin, timemax }],
+    (oldData: IPlan[] | undefined) => {
+      return [...(oldData ?? []), data];
+    },
+  );
+};
+
+const removeQueriesData =
+  (id: number) => (timemin: string, timemax: string) => {
+    const queryClient = useQueryClient();
+
+    queryClient.setQueriesData(
+      ['plans', { timemin, timemax }],
+      (oldData: IPlan[] | undefined) => {
+        if (!oldData) return;
+
+        return oldData.filter((plan) => plan.id !== id);
+      },
+    );
+  };
+
 const useGetPlansQuery = ({ timemin, timemax }: IGetPlansPayload) => {
   const queryClient = useQueryClient();
 
@@ -67,23 +99,9 @@ const useCreatePlanMutation = () => {
     onSuccess(data, variables) {
       const { startTime, endTime } = variables;
 
-      const addQueriesData = (timemin: string, timemax: string) => {
-        const prevData = queryClient.getQueryData<IPlan[] | undefined>([
-          'plans',
-          { timemin, timemax },
-        ]);
+      const callback = addQueriesData(data);
 
-        if (!prevData) return;
-
-        queryClient.setQueriesData(
-          ['plans', { timemin, timemax }],
-          (oldData: IPlan[] | undefined) => {
-            return [...(oldData ?? []), data];
-          },
-        );
-      };
-
-      executeCallbackByDate(startTime, endTime, addQueriesData);
+      executeCallbackByDate(startTime, endTime, callback);
       queryClient.setQueryData(['plan', { id: data.id }], data);
     },
   });
@@ -102,39 +120,17 @@ const useUpdatePlanMutation = () => {
 
       const { startTime, endTime } = prev;
 
-      const deleteQueriesData = (timemin: string, timemax: string) => {
-        queryClient.setQueriesData(
-          ['plans', { timemin, timemax }],
-          (oldData: IPlan[] | undefined) => {
-            if (!oldData) return;
+      const cbByRemove = removeQueriesData(data.id);
 
-            return oldData.filter((plan) => plan.id !== data.id);
-          },
-        );
-      };
-
-      executeCallbackByDate(startTime, endTime, deleteQueriesData);
+      executeCallbackByDate(startTime, endTime, cbByRemove);
 
       // 변경된 일정을 추가
       const { startTime: newStartTime, endTime: newEndTime } = variables;
 
-      const addQueriesData = (timemin: string, timemax: string) => {
-        const prevData = queryClient.getQueryData<IPlan[]>([
-          'plans',
-          { timemin, timemax },
-        ]);
+      const cbByAdd = addQueriesData(data);
 
-        if (!prevData) return;
-
-        queryClient.setQueriesData(
-          ['plans', { timemin, timemax }],
-          (oldData: IPlan[] | undefined) => {
-            return [...(oldData ?? []), data];
-          },
-        );
-      };
-
-      executeCallbackByDate(newStartTime, newEndTime, addQueriesData);
+      executeCallbackByDate(newStartTime, newEndTime, cbByAdd);
+      queryClient.setQueryData(['plan', { id: data.id }], data);
     },
   });
 };
@@ -146,18 +142,10 @@ const useDeletePlanMutation = () => {
     onSuccess(data, variables) {
       const { startTime, endTime } = data;
 
-      const deleteQueriesData = (timemin: string, timemax: string) => {
-        queryClient.setQueriesData(
-          ['plans', { timemin, timemax }],
-          (oldData: IPlan[] | undefined) => {
-            if (!oldData) return;
+      const callback = removeQueriesData(variables);
 
-            return oldData.filter((plan) => plan.id !== variables);
-          },
-        );
-      };
-
-      executeCallbackByDate(startTime, endTime, deleteQueriesData);
+      executeCallbackByDate(startTime, endTime, callback);
+      queryClient.removeQueries(['plan', { id: data.id }]);
     },
   });
 };
