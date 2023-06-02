@@ -46,33 +46,32 @@ const executeCallbackByDate = (
 const addQueriesData = (data: IPlan) => (timemin: string, timemax: string) => {
   const queryClient = useQueryClient();
 
-  const prevData = queryClient.getQueryData<IPlan[] | undefined>([
-    'plans',
-    { timemin, timemax },
-  ]);
+  const key = ['plans', { timemin, timemax }];
+
+  const prevData = queryClient.getQueryData<IPlan[] | undefined>(key);
 
   if (!prevData) return;
 
-  queryClient.setQueriesData(
-    ['plans', { timemin, timemax }],
-    (oldData: IPlan[] | undefined) => {
-      return [...(oldData ?? []), data];
-    },
-  );
+  queryClient.setQueriesData<IPlan[]>(key, (oldData) => {
+    return [...(oldData ?? []), data];
+  });
 };
 
 const removeQueriesData =
   (id: number) => (timemin: string, timemax: string) => {
     const queryClient = useQueryClient();
 
-    queryClient.setQueriesData(
-      ['plans', { timemin, timemax }],
-      (oldData: IPlan[] | undefined) => {
-        if (!oldData) return;
+    const key = ['plans', { timemin, timemax }];
 
-        return oldData.filter((plan) => plan.id !== id);
-      },
-    );
+    const prevData = queryClient.getQueryData<IPlan[] | undefined>(key);
+
+    if (!prevData) return;
+
+    queryClient.setQueriesData<IPlan[]>(key, (oldData) => {
+      if (!oldData) return;
+
+      return oldData.filter((plan) => plan.id !== id);
+    });
   };
 
 const useGetPlansQuery = ({ timemin, timemax }: IGetPlansPayload) => {
