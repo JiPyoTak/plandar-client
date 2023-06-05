@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import {
   createPlanApi,
@@ -43,24 +48,23 @@ const executeCallbackByDate = (
   }
 };
 
-const addQueriesData = (data: IPlan) => (timemin: string, timemax: string) => {
-  const queryClient = useQueryClient();
+const addQueriesData =
+  (data: IPlan, queryClient: QueryClient) =>
+  (timemin: string, timemax: string) => {
+    const key = ['plans', { timemin, timemax }];
 
-  const key = ['plans', { timemin, timemax }];
+    const prevData = queryClient.getQueryData<IPlan[] | undefined>(key);
 
-  const prevData = queryClient.getQueryData<IPlan[] | undefined>(key);
+    if (!prevData) return;
 
-  if (!prevData) return;
-
-  queryClient.setQueriesData<IPlan[]>(key, (oldData) => {
-    return [...(oldData ?? []), data];
-  });
-};
+    queryClient.setQueriesData<IPlan[]>(key, (oldData) => {
+      return [...(oldData ?? []), data];
+    });
+  };
 
 const removeQueriesData =
-  (id: number) => (timemin: string, timemax: string) => {
-    const queryClient = useQueryClient();
-
+  (id: number, queryClient: QueryClient) =>
+  (timemin: string, timemax: string) => {
     const key = ['plans', { timemin, timemax }];
 
     const prevData = queryClient.getQueryData<IPlan[] | undefined>(key);
@@ -98,7 +102,7 @@ const useCreatePlanMutation = () => {
     onSuccess(data, variables) {
       const { startTime, endTime } = variables;
 
-      const callback = addQueriesData(data);
+      const callback = addQueriesData(data, queryClient);
 
       executeCallbackByDate(startTime, endTime, callback);
       queryClient.setQueryData(['plan', { id: data.id }], data);
@@ -119,14 +123,14 @@ const useUpdatePlanMutation = () => {
 
       const { startTime, endTime } = prev;
 
-      const cbByRemove = removeQueriesData(data.id);
+      const cbByRemove = removeQueriesData(data.id, queryClient);
 
       executeCallbackByDate(startTime, endTime, cbByRemove);
 
       // 변경된 일정을 추가
       const { startTime: newStartTime, endTime: newEndTime } = variables;
 
-      const cbByAdd = addQueriesData(data);
+      const cbByAdd = addQueriesData(data, queryClient);
 
       executeCallbackByDate(newStartTime, newEndTime, cbByAdd);
       queryClient.setQueryData(['plan', { id: data.id }], data);
@@ -141,7 +145,7 @@ const useDeletePlanMutation = () => {
     onSuccess(data, variables) {
       const { startTime, endTime } = data;
 
-      const callback = removeQueriesData(variables);
+      const callback = removeQueriesData(variables, queryClient);
 
       executeCallbackByDate(startTime, endTime, callback);
       queryClient.removeQueries(['plan', { id: data.id }]);
