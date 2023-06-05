@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -16,14 +16,27 @@ import { getTimeString } from '@/utils/date/getTimeString';
 type TProps = {
   plan: Plan;
   viewInfo: ITimeViewInfo;
+  isFocused?: boolean;
 };
 
-const TimePlan: React.FC<TProps> = ({ plan, viewInfo }) => {
-  const { id, title, startTime, color } = plan;
+const TimePlan: React.FC<TProps> = ({ plan, viewInfo, isFocused }) => {
+  const { title, startTime, color } = plan;
   const theme = useTheme();
-  const selectPlan = useFocusedPlanState((state) => state.selectPlan);
-  const focusedPlan = useFocusedPlanState((state) => state.focusedPlan);
-  const isDragged = id === focusedPlan?.id;
+  const moveDragPlan = useFocusedPlanState((state) => state.moveDragPlan);
+  const editDragPlan = useFocusedPlanState((state) => state.editDragPlan);
+
+  const onMouseDownPlan = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const target = e.target as HTMLElement | null;
+    if (!target) return;
+
+    const type = target.getAttribute('data-type');
+
+    if (type === 'resizer') {
+      editDragPlan(plan);
+    } else {
+      moveDragPlan(plan);
+    }
+  };
 
   return (
     <Container
@@ -33,17 +46,18 @@ const TimePlan: React.FC<TProps> = ({ plan, viewInfo }) => {
         cellWidth(viewInfo),
         cellHeight(viewInfo),
         {
-          opacity: isDragged ? 0.6 : 1,
+          opacity: isFocused ? 0.6 : 1,
           color: isBgBright(color) ? theme.text2 : theme.white,
           backgroundColor: color,
         },
       ]}
-      onMouseDown={() => selectPlan(plan)}
+      onMouseDown={onMouseDownPlan}
     >
       <TimeSpan backgroundColor={color}>
         {getTimeString(new Date(startTime))}
       </TimeSpan>
       <TitleSpan backgroundColor={color}>{title}</TitleSpan>
+      <ScrollTargeter data-type="resizer" />
     </Container>
   );
 };
@@ -87,8 +101,6 @@ const cellHeight = ({ term }: ITimeViewInfo) => {
 };
 
 const Container = styled.div`
-  padding: 0.125rem 0.25rem;
-
   position: absolute;
   z-index: ${TIMETABLE_Z_INDEX['timePlan']};
 
@@ -104,7 +116,7 @@ const Container = styled.div`
 
 const TimeSpan = styled.span<{ backgroundColor: TColor }>`
   ${FONT_REGULAR_8}
-  margin-bottom: 0.25rem;
+  margin: 0.375rem 0.375rem 0.25rem;
 
   display: block;
   overflow: hidden;
@@ -117,6 +129,7 @@ const TimeSpan = styled.span<{ backgroundColor: TColor }>`
 
 const TitleSpan = styled.span<{ backgroundColor: TColor }>`
   ${FONT_REGULAR_7}
+  margin: 0 0.375rem;
 
   display: block;
   word-break: keep-all;
@@ -126,4 +139,12 @@ const TitleSpan = styled.span<{ backgroundColor: TColor }>`
     isBgBright(backgroundColor) ? theme.white : theme.text2};
 `;
 
-export default TimePlan;
+const ScrollTargeter = styled.div`
+  width: 100%;
+  height: 0.5rem;
+  position: absolute;
+  bottom: 0;
+  cursor: ns-resize;
+`;
+
+export default memo(TimePlan);

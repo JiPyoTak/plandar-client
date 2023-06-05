@@ -3,10 +3,10 @@ import { create } from 'zustand';
 
 import Plan from '@/plan/Plan';
 import { IPlan } from '@/types/rq/plan';
-import { getFocusedTimePlan } from '@/utils/plan/getFocusedTimePlan';
 import { changePlanView } from '@/utils/plan/planViewHandlerToMonth';
+import { timePlanHandlers } from '@/utils/plan/timePlanHandlers';
 
-export type IChangePlanViewType = 'create' | 'edit' | null;
+export type IChangePlanViewType = 'create' | 'move' | 'edit' | null;
 
 type TMovePlanProps = {
   targetDate: string;
@@ -27,9 +27,10 @@ interface IFocusedPlanAction {
   createDragPlan: (
     planData: Pick<IPlan, 'startTime' | 'endTime'> & Partial<IPlan>,
   ) => void;
-  selectPlan: (plan: Plan) => void;
+  moveDragPlan: (plan: Plan) => void;
+  editDragPlan: (plan: Plan) => void;
   onMoveMonthPlan: (args: TMovePlanProps) => void;
-  onMoveTimePlan: (args: TMovePlanProps) => void;
+  onDragTimePlan: (args: TMovePlanProps) => void;
   onDragEndPlan: () => void;
   clearDraggedPlan: () => void;
 }
@@ -63,7 +64,14 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
         currentPlan: newPlan,
       });
     },
-    selectPlan: (plan) => {
+    moveDragPlan: (plan) => {
+      set({
+        type: 'move',
+        focusedPlan: new Plan(plan),
+        currentPlan: plan,
+      });
+    },
+    editDragPlan: (plan) => {
       set({
         type: 'edit',
         focusedPlan: new Plan(plan),
@@ -95,20 +103,20 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
         return { ...state, focusedPlan: new Plan(newPlan), isDragging: true };
       });
     },
-    onMoveTimePlan: ({
+    onDragTimePlan: ({
       targetDate: targetDateString,
       currentDate: currentDateString,
     }) => {
       set((state) => {
         const { focusedPlan, currentPlan, type } = state;
-        if (!focusedPlan || !currentPlan) return state;
+        if (!focusedPlan || !currentPlan || !type) return state;
 
-        const targetDate = moment(targetDateString);
-        const currentDate = moment(currentDateString);
-
-        const plan = getFocusedTimePlan({
-          targetDate,
-          currentDate,
+        const plan = timePlanHandlers[type]({
+          targetDate: moment(targetDateString),
+          currentDate:
+            type === 'edit'
+              ? currentPlan.startMoment
+              : moment(currentDateString),
           focusedPlan,
           currentPlan,
           type,

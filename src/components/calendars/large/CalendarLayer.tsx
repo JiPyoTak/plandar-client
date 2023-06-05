@@ -13,7 +13,7 @@ interface IProps {
 }
 
 const CalendarLayer = ({ planManager }: IProps) => {
-  const { focusedPlan, selectPlan } = useFocusedPlanState();
+  const { focusedPlan, moveDragPlan } = useFocusedPlanState();
   const { hoveredPlan, setHoveredPlan, clearHoveredPlan } =
     useHoveredPlanState();
 
@@ -37,7 +37,7 @@ const CalendarLayer = ({ planManager }: IProps) => {
   );
 
   const onMouseDown = useCallback((plan: Plan) => {
-    selectPlan(plan);
+    moveDragPlan(plan);
     clearHoveredPlan();
   }, []);
 
