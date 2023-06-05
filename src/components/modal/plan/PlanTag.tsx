@@ -19,12 +19,20 @@ import {
 const PlanTag: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [tagInput, setTagInput] = useState('');
-  const [selectedTags, setSelectedTags] = useFocusedPlanState((store) => {
-    const { focusedPlan, updateFocusedPlan } = store;
-    const setSelectedTags = (newTags: string[]) =>
-      updateFocusedPlan({ tags: newTags });
-    return [focusedPlan?.tags || [], setSelectedTags];
-  }, shallow);
+  const [selectedTags, setSelectedTags] = useFocusedPlanState(
+    (store) => {
+      const { focusedPlan, updateFocusedPlan } = store;
+      const setSelectedTags = (newTags: string[]) =>
+        updateFocusedPlan({ tags: newTags });
+      return [focusedPlan?.tags || [], setSelectedTags];
+    },
+    (prev, cur) => {
+      const prevTags = prev[0];
+      const curTags = cur[0];
+      if (prevTags.length !== curTags.length) return false;
+      return prevTags.every((tag, i) => tag === curTags[i]);
+    },
+  );
 
   // selectedTags에 태그 추가
   const addTag = (tag?: string) => {
