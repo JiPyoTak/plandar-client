@@ -18,7 +18,7 @@ const PlanColorPicker = () => {
   return (
     <ColorPicker
       selectedColor={color}
-      onSelect={(color: TColor) => setColor(color)}
+      onSelect={setColor}
       additionalComponent={<ChevronIcon width="14" type="down" color="black" />}
     />
   );
