@@ -20,18 +20,20 @@ type TPlanModalProps = {
   isEdit?: boolean;
   onClose?: () => void;
   onDone?: () => void;
+  openModal?: boolean;
 };
 
 type TPlanModal = React.FC<TPlanModalProps>;
 
 const PlanModal: TPlanModal = ({
+  openModal: initOpenModal,
   isEdit = false,
   onClose,
   onDone,
 }: TPlanModalProps) => {
   const { openModal, clearPlan, isDisabled } = useFocusedPlanState(
     ({ focusedPlan, isDragging, clearDraggedPlan }) => ({
-      openModal: !isDragging && !!focusedPlan,
+      openModal: initOpenModal || (!isDragging && !!focusedPlan),
       clearPlan: clearDraggedPlan,
       isDisabled: !focusedPlan?.startTime || !focusedPlan?.endTime,
     }),

@@ -13,11 +13,11 @@ const Template: ComponentStory<typeof PlanModal> = (args) => (
 
 export const Create = Template.bind({});
 Create.args = {
-  onDone: (data) => console.log(data),
+  openModal: true,
 };
 
 export const Update = Template.bind({});
 Update.args = {
   isEdit: true,
-  onDone: (data) => console.log(data),
+  openModal: true,
 };
