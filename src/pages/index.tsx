@@ -2,6 +2,7 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
+import HamburgerButton from '@/components/buttons/HamburgerButton';
 import MainCalendar from '@/components/calendars/large';
 import CalendarHeader from '@/components/common/calendar/CalendarHeader';
 import Logo from '@/components/logo';
@@ -27,6 +28,7 @@ const Home: React.FC = () => {
       <Container>
         <Header>
           <div className="header-side">
+            <HamburgerButton />
             <Logo />
           </div>
           <div className="header-main">
@@ -34,9 +36,7 @@ const Home: React.FC = () => {
           </div>
         </Header>
         <ContentSizer>
-          <div className="content-side">
-            <SideBar />
-          </div>
+          <SideBar />
           <section className="content-main">
             <Backgrounder>
               <CalendarComponent />
@@ -62,6 +62,7 @@ const Container = styled.div`
 const Header = styled.header`
   display: flex;
   justify-content: stretch;
+  align-items: center;
 
   background-color: ${({ theme }) => theme.white};
   border-bottom: 1px solid ${({ theme }) => theme.border2};
@@ -87,16 +88,10 @@ const ContentSizer = styled.div`
 
   display: flex;
 
-  & > .content-side {
-    flex: 0 0 ${SIDEBAR_WIDTH};
-    height: 100%;
-  }
-
   & > .content-main {
     flex: 1 0 0;
     height: 100%;
     padding: 1rem;
-
     overflow: hidden;
   }
 `;

@@ -2,6 +2,7 @@ import { ReactComponent as CategoryIconComponent } from '@/assets/category-icon.
 import { ReactComponent as CheckIconComponent } from '@/assets/check-icon.svg';
 import { ReactComponent as CrossIconComponent } from '@/assets/cross-icon.svg';
 import { ReactComponent as GoogleIconComponent } from '@/assets/google-icon.svg';
+import { ReactComponent as HamburgerIconComponent } from '@/assets/hamburger-icon.svg';
 import { ReactComponent as KakaoIconComponent } from '@/assets/kakao-icon.svg';
 import { ReactComponent as MemoIconComponent } from '@/assets/memo-icon.svg';
 import { ReactComponent as PencilIconComponent } from '@/assets/pencil-icon.svg';
@@ -21,6 +22,7 @@ const ICON_COMPONENTS = {
   MemoIcon: MemoIconComponent,
   TagIcon: TagIconComponent,
   CategoryIcon: CategoryIconComponent,
+  HamburgerIcon: HamburgerIconComponent,
 } as const;
 
 export const {
@@ -34,6 +36,7 @@ export const {
   MemoIcon,
   TagIcon,
   CategoryIcon,
+  HamburgerIcon,
 } = Object.entries(ICON_COMPONENTS).reduce(
   (result, [key, IconComponent]) => ({
     ...result,
