@@ -6,6 +6,7 @@ import HamburgerButton from '@/components/buttons/HamburgerButton';
 import MainCalendar from '@/components/calendars/large';
 import CalendarHeader from '@/components/common/calendar/CalendarHeader';
 import Logo from '@/components/logo';
+import PlanModal from '@/components/modal/plan';
 import HoveredPlanModal from '@/components/modal/plan/Hovered';
 import SideBar from '@/components/sidebar';
 import Timetable from '@/components/timetable';
@@ -45,6 +46,7 @@ const Home: React.FC = () => {
         </ContentSizer>
       </Container>
       <HoveredPlanModal />
+      <PlanModal />
     </>
   );
 };

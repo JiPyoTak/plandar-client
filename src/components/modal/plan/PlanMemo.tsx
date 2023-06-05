@@ -1,10 +1,11 @@
-import React, { ChangeEventHandler, useRef, useState } from 'react';
+import React, { ChangeEventHandler, useRef } from 'react';
 
 import styled from '@emotion/styled';
 
 import Dropdown from '@/components/common/dropdown';
 import { MemoIcon } from '@/components/icons';
 import { MAX_MEMO_LENGTH } from '@/constants';
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { FONT_REGULAR_4 } from '@/styles/font';
 import {
   ClassifierAdditionalFontStyle,
@@ -14,7 +15,16 @@ import {
 
 const PlanMemo: React.FC = () => {
   const ref = useRef<HTMLTextAreaElement>(null);
-  const [description, setDescription] = useState('');
+
+  const [description, setDescription] = useFocusedPlanState(
+    (store) => {
+      const { focusedPlan, updateFocusedPlan } = store;
+      const setDescription = (newDescription: string) =>
+        updateFocusedPlan({ description: newDescription });
+      return [focusedPlan?.description || '', setDescription];
+    },
+    (prev, cur) => prev[0] === cur[0],
+  );
 
   const handleTextareaHeight = () => {
     const current = ref.current;

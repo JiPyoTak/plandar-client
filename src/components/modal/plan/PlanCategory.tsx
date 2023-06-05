@@ -11,8 +11,9 @@ import SelectedCategoryDisplay from '@/components/modal/plan/category/SelectedCa
 import { MAX_CANDIDATE_LENGTH } from '@/constants';
 import { useCategoryQuery } from '@/hooks/rq/category';
 import useDebounce from '@/hooks/useDebounce';
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { PlanModalClassifierTitle } from '@/styles/planModal';
-import { ICategory, ICategoryWithoutId } from '@/types/rq/category';
+import { ICategory } from '@/types/rq/category';
 
 // 입력과 일치하는 category 존재여부에 따라 다른 것을 보여주기 위해 정의한 타입
 // 입력과 일치하는 category가 있을 경우: candidate
@@ -23,14 +24,29 @@ const PlanCategory: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { data: categoryData } = useCategoryQuery();
   const [filteredCategories, setFilteredCategories] = useState<ICategory[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<
-    (ICategoryWithoutId & { id?: number }) | null
-  >(null);
+  const [selectedCategory, setSelectedCategory] = useFocusedPlanState(
+    (store) => {
+      const { focusedPlan, updateFocusedPlan } = store;
+      const setSelectedCategory = (categoryId: number) =>
+        updateFocusedPlan({ categoryId });
+
+      return [
+        categoryData && focusedPlan?.categoryId
+          ? categoryData.find(
+              (category) => category.id === focusedPlan.categoryId,
+            )
+          : null,
+        setSelectedCategory,
+      ];
+    },
+    (prev, cur) => prev[0] === cur[0],
+  );
+
   const [categoryInput, setCategoryInput] = useState('');
   const [filteredType, setFilteredType] = useState<TFilteredType | null>(null);
 
   const onSelectCategory = (category: ICategory) => {
-    setSelectedCategory(category);
+    setSelectedCategory(category.id);
     setFilteredCategories([]);
     setFilteredType(null);
     setCategoryInput('');

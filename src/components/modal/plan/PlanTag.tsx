@@ -2,11 +2,14 @@ import React, { ChangeEvent, FormEventHandler, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import { shallow } from 'zustand/shallow';
+
 import TagButton from '@/components/buttons/TagButton';
 import Dropdown from '@/components/common/dropdown';
 import Input from '@/components/common/Input';
 import { TagIcon } from '@/components/icons';
 import { MAX_TAG_LENGTH } from '@/constants';
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import {
   ClassifierAdditionalFontStyle,
   ClassifierAdditionalMarginRight,
@@ -16,7 +19,12 @@ import {
 const PlanTag: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [tagInput, setTagInput] = useState('');
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useFocusedPlanState((store) => {
+    const { focusedPlan, updateFocusedPlan } = store;
+    const setSelectedTags = (newTags: string[]) =>
+      updateFocusedPlan({ tags: newTags });
+    return [focusedPlan?.tags || [], setSelectedTags];
+  }, shallow);
 
   // selectedTags에 태그 추가
   const addTag = (tag?: string) => {
@@ -26,7 +34,7 @@ const PlanTag: React.FC = () => {
       selectedTags.includes(tag)
     )
       return;
-    setSelectedTags((prev) => [...prev, tag]);
+    setSelectedTags([...selectedTags, tag]);
     setTagInput('');
   };
 
@@ -78,7 +86,7 @@ const PlanTag: React.FC = () => {
         {selectedTags.map((tag) => (
           <TagButton
             onClick={() =>
-              setSelectedTags((prev) => prev.filter((name) => name !== tag))
+              setSelectedTags(selectedTags.filter((name) => name !== tag))
             }
             key={tag}
           >

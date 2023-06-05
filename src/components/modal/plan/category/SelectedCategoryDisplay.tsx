@@ -14,7 +14,7 @@ import { ICategory, ICategoryWithoutId } from '@/types/rq/category';
 
 type TSelectedCategoryDisplayProps = {
   category: ICategoryWithoutId;
-  onUpdateCategory: (category: ICategory) => void;
+  onUpdateCategory: (categoryId: number) => void;
 };
 
 type TSelectedCategoryDisplay = React.FC<TSelectedCategoryDisplayProps>;
@@ -39,7 +39,7 @@ const SelectedCategoryDisplay: TSelectedCategoryDisplay = ({
       const newCategory = { ...category, color: newColor } as ICategory;
 
       await updateCategory(newCategory);
-      onUpdateCategory(newCategory);
+      onUpdateCategory(newCategory.id);
     } catch (e) {
       alert('카테고리 수정에 실패했습니다.');
       // todo: 토스트 메시지로 실패했다고 알림

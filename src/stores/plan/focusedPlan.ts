@@ -3,6 +3,7 @@ import { create } from 'zustand';
 
 import Plan from '@/plan/Plan';
 import { IPlan } from '@/types/rq/plan';
+import { createInitPlan } from '@/utils/plan/createInitPlan';
 import { changePlanView } from '@/utils/plan/planViewHandlerToMonth';
 import { timePlanHandlers } from '@/utils/plan/timePlanHandlers';
 
@@ -33,6 +34,8 @@ interface IFocusedPlanAction {
   onDragTimePlan: (args: TMovePlanProps) => void;
   onDragEndPlan: () => void;
   clearDraggedPlan: () => void;
+  createNewPlan: (planData?: Partial<IPlan>) => void;
+  updateFocusedPlan: (planData: Partial<IPlan>) => void;
 }
 
 const initialState = {
@@ -43,21 +46,10 @@ const initialState = {
 } as const;
 
 const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
-  (set) => ({
+  (set, get) => ({
     ...initialState,
     createDragPlan: (planData) => {
-      const newPlan = new Plan({
-        id: -1,
-        title: '새로운 일정',
-        description: null,
-        isAllDay: false,
-        type: 'task',
-        color: '#52D681',
-        categoryId: null,
-        tags: [],
-        ...planData,
-      });
-
+      const newPlan = createInitPlan(planData);
       set({
         type: 'create',
         focusedPlan: newPlan,
@@ -140,6 +132,38 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
     },
     clearDraggedPlan: () => {
       set(initialState);
+    },
+    createNewPlan: (planData) => {
+      const newPlan = createInitPlan({
+        title: '',
+        ...planData,
+      });
+
+      set((state) => ({
+        ...state,
+        type: 'create',
+        focusedPlan: newPlan,
+      }));
+    },
+    updateFocusedPlan: (planData) => {
+      const focusedPlan = get().focusedPlan;
+      let newPlan: Plan;
+      if (!focusedPlan) {
+        newPlan = createInitPlan({
+          title: '',
+          ...planData,
+        });
+      } else {
+        newPlan = new Plan({
+          ...focusedPlan,
+          ...planData,
+        });
+      }
+
+      set((state) => ({
+        ...state,
+        focusedPlan: newPlan,
+      }));
     },
   }),
 );
