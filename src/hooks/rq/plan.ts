@@ -114,7 +114,7 @@ const useCreatePlanMutation = () => {
 const useUpdatePlanMutation = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<IPlan, unknown, TPlanInput>(updatePlanApi, {
+  return useMutation<IPlan, unknown, IPlan>(updatePlanApi, {
     onSuccess(data, variables) {
       // 기존 일정을 제거
       const prev = queryClient.getQueryData<IPlan>(['plan', { id: data.id }]);
