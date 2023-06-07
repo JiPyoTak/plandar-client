@@ -10,6 +10,7 @@ import TimetableAllDay from '@/components/timetable/TimetableAllDay';
 import TimetableHeader from '@/components/timetable/TimetableHeader';
 import TimetableView from '@/components/timetable/view';
 import { MONTH_PLANS_MOCK } from '@/constants/mock';
+import useTimetableScroll from '@/hooks/useTimetableScroll';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import {
@@ -25,6 +26,8 @@ type TProps = {
 const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
   const { selectedCalendarUnit } = useCalendarUnitState();
   const { year, month, day } = useDateState();
+  const { onMoveHorizontalScroll, ...scrollerController } =
+    useTimetableScroll();
 
   // 주 선택하면 선택한 날짜 상관없이 해당 주를 보여주기
   const startMoment = moment({ year, month: month - 1, day });
@@ -53,19 +56,33 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
       {showHeader && (
         <HorizontalScroller
           fixedComponent={<HeaderGuide>{timezone}</HeaderGuide>}
+          scrollId="header"
+          scrollerController={scrollerController}
         >
           <TimetableHeader dateMoments={dateMoments} />
         </HorizontalScroller>
       )}
-      <HorizontalScroller fixedComponent={<AllDayGuide>종일</AllDayGuide>}>
+      <HorizontalScroller
+        fixedComponent={<AllDayGuide>종일</AllDayGuide>}
+        scrollId="allday"
+        scrollerController={scrollerController}
+      >
         <TimetableAllDay dateMoments={dateMoments} allDayPlans={allDayPlans} />
       </HorizontalScroller>
       <VerticalScroller>
-        <HorizontalScroller fixedComponent={<TimetableTimeline />}>
+        <HorizontalScroller
+          fixedComponent={<TimetableTimeline />}
+          scrollId="view"
+          scrollerController={scrollerController}
+        >
           <TimetableView dateMoments={dateMoments} timePlans={timePlans} />
         </HorizontalScroller>
       </VerticalScroller>
-      <HorizontalScroller css={{ border: 'none' }} showScroll={true}>
+      <HorizontalScroller
+        css={{ border: 'none' }}
+        showScroll={true}
+        onScroll={onMoveHorizontalScroll}
+      >
         <VerticalScrollBar cellLength={dateMoments.length} />
       </HorizontalScroller>
     </Container>
