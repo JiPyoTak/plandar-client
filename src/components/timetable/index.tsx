@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 
 import moment from 'moment';
 
+import TimetableHorizontalScroller from './TimetableHorizontalScroller';
 import TimetableTimeline from './TimetableTimeline';
 import TimetableAllDay from '@/components/timetable/TimetableAllDay';
 import TimetableHeader from '@/components/timetable/TimetableHeader';
@@ -44,20 +45,41 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
 
   return (
     <Container>
-      {showHeader && <TimetableHeader dateMoments={dateMoments} />}
-      <TimetableAllDay dateMoments={dateMoments} allDayPlans={allDayPlans} />
-      <Scroller>
-        <FlexibleDiv>
-          <TimetableTimeline />
+      {showHeader && (
+        <TimetableHorizontalScroller
+          fixedComponent={
+            <GuideDiv
+              css={{
+                alignItems: 'flex-end',
+              }}
+            >
+              {`GTM${moment(Date.now()).format('Z')}`}
+            </GuideDiv>
+          }
+        >
+          <TimetableHeader dateMoments={dateMoments} />
+        </TimetableHorizontalScroller>
+      )}
+      <TimetableHorizontalScroller
+        fixedComponent={
+          <GuideDiv css={{ alignItems: 'center' }}>종일</GuideDiv>
+        }
+      >
+        <TimetableAllDay dateMoments={dateMoments} allDayPlans={allDayPlans} />
+      </TimetableHorizontalScroller>
+      <VerticalScroller>
+        <TimetableHorizontalScroller
+          showScroll={true}
+          fixedComponent={<TimetableTimeline />}
+        >
           <TimetableView dateMoments={dateMoments} timePlans={timePlans} />
-        </FlexibleDiv>
-      </Scroller>
+        </TimetableHorizontalScroller>
+      </VerticalScroller>
     </Container>
   );
 };
 
 const Container = styled.div`
-  ${TIMETABLE_SCROLL_STYLE}
   width: 100%;
   height: 100%;
   min-height: 100%;
@@ -68,18 +90,23 @@ const Container = styled.div`
   user-select: none;
 `;
 
-const Scroller = styled.div`
+const GuideDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 0.25rem;
+
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const VerticalScroller = styled.div`
   ${TIMETABLE_SCROLL_STYLE}
 
   flex: 1 0 0;
   min-width: 100%;
 
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: auto;
-`;
-
-const FlexibleDiv = styled.div`
-  display: flex;
 `;
 
 export default Timetable;

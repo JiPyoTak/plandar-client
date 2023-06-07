@@ -1,20 +1,4 @@
 import { Theme, css } from '@emotion/react';
-import styled from '@emotion/styled';
-
-import { FONT_BOLD_8 } from './font';
-
-const TimetableGuide = styled.div`
-  ${FONT_BOLD_8}
-
-  flex: 0 0 4rem;
-  position: sticky;
-  left: 0;
-
-  color: ${({ theme }) => theme.text4};
-  background-color: ${({ theme }) => theme.background1};
-  text-align: end;
-  user-select: none;
-`;
 
 const TIMETABLE_SCROLL_WIDTH = '8px';
 const TIMETABLE_SCROLL_STYLE = ({ theme }: { theme: Theme }) => css`
@@ -41,7 +25,6 @@ const TIMETABLE_Z_INDEX = {
 } as const;
 
 export {
-  TimetableGuide,
   TIMETABLE_SCROLL_WIDTH,
   TIMETABLE_SCROLL_STYLE,
   TIMETABLE_CELL_MIN_WIDTH,

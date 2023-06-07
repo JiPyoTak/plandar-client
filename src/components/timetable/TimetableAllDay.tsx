@@ -10,7 +10,6 @@ import Plan from '@/plan/Plan';
 import {
   TIMETABLE_CELL_MIN_WIDTH,
   TIMETABLE_SCROLL_WIDTH,
-  TimetableGuide,
 } from '@/styles/timetable';
 import { getYMDByDateFormat } from '@/utils/date/getYMDByDateFormat';
 
@@ -31,44 +30,41 @@ const TimetableAllDay: React.FC<TProps> = ({ dateMoments, allDayPlans }) => {
   );
 
   return (
-    <>
-      <div
+    <Container css={{ height: height * 24 + 16 }}>
+      <Content
         css={{
-          position: 'relative',
-          width: 'calc(100% - 4rem)',
-          marginLeft: '4rem',
+          minWidth: `calc(${TIMETABLE_CELL_MIN_WIDTH} * ${dateMoments.length})`,
         }}
       >
         <CalendarLayer css={{ top: 8 }} planManager={planManager} />
-      </div>
-      <Container css={{ height: height * 24 + 16 }}>
-        <TimetableGuide
-          css={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-          }}
-        >
-          종일
-        </TimetableGuide>
+      </Content>
+      <Row>
         {dateMoments.map((_, index) => {
-          return <AllDayItem key={index} />;
+          return <AllDayCell key={index} />;
         })}
-      </Container>
-    </>
+      </Row>
+    </Container>
   );
 };
 
 const Container = styled.div`
+  flex: 1;
   min-height: 1.75rem;
   padding-right: ${TIMETABLE_SCROLL_WIDTH};
-
-  display: flex;
-  border-bottom: 1px solid ${({ theme }) => theme.border2};
-  user-select: none;
 `;
 
-const AllDayItem = styled.div`
+const Content = styled.div`
+  width: 100%;
+  position: relative;
+`;
+
+const Row = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+`;
+
+const AllDayCell = styled.div`
   flex: 1 0 auto;
 
   min-width: ${TIMETABLE_CELL_MIN_WIDTH};

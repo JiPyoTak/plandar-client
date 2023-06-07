@@ -12,7 +12,6 @@ import { FONT_REGULAR_5 } from '@/styles/font';
 import {
   TIMETABLE_CELL_MIN_WIDTH,
   TIMETABLE_SCROLL_WIDTH,
-  TimetableGuide,
 } from '@/styles/timetable';
 
 type TProps = {
@@ -20,21 +19,10 @@ type TProps = {
 };
 
 const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
-  const standardDay = dateMoments[0];
-  const timeZone = `GMT${standardDay.format('Z')}`;
   const { year, month, day, onChangeStoreDate } = useDateState();
 
   return (
     <Container>
-      <TimetableGuide
-        css={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'flex-end',
-        }}
-      >
-        {timeZone}
-      </TimetableGuide>
       {dateMoments.map((dateMoment) => {
         const dateInfo = {
           year: dateMoment.get('year'),
@@ -74,12 +62,11 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
 };
 
 const Container = styled.div`
-  flex: 0 0 50px;
-
+  flex: 1;
+  height: 50px;
   padding-right: ${TIMETABLE_SCROLL_WIDTH};
 
   display: flex;
-  border-bottom: 1px solid ${({ theme }) => theme.border2};
   user-select: none;
 `;
 
