@@ -80,7 +80,7 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
           css={{ border: 'none' }}
           showScroll={true}
         >
-          <VerticalScrollBar cellLength={dateMoments.length} />
+          <VerticalEmptyCell cellLength={dateMoments.length} />
         </TimetableScroller.HorizontalScroller>
       </TimetableScroller>
     </Container>
@@ -125,7 +125,7 @@ const VerticalScroller = styled.div`
   overflow-y: auto;
 `;
 
-const VerticalScrollBar = styled.div<{ cellLength: number }>`
+const VerticalEmptyCell = styled.div<{ cellLength: number }>`
   width: calc(${TIMETABLE_CELL_MIN_WIDTH} * ${({ cellLength }) => cellLength});
   height: 1px;
   display: flex;
