@@ -3,7 +3,6 @@ import React, {
   createContext,
   useContext,
   useEffect,
-  useMemo,
   useRef,
 } from 'react';
 
@@ -52,10 +51,9 @@ const HorizontalScroller: React.FC<THorizontalScrollerProps> = ({
       return () => removeTag?.(id);
     }, []);
 
-    useMemo(
-      () => registTag?.({ id, ref: scrollerRef.current }),
-      [scrollerRef.current],
-    );
+    useEffect(() => {
+      registTag?.({ id, ref: scrollerRef.current });
+    }, [scrollerRef.current]);
   }
 
   // children 주의사항
