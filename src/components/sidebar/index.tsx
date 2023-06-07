@@ -3,9 +3,9 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import CategoryClassifier from './CategoryClassifier';
+import SmallCalendar from './SmallCalendar';
 import TagClassifier from './TagClassifier';
 import TypeClassifier from './TypeClassifier';
-import Calendar from '@/components/calendars/small';
 import useDrawerState from '@/stores/drawer';
 import { SIDEBAR_WIDTH } from '@/styles/home';
 
@@ -15,7 +15,7 @@ const SideBar: React.FC = () => {
   return (
     <Container css={{ width: isOpened ? SIDEBAR_WIDTH : 0 }}>
       <InnerContainer>
-        <Calendar />
+        <SmallCalendar />
         <TypeClassifier />
         <CategoryClassifier />
         <TagClassifier />

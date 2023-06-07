@@ -1,58 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import styled from '@emotion/styled';
-
-import moment from 'moment';
 
 import CalendarHeader from './CalendarHeader';
 import CalendarView from './CalendarView';
 
 import DayOfWeek from '@/components/common/calendar/DayOfWeek';
-import useDateState from '@/stores/date';
-import { decreaseMonth, increaseMonth } from '@/utils/calendar/monthHandler';
+import { TDateYMD } from '@/stores/date';
 
-const Calendar: React.FC = () => {
-  const { onChangeStoreDate, year, month, day } = useDateState();
+interface IProps {
+  today: TDateYMD;
+  currentDate: TDateYMD;
+  onChangeDate: (date: TDateYMD) => void;
+  increaseMonth: () => void;
+  decreaseMonth: () => void;
+  onClickTodayButton: () => void;
+}
 
-  const [date, setDate] = useState({ year, month, day });
-
-  useEffect(() => {
-    setDate({ year, month, day });
-  }, [year, month, day]);
-
-  const increaseCalendarMonth = () => {
-    setDate(increaseMonth);
-  };
-
-  const decreaseCalendarMonth = () => {
-    setDate(decreaseMonth);
-  };
-
-  const onClickTodayButton = () => {
-    const today = moment();
-    const date = {
-      year: today.year(),
-      month: today.month() + 1,
-      day: today.date(),
-    };
-
-    setDate(date);
-  };
+const Calendar: React.FC<IProps> = (props) => {
+  const {
+    today,
+    currentDate,
+    onChangeDate,
+    increaseMonth,
+    decreaseMonth,
+    onClickTodayButton,
+  } = props;
 
   return (
     <Container>
       <CalendarHeader
-        year={date.year}
-        month={date.month}
-        increaseMonth={increaseCalendarMonth}
-        decreaseMonth={decreaseCalendarMonth}
+        year={currentDate.year}
+        month={currentDate.month}
+        increaseMonth={increaseMonth}
+        decreaseMonth={decreaseMonth}
         onClickTodayButton={onClickTodayButton}
       />
       <DayOfWeek />
       <CalendarView
-        date={date}
-        storeDate={{ year, month, day }}
-        onChangeDate={onChangeStoreDate}
+        date={currentDate}
+        storeDate={today}
+        onChangeDate={onChangeDate}
       />
     </Container>
   );
