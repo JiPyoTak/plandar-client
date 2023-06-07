@@ -62,7 +62,6 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
 };
 
 const Container = styled.div`
-  flex: 1;
   height: 50px;
   padding-right: ${TIMETABLE_SCROLL_WIDTH};
 

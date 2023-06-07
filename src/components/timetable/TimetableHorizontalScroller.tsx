@@ -17,11 +17,13 @@ const TimetableHorizontalScroller: React.FC<TProps> = ({
   children,
   showScroll,
 }) => {
+  // children 주의사항
+  //// 하위 컴포넌트가 display: flex 을 가지지 않으면 width 를 지정해주어야 한다
   return (
     <FlexibleContainer className={className}>
-      {!!fixedComponent && <GuideComponent>{fixedComponent}</GuideComponent>}
+      <GuideComponent>{fixedComponent}</GuideComponent>
       <HorizontalScroller css={{ overflowX: showScroll ? 'auto' : 'hidden' }}>
-        <div css={{ display: 'flex' }}>{children}</div>
+        {children}
       </HorizontalScroller>
     </FlexibleContainer>
   );

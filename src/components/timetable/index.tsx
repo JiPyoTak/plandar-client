@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import moment from 'moment';
 
-import TimetableHorizontalScroller from './TimetableHorizontalScroller';
+import { default as HorizontalScroller } from './TimetableHorizontalScroller';
 import TimetableTimeline from './TimetableTimeline';
 import TimetableAllDay from '@/components/timetable/TimetableAllDay';
 import TimetableHeader from '@/components/timetable/TimetableHeader';
@@ -12,7 +12,10 @@ import TimetableView from '@/components/timetable/view';
 import { MONTH_PLANS_MOCK } from '@/constants/mock';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
-import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
+import {
+  TIMETABLE_CELL_MIN_WIDTH,
+  TIMETABLE_SCROLL_STYLE,
+} from '@/styles/timetable';
 import { divideTimePlans } from '@/utils/plan/divideTimePlans';
 
 type TProps = {
@@ -43,38 +46,28 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
   // 종일, 시간에 들어가야 할 일정 분류하기
   const { timePlans, allDayPlans } = divideTimePlans(plans);
 
+  const timezone = `GTM${dateMoments[0].format('Z')}`;
+
   return (
     <Container>
       {showHeader && (
-        <TimetableHorizontalScroller
-          fixedComponent={
-            <GuideDiv
-              css={{
-                alignItems: 'flex-end',
-              }}
-            >
-              {`GTM${moment(Date.now()).format('Z')}`}
-            </GuideDiv>
-          }
+        <HorizontalScroller
+          fixedComponent={<HeaderGuide>{timezone}</HeaderGuide>}
         >
           <TimetableHeader dateMoments={dateMoments} />
-        </TimetableHorizontalScroller>
+        </HorizontalScroller>
       )}
-      <TimetableHorizontalScroller
-        fixedComponent={
-          <GuideDiv css={{ alignItems: 'center' }}>종일</GuideDiv>
-        }
-      >
+      <HorizontalScroller fixedComponent={<AllDayGuide>종일</AllDayGuide>}>
         <TimetableAllDay dateMoments={dateMoments} allDayPlans={allDayPlans} />
-      </TimetableHorizontalScroller>
+      </HorizontalScroller>
       <VerticalScroller>
-        <TimetableHorizontalScroller
-          showScroll={true}
-          fixedComponent={<TimetableTimeline />}
-        >
+        <HorizontalScroller fixedComponent={<TimetableTimeline />}>
           <TimetableView dateMoments={dateMoments} timePlans={timePlans} />
-        </TimetableHorizontalScroller>
+        </HorizontalScroller>
       </VerticalScroller>
+      <HorizontalScroller css={{ border: 'none' }} showScroll={true}>
+        <VerticalScrollBar cellLength={dateMoments.length} />
+      </HorizontalScroller>
     </Container>
   );
 };
@@ -99,6 +92,14 @@ const GuideDiv = styled.div`
   justify-content: flex-end;
 `;
 
+const HeaderGuide = styled(GuideDiv)`
+  align-items: flex-end;
+`;
+
+const AllDayGuide = styled(GuideDiv)`
+  align-items: center;
+`;
+
 const VerticalScroller = styled.div`
   ${TIMETABLE_SCROLL_STYLE}
 
@@ -107,6 +108,12 @@ const VerticalScroller = styled.div`
 
   overflow-x: hidden;
   overflow-y: auto;
+`;
+
+const VerticalScrollBar = styled.div<{ cellLength: number }>`
+  width: calc(${TIMETABLE_CELL_MIN_WIDTH} * ${({ cellLength }) => cellLength});
+  height: 1px;
+  display: flex;
 `;
 
 export default Timetable;
