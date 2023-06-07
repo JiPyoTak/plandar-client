@@ -1,10 +1,4 @@
-import React, {
-  PropsWithChildren,
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-} from 'react';
+import React, { PropsWithChildren, createContext, useContext } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -42,19 +36,14 @@ const HorizontalScroller: React.FC<THorizontalScrollerProps> = ({
   showScroll,
 }) => {
   const id = scrollId || '';
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const { registTag, removeTag, onMoveHorizontalScroll } =
-    useContext(Context) || {};
+  const isReceiver = !showScroll && scrollId;
+  const { registTag, onMoveHorizontalScroll } = useContext(Context) || {};
 
-  if (!showScroll && scrollId) {
-    useEffect(() => {
-      return () => removeTag?.(id);
-    }, []);
-
-    useEffect(() => {
-      registTag?.({ id, ref: scrollerRef.current });
-    }, [scrollerRef.current]);
-  }
+  const scrollCallbackRef: React.LegacyRef<HTMLDivElement> = (element) => {
+    if (isReceiver && registTag) {
+      registTag({ id, ref: element });
+    }
+  };
 
   // children 주의사항
   //// 하위 컴포넌트가 display: flex 을 가지지 않으면 width 를 지정해주어야 한다
@@ -63,7 +52,7 @@ const HorizontalScroller: React.FC<THorizontalScrollerProps> = ({
       <FixedDiv>{fixedComponent}</FixedDiv>
       <HorizontalScrollDiv
         css={{ overflowX: showScroll ? 'auto' : 'hidden' }}
-        ref={scrollerRef}
+        ref={scrollCallbackRef}
         onScroll={onMoveHorizontalScroll}
       >
         {children}

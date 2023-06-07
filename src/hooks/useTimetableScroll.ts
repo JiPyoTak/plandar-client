@@ -1,8 +1,7 @@
 import { useRef } from 'react';
 
 type TTimetableScrollController = {
-  registTag: (arg: { id: string; ref: HTMLDivElement | null }) => void;
-  removeTag: (id: string) => void;
+  registTag: (arg: { id: string; ref: HTMLElement | null }) => void;
   onMoveHorizontalScroll: React.UIEventHandler<HTMLElement>;
 };
 
@@ -15,10 +14,6 @@ const useTimetableScroll = () => {
     }
   };
 
-  const removeTag: TTimetableScrollController['removeTag'] = (id: string) => {
-    delete scrollTargets.current[id];
-  };
-
   const onMoveHorizontalScroll: TTimetableScrollController['onMoveHorizontalScroll'] =
     (e) => {
       const target = e.target as HTMLElement;
@@ -29,7 +24,7 @@ const useTimetableScroll = () => {
       }
     };
 
-  return { registTag, removeTag, onMoveHorizontalScroll };
+  return { registTag, onMoveHorizontalScroll };
 };
 
 export type { TTimetableScrollController };
