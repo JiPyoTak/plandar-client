@@ -48,15 +48,19 @@ class DaysPlanManager extends PlanManager<IDayViewInfo> {
     const [currentStart, currentEnd] = [this.startDate, this.endDate];
 
     const [viewStart, viewEnd] = [
-      startMoment.isBefore(currentStart) ? currentStart.clone() : startMoment,
-      endMoment.isAfter(currentEnd) ? currentEnd.clone() : endMoment,
+      startMoment.isBetween(currentStart, currentEnd)
+        ? startMoment
+        : currentStart.clone(),
+      endMoment.isBetween(currentStart, currentEnd)
+        ? endMoment
+        : currentEnd.clone(),
     ];
 
     const term = Math.abs(viewStart.diff(viewEnd, 'd')) + 1;
 
     return {
       id: plan.id,
-      start: viewStart.day(),
+      start: viewStart.diff(currentStart, 'd'),
       index: 0,
       term,
       st: viewStart,

@@ -1,8 +1,8 @@
-import moment from 'moment';
+import moment, { MomentInput } from 'moment';
 
-const getYMDByDateFormat = (start: string, end: string) => {
-  const startMo = moment(start).startOf('w').startOf('d');
-  const endMo = moment(end).endOf('w').endOf('d');
+const getYMDByDateFormat = (start: MomentInput, end: MomentInput) => {
+  const startMo = moment(start);
+  const endMo = moment(end);
 
   const startYMD = {
     year: startMo.year(),
