@@ -24,6 +24,9 @@ type TProps = {
   rangeAmount?: number;
 };
 
+const ALLDAY_MAX_HEIGHT =
+  TIMETABLE_ALLDAY_PLAN_HEIGHT * 8 + TIMETABLE_ALLDAY_VERTICAL_PADDING * 2;
+
 const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
   const { selectedCalendarUnit } = useCalendarUnitState();
   const { year, month, day } = useDateState();
@@ -50,9 +53,6 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
 
   const timezone = `GTM${dateMoments[0].format('Z')}`;
 
-  const allDayMaxHeight =
-    TIMETABLE_ALLDAY_PLAN_HEIGHT * 8 + TIMETABLE_ALLDAY_VERTICAL_PADDING * 2;
-
   return (
     <Container>
       <TimetableScroller>
@@ -70,12 +70,18 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
             flexGrow: 0,
             flexShrink: 0,
             flexBasis: 'auto',
-            maxHeight: allDayMaxHeight,
+            maxHeight: ALLDAY_MAX_HEIGHT,
           }}
         >
           <TimetableScroller.HorizontalScroller
             scrollId="allday"
-            fixedComponent={<AllDayGuide>종일</AllDayGuide>}
+            fixedComponent={
+              <GuideDiv>
+                <AllDayGuide>
+                  <AllDayGuideText>종일</AllDayGuideText>
+                </AllDayGuide>
+              </GuideDiv>
+            }
           >
             <TimetableAllDay
               dateMoments={dateMoments}
@@ -119,23 +125,31 @@ const GuideDiv = styled.div`
   width: 100%;
   height: 100%;
 
-  display: flex;
-  justify-content: flex-end;
+  border-right: 1px solid ${({ theme }) => theme.border2};
 `;
 
 const HeaderGuide = styled(GuideDiv)`
   padding: 0.25rem 0.25rem 0.25rem 0;
 
+  display: flex;
+  justify-content: flex-end;
   align-items: flex-end;
-  border-right: 1px solid ${({ theme }) => theme.border2};
 `;
 
 const AllDayGuide = styled(GuideDiv)`
-  padding: 0.25rem;
+  max-height: ${ALLDAY_MAX_HEIGHT}px;
+  padding: 0;
 
+  display: flex;
   align-items: center;
+  justify-content: flex-end;
+  border-right: none;
+`;
 
-  border-right: 1px solid ${({ theme }) => theme.border2};
+const AllDayGuideText = styled.span`
+  padding: 0.25rem 0.25rem 0.25rem 0;
+
+  position: absolute;
 `;
 
 const Seperater = styled.div`
