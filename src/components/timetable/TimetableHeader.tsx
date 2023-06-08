@@ -38,23 +38,28 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
           moment(`${year}-${month}-${day}`).format(format) === formattedDate;
 
         return (
-          <SignDiv key={formattedDate}>
-            <CalendarDay
-              css={css`
-                width: 1.75rem;
-                height: 1.75rem;
-                margin-right: 0.25rem;
-              `}
-              isToday={isToday}
-              isWeekend={isWeekend}
-              isInMonth={true}
-              isSelected={isSelected}
-              format={formattedDate}
-              onClick={() => onChangeStoreDate(dateInfo)}
-              {...dateInfo}
-            />
-            <span>{DAY_OF_WEEK_UNIT[dateMoment.day()]}</span>
-          </SignDiv>
+          <Sizer>
+            <SignDiv key={formattedDate}>
+              <CalendarDay
+                css={css`
+                  width: 1.75rem;
+                  height: 1.75rem;
+                  margin-right: 0.25rem;
+                `}
+                isToday={isToday}
+                isWeekend={isWeekend}
+                isInMonth={true}
+                isSelected={isSelected}
+                format={formattedDate}
+                onClick={() => onChangeStoreDate(dateInfo)}
+                {...dateInfo}
+              />
+              <span>{DAY_OF_WEEK_UNIT[dateMoment.day()]}</span>
+            </SignDiv>
+            <Positional>
+              <Liner />
+            </Positional>
+          </Sizer>
         );
       })}
     </Container>
@@ -69,18 +74,43 @@ const Container = styled.div`
   user-select: none;
 `;
 
-const SignDiv = styled.div`
-  ${FONT_REGULAR_5}
-
+const Sizer = styled.div`
   flex: 1 0 0;
   min-width: ${TIMETABLE_CELL_MIN_WIDTH};
-  padding: 0 1rem;
+`;
+
+const SignDiv = styled.div`
+  ${FONT_REGULAR_5}
+  height: 100%;
+  padding: 0 1rem 0 0.75rem;
 
   display: flex;
   flex-wrap: nowrap;
+  justify-content: center;
   align-items: center;
 
   cursor: pointer;
+`;
+
+const Positional = styled.div`
+  width: 100%;
+  margin: 0;
+
+  position: relative;
+  bottom: 0;
+  left: 0;
+`;
+
+const LINER_HEIGHT = '0.425rem';
+const Liner = styled.div`
+  width: calc(100% + 1px);
+  height: ${LINER_HEIGHT};
+
+  position: absolute;
+  left: -1px;
+  top: -${LINER_HEIGHT};
+
+  border-right: 1px solid ${({ theme }) => theme.border2};
 `;
 
 export default TimetableHeader;

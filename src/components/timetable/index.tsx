@@ -102,17 +102,21 @@ const Container = styled.div`
 const GuideDiv = styled.div`
   width: 100%;
   height: 100%;
-  padding: 0.25rem;
 
   display: flex;
   justify-content: flex-end;
 `;
 
 const HeaderGuide = styled(GuideDiv)`
+  padding: 0.25rem 0.25rem 0.25rem 0;
+
   align-items: flex-end;
+  border-right: 1px solid transparent;
 `;
 
 const AllDayGuide = styled(GuideDiv)`
+  padding: 0.25rem;
+
   align-items: center;
 
   border-right: 1px solid ${({ theme }) => theme.border2};
