@@ -62,13 +62,13 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
           </Sizer>
         );
       })}
+      <EmptyScrollBar />
     </Container>
   );
 };
 
 const Container = styled.div`
   height: 50px;
-  padding-right: ${TIMETABLE_SCROLL_WIDTH};
 
   display: flex;
   user-select: none;
@@ -111,6 +111,11 @@ const Liner = styled.div`
   top: -${LINER_HEIGHT};
 
   border-right: 1px solid ${({ theme }) => theme.border2};
+`;
+
+const EmptyScrollBar = styled.div`
+  flex: 0 0 ${TIMETABLE_SCROLL_WIDTH};
+  height: 100%;
 `;
 
 export default TimetableHeader;

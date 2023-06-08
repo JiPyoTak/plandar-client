@@ -65,8 +65,6 @@ const HorizontalScroller: React.FC<THorizontalScrollerProps> = ({
 const FlexibleContainer = styled.div`
   display: flex;
   overflow: hidden;
-
-  border-bottom: 1px solid ${({ theme }) => theme.border2};
 `;
 
 const FixedDiv = styled.div`

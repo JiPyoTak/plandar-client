@@ -64,6 +64,7 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
             <TimetableHeader dateMoments={dateMoments} />
           </TimetableScroller.HorizontalScroller>
         )}
+        <Seperater />
         <TimetableScroller.VerticalScroller
           css={{
             flexGrow: 0,
@@ -75,7 +76,6 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
           <TimetableScroller.HorizontalScroller
             scrollId="allday"
             fixedComponent={<AllDayGuide>종일</AllDayGuide>}
-            css={{ border: 'none' }}
           >
             <TimetableAllDay
               dateMoments={dateMoments}
@@ -92,8 +92,9 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
             <TimetableView dateMoments={dateMoments} timePlans={timePlans} />
           </TimetableScroller.HorizontalScroller>
         </TimetableScroller.VerticalScroller>
+        <Seperater />
         <TimetableScroller.HorizontalScroller
-          css={{ border: 'none', marginRight: TIMETABLE_SCROLL_WIDTH }}
+          css={{ marginRight: TIMETABLE_SCROLL_WIDTH }}
           showScroll={true}
         >
           <VerticalEmptyCell cellLength={dateMoments.length} />
