@@ -9,7 +9,7 @@ const TimetableSelect: React.FC = () => {
   const viewMoment = useTimetableViewMoment();
   const focusedPlan = useFocusedPlanState((state) => state.focusedPlan);
 
-  if (!focusedPlan) return <></>;
+  if (!focusedPlan || !focusedPlan.isTimePlan) return <></>;
 
   const shouldRender = viewMoment.isBetween(
     focusedPlan.startTime,
