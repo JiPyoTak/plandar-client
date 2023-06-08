@@ -10,6 +10,7 @@ import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
 
 type TCompounds = {
   HorizontalScroller: typeof HorizontalScroller;
+  VerticalScroller: typeof VerticalScroller;
 };
 
 const Context = createContext<TTimetableScrollController | null>(null);
@@ -87,5 +88,16 @@ const HorizontalScrollDiv = styled.div`
   overflow-y: hidden;
 `;
 
+const VerticalScroller = styled.div`
+  ${TIMETABLE_SCROLL_STYLE}
+
+  flex: 1 0 0;
+  min-width: 100%;
+
+  overflow-x: hidden;
+  overflow-y: scroll;
+`;
+
 TimetableScroller.HorizontalScroller = HorizontalScroller;
+TimetableScroller.VerticalScroller = VerticalScroller;
 export default TimetableScroller;
