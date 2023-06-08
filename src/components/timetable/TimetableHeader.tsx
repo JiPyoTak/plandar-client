@@ -12,7 +12,6 @@ import { FONT_REGULAR_5 } from '@/styles/font';
 import {
   TIMETABLE_CELL_MIN_WIDTH,
   TIMETABLE_SCROLL_WIDTH,
-  TimetableGuide,
 } from '@/styles/timetable';
 
 type TProps = {
@@ -20,21 +19,10 @@ type TProps = {
 };
 
 const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
-  const standardDay = dateMoments[0];
-  const timeZone = `GMT${standardDay.format('Z')}`;
   const { year, month, day, onChangeStoreDate } = useDateState();
 
   return (
     <Container>
-      <TimetableGuide
-        css={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'flex-end',
-        }}
-      >
-        {timeZone}
-      </TimetableGuide>
       {dateMoments.map((dateMoment) => {
         const dateInfo = {
           year: dateMoment.get('year'),
@@ -50,51 +38,84 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
           moment(`${year}-${month}-${day}`).format(format) === formattedDate;
 
         return (
-          <SignDiv key={formattedDate}>
-            <CalendarDay
-              css={css`
-                width: 1.75rem;
-                height: 1.75rem;
-                margin-right: 0.25rem;
-              `}
-              isToday={isToday}
-              isWeekend={isWeekend}
-              isInMonth={true}
-              isSelected={isSelected}
-              format={formattedDate}
-              onClick={() => onChangeStoreDate(dateInfo)}
-              {...dateInfo}
-            />
-            <span>{DAY_OF_WEEK_UNIT[dateMoment.day()]}</span>
-          </SignDiv>
+          <Sizer>
+            <SignDiv key={formattedDate}>
+              <CalendarDay
+                css={css`
+                  width: 1.75rem;
+                  height: 1.75rem;
+                  margin-right: 0.25rem;
+                `}
+                isToday={isToday}
+                isWeekend={isWeekend}
+                isInMonth={true}
+                isSelected={isSelected}
+                format={formattedDate}
+                onClick={() => onChangeStoreDate(dateInfo)}
+                {...dateInfo}
+              />
+              <span>{DAY_OF_WEEK_UNIT[dateMoment.day()]}</span>
+            </SignDiv>
+            <Positional>
+              <Liner />
+            </Positional>
+          </Sizer>
         );
       })}
+      <EmptyScrollBar />
     </Container>
   );
 };
 
 const Container = styled.div`
-  flex: 0 0 50px;
-
-  padding-right: ${TIMETABLE_SCROLL_WIDTH};
+  height: 50px;
 
   display: flex;
-  border-bottom: 1px solid ${({ theme }) => theme.border2};
   user-select: none;
+`;
+
+const Sizer = styled.div`
+  flex: 1 0 0;
+  min-width: ${TIMETABLE_CELL_MIN_WIDTH};
 `;
 
 const SignDiv = styled.div`
   ${FONT_REGULAR_5}
-
-  flex: 1 0 0;
-  min-width: ${TIMETABLE_CELL_MIN_WIDTH};
-  padding: 0 1rem;
+  height: 100%;
+  padding: 0 1rem 0 0.75rem;
 
   display: flex;
   flex-wrap: nowrap;
+  justify-content: center;
   align-items: center;
 
   cursor: pointer;
+`;
+
+const Positional = styled.div`
+  width: 100%;
+  margin: 0;
+
+  position: relative;
+  bottom: 0;
+  left: 0;
+`;
+
+const LINER_HEIGHT = '0.425rem';
+const Liner = styled.div`
+  width: calc(100% + 1px);
+  height: ${LINER_HEIGHT};
+
+  position: absolute;
+  left: -1px;
+  top: -${LINER_HEIGHT};
+
+  border-right: 1px solid ${({ theme }) => theme.border2};
+`;
+
+const EmptyScrollBar = styled.div`
+  flex: 0 0 ${TIMETABLE_SCROLL_WIDTH};
+  height: 100%;
 `;
 
 export default TimetableHeader;
