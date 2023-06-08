@@ -35,6 +35,8 @@ const HourSpace = styled.div`
   padding: 0 0.25rem;
   width: 100%;
   height: calc(${TIMETABLE_CELL_HEIGHT} * ${TIMETABLE_CELL_PER_HOUR});
+
+  border-right: 1px solid ${({ theme }) => theme.border2};
 `;
 
 const HourSpan = styled.span`

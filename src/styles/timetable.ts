@@ -5,7 +5,7 @@ const TIMETABLE_SCROLL_STYLE = ({ theme }: { theme: Theme }) => css`
   &::-webkit-scrollbar {
     width: ${TIMETABLE_SCROLL_WIDTH};
     height: ${TIMETABLE_SCROLL_WIDTH};
-    background-color: ${theme.background4};
+    background-color: transparent;
   }
   &::-webkit-scrollbar-thumb {
     background-clip: padding-box;

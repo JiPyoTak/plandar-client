@@ -15,6 +15,7 @@ import useCalendarUnitState from '@/stores/date/calendarUnit';
 import {
   TIMETABLE_CELL_MIN_WIDTH,
   TIMETABLE_SCROLL_STYLE,
+  TIMETABLE_SCROLL_WIDTH,
 } from '@/styles/timetable';
 import { divideTimePlans } from '@/utils/plan/divideTimePlans';
 
@@ -77,7 +78,7 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
           </TimetableScroller.HorizontalScroller>
         </VerticalScroller>
         <TimetableScroller.HorizontalScroller
-          css={{ border: 'none' }}
+          css={{ border: 'none', marginRight: TIMETABLE_SCROLL_WIDTH }}
           showScroll={true}
         >
           <VerticalEmptyCell cellLength={dateMoments.length} />
@@ -113,6 +114,8 @@ const HeaderGuide = styled(GuideDiv)`
 
 const AllDayGuide = styled(GuideDiv)`
   align-items: center;
+
+  border-right: 1px solid ${({ theme }) => theme.border2};
 `;
 
 const VerticalScroller = styled.div`
@@ -122,7 +125,7 @@ const VerticalScroller = styled.div`
   min-width: 100%;
 
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
 `;
 
 const VerticalEmptyCell = styled.div<{ cellLength: number }>`

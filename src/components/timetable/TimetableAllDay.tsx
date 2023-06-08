@@ -42,6 +42,7 @@ const TimetableAllDay: React.FC<TProps> = ({ dateMoments, allDayPlans }) => {
         {dateMoments.map((_, index) => {
           return <AllDayCell key={index} />;
         })}
+        <EmptySpace />
       </Row>
     </Container>
   );
@@ -50,12 +51,12 @@ const TimetableAllDay: React.FC<TProps> = ({ dateMoments, allDayPlans }) => {
 const Container = styled.div`
   flex: 1;
   min-height: 1.75rem;
-  padding-right: ${TIMETABLE_SCROLL_WIDTH};
 `;
 
 const Content = styled.div`
   width: 100%;
   position: relative;
+  display: flex;
 `;
 
 const Row = styled.div`
@@ -68,7 +69,11 @@ const AllDayCell = styled.div`
   flex: 1 0 auto;
 
   min-width: ${TIMETABLE_CELL_MIN_WIDTH};
-  border-left: 1px solid ${({ theme }) => theme.border2};
+  border-right: 1px solid ${({ theme }) => theme.border2};
+`;
+
+const EmptySpace = styled.div`
+  flex: 0 0 ${TIMETABLE_SCROLL_WIDTH};
 `;
 
 export default TimetableAllDay;

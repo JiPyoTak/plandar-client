@@ -53,7 +53,7 @@ const Column = styled.div`
   flex: 1 0 0;
   min-width: ${TIMETABLE_CELL_MIN_WIDTH};
 
-  border-left: 1px solid ${({ theme }) => theme.border2};
+  border-right: 1px solid ${({ theme }) => theme.border2};
 `;
 
 export default TimetableView;
