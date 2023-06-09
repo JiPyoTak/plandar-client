@@ -12,18 +12,16 @@ interface IProps {
 const CalendarOverlay = ({ week }: IProps) => {
   const { year, month } = useDateState();
 
-  const getBackground = (y: number, m: number) => {
-    if (y === year && m === month) return 'transparent';
-    return 'rgba(255,255,255,.5)';
-  };
-
   return (
     <Container>
       {week.map(({ year: y, month: m }, j) => (
         <Inner
           key={`${y}${m}${j}`}
           css={{
-            backgroundColor: getBackground(y, m),
+            backgroundColor:
+              y === year && m === month
+                ? 'transparent'
+                : 'rgba(255,255,255,.4)',
           }}
         />
       ))}
