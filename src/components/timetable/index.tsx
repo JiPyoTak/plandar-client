@@ -13,8 +13,6 @@ import { MONTH_PLANS_MOCK } from '@/constants/mock';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import {
-  TIMETABLE_ALLDAY_PLAN_HEIGHT,
-  TIMETABLE_ALLDAY_VERTICAL_PADDING,
   TIMETABLE_CELL_MIN_WIDTH,
   TIMETABLE_SCROLL_WIDTH,
 } from '@/styles/timetable';
@@ -23,9 +21,6 @@ import { divideTimePlans } from '@/utils/plan/divideTimePlans';
 type TProps = {
   rangeAmount?: number;
 };
-
-const ALLDAY_MAX_HEIGHT =
-  TIMETABLE_ALLDAY_PLAN_HEIGHT * 8 + TIMETABLE_ALLDAY_VERTICAL_PADDING * 2;
 
 const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
   const { selectedCalendarUnit } = useCalendarUnitState();
@@ -56,30 +51,7 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
       <TimetableScroller>
         {showHeader && <TimetableHeader dateMoments={dateMoments} />}
         <Seperater />
-        <TimetableScroller.Vertical
-          css={{
-            flexGrow: 0,
-            flexShrink: 0,
-            flexBasis: 'auto',
-            maxHeight: ALLDAY_MAX_HEIGHT,
-          }}
-        >
-          <TimetableScroller.Horizontal
-            scrollId="allday"
-            fixedComponent={
-              <GuideDiv>
-                <AllDayGuide>
-                  <AllDayGuideText>종일</AllDayGuideText>
-                </AllDayGuide>
-              </GuideDiv>
-            }
-          >
-            <TimetableAllDay
-              dateMoments={dateMoments}
-              allDayPlans={allDayPlans}
-            />
-          </TimetableScroller.Horizontal>
-        </TimetableScroller.Vertical>
+        <TimetableAllDay dateMoments={dateMoments} allDayPlans={allDayPlans} />
         <Seperater />
         <TimetableScroller.Vertical>
           <TimetableScroller.Horizontal
@@ -110,29 +82,6 @@ const Container = styled.div`
   flex-direction: column;
 
   user-select: none;
-`;
-
-const GuideDiv = styled.div`
-  width: 100%;
-  height: 100%;
-
-  border-right: 1px solid ${({ theme }) => theme.border2};
-`;
-
-const AllDayGuide = styled(GuideDiv)`
-  max-height: ${ALLDAY_MAX_HEIGHT}px;
-  padding: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  border-right: none;
-`;
-
-const AllDayGuideText = styled.span`
-  padding: 0.25rem 0.25rem 0.25rem 0;
-
-  position: absolute;
 `;
 
 const Seperater = styled.div`
