@@ -41,7 +41,7 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
   const timezone = `GTM${dateMoments[0].format('Z')}`;
 
   return (
-    <TimetableScroller.HorizontalScroller
+    <TimetableScroller.Horizontal
       scrollId="header"
       fixedComponent={<ZoneText>{timezone}</ZoneText>}
     >
@@ -65,7 +65,7 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
         })}
         <EmptySpace />
       </Container>
-    </TimetableScroller.HorizontalScroller>
+    </TimetableScroller.Horizontal>
   );
 };
 

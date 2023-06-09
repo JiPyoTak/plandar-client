@@ -9,8 +9,8 @@ import { FONT_BOLD_8 } from '@/styles/font';
 import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
 
 type TCompounds = {
-  HorizontalScroller: typeof HorizontalScroller;
-  VerticalScroller: typeof VerticalScroller;
+  Horizontal: typeof HorizontalScroller;
+  Vertical: typeof VerticalScroller;
 };
 
 const Context = createContext<TTimetableScrollController | null>(null);
@@ -96,6 +96,6 @@ const VerticalScroller = styled.div`
   overflow-y: scroll;
 `;
 
-TimetableScroller.HorizontalScroller = HorizontalScroller;
-TimetableScroller.VerticalScroller = VerticalScroller;
+TimetableScroller.Horizontal = HorizontalScroller;
+TimetableScroller.Vertical = VerticalScroller;
 export default TimetableScroller;

@@ -56,7 +56,7 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
       <TimetableScroller>
         {showHeader && <TimetableHeader dateMoments={dateMoments} />}
         <Seperater />
-        <TimetableScroller.VerticalScroller
+        <TimetableScroller.Vertical
           css={{
             flexGrow: 0,
             flexShrink: 0,
@@ -64,7 +64,7 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
             maxHeight: ALLDAY_MAX_HEIGHT,
           }}
         >
-          <TimetableScroller.HorizontalScroller
+          <TimetableScroller.Horizontal
             scrollId="allday"
             fixedComponent={
               <GuideDiv>
@@ -78,24 +78,24 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
               dateMoments={dateMoments}
               allDayPlans={allDayPlans}
             />
-          </TimetableScroller.HorizontalScroller>
-        </TimetableScroller.VerticalScroller>
+          </TimetableScroller.Horizontal>
+        </TimetableScroller.Vertical>
         <Seperater />
-        <TimetableScroller.VerticalScroller>
-          <TimetableScroller.HorizontalScroller
+        <TimetableScroller.Vertical>
+          <TimetableScroller.Horizontal
             scrollId="view"
             fixedComponent={<TimetableTimeline />}
           >
             <TimetableView dateMoments={dateMoments} timePlans={timePlans} />
-          </TimetableScroller.HorizontalScroller>
-        </TimetableScroller.VerticalScroller>
+          </TimetableScroller.Horizontal>
+        </TimetableScroller.Vertical>
         <Seperater />
-        <TimetableScroller.HorizontalScroller
+        <TimetableScroller.Horizontal
           css={{ marginRight: TIMETABLE_SCROLL_WIDTH }}
           showScroll={true}
         >
           <VerticalEmptyCell cellLength={dateMoments.length} />
-        </TimetableScroller.HorizontalScroller>
+        </TimetableScroller.Horizontal>
       </TimetableScroller>
     </Container>
   );
