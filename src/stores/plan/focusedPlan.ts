@@ -54,6 +54,7 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
         type: 'create',
         focusedPlan: newPlan,
         currentPlan: newPlan,
+        isDragging: true,
       });
     },
     moveDragPlan: (plan) => {
@@ -61,6 +62,7 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
         type: 'move',
         focusedPlan: new Plan(plan),
         currentPlan: plan,
+        isDragging: true,
       });
     },
     editDragPlan: (plan) => {
