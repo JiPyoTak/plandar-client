@@ -3,12 +3,11 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Moment } from 'moment';
 
-import TimetableScroller from '../TimetableScroller';
-
 import TimetableCellColumn from './TimetableCellColumn';
 import TimetablePlanColumn from './TimetablePlanColumn';
 import TimetableSelected from './TimetableSelected';
 import TimetableTimeline from './TimetableTimeline';
+import TimetableScroller from '@/components/timetable/TimetableScroller';
 import usePlanDrag from '@/hooks/usePlanDrag';
 import { TimetableViewMomentProvider } from '@/hooks/useTimetableViewMoment';
 import Plan from '@/plan/Plan';

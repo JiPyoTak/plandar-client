@@ -4,18 +4,15 @@ import styled from '@emotion/styled';
 
 import moment from 'moment';
 
-import TimetableColumns from './columns';
 import TimetableScroller from './TimetableScroller';
-import TimetableAllDay from '@/components/timetable/TimetableAllDay';
+import TimetableView from './view';
 import TimetableHeader from '@/components/timetable/TimetableHeader';
-import { MONTH_PLANS_MOCK } from '@/constants/mock';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import {
   TIMETABLE_CELL_MIN_WIDTH,
   TIMETABLE_SCROLL_WIDTH,
 } from '@/styles/timetable';
-import { divideTimePlans } from '@/utils/plan/divideTimePlans';
 
 type TProps = {
   rangeAmount?: number;
@@ -39,21 +36,11 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
   );
   const showHeader = range > 1;
 
-  // TODO : React-Query를 이용해 Plans 가져오기
-  const plans = MONTH_PLANS_MOCK[month];
-
-  // 종일, 시간에 들어가야 할 일정 분류하기
-  const { timePlans, allDayPlans } = divideTimePlans(plans);
-
   return (
     <Container>
       <TimetableScroller>
         {showHeader && <TimetableHeader dateMoments={dateMoments} />}
-        <Seperater />
-        <TimetableAllDay dateMoments={dateMoments} allDayPlans={allDayPlans} />
-        <Seperater />
-        <TimetableColumns dateMoments={dateMoments} timePlans={timePlans} />
-        <Seperater />
+        <TimetableView dateMoments={dateMoments} />
         <TimetableScroller.Horizontal
           css={{ marginRight: TIMETABLE_SCROLL_WIDTH }}
           showScroll={true}
@@ -74,13 +61,6 @@ const Container = styled.div`
   flex-direction: column;
 
   user-select: none;
-`;
-
-const Seperater = styled.div`
-  flex: 0 0 1px;
-  width: 100%;
-  height: 0;
-  border-bottom: 1px solid ${({ theme }) => theme.border2};
 `;
 
 const VerticalEmptyCell = styled.div<{ cellLength: number }>`
