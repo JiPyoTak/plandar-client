@@ -5,7 +5,7 @@ import useTimetableViewMoment from '@/hooks/useTimetableViewMoment';
 import TimePlanManager from '@/plan/TimePlanManager';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 
-const TimetableSelect: React.FC = () => {
+const TimetableSelected: React.FC = () => {
   const viewMoment = useTimetableViewMoment();
   const focusedPlan = useFocusedPlanState((state) => state.focusedPlan);
 
@@ -33,4 +33,4 @@ const TimetableSelect: React.FC = () => {
   );
 };
 
-export default memo(TimetableSelect);
+export default memo(TimetableSelected);

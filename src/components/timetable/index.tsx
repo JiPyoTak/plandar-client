@@ -4,11 +4,10 @@ import styled from '@emotion/styled';
 
 import moment from 'moment';
 
+import TimetableColumns from './columns';
 import TimetableScroller from './TimetableScroller';
-import TimetableTimeline from './TimetableTimeline';
 import TimetableAllDay from '@/components/timetable/TimetableAllDay';
 import TimetableHeader from '@/components/timetable/TimetableHeader';
-import TimetableView from '@/components/timetable/view';
 import { MONTH_PLANS_MOCK } from '@/constants/mock';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
@@ -53,14 +52,7 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
         <Seperater />
         <TimetableAllDay dateMoments={dateMoments} allDayPlans={allDayPlans} />
         <Seperater />
-        <TimetableScroller.Vertical>
-          <TimetableScroller.Horizontal
-            scrollId="view"
-            fixedComponent={<TimetableTimeline />}
-          >
-            <TimetableView dateMoments={dateMoments} timePlans={timePlans} />
-          </TimetableScroller.Horizontal>
-        </TimetableScroller.Vertical>
+        <TimetableColumns dateMoments={dateMoments} timePlans={timePlans} />
         <Seperater />
         <TimetableScroller.Horizontal
           css={{ marginRight: TIMETABLE_SCROLL_WIDTH }}
