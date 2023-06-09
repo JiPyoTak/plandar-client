@@ -4,7 +4,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import moment, { Moment } from 'moment';
 
-import CalendarDay from '../common/calendar/CalendarDay';
+import CalendarDay from '@/components/common/calendar/CalendarDay';
 
 import { DAY_OF_WEEK_UNIT } from '@/constants';
 import useDateState from '@/stores/date';

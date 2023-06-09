@@ -3,7 +3,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Moment } from 'moment';
 
-import CalendarLayer from '../calendars/large/CalendarLayer';
+import CalendarLayer from '@/components/calendars/large/CalendarLayer';
 
 import DaysPlanManager from '@/plan/DaysPlanManager';
 import Plan from '@/plan/Plan';
