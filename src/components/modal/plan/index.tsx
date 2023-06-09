@@ -14,6 +14,7 @@ import PlanColorPicker from '@/components/modal/plan/PlanColorPicker';
 import PlanMemo from '@/components/modal/plan/PlanMemo';
 import PlanTag from '@/components/modal/plan/PlanTag';
 import PlanTitleInput from '@/components/modal/plan/PlanTitleInput';
+import { useCreatePlanMutation, useUpdatePlanMutation } from '@/hooks/rq/plan';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 
 type TPlanModalProps = {
@@ -31,23 +32,37 @@ const PlanModal: TPlanModal = ({
   onClose,
   onDone,
 }: TPlanModalProps) => {
-  const { openModal, clearPlan, isDisabled } = useFocusedPlanState(
+  const { focusedPlan, openModal, clearPlan, isDisabled } = useFocusedPlanState(
     ({ focusedPlan, isDragging, clearDraggedPlan }) => ({
+      focusedPlan,
       openModal: initOpenModal || (!isDragging && !!focusedPlan),
       clearPlan: clearDraggedPlan,
       isDisabled: !focusedPlan?.startTime || !focusedPlan?.endTime,
     }),
     shallow,
   );
+  const { mutateAsync: createMutate } = useCreatePlanMutation();
+  const { mutateAsync: updateMutate } = useUpdatePlanMutation();
 
   const onCloseHandler = () => {
     onClose?.();
     clearPlan();
   };
 
-  const onSubmit = () => {
-    // todo: 일정생성 api 호출
-    onDone?.();
+  const onSubmit = async () => {
+    if (!focusedPlan) return;
+    const { id, ...rest } = focusedPlan;
+
+    try {
+      if (isEdit) {
+        await updateMutate({ id, ...rest });
+      } else {
+        await createMutate(rest);
+      }
+      onDone?.();
+    } catch (e) {
+      alert('일정 생성에 실패했습니다.');
+    }
   };
 
   if (!openModal) {
