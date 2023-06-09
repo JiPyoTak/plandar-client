@@ -1,4 +1,10 @@
-import React, { PropsWithChildren, useState, cloneElement } from 'react';
+import React, {
+  PropsWithChildren,
+  useState,
+  cloneElement,
+  useRef,
+  useEffect,
+} from 'react';
 
 import DropdownController from './DropdownController';
 
@@ -19,10 +25,18 @@ const Dropdown: TDropdown = ({
   duration = 0.35,
 }: TDropdownProps) => {
   const [isShow, setIsShow] = useState<boolean>(defaultVisibility ?? true);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleShow = () => {
     setIsShow((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (!dropdownRef.current) return;
+    dropdownRef.current.style.maxHeight = `${
+      isShow ? dropdownRef.current.scrollHeight : 0
+    }px`;
+  });
 
   children = children ?? [];
   const controllerChildren = Array.prototype.filter
@@ -45,10 +59,10 @@ const Dropdown: TDropdown = ({
       {controllerChildren}
       <div className={className}>
         <div
+          ref={dropdownRef}
           css={[
             {
               paddingTop: '0px',
-              maxHeight: isShow ? '100vh' : '0px',
               overflow: 'hidden',
               transition: `max-height ${duration}s ease-in-out`,
             },
