@@ -51,19 +51,10 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
   // 종일, 시간에 들어가야 할 일정 분류하기
   const { timePlans, allDayPlans } = divideTimePlans(plans);
 
-  const timezone = `GTM${dateMoments[0].format('Z')}`;
-
   return (
     <Container>
       <TimetableScroller>
-        {showHeader && (
-          <TimetableScroller.HorizontalScroller
-            scrollId="header"
-            fixedComponent={<HeaderGuide>{timezone}</HeaderGuide>}
-          >
-            <TimetableHeader dateMoments={dateMoments} />
-          </TimetableScroller.HorizontalScroller>
-        )}
+        {showHeader && <TimetableHeader dateMoments={dateMoments} />}
         <Seperater />
         <TimetableScroller.VerticalScroller
           css={{
@@ -126,14 +117,6 @@ const GuideDiv = styled.div`
   height: 100%;
 
   border-right: 1px solid ${({ theme }) => theme.border2};
-`;
-
-const HeaderGuide = styled(GuideDiv)`
-  padding: 0.25rem 0.25rem 0.25rem 0;
-
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
 `;
 
 const AllDayGuide = styled(GuideDiv)`

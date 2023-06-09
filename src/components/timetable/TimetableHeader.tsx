@@ -5,6 +5,7 @@ import moment, { Moment } from 'moment';
 
 import CalendarDay from '../common/calendar/CalendarDay';
 
+import TimetableScroller from './TimetableScroller';
 import { DAY_OF_WEEK_UNIT } from '@/constants';
 import useDateState from '@/stores/date';
 import { FONT_REGULAR_5 } from '@/styles/font';
@@ -37,28 +38,34 @@ const getCalendarInfo = (dateMoment: Moment, selectedFormat: string) => {
 const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
   const { year, month, day, onChangeStoreDate } = useDateState();
   const selectedFormat = moment(`${year}-${month}-${day}`).format(DATE_FORMAT);
+  const timezone = `GTM${dateMoments[0].format('Z')}`;
 
   return (
-    <Container>
-      {dateMoments.map((dateMoment) => {
-        const calendarInfo = getCalendarInfo(dateMoment, selectedFormat);
-        const { year, month, day } = calendarInfo;
+    <TimetableScroller.HorizontalScroller
+      scrollId="header"
+      fixedComponent={<ZoneText>{timezone}</ZoneText>}
+    >
+      <Container>
+        {dateMoments.map((dateMoment) => {
+          const calendarInfo = getCalendarInfo(dateMoment, selectedFormat);
+          const { year, month, day } = calendarInfo;
 
-        return (
-          <DaySizer>
-            <DayContent key={calendarInfo.format}>
-              <DayNumber
-                {...calendarInfo}
-                onClick={() => onChangeStoreDate({ year, month, day })}
-              />
-              <span>{DAY_OF_WEEK_UNIT[dateMoment.day()]}</span>
-            </DayContent>
-            <DayBorderLiner />
-          </DaySizer>
-        );
-      })}
-      <EmptySpace />
-    </Container>
+          return (
+            <DaySizer>
+              <DayContent key={calendarInfo.format}>
+                <DayNumber
+                  {...calendarInfo}
+                  onClick={() => onChangeStoreDate({ year, month, day })}
+                />
+                <span>{DAY_OF_WEEK_UNIT[dateMoment.day()]}</span>
+              </DayContent>
+              <DayBorderLiner />
+            </DaySizer>
+          );
+        })}
+        <EmptySpace />
+      </Container>
+    </TimetableScroller.HorizontalScroller>
   );
 };
 
@@ -67,6 +74,19 @@ const Container = styled.div`
 
   display: flex;
   user-select: none;
+`;
+
+const ZoneText = styled.div`
+  width: 100%;
+  height: 100%;
+
+  padding: 0.25rem 0.25rem 0.25rem 0;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+
+  border-right: 1px solid ${({ theme }) => theme.border2};
 `;
 
 const DaySizer = styled.div`
