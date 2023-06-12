@@ -75,6 +75,9 @@ const TimeCell = styled.div`
   &:nth-of-type(4n) {
     border-bottom: 1px solid ${({ theme }) => theme.border2};
   }
+  &:last-of-type {
+    border-bottom: none;
+  }
 
   & > span {
     position: relative;

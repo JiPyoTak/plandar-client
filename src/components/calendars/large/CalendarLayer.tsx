@@ -11,6 +11,7 @@ import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 
 interface IProps {
+  className?: string;
   planManager: DaysPlanManager;
 }
 
@@ -59,7 +60,7 @@ const CalendarLayer = ({ planManager }: IProps) => {
   }, []);
 
   return (
-    <Container>
+    <Container className={className}>
       {plans.map((plan, i) => {
         const viewPlan = viewPlans.get(plan.id);
 

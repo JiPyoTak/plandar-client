@@ -8,10 +8,9 @@ import moment from 'moment';
 import { createPlanMock } from '../plan/createPlanMock';
 
 import Timetable from '@/components/timetable';
-import { MONTH_PLANS_MOCK } from '@/constants/mock';
+import { addMockPlan, clearMockPlans } from '@/constants/mock';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
-import { padZero } from '@/utils/padZero';
 
 export default {
   title: 'timetable/DayTimetable',
@@ -22,7 +21,7 @@ export default {
 } as ComponentMeta<typeof Timetable>;
 
 const Template: ComponentStory<typeof Timetable> = (args) => {
-  const [id, setId] = useState<number>(10);
+  const setId = useState<number>(1)[1];
   const { year, month, day } = useDateState();
 
   const { selectCalendarUnit } = useCalendarUnitState();
@@ -31,25 +30,30 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
   }, []);
 
   const addRandomAlldayPlan = () => {
-    const startOfWeek = moment(`${year}-${month}-${day}`)
-      .startOf('week')
-      .get('day');
-    const startDay = startOfWeek + Math.round(Math.random() * 6);
-    const endDay =
-      startDay + Math.round(Math.random() * (6 - (startDay - startOfWeek))) + 1;
+    const startOfWeek = moment(`${year}-${month}-${day}`).startOf('week');
+    const startGap = Math.round(Math.random() * 7) - 1;
+    const planTerm = Math.round(Math.random() * 7);
+    const startTime = moment(startOfWeek).add(startGap, 'days');
 
-    MONTH_PLANS_MOCK[month] = [
-      ...MONTH_PLANS_MOCK[month],
-      createPlanMock({
-        id,
-        title: `임시 데이터 ${id}`,
-        isAllDay: true,
-        startTime: `${year}-${padZero(month)}-${padZero(startDay)}`,
-        endTime: `${year}-${padZero(month)}-${padZero(endDay)}`,
-      }),
-    ];
+    const minimumMoment = startTime.isBefore(startOfWeek)
+      ? startOfWeek
+      : startTime;
+    const endTime = moment(minimumMoment).add(planTerm, 'days');
 
-    setId((prevId) => prevId + 1);
+    setId((prevId) => {
+      addMockPlan({
+        month,
+        plan: createPlanMock({
+          id: prevId,
+          title: `임시 데이터 ${prevId}`,
+          isAllDay: true,
+          startTime,
+          endTime,
+        }),
+      });
+
+      return prevId + 1;
+    });
   };
 
   const addRandomTimePlan = () => {
@@ -66,35 +70,44 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
     const periodMinutes = Math.round(Math.random() * (24 * 60 - 16)) + 15;
     const endTime = moment(startTime).add(periodMinutes, 'minutes');
 
-    MONTH_PLANS_MOCK[month] = [
-      ...MONTH_PLANS_MOCK[month],
-      createPlanMock({
-        id,
-        title: `임시 데이터 ${id}`,
-        isAllDay: false,
-        startTime,
-        endTime,
-      }),
-    ];
+    setId((prevId) => {
+      addMockPlan({
+        month,
+        plan: createPlanMock({
+          id: prevId,
+          title: `임시 데이터 ${prevId}`,
+          isAllDay: false,
+          startTime,
+          endTime,
+        }),
+      });
 
-    setId((prevId) => prevId + 1);
+      return prevId + 1;
+    });
+  };
+
+  const addPlanGroup = () => {
+    for (let i = 0; i < 10; i++) {
+      Math.random() < 0.5 ? addRandomAlldayPlan() : addRandomTimePlan();
+    }
   };
 
   const clearPlans = () => {
-    MONTH_PLANS_MOCK[month] = [];
+    clearMockPlans();
     setId(1);
   };
 
   return (
     <Container>
       <div className="day-timetable-controls">
+        <TestButton onClick={addPlanGroup}>랜덤 10개 일정 추가하기</TestButton>
         <TestButton onClick={addRandomAlldayPlan}>
           범위 안 종일 일정 추가하기
         </TestButton>
         <TestButton onClick={addRandomTimePlan}>
           범위 안 시간 일정 추가하기
         </TestButton>
-        <TestButton onClick={clearPlans}>해당 달의 일정 삭제하기</TestButton>
+        <TestButton onClick={clearPlans}>모든 일정 삭제하기</TestButton>
       </div>
       <div className="day-timetable-main">
         <Timetable {...args} />
