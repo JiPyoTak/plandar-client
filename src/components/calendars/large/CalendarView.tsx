@@ -5,12 +5,13 @@ import styled from '@emotion/styled';
 import CalendarLayer from './CalendarLayer';
 import CalendarOverlay from './CalendarOverlay';
 import CalendarWeek from './CalendarWeek';
+import { useGetPlansQuery } from '@/hooks/rq/plan';
 import usePlanDrag from '@/hooks/usePlanDrag';
-import Plan from '@/plan/Plan';
 import useDateState from '@/stores/date';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { getCalendarInfo } from '@/utils/calendar/getCalendarInfo';
-import { dummy } from '@/utils/plan/dummy';
+import { getFormattedDate } from '@/utils/date/getFormattedDate';
+import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
 import { getDaysPlanManager } from '@/utils/plan/getDaysPlanManager';
 
 const CalendarView = () => {
@@ -23,18 +24,25 @@ const CalendarView = () => {
     [year, month, day],
   );
 
-  const planManagers = useMemo(
-    () => getDaysPlanManager(dummy, calendarInfos),
-    [dummy, calendarInfos],
+  const { startFormat, endFormat } = getFormattedDate(
+    ...getStartAndEndDate({ year, month, day }),
   );
 
-  const focusedPlanManager = useMemo(
+  const { data } = useGetPlansQuery({
+    timemin: startFormat,
+    timemax: endFormat,
+  });
+
+  const planManagers = useMemo(
     () =>
       getDaysPlanManager(
-        focusedPlan ? [new Plan(focusedPlan)] : [],
+        [
+          ...(data ?? []).filter((plan) => plan.id !== focusedPlan?.id),
+          ...(focusedPlan ? [focusedPlan] : []),
+        ],
         calendarInfos,
       ),
-    [focusedPlan, calendarInfos],
+    [data, focusedPlan, calendarInfos],
   );
 
   const onMouseDownCell: React.MouseEventHandler = useCallback((e) => {
@@ -66,9 +74,6 @@ const CalendarView = () => {
           />
           {planManagers[i].plans.length !== 0 && (
             <CalendarLayer planManager={planManagers[i]} />
-          )}
-          {focusedPlan && isDragging && (
-            <CalendarLayer planManager={focusedPlanManager[i]} />
           )}
           <CalendarOverlay week={week} />
         </Inner>

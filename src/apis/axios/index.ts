@@ -41,7 +41,7 @@ const axiosAPI = (() => {
       }
 
       if (response?.status !== 401) {
-        return error;
+        return Promise.reject(error);
       }
 
       try {
