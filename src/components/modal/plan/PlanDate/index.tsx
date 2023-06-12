@@ -1,111 +1,38 @@
 import styled from '@emotion/styled';
-import moment from 'moment/moment';
-import { shallow } from 'zustand/shallow';
 
 import DatePicker from '@/components/modal/plan/PlanDate/DatePicker';
 import TimeInput from '@/components/modal/plan/PlanDate/TimeInput';
-import { TDateYMD } from '@/stores/date';
-import useFocusedPlanState from '@/stores/plan/focusedPlan';
-import { TDateYMDHM, TTimeHM } from '@/types/time';
-
-type TDateType = 'start' | 'end';
+import usePlanDateState from '@/hooks/usePlanDateState';
 
 const PlanDate = () => {
-  const { date, setDate, setTime, isValidEndDate } = useFocusedPlanState(
-    (store) => {
-      const { focusedPlan, updateFocusedPlan } = store;
-
-      const _startDate = focusedPlan?.startTime
-        ? new Date(focusedPlan?.startTime)
-        : new Date();
-
-      const startDate = {
-        year: _startDate.getFullYear(),
-        month: _startDate.getMonth() + 1,
-        day: _startDate.getDate(),
-        hour: _startDate.getHours(),
-        minute: _startDate.getMinutes(),
-      };
-
-      const _endDate = focusedPlan?.endTime
-        ? new Date(focusedPlan?.endTime)
-        : new Date();
-
-      const endDate = {
-        year: _endDate.getFullYear(),
-        month: _endDate.getMonth() + 1,
-        day: _endDate.getDate(),
-        hour: _endDate.getHours(),
-        minute: _endDate.getMinutes(),
-      };
-
-      const date: { [key in TDateType]: TDateYMDHM } = {
-        start: startDate,
-        end: endDate,
-      };
-
-      const setDate = (type: TDateType) => {
-        const key = type === 'start' ? 'startTime' : 'endTime';
-        const originDate = date[type];
-        return ({ year, month, day }: TDateYMD) => {
-          const newDateMoment = moment({
-            ...originDate,
-            year,
-            month: month - 1,
-            day,
-          });
-          updateFocusedPlan({ [key]: newDateMoment.toString() });
-        };
-      };
-
-      const setTime = (type: TDateType) => {
-        const key = type === 'start' ? 'startTime' : 'endTime';
-        const originDate = date[type];
-        return ({ hour, minute }: TTimeHM) => {
-          const { month, ...rest } = originDate;
-          const newDateMoment = moment({
-            ...rest,
-            month: month - 1,
-            hour,
-            minute,
-          });
-          updateFocusedPlan({ [key]: newDateMoment.toString() });
-        };
-      };
-
-      const isValidEndDate = moment({
-        ...startDate,
-        month: startDate.month - 1,
-      }).isSameOrBefore({ ...endDate, month: endDate.month - 1 });
-
-      return {
-        date,
-        setDate,
-        setTime,
-        isValidEndDate,
-      };
-    },
-    shallow,
-  );
+  const { date, isValidEndDate, isAllDay, setDate, setTime } =
+    usePlanDateState();
 
   return (
     <Container>
-      {(['start', 'end'] as TDateType[]).map((type) => (
-        <div css={{ position: 'relative' }} key={type}>
-          <DatePicker
-            onChangeDate={setDate(type)}
-            date={date[type]}
-            isInvalid={type === 'end' && !isValidEndDate}
+      <div css={{ position: 'relative' }}>
+        <DatePicker onChangeDate={setDate('start')} date={date['start']} />
+        {!isAllDay && (
+          <TimeInput
+            setTime={setTime('start')}
+            time={{ hour: date['start'].hour, minute: date['start'].minute }}
           />
-          {type === 'start' && (
-            <TimeInput
-              setTime={setTime(type)}
-              time={{ hour: date[type].hour, minute: date[type].minute }}
-            />
-          )}
-          {type === 'start' && <span css={{ margin: 5 }}> ~ </span>}
-        </div>
-      ))}
+        )}
+      </div>
+      <span css={{ margin: 5 }}> ~ </span>
+      <div css={{ position: 'relative' }}>
+        {!isAllDay && (
+          <TimeInput
+            setTime={setTime('end')}
+            time={{ hour: date['end'].hour, minute: date['end'].minute }}
+          />
+        )}
+        <DatePicker
+          onChangeDate={setDate('end')}
+          date={date['end']}
+          isInvalid={!isValidEndDate}
+        />
+      </div>
     </Container>
   );
 };
