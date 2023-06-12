@@ -1,4 +1,5 @@
 import { TDateYMD } from '@/stores/date';
+import { IExtractedTimeInfo } from '@/types/time';
 
 const getTimeString = (
   date: Date,
@@ -30,22 +31,41 @@ const getDateString = (date: Date | TDateYMD) => {
 };
 
 // '오전 10시 23분' 과 같은 문자열을 { meridiem: '오전', hour: 10, minute: 23 } 과 같은 객체로 변환
-const extractTimeFromString = (time: string) => {
-  const timeReg = /(\d{1,2})[.:시\s]*(\d{1,2})*/;
+const extractTimeFromString = (time: string): IExtractedTimeInfo => {
+  let invalid = false;
+  const timeReg = /(\d{1,2})[.:시\s]*(\d{0,2}).*/;
 
   const match = time.match(timeReg);
+  invalid ||= !match;
 
-  const [hour, minute] = match?.slice(1, 3).map((v) => (v ? Number(v) : 0)) ?? [
+  let [hour, minute] = match?.slice(1, 3).map((v) => (v ? Number(v) : 0)) ?? [
     0, 0,
   ];
+
+  if (minute >= 60) {
+    invalid = true;
+  }
+  // 30 -> 03:00 으로 변환
+  else if (hour >= 24) {
+    const [_hour, _minute] = [
+      Math.floor(hour / 10),
+      Math.floor(Number(`${hour % 10}${minute}`)),
+    ];
+    if (_hour >= 24 || _minute >= 60) {
+      invalid = true;
+    } else {
+      hour = _hour;
+      minute = _minute;
+    }
+  }
 
   const pmReg = /(p.*m|오.*후)/i;
   const isPM = hour > 12 || pmReg.test(time);
 
   return {
-    invalid: !match, // 시간에 대한 정보가 없으면 invalid 하다고 판단. ex) 오후 -> invalid, 오후 10시 -> valid
+    invalid, // 시간에 대한 정보가 없으면 invalid 하다고 판단. ex) 오후 -> invalid, 오후 10시 -> valid
     meridiem: isPM ? '오후' : '오전',
-    hour: hour > 12 ? hour - 12 : hour,
+    hour: hour > 12 ? hour - 12 : hour === 0 ? 12 : hour,
     minute,
   };
 };
