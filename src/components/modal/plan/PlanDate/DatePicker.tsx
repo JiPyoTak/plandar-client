@@ -39,6 +39,7 @@ const DatePicker = ({
 
   const onChangeDateHandler = (date: TDateYMD) => {
     onChangeDate(date);
+    setCurrentYMD(date);
     setCalendarOpened(false);
   };
 
