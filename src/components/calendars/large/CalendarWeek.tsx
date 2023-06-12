@@ -14,7 +14,10 @@ interface IProps {
 }
 
 const CalendarWeek = ({ week, index, daysIndex, onMouseDown }: IProps) => {
-  const { day } = useDateState();
+  const day = useDateState(
+    (store) => store.day,
+    (prev, next) => prev === next,
+  );
 
   return (
     <Container>

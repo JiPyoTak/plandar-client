@@ -16,7 +16,7 @@ const createPlanApi = async (input: TPlanInput) => {
   return data;
 };
 
-const updatePlanApi = async ({ id, ...input }: Partial<IPlan>) => {
+const updatePlanApi = async ({ id, ...input }: TPlanInput) => {
   const { data } = await axiosAPI.put(`/plan/${id}`, input);
 
   return data;
