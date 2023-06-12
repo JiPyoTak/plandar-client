@@ -7,10 +7,10 @@ import { shallow } from 'zustand/shallow';
 import ModalContainer from '..';
 
 import StylishButton from '@/components/buttons/StylishButton';
-import DateDisplay from '@/components/modal/plan/DateDisplay';
 import PlanAllDay from '@/components/modal/plan/PlanAllDay';
 import PlanCategory from '@/components/modal/plan/PlanCategory';
 import PlanColorPicker from '@/components/modal/plan/PlanColorPicker';
+import PlanDate from '@/components/modal/plan/PlanDate';
 import PlanMemo from '@/components/modal/plan/PlanMemo';
 import PlanTag from '@/components/modal/plan/PlanTag';
 import PlanTitleInput from '@/components/modal/plan/PlanTitleInput';
@@ -61,7 +61,7 @@ const PlanModal: TPlanModal = ({
       HeaderLeftComponent={<PlanColorPicker />}
     >
       <PlanTitleInput />
-      <DateDisplay />
+      <PlanDate />
       <PlanAllDay />
       <Hr />
       <PlanMemo />
