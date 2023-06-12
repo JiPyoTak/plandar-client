@@ -17,11 +17,16 @@ import getColumnPlans from '@/utils/plan/getColumnPlans';
 type TProps = {
   dateMoments: Moment[];
   timePlans: Plan[];
+  onMouseMove: ReturnType<typeof usePlanDrag>['onMouseMove'];
+  changeCurrentDate: ReturnType<typeof usePlanDrag>['changeCurrentDate'];
 };
 
-const TimetableColumns: React.FC<TProps> = ({ dateMoments, timePlans }) => {
-  const { currentDateRef, onMouseMove, changeCurrentDate } = usePlanDrag();
-
+const TimetableColumns: React.FC<TProps> = ({
+  dateMoments,
+  timePlans,
+  onMouseMove,
+  changeCurrentDate,
+}) => {
   const columnPlans = getColumnPlans(dateMoments, timePlans);
 
   return (
@@ -37,7 +42,7 @@ const TimetableColumns: React.FC<TProps> = ({ dateMoments, timePlans }) => {
             return (
               <TimePlanColumn
                 key={dateMoment.toString()}
-                onMouseMove={currentDateRef.current ? onMouseMove : undefined}
+                onMouseMove={onMouseMove}
                 onMouseDown={changeCurrentDate}
               >
                 <TimetableViewMomentProvider value={dateMoment}>

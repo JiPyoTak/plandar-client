@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import styled from '@emotion/styled';
 import { Moment } from 'moment';
@@ -7,8 +7,10 @@ import CalendarLayer from '@/components/calendars/large/CalendarLayer';
 
 import TimetableScroller from '@/components/timetable/TimetableScroller';
 
+import usePlanDrag from '@/hooks/usePlanDrag';
 import DaysPlanManager from '@/plan/DaysPlanManager';
 import Plan from '@/plan/Plan';
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import {
   TIMETABLE_ALLDAY_PLAN_HEIGHT,
   TIMETABLE_ALLDAY_VERTICAL_PADDING,
@@ -19,6 +21,8 @@ import { getYMDByDateFormat } from '@/utils/date/getYMDByDateFormat';
 type TProps = {
   dateMoments: Moment[];
   allDayPlans: Plan[];
+  onMouseMove: ReturnType<typeof usePlanDrag>['onMouseMove'];
+  changeCurrentDate: ReturnType<typeof usePlanDrag>['changeCurrentDate'];
 };
 
 const getAllDayHeight = (itemLength: number) => {
@@ -28,15 +32,51 @@ const getAllDayHeight = (itemLength: number) => {
   );
 };
 
-const TimetableAllDay: React.FC<TProps> = ({ dateMoments, allDayPlans }) => {
+const TimetableAllDay: React.FC<TProps> = ({
+  dateMoments,
+  allDayPlans,
+  onMouseMove,
+  changeCurrentDate,
+}) => {
+  const focusedPlan = useFocusedPlanState((state) => state.focusedPlan);
+  const createDragPlan = useFocusedPlanState((state) => state.createDragPlan);
+
   const [start, end] = getYMDByDateFormat(
     dateMoments[0].toString(),
     dateMoments[dateMoments.length - 1].toString(),
   );
-  const planManager = new DaysPlanManager({ plans: allDayPlans, start, end });
+
+  const planManager = useMemo(
+    () =>
+      new DaysPlanManager({
+        plans: [
+          ...allDayPlans.filter((plan) => plan.id !== focusedPlan?.id),
+          ...(focusedPlan ? [focusedPlan] : []),
+        ],
+        start,
+        end,
+      }),
+    [allDayPlans, focusedPlan, dateMoments],
+  );
   const itemMaxLength = planManager.daysIndex.reduce(
     (acc, arr) => Math.max(acc, arr.length),
     0,
+  );
+
+  const onMouseDownCell: React.MouseEventHandler = useCallback(
+    (e) => {
+      const targetDate = (
+        (e.target as HTMLElement).closest('.date-time') as HTMLElement
+      )?.dataset?.date;
+
+      if (!targetDate) return;
+
+      createDragPlan({
+        startTime: targetDate,
+        endTime: targetDate,
+      });
+    },
+    [createDragPlan],
   );
 
   return (
@@ -51,16 +91,26 @@ const TimetableAllDay: React.FC<TProps> = ({ dateMoments, allDayPlans }) => {
           </GuideSizer>
         }
       >
-        <div css={{ flex: 1 }}>
+        <div css={{ flex: 1 }} onMouseMove={onMouseMove}>
           <AllDayPlanPositioner>
             <CalendarLayer
               css={{ top: TIMETABLE_ALLDAY_VERTICAL_PADDING }}
               planManager={planManager}
             />
           </AllDayPlanPositioner>
-          <AllDayCellList css={{ height: getAllDayHeight(itemMaxLength) }}>
-            {dateMoments.map((_, index) => {
-              return <AllDayCell key={index} />;
+          <AllDayCellList
+            css={{ height: getAllDayHeight(itemMaxLength) }}
+            onMouseDown={changeCurrentDate}
+          >
+            {dateMoments.map((dateMoment, index) => {
+              return (
+                <AllDayCell
+                  key={index}
+                  className={'date-time'}
+                  onMouseDown={onMouseDownCell}
+                  data-date={dateMoment.format('YYYY-MM-DD')}
+                />
+              );
             })}
           </AllDayCellList>
         </div>

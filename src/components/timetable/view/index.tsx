@@ -6,6 +6,7 @@ import { Moment } from 'moment';
 import TimetableColumns from './columns';
 import TimetableAllDay from './TimetableAllDay';
 import { MONTH_PLANS_MOCK } from '@/constants/mock';
+import usePlanDrag from '@/hooks/usePlanDrag';
 import useDateState from '@/stores/date';
 import { divideTimePlans } from '@/utils/plan/divideTimePlans';
 
@@ -14,6 +15,8 @@ type TProps = {
 };
 
 const TimetableView: React.FC<TProps> = ({ dateMoments }) => {
+  const { onMouseMove, changeCurrentDate } = usePlanDrag();
+
   // TODO : React-Query를 이용해 Plans 가져오기
   const { month } = useDateState();
   const plans = MONTH_PLANS_MOCK[month];
@@ -24,9 +27,19 @@ const TimetableView: React.FC<TProps> = ({ dateMoments }) => {
   return (
     <>
       <TimetableHr />
-      <TimetableAllDay dateMoments={dateMoments} allDayPlans={allDayPlans} />
+      <TimetableAllDay
+        dateMoments={dateMoments}
+        allDayPlans={allDayPlans}
+        onMouseMove={onMouseMove}
+        changeCurrentDate={changeCurrentDate}
+      />
       <TimetableHr />
-      <TimetableColumns dateMoments={dateMoments} timePlans={timePlans} />
+      <TimetableColumns
+        dateMoments={dateMoments}
+        timePlans={timePlans}
+        onMouseMove={onMouseMove}
+        changeCurrentDate={changeCurrentDate}
+      />
       <TimetableHr />
     </>
   );

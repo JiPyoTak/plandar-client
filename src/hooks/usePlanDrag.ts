@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { shallow } from 'zustand/shallow';
 
@@ -44,7 +44,7 @@ const usePlanDrag = () => {
     };
   };
 
-  const changeCurrentDate: MouseEventHandler = (event) => {
+  const changeCurrentDate: MouseEventHandler = useCallback((event) => {
     const { date, time } = getDataOfMouse(event);
     const targetDate = date ?? time;
     if (!targetDate) return;
@@ -54,31 +54,36 @@ const usePlanDrag = () => {
     if (!timeTypeRef.current) {
       timeTypeRef.current = date ? 'date' : time ? 'time' : null;
     }
-  };
+  }, []);
 
-  const onMouseMove: MouseEventHandler = (event) => {
-    const { date, time } = getDataOfMouse(event);
-    const targetDate = date ?? time;
+  const onMouseMove: MouseEventHandler = useCallback(
+    (event) => {
+      if (!currentDateRef.current) return;
 
-    const currentDate = currentDateRef.current;
-    const draggingDate = draggingDateRef.current;
-    const timeType = timeTypeRef.current;
+      const { date, time } = getDataOfMouse(event);
+      const targetDate = date ?? time;
 
-    if (!targetDate || !currentDate || !timeType) return;
+      const currentDate = currentDateRef.current;
+      const draggingDate = draggingDateRef.current;
+      const timeType = timeTypeRef.current;
 
-    // 처음 드래깅 한 곳과 현재 드래깅 한 곳이 다른 Cell 일 경우 그대로
-    const isDayPlan = timeType === 'date';
-    const isTimePlan = timeType === 'time';
-    if (isDayPlan && !date) return;
-    if (isTimePlan && !time) return;
+      if (!targetDate || !currentDate || !timeType) return;
 
-    // 현재 같은 곳을 드래깅하고 있다면 그대로
-    if (targetDate && targetDate === draggingDate) return;
-    draggingDateRef.current = targetDate;
+      // 처음 드래깅 한 곳과 현재 드래깅 한 곳이 다른 Cell 일 경우 그대로
+      const isDayPlan = timeType === 'date';
+      const isTimePlan = timeType === 'time';
+      if (isDayPlan && !date) return;
+      if (isTimePlan && !time) return;
 
-    const dragPlan = isDayPlan ? onMoveMonthPlan : onDragTimePlan;
-    dragPlan({ targetDate, currentDate });
-  };
+      // 현재 같은 곳을 드래깅하고 있다면 그대로
+      if (targetDate && targetDate === draggingDate) return;
+      draggingDateRef.current = targetDate;
+
+      const dragPlan = isDayPlan ? onMoveMonthPlan : onDragTimePlan;
+      dragPlan({ targetDate, currentDate });
+    },
+    [onMoveMonthPlan, onDragTimePlan],
+  );
 
   useEffect(() => {
     focusedPlanRef.current = focusedPlan;
@@ -101,9 +106,7 @@ const usePlanDrag = () => {
   }, []);
 
   return {
-    currentDateRef,
     changeCurrentDate,
-    getDataOfMouse,
     onMouseMove,
   };
 };

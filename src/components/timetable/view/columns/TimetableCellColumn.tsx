@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 
 import styled from '@emotion/styled';
 import moment from 'moment';
@@ -18,20 +18,23 @@ const TimetableCellColumn: React.FC = () => {
   const viewMoment = useTimetableViewMoment();
   const createDragPlan = useFocusedPlanState((state) => state.createDragPlan);
 
-  const createNewPlan = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const target = (e.target as HTMLElement).closest('.date-time');
-    if (!target) return;
+  const createNewPlan = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      const target = (e.target as HTMLElement).closest('.date-time');
+      if (!target) return;
 
-    const targetDate = target.getAttribute('data-time');
-    if (!targetDate) return;
+      const targetDate = target.getAttribute('data-time');
+      if (!targetDate) return;
 
-    createDragPlan({
-      startTime: targetDate,
-      endTime: moment(targetDate)
-        .add(15, 'minute')
-        .format('YYYY-MM-DDThh:mm:ss'),
-    });
-  };
+      createDragPlan({
+        startTime: targetDate,
+        endTime: moment(targetDate)
+          .add(15, 'minute')
+          .format('YYYY-MM-DDThh:mm:ss'),
+      });
+    },
+    [],
+  );
 
   return (
     <Container onMouseDown={createNewPlan}>
