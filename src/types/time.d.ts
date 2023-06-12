@@ -10,4 +10,6 @@ interface IExtractedTimeInfo {
   minute: number;
 }
 
-export type { IExtractedTimeInfo, TTimeHM, TDateYMDHM };
+type TDateType = 'start' | 'end';
+
+export type { IExtractedTimeInfo, TTimeHM, TDateYMDHM, TDateType };
