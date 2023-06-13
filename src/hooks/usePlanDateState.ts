@@ -5,12 +5,14 @@ import { shallow } from 'zustand/shallow';
 import { TDateYMD } from '@/stores/date';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { TDateType, TDateYMDHM, TTimeHM } from '@/types/time';
+import { isValidDate } from '@/utils/plan/isValidPlan';
 
 const usePlanDateState = () =>
   useFocusedPlanState(
     (store) => {
       const { focusedPlan, updateFocusedPlan } = store;
 
+      // 시작 날짜 및 시각
       const _startDate = focusedPlan?.startTime
         ? new Date(focusedPlan?.startTime)
         : new Date();
@@ -23,6 +25,7 @@ const usePlanDateState = () =>
         minute: _startDate.getMinutes(),
       };
 
+      // 종료 날짜 및 시각
       const _endDate = focusedPlan?.endTime
         ? new Date(focusedPlan?.endTime)
         : new Date();
@@ -40,11 +43,35 @@ const usePlanDateState = () =>
         end: endDate,
       };
 
-      const isValidEndDate = moment({
-        ...startDate,
+      // 날짜 및 시간 유효성 검사
+      let startDateForCompare: TDateYMD | TDateYMDHM = {
+        year: startDate.year,
         month: startDate.month - 1,
-      }).isSameOrBefore({ ...endDate, month: endDate.month - 1 });
+        day: startDate.day,
+      };
+      let endDateForCompare: TDateYMD | TDateYMDHM = {
+        year: endDate.year,
+        month: endDate.month - 1,
+        day: endDate.day,
+      };
+      if (!focusedPlan?.isAllDay) {
+        startDateForCompare = {
+          ...startDateForCompare,
+          hour: startDate.hour,
+          minute: startDate.minute,
+        };
+        endDateForCompare = {
+          ...endDateForCompare,
+          hour: endDate.hour,
+          minute: endDate.minute,
+        };
+      }
+      const isValidEndDate = isValidDate(
+        startDateForCompare,
+        endDateForCompare,
+      );
 
+      // focusedPlan의 startDate, endDate 업데이트
       const setDate = (type: TDateType) => {
         const key = type === 'start' ? 'startTime' : 'endTime';
         const originDate = date[type];
