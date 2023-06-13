@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 import styled from '@emotion/styled';
 
 import Day from '@/components/common/calendar/CalendarDay';
+import Plan from '@/plan/Plan';
 import useDateState from '@/stores/date';
 import { ICalendarInfo } from '@/utils/calendar/getCalendarInfo';
 
@@ -13,7 +14,7 @@ interface IProps {
   isLastWeek: boolean;
   isLastDay: boolean;
   isSelected: boolean;
-
+  timePlans: Plan[];
   onMouseDown: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
@@ -25,6 +26,7 @@ const CalendarCell: React.FC<IProps> = (props) => {
     isLastDay,
     isLastWeek,
     format,
+    timePlans,
     onMouseDown,
   } = props;
 
@@ -44,7 +46,7 @@ const CalendarCell: React.FC<IProps> = (props) => {
         onClick={onChangeStoreDate}
       />
       <div style={{ height }} />
-      <div></div>
+      <div>{timePlans.map((t) => t.title)}</div>
     </Container>
   );
 };
