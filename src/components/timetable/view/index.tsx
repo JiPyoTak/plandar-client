@@ -23,7 +23,7 @@ const TimetableView: React.FC<TProps> = ({ dateMoments, timePlans }) => {
   const columnPlans = getColumnPlans(dateMoments, timePlans);
 
   return (
-    <>
+    <Container>
       {dateMoments.map((dateMoment, i) => {
         const plans = columnPlans[i];
 
@@ -41,15 +41,19 @@ const TimetableView: React.FC<TProps> = ({ dateMoments, timePlans }) => {
           </Column>
         );
       })}
-    </>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+`;
 
 const Column = styled.div`
   flex: 1 0 0;
   min-width: ${TIMETABLE_CELL_MIN_WIDTH};
 
-  border-left: 1px solid ${({ theme }) => theme.border2};
+  border-right: 1px solid ${({ theme }) => theme.border2};
 `;
 
 export default TimetableView;

@@ -2,11 +2,14 @@ import { useEffect, useRef } from 'react';
 
 import { shallow } from 'zustand/shallow';
 
+import { useUpdatePlanMutation } from './rq/plan';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 
 export type MouseEventHandler = React.MouseEventHandler<HTMLDivElement>;
 
 const usePlanDrag = () => {
+  const { mutateAsync } = useUpdatePlanMutation();
+
   const { focusedPlan, onMoveMonthPlan, onDragTimePlan, onDragEndPlan } =
     useFocusedPlanState(
       (state) => ({
@@ -85,20 +88,30 @@ const usePlanDrag = () => {
   }, [focusedPlan]);
 
   useEffect(() => {
-    const onMouseUp = () => {
-      if (currentDateRef.current && focusedPlanRef.current) {
-        timeTypeRef.current = null;
-        currentDateRef.current = null;
-        draggingDateRef.current = null;
-        onDragEndPlan();
+    const onMouseUp = async () => {
+      if (!currentDateRef.current || !focusedPlanRef.current || !focusedPlan)
+        return;
+
+      if (focusedPlan.id >= 0) {
+        const input = {
+          ...focusedPlan,
+          tags: focusedPlan.tags.map((tag) => tag.name),
+        };
+
+        await mutateAsync(input);
       }
+
+      timeTypeRef.current = null;
+      currentDateRef.current = null;
+      draggingDateRef.current = null;
+      onDragEndPlan();
     };
 
     document.addEventListener('mouseup', onMouseUp);
     return () => {
       document.removeEventListener('mouseup', onMouseUp);
     };
-  }, []);
+  }, [focusedPlan]);
 
   return {
     currentDateRef,

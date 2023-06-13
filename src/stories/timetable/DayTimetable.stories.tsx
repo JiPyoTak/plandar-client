@@ -8,7 +8,7 @@ import moment from 'moment';
 import { createPlanMock } from '../plan/createPlanMock';
 
 import Timetable from '@/components/timetable';
-import { MONTH_PLANS_MOCK } from '@/constants/mock';
+import { addMockPlan, clearMockPlans } from '@/constants/mock';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import { padZero } from '@/utils/padZero';
@@ -21,7 +21,7 @@ export default {
 } as ComponentMeta<typeof Timetable>;
 
 const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
-  const [id, setId] = useState<number>(10);
+  const setId = useState<number>(1)[1];
   const { year, month, day } = useDateState();
 
   const { selectCalendarUnit } = useCalendarUnitState();
@@ -30,18 +30,20 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
   }, []);
 
   const addSameTimePlan = () => {
-    MONTH_PLANS_MOCK[month] = [
-      ...MONTH_PLANS_MOCK[month],
-      createPlanMock({
-        id,
-        title: `임시 데이터 ${id}`,
-        isAllDay: false,
-        startTime: `${year}-${padZero(month)}-${padZero(day)}T03:00:00.000`,
-        endTime: `${year}-${padZero(month)}-${padZero(day)}T06:00:00.000`,
-      }),
-    ];
+    setId((prevId) => {
+      addMockPlan({
+        month,
+        plan: createPlanMock({
+          id: prevId,
+          title: `임시 데이터 ${prevId}`,
+          isAllDay: false,
+          startTime: `${year}-${padZero(month)}-${padZero(day)}T03:00:00.000`,
+          endTime: `${year}-${padZero(month)}-${padZero(day)}T06:00:00.000`,
+        }),
+      });
 
-    setId((prevId) => prevId + 1);
+      return prevId + 1;
+    });
   };
 
   const addRandomTimePlan = () => {
@@ -54,22 +56,24 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
     const periodMinutes = Math.round(Math.random() * 24 * 60);
     const endTime = moment(startTime).add(periodMinutes, 'minutes');
 
-    MONTH_PLANS_MOCK[month] = [
-      ...MONTH_PLANS_MOCK[month],
-      createPlanMock({
-        id,
-        title: `임시 데이터 ${id}`,
-        isAllDay: false,
-        startTime,
-        endTime,
-      }),
-    ];
+    setId((prevId) => {
+      addMockPlan({
+        month,
+        plan: createPlanMock({
+          id: prevId,
+          title: `임시 데이터 ${prevId}`,
+          isAllDay: false,
+          startTime,
+          endTime,
+        }),
+      });
 
-    setId((prev) => prev + 1);
+      return prevId + 1;
+    });
   };
 
   const clearPlans = () => {
-    MONTH_PLANS_MOCK[month] = [];
+    clearMockPlans();
     setId(1);
   };
 
@@ -80,7 +84,7 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
           오후 03시 ~ 06시 일정 추가하기
         </TestButton>
         <TestButton onClick={addRandomTimePlan}>랜덤 일정 추가하기</TestButton>
-        <TestButton onClick={clearPlans}>해당 달의 일정 삭제하기</TestButton>
+        <TestButton onClick={clearPlans}>모든 일정 삭제하기</TestButton>
       </div>
       <div className="day-timetable-main">
         <Timetable {...args} />
