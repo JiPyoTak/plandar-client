@@ -4,6 +4,7 @@ import Plan from './Plan';
 import PlanManager from './PlanManager';
 import type { IViewInfo } from './PlanManager';
 import { TDateYMD } from '@/stores/date';
+import { divideTimePlans } from '@/utils/plan/divideTimePlans';
 
 export interface IDayViewInfo extends IViewInfo {
   id: number;
@@ -23,6 +24,7 @@ class DaysPlanManager extends PlanManager<IDayViewInfo> {
   endDate: Moment;
   termAmount: number;
   daysIndex: number[][] = [];
+  daysTimePlans: Plan[][];
 
   constructor({ plans, start, end }: IDaysPlanManagerProps) {
     const [currentStart, currentEnd] = [
@@ -36,13 +38,14 @@ class DaysPlanManager extends PlanManager<IDayViewInfo> {
         !currentStart.isAfter(endMoment) && !currentEnd.isBefore(startMoment)
       );
     });
+    const { timePlans, allDayPlans } = divideTimePlans(filteredPlans);
 
-    super(filteredPlans);
-
+    super(allDayPlans);
     this.startDate = currentStart;
     this.endDate = currentEnd;
     this.termAmount = currentEnd.diff(currentStart, 'd') + 1;
     this.viewInfo = this.getViewInfo();
+    this.daysTimePlans = this.setTimePlans(timePlans);
   }
 
   getViewPlan(plan: Plan): IDayViewInfo {
@@ -114,6 +117,26 @@ class DaysPlanManager extends PlanManager<IDayViewInfo> {
     this.setIndex(viewPlans);
 
     return viewPlans;
+  }
+
+  setTimePlans(timePlans: Plan[]) {
+    const format = 'YYYY-MM-DD';
+    const datePlans = Array.from(Array(this.termAmount)).reduce<{
+      [key: string]: Plan[];
+    }>((result, _, index) => {
+      const targetDate = moment(this.startDate).add(index, 'd').format(format);
+      result[targetDate] = [];
+      return result;
+    }, {});
+
+    timePlans.forEach((timePlan) => {
+      const targetDate = timePlan.startMoment.format(format);
+      if (targetDate in datePlans) datePlans[targetDate].push(timePlan);
+    });
+
+    return Object.keys(datePlans)
+      .sort()
+      .map((key) => datePlans[key]);
   }
 }
 
