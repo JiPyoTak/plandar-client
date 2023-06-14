@@ -3,13 +3,16 @@ import { IExtractedTimeInfo } from '@/types/time';
 
 const getTimeString = (
   date: Date,
-  { showMinutes }: { showMinutes?: boolean } = { showMinutes: true },
+  {
+    showMinutes = true,
+    hourPadZero = true,
+  }: { showMinutes?: boolean; hourPadZero?: boolean },
 ) => {
   if (!(date instanceof Date))
     throw Error(`getTimeString : 올바른 Date 값을 넣어주세요`);
 
   const timeString = new Intl.DateTimeFormat('ko', {
-    hour: '2-digit',
+    hour: hourPadZero ? '2-digit' : 'numeric',
     hour12: true,
     minute: showMinutes ? '2-digit' : undefined,
   }).format(date);
