@@ -21,7 +21,7 @@
       "jsx": true
     }
   },
-  "ignorePatterns": ["dist", "vite.config.ts"],
+  "ignorePatterns": ["dist", "vite.config.ts", "mockServiceWorker.js"],
   "rules": {
     "import/order": [
       "error",

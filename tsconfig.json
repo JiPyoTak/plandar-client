@@ -18,6 +18,7 @@
     "jsxImportSource": "@emotion/react"
   },
   "include": ["src"],
+  "exclude": ["node_modules", "public/mockServiceWorker.js"],
   "extends": "./tsconfig.alias.json",
   "references": [{ "path": "./tsconfig.node.json" }]
 }
