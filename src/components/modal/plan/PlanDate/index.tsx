@@ -38,7 +38,6 @@ const PlanDate = () => {
 };
 
 const Container = styled.div`
-  position: relative;
   display: flex;
   justify-content: start;
   align-items: center;
