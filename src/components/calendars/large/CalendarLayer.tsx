@@ -15,7 +15,7 @@ interface IProps {
   planManager: DaysPlanManager;
 }
 
-const CalendarLayer = ({ planManager }: IProps) => {
+const CalendarLayer = ({ className, planManager }: IProps) => {
   const { isDragging, focusedPlanId, moveDragPlan } = useFocusedPlanState(
     (store) => ({
       isDragging: store.isDragging,

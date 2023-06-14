@@ -9,6 +9,7 @@ export interface IDayViewInfo extends IViewInfo {
   id: number;
   st: Moment;
   et: Moment;
+  termAmount: number;
 }
 
 interface IDaysPlanManagerProps {
@@ -20,6 +21,7 @@ interface IDaysPlanManagerProps {
 class DaysPlanManager extends PlanManager<IDayViewInfo> {
   startDate: Moment;
   endDate: Moment;
+  termAmount: number;
   daysIndex: number[][] = [];
 
   constructor({ plans, start, end }: IDaysPlanManagerProps) {
@@ -39,6 +41,7 @@ class DaysPlanManager extends PlanManager<IDayViewInfo> {
 
     this.startDate = currentStart;
     this.endDate = currentEnd;
+    this.termAmount = currentEnd.diff(currentStart, 'd') + 1;
     this.viewInfo = this.getViewInfo();
   }
 
@@ -48,17 +51,22 @@ class DaysPlanManager extends PlanManager<IDayViewInfo> {
     const [currentStart, currentEnd] = [this.startDate, this.endDate];
 
     const [viewStart, viewEnd] = [
-      startMoment.isBefore(currentStart) ? currentStart.clone() : startMoment,
-      endMoment.isAfter(currentEnd) ? currentEnd.clone() : endMoment,
+      startMoment.isBetween(currentStart, currentEnd)
+        ? startMoment
+        : currentStart.clone(),
+      endMoment.isBetween(currentStart, currentEnd)
+        ? endMoment
+        : currentEnd.clone(),
     ];
 
     const term = Math.abs(viewStart.diff(viewEnd, 'd')) + 1;
 
     return {
       id: plan.id,
-      start: viewStart.day(),
+      start: viewStart.diff(currentStart, 'd'),
       index: 0,
       term,
+      termAmount: this.termAmount,
       st: viewStart,
       et: viewEnd,
     };
