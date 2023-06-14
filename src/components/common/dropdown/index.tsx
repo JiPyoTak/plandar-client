@@ -40,10 +40,10 @@ const Dropdown: TDropdown = ({
 
   children = children ?? [];
   const controllerChildren = Array.prototype.filter
-    .call(children, (child) => child.type === DropdownController)
+    .call(children, (child) => child?.type === DropdownController)
     .map((child, index) =>
       cloneElement(child, {
-        ...child.props,
+        ...(child?.props && {}),
         isShow: isShow,
         toggleShow,
         key: `Controller-${index}`,
