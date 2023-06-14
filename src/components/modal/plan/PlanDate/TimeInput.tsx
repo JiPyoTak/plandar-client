@@ -2,10 +2,15 @@ import { useRef, useState, KeyboardEvent } from 'react';
 
 import styled from '@emotion/styled';
 
+import moment from 'moment';
+
 import TimeOptionList from '@/components/modal/plan/PlanDate/TimeOptionList';
 import { FONT_REGULAR_3 } from '@/styles/font';
 import { TTimeHM } from '@/types/time';
-import { extractTimeFromString } from '@/utils/date/getTimeString';
+import {
+  extractTimeFromString,
+  getTimeString,
+} from '@/utils/date/getTimeString';
 import { padZero } from '@/utils/padZero';
 
 interface Props {
@@ -14,10 +19,12 @@ interface Props {
 }
 
 const initialTime = (time: TTimeHM) => {
-  const { hour, minute } = time;
-  const _hour = hour > 12 ? hour - 12 : hour;
-  const _minute = padZero(minute);
-  return `${hour > 12 ? '오후' : '오전'} ${_hour}:${_minute}`;
+  return getTimeString(
+    moment({ hour: time.hour, minute: time.minute }).toDate(),
+    {
+      hourPadZero: false,
+    },
+  );
 };
 
 const TimeInput = ({ setTime, time }: Props) => {
