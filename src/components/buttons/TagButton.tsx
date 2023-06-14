@@ -18,17 +18,19 @@ const TagButton: TTagButton = ({ children, onClick }: TTagButtonProps) => {
   return (
     <Container>
       {children}
-      <DeleteButton>
-        <CrossIcon
-          css={{
-            width: '100%',
-            height: '100%',
-          }}
-          className="x-icon"
-          onClick={onClick}
-          color={theme.primary}
-        />
-      </DeleteButton>
+      {onClick && (
+        <DeleteButton>
+          <CrossIcon
+            css={{
+              width: '100%',
+              height: '100%',
+            }}
+            className="x-icon"
+            onClick={onClick}
+            color={theme.primary}
+          />
+        </DeleteButton>
+      )}
     </Container>
   );
 };
