@@ -10,7 +10,7 @@ const createRandomColor = () => {
     .padStart(6, '0')}` as TColor;
 };
 
-const createPlanMock = ({
+const createPlanStub = ({
   startTime,
   endTime,
   ...planData
@@ -35,4 +35,4 @@ const createPlanMock = ({
   return mockedPlan;
 };
 
-export { createPlanMock };
+export { createPlanStub };

@@ -5,12 +5,11 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import moment from 'moment';
 
-import { createPlanMock } from '../plan/createPlanMock';
-
 import Timetable from '@/components/timetable';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import { addMockPlan, clearMockPlans } from '@/stories/apis/data/plan';
+import { createPlanStub } from '@/stories/utils/createPlanStub';
 
 export default {
   title: 'timetable/DayTimetable',
@@ -43,7 +42,7 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
     setId((prevId) => {
       addMockPlan({
         key: month,
-        plan: createPlanMock({
+        plan: createPlanStub({
           id: prevId,
           title: `임시 데이터 ${prevId}`,
           isAllDay: true,
@@ -73,7 +72,7 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
     setId((prevId) => {
       addMockPlan({
         key: month,
-        plan: createPlanMock({
+        plan: createPlanStub({
           id: prevId,
           title: `임시 데이터 ${prevId}`,
           isAllDay: false,
