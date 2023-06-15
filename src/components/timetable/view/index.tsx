@@ -7,7 +7,7 @@ import TimetableColumns from './columns';
 import TimetableAllDay from './TimetableAllDay';
 import usePlanDrag from '@/hooks/usePlanDrag';
 import useDateState from '@/stores/date';
-import { getPlanStubs } from '@/stories/apis/data/plan';
+import planStubManager from '@/stories/apis/data/plan';
 import { getFormattedDate } from '@/utils/date/getFormattedDate';
 import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
 import { divideTimePlans } from '@/utils/plan/divideTimePlans';
@@ -25,7 +25,10 @@ const TimetableView: React.FC<TProps> = ({ dateMoments }) => {
     ...getStartAndEndDate({ year, month, day }),
   );
 
-  const plans = getPlanStubs({ timeMin: startFormat, timeMax: endFormat });
+  const plans = planStubManager.get({
+    timeMin: startFormat,
+    timeMax: endFormat,
+  });
 
   // 종일, 시간에 들어가야 할 일정 분류하기
   const { timePlans, allDayPlans } = divideTimePlans(plans);
