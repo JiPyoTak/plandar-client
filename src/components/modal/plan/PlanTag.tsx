@@ -2,8 +2,6 @@ import React, { ChangeEvent, FormEventHandler, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { shallow } from 'zustand/shallow';
-
 import TagButton from '@/components/buttons/TagButton';
 import Dropdown from '@/components/common/dropdown';
 import Input from '@/components/common/Input';

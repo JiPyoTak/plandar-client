@@ -2,7 +2,6 @@ import moment, { Moment, MomentInput } from 'moment';
 
 import { TColor } from '@/types';
 import { IPlan, TPlanType } from '@/types/rq/plan';
-import { ITag } from '@/types/rq/tag';
 
 class Plan implements IPlan {
   id: number;
@@ -11,7 +10,7 @@ class Plan implements IPlan {
   color: TColor;
   type: TPlanType;
   categoryId: number | null;
-  tags: ITag[];
+  tags: string[];
   startTime: string;
   endTime: string;
   isAllDay: boolean;

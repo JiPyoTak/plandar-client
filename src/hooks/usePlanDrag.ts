@@ -100,7 +100,7 @@ const usePlanDrag = () => {
       if (focusedPlan.id >= 0) {
         const input = {
           ...focusedPlan,
-          tags: focusedPlan.tags.map((tag) => tag.name),
+          tags: focusedPlan.tags,
         };
 
         await mutateAsync(input);

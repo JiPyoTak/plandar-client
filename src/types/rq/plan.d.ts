@@ -1,7 +1,5 @@
 import { TColor } from '..';
 
-import { ITag } from './tag';
-
 export const EPlanType = {
   EVENT: 'event',
   TASK: 'task',
@@ -20,7 +18,7 @@ interface IPlan {
   endTime: string;
   type: TPlanType;
   categoryId: number | null;
-  tags: ITag[];
+  tags: string[];
 }
 
 interface TPlanInput extends Omit<IPlan, 'id' | 'tags'> {
