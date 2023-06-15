@@ -32,7 +32,7 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
   const addSameTimePlan = () => {
     setId((prevId) => {
       addMockPlan({
-        month,
+        key: month,
         plan: createPlanMock({
           id: prevId,
           title: `임시 데이터 ${prevId}`,
@@ -58,7 +58,7 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
 
     setId((prevId) => {
       addMockPlan({
-        month,
+        key: month,
         plan: createPlanMock({
           id: prevId,
           title: `임시 데이터 ${prevId}`,

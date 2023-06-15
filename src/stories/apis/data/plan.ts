@@ -1,8 +1,6 @@
 import Plan from '@/plan/Plan';
 
-// 모두 React-Query 생성 후 삭제될 예정
-
-const MONTH_PLANS_MOCK = new Proxy({} as { [key: string | number]: Plan[] }, {
+const PLANS_DATA = new Proxy({} as { [key: string | number]: Plan[] }, {
   get(target, key, ...args) {
     if (!Object.prototype.hasOwnProperty.call(target, key)) {
       const value: Plan[] = [];
@@ -17,14 +15,14 @@ const MONTH_PLANS_MOCK = new Proxy({} as { [key: string | number]: Plan[] }, {
   },
 });
 
-const addMockPlan = ({ month, plan }: { month: number; plan: Plan }) => {
-  MONTH_PLANS_MOCK[month].push(plan);
+const addMockPlan = ({ key, plan }: { key: number; plan: Plan }) => {
+  PLANS_DATA[key].push(plan);
 };
 
 const clearMockPlans = () => {
-  Object.keys(MONTH_PLANS_MOCK).forEach((key) => {
-    delete MONTH_PLANS_MOCK[key];
+  Object.keys(PLANS_DATA).forEach((key) => {
+    delete PLANS_DATA[key];
   });
 };
 
-export { MONTH_PLANS_MOCK, addMockPlan, clearMockPlans };
+export { PLANS_DATA, addMockPlan, clearMockPlans };

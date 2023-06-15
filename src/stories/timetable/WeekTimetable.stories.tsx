@@ -42,7 +42,7 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
 
     setId((prevId) => {
       addMockPlan({
-        month,
+        key: month,
         plan: createPlanMock({
           id: prevId,
           title: `임시 데이터 ${prevId}`,
@@ -72,7 +72,7 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
 
     setId((prevId) => {
       addMockPlan({
-        month,
+        key: month,
         plan: createPlanMock({
           id: prevId,
           title: `임시 데이터 ${prevId}`,
@@ -99,7 +99,7 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
 
   return (
     <Container>
-      <div className="day-timetable-controls">
+      <div className="week-timetable-controls">
         <TestButton onClick={addPlanGroup}>랜덤 10개 일정 추가하기</TestButton>
         <TestButton onClick={addRandomAlldayPlan}>
           범위 안 종일 일정 추가하기
@@ -109,7 +109,7 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
         </TestButton>
         <TestButton onClick={clearPlans}>모든 일정 삭제하기</TestButton>
       </div>
-      <div className="day-timetable-main">
+      <div className="week-timetable-main">
         <Timetable {...args} />
       </div>
     </Container>
@@ -123,7 +123,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 
-  .day-timetable-controls {
+  .week-timetable-controls {
     flex: 0;
     padding: 1rem;
 
@@ -131,7 +131,7 @@ const Container = styled.div`
     column-gap: 1rem;
   }
 
-  .day-timetable-main {
+  .week-timetable-main {
     flex: 1 0 0;
   }
 `;
