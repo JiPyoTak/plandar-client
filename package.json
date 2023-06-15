@@ -46,6 +46,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.11",
+    "msw-storybook-addon": "^1.8.0",
     "prettier": "^2.8.4",
     "typescript": "^4.9.5",
     "vite": "^4.1.4",
@@ -75,5 +76,8 @@
         }
       }
     ]
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
