@@ -24,7 +24,7 @@ const createPlanApiHandler = serverAPI.post('/plan', async (req, res, ctx) => {
 });
 
 const updatePlanApiHandler = serverAPI.put(
-  `/plan/:id`,
+  '/plan/:id',
   async (req, res, ctx) => {
     const id = Number(req.params?.id);
 
@@ -42,4 +42,26 @@ const updatePlanApiHandler = serverAPI.put(
   },
 );
 
-export { getPlansApiHandler, createPlanApiHandler, updatePlanApiHandler };
+const deletePlanApiHandler = serverAPI.delete(
+  'plan/:id',
+  async (req, res, ctx) => {
+    const id = Number(req.params?.id);
+
+    if (isNaN(id)) {
+      return res(
+        ctx.status(400),
+        ctx.json({ success: false, message: '잘못된 id 입니다' }),
+      );
+    }
+
+    const plan = planStubManager.delete(id);
+    return res(ctx.status(200), ctx.json({ data: plan, success: true }));
+  },
+);
+
+export {
+  getPlansApiHandler,
+  createPlanApiHandler,
+  updatePlanApiHandler,
+  deletePlanApiHandler,
+};
