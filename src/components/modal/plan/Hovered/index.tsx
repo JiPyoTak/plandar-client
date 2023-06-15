@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { shallow } from 'zustand/shallow';
 
 import Category from '@/components/common/modal/Category';
-import { COLOR, TITLE } from '@/components/common/modal/styles';
+import { Color, TITLE_STYLE } from '@/components/common/modal/styles';
 import TimeStamp from '@/components/common/modal/Timestamp';
 import Modal from '@/components/modal';
 import { useEffectModal } from '@/hooks/useEffectModal';
@@ -25,7 +25,7 @@ const Hovered = () => {
 
   const [plan, ref] = useEffectModal({ initialPlan: hoveredPlan });
 
-  if (!plan) return <></>;
+  if (!plan) return null;
 
   const { startTime, endTime, title, type, categoryId, color } = plan;
   const position = getPositionByViewPort(rect, {
@@ -35,14 +35,8 @@ const Hovered = () => {
 
   return (
     <HoveredModal ref={ref} isCloseBtn={false} css={position}>
-      <div
-        css={COLOR({
-          width: 14,
-          height: 14,
-          backgroundColor: color,
-        })}
-      />
-      <h3 css={TITLE}>{title}</h3>
+      <Color width={12} height={12} backgroundColor={color} />
+      <h3 css={TITLE_STYLE}>{title}</h3>
       {categoryId !== null && <Category categoryId={categoryId} />}
       <TimeStamp startTime={startTime} endTime={endTime} type={type} />
     </HoveredModal>
@@ -51,7 +45,6 @@ const Hovered = () => {
 
 const HoveredModal = styled(Modal)`
   z-index: 101;
-  opacity: 0;
 
   display: flex;
   flex-direction: column;
@@ -65,10 +58,6 @@ const HoveredModal = styled(Modal)`
   box-shadow: 1px 10px 25px rgba(0, 0, 0, 0.25);
 
   transition: opacity 0.3s;
-
-  &.is-show {
-    opacity: 1;
-  }
 
   ${FONT_REGULAR_5}
 `;

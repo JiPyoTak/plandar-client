@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import { COLOR } from './styles';
+import { Color } from './styles';
 import { useCategoryQuery } from '@/hooks/rq/category';
 
 interface IProps {
@@ -20,13 +20,7 @@ const Category: React.FC<IProps> = ({ categoryId }) => {
 
   return (
     <Container>
-      <div
-        css={COLOR({
-          width: 12,
-          height: 12,
-          backgroundColor: color,
-        })}
-      />
+      <Color width={12} height={12} backgroundColor={color} />
       <span>{name}</span>
     </Container>
   );

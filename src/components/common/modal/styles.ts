@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
 
+import styled from '@emotion/styled';
+
 import { FONT_BOLD_2 } from '@/styles/font';
 
 interface IColor {
@@ -8,19 +10,20 @@ interface IColor {
   backgroundColor: string;
 }
 
-const COLOR = ({ width, height, backgroundColor }: IColor) =>
-  css({
+const Color = styled.div<IColor>`
+  ${({ width, height, backgroundColor }) => ({
     width,
     height,
     backgroundColor,
-    borderRadius: '50%',
-  });
+  })}
+  border-radius: 50%;
+`;
 
-const TITLE = css`
+const TITLE_STYLE = css`
   ${FONT_BOLD_2};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
 
-export { TITLE, COLOR };
+export { TITLE_STYLE, Color };

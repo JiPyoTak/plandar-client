@@ -5,7 +5,7 @@ import { shallow } from 'zustand/shallow';
 
 import TagButton from '@/components/buttons/TagButton';
 import Category from '@/components/common/modal/Category';
-import { COLOR, TITLE } from '@/components/common/modal/styles';
+import { Color, TITLE_STYLE } from '@/components/common/modal/styles';
 import TimeStamp from '@/components/common/modal/Timestamp';
 import ModalContainer from '@/components/modal';
 import { useEffectModal } from '@/hooks/useEffectModal';
@@ -28,7 +28,7 @@ const Selected = () => {
     delay: 0,
   });
 
-  if (!plan) return <></>;
+  if (!plan) return null;
 
   const { title, color, startTime, endTime, type, tags, categoryId } = plan;
   const position = getPositionByViewPort(rect, {
@@ -42,17 +42,11 @@ const Selected = () => {
       isCloseBtn={true}
       onClose={clearPlan}
       HeaderLeftComponent={
-        <div
-          css={COLOR({
-            width: 14,
-            height: 14,
-            backgroundColor: color,
-          })}
-        />
+        <Color width={12} height={12} backgroundColor={color} />
       }
       css={{ ...position }}
     >
-      <h3 css={TITLE}>{title}</h3>
+      <h3 css={TITLE_STYLE}>{title}</h3>
       {categoryId !== null && <Category categoryId={categoryId} />}
       <TimeStamp startTime={startTime} endTime={endTime} type={type} />
       <TagList>
@@ -65,8 +59,6 @@ const Selected = () => {
 };
 
 const Modal = styled(ModalContainer)`
-  opacity: 0;
-
   display: flex;
   flex-direction: column;
   width: 350px;
@@ -79,10 +71,6 @@ const Modal = styled(ModalContainer)`
 
   gap: 0.8rem;
   box-shadow: 1px 10px 25px rgba(0, 0, 0, 0.25);
-
-  &.is-show {
-    opacity: 1;
-  }
 
   ${FONT_REGULAR_5}
 `;
