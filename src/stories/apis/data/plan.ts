@@ -12,11 +12,13 @@ const createRandomColor = () => {
 
 class PlanStubManager {
   private data: Plan[];
+  private id: number;
 
   // Use Singleton Pattern
   private static instance: PlanStubManager;
   private constructor() {
     this.data = [];
+    this.id = 0;
   }
   public static getInstance() {
     if (!PlanStubManager.instance) {
@@ -29,10 +31,17 @@ class PlanStubManager {
     startTime,
     endTime,
     ...planData
-  }: Partial<IPlan> | { startTime?: MomentInput; endTime?: MomentInput }) {
+  }: Omit<Partial<IPlan>, 'startTime' | 'endTime'> & {
+    startTime?: MomentInput;
+    endTime?: MomentInput;
+  }) {
+    if (isNaN(Number(planData?.id))) {
+      ++this.id;
+    }
+
     const mockedPlan = new Plan({
-      id: Math.floor(Math.random() * 100),
-      title: `임시 데이터`,
+      id: this.id,
+      title: `임시 데이터 ${this.id}`,
       description: '설명 보아서 무엇을 할 것인가',
       isAllDay: true,
       type: 'task',

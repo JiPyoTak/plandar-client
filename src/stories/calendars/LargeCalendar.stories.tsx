@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
@@ -27,8 +27,6 @@ export default {
 } as ComponentMeta<typeof CalendarView>;
 
 const Template: ComponentStory<typeof CalendarView> = () => {
-  const idRef = useRef<number>(1);
-
   const { selectCalendarUnit } = useCalendarUnitState();
   useEffect(() => {
     selectCalendarUnit(CALENDAR_UNIT[2]);
@@ -49,12 +47,8 @@ const Template: ComponentStory<typeof CalendarView> = () => {
     const startTime = moment(startOfMonth).add(startGap, 'days');
     const endTime = moment(startTime).add(planTerm, 'days');
 
-    const id = idRef.current;
-    idRef.current += 1;
     mutateAsync(
       planStubManager.createStub({
-        id,
-        title: `임시 데이터 ${id}`,
         isAllDay: true,
         startTime: startTime.toString(),
         endTime: endTime.toString(),
