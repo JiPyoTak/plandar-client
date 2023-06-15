@@ -23,4 +23,23 @@ const createPlanApiHandler = serverAPI.post('/plan', async (req, res, ctx) => {
   return res(ctx.status(201), ctx.json({ data: plan, success: true }));
 });
 
-export { getPlansApiHandler, createPlanApiHandler };
+const updatePlanApiHandler = serverAPI.put(
+  `/plan/:id`,
+  async (req, res, ctx) => {
+    const id = Number(req.params?.id);
+
+    if (isNaN(id)) {
+      return res(
+        ctx.status(400),
+        ctx.json({ success: false, message: '잘못된 id 입니다' }),
+      );
+    }
+
+    const planData = await req.json();
+    const plan = planStubManager.update({ id, ...planData });
+
+    return res(ctx.status(200), ctx.json({ data: plan, success: true }));
+  },
+);
+
+export { getPlansApiHandler, createPlanApiHandler, updatePlanApiHandler };
