@@ -8,7 +8,7 @@ import moment from 'moment';
 import Timetable from '@/components/timetable';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
-import { addMockPlan, clearMockPlans } from '@/stories/apis/data/plan';
+import { addPlanStub, clearPlanStubs } from '@/stories/apis/data/plan';
 import { createPlanStub } from '@/stories/utils/createPlanStub';
 import { padZero } from '@/utils/padZero';
 
@@ -31,16 +31,15 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
 
   const addSameTimePlan = () => {
     setId((prevId) => {
-      addMockPlan({
-        key: month,
-        plan: createPlanStub({
+      addPlanStub(
+        createPlanStub({
           id: prevId,
           title: `임시 데이터 ${prevId}`,
           isAllDay: false,
           startTime: `${year}-${padZero(month)}-${padZero(day)}T03:00:00.000`,
           endTime: `${year}-${padZero(month)}-${padZero(day)}T06:00:00.000`,
         }),
-      });
+      );
 
       return prevId + 1;
     });
@@ -57,23 +56,22 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
     const endTime = moment(startTime).add(periodMinutes, 'minutes');
 
     setId((prevId) => {
-      addMockPlan({
-        key: month,
-        plan: createPlanStub({
+      addPlanStub(
+        createPlanStub({
           id: prevId,
           title: `임시 데이터 ${prevId}`,
           isAllDay: false,
           startTime,
           endTime,
         }),
-      });
+      );
 
       return prevId + 1;
     });
   };
 
   const clearPlans = () => {
-    clearMockPlans();
+    clearPlanStubs();
     setId(1);
   };
 

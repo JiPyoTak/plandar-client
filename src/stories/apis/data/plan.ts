@@ -1,28 +1,39 @@
+import moment from 'moment';
+
 import Plan from '@/plan/Plan';
 
-const PLANS_DATA = new Proxy({} as { [key: string | number]: Plan[] }, {
-  get(target, key, ...args) {
-    if (!Object.prototype.hasOwnProperty.call(target, key)) {
-      const value: Plan[] = [];
-      Reflect.set(target, key, value);
-      return value;
-    }
+const PLANS_DATA: Plan[] = [];
 
-    return Reflect.get(target, key, ...args);
-  },
-  set(...args) {
-    return Reflect.set(...args);
-  },
-});
+const getPlanStubs = ({
+  timeMin,
+  timeMax,
+}: {
+  timeMin: string;
+  timeMax: string;
+}) => {
+  const st = moment(timeMin);
+  const et = moment(timeMax);
 
-const addMockPlan = ({ key, plan }: { key: number; plan: Plan }) => {
-  PLANS_DATA[key].push(plan);
-};
+  return PLANS_DATA.filter(({ startMoment, endMoment }) => {
+    const isStartBetween = startMoment.isBetween(st, et, undefined, '[]');
+    const isEndBetween = endMoment.isBetween(st, et, undefined, '[]');
 
-const clearMockPlans = () => {
-  Object.keys(PLANS_DATA).forEach((key) => {
-    delete PLANS_DATA[key];
+    const isStartBefore = startMoment.isSameOrBefore(st);
+    const isEndBefore = endMoment.isSameOrBefore(et);
+    const isTimeBigger = isStartBefore && isEndBefore;
+
+    return isStartBetween || isEndBetween || isTimeBigger;
   });
 };
 
-export { PLANS_DATA, addMockPlan, clearMockPlans };
+const addPlanStub = (plan: Plan) => {
+  PLANS_DATA.push(plan);
+};
+
+const clearPlanStubs = () => {
+  for (let i = PLANS_DATA.length; i >= 0; i--) {
+    delete PLANS_DATA[i];
+  }
+};
+
+export { getPlanStubs, addPlanStub, clearPlanStubs };

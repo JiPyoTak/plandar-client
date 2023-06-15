@@ -8,7 +8,7 @@ import moment from 'moment';
 import Timetable from '@/components/timetable';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
-import { addMockPlan, clearMockPlans } from '@/stories/apis/data/plan';
+import { addPlanStub, clearPlanStubs } from '@/stories/apis/data/plan';
 import { createPlanStub } from '@/stories/utils/createPlanStub';
 
 export default {
@@ -40,16 +40,15 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
     const endTime = moment(minimumMoment).add(planTerm, 'days');
 
     setId((prevId) => {
-      addMockPlan({
-        key: month,
-        plan: createPlanStub({
+      addPlanStub(
+        createPlanStub({
           id: prevId,
           title: `임시 데이터 ${prevId}`,
           isAllDay: true,
           startTime,
           endTime,
         }),
-      });
+      );
 
       return prevId + 1;
     });
@@ -70,16 +69,15 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
     const endTime = moment(startTime).add(periodMinutes, 'minutes');
 
     setId((prevId) => {
-      addMockPlan({
-        key: month,
-        plan: createPlanStub({
+      addPlanStub(
+        createPlanStub({
           id: prevId,
           title: `임시 데이터 ${prevId}`,
           isAllDay: false,
           startTime,
           endTime,
         }),
-      });
+      );
 
       return prevId + 1;
     });
@@ -92,7 +90,7 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
   };
 
   const clearPlans = () => {
-    clearMockPlans();
+    clearPlanStubs();
     setId(1);
   };
 
