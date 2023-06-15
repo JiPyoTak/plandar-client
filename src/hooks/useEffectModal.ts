@@ -20,18 +20,16 @@ const useEffectModal = ({ initialPlan, delay = 300 }: IProps) => {
     }
 
     if (!initialPlan) {
-      ref.current?.classList.remove('is-show');
+      ref.current!.style.opacity = '0';
 
       timeRef.current = setTimeout(() => {
         setPlan(null);
       }, 300);
     } else {
-      if (ref.current?.classList.contains('is-show')) return;
-
       setPlan(initialPlan);
 
       timeRef.current = setTimeout(() => {
-        ref.current?.classList.add('is-show');
+        ref.current!.style.opacity = '1';
       }, delay);
     }
   }, [initialPlan]);
