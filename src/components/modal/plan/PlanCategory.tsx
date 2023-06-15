@@ -64,7 +64,7 @@ const PlanCategory: React.FC = () => {
   };
 
   // Debounce를 활용해서 카테고리 이름 입력시 카테고리 후보 필터링
-  const filterCategories = useDebounce(filterCategoriesCb, 300);
+  const [filterCategories] = useDebounce(filterCategoriesCb, 300);
 
   const onClear = () => {
     setFilteredCategories([]);

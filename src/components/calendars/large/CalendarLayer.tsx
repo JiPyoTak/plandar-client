@@ -1,10 +1,12 @@
-import React, { memo, useCallback, useRef } from 'react';
+import React, { memo, useCallback } from 'react';
 
 import styled from '@emotion/styled';
 
 import { shallow } from 'zustand/shallow';
 
 import DayPlan from '@/components/plan/DayPlan';
+
+import useDebounce from '@/hooks/useDebounce';
 import DaysPlanManager from '@/plan/DaysPlanManager';
 import Plan from '@/plan/Plan';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
@@ -16,8 +18,7 @@ interface IProps {
   planManager: DaysPlanManager;
 }
 
-const CalendarLayer = ({ planManager }: IProps) => {
-  const timeRef = useRef<NodeJS.Timeout | null>(null);
+const CalendarLayer = ({ className, planManager }: IProps) => {
   const { isDragging, focusedPlanId, moveDragPlan } = useFocusedPlanState(
     (store) => ({
       isDragging: store.isDragging,
@@ -28,14 +29,23 @@ const CalendarLayer = ({ planManager }: IProps) => {
   );
 
   const { hoveredPlanId, setHoveredPlan, clearHoveredPlan } =
-    useHoveredPlanState(
-      (store) => ({
+    useHoveredPlanState((store) => {
+      const [debounceToSetHoveredPlan, clearDebounce] = useDebounce(
+        store.setHoveredPlan,
+        200,
+      );
+
+      const clear = () => {
+        clearDebounce();
+        store.clearHoveredPlan();
+      };
+
+      return {
         hoveredPlanId: store.hoveredPlan?.id,
-        setHoveredPlan: store.setHoveredPlan,
-        clearHoveredPlan: store.clearHoveredPlan,
-      }),
-      shallow,
-    );
+        setHoveredPlan: debounceToSetHoveredPlan,
+        clearHoveredPlan: clear,
+      };
+    }, shallow);
 
   const { selectedPlanId, setSelectedPlan } = useSelectedPlanState(
     (store) => ({
@@ -56,25 +66,21 @@ const CalendarLayer = ({ planManager }: IProps) => {
 
       const { top, left, right, bottom } = target.getBoundingClientRect();
 
-      if (timeRef.current) {
-        clearTimeout(timeRef.current);
-        timeRef.current = null;
-      }
-
-      timeRef.current = setTimeout(() => {
-        setHoveredPlan({
-          hoveredPlan: plan,
-          rect: { top, left, right, bottom },
-        });
-      }, 200);
+      setHoveredPlan({
+        hoveredPlan: plan,
+        rect: { top, left, right, bottom },
+      });
     },
-    [isDragging, selectedPlanId, timeRef.current],
+    [isDragging, selectedPlanId, setHoveredPlan],
   );
 
-  const onMouseDown = useCallback((plan: Plan) => {
-    moveDragPlan(plan);
-    clearHoveredPlan();
-  }, []);
+  const onMouseDown = useCallback(
+    (plan: Plan) => {
+      moveDragPlan(plan);
+      clearHoveredPlan();
+    },
+    [moveDragPlan, clearHoveredPlan],
+  );
 
   const onClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>, plan: Plan) => {
@@ -89,7 +95,7 @@ const CalendarLayer = ({ planManager }: IProps) => {
         rect: { top, left, right, bottom },
       });
     },
-    [isDragging, selectedPlanId],
+    [isDragging, selectedPlanId, setSelectedPlan],
   );
 
   return (
