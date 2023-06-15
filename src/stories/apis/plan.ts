@@ -16,4 +16,11 @@ const getPlansApiHandler = serverAPI.get('/plan/between', (req, res, ctx) => {
   return res(ctx.status(200), ctx.json({ data, success: true }));
 });
 
-export { getPlansApiHandler };
+const createPlanApiHandler = serverAPI.post('/plan', async (req, res, ctx) => {
+  const planData = await req.json();
+  const plan = planStubManager.add(planData);
+
+  return res(ctx.status(201), ctx.json({ data: plan, success: true }));
+});
+
+export { getPlansApiHandler, createPlanApiHandler };
