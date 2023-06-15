@@ -91,6 +91,14 @@ class PlanStubManager {
     return target;
   }
 
+  public delete(planId: number) {
+    const index = this.data.findIndex(({ id }) => id === planId);
+
+    if (index === -1) throw Error('Plan Stub : delete failed');
+
+    return this.data.splice(index, 1)[0];
+  }
+
   public clear() {
     for (let i = this.data.length; i >= 0; i--) {
       delete this.data[i];
