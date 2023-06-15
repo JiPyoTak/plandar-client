@@ -29,23 +29,14 @@ const CalendarLayer = ({ className, planManager }: IProps) => {
   );
 
   const { hoveredPlanId, setHoveredPlan, clearHoveredPlan } =
-    useHoveredPlanState((store) => {
-      const [debounceToSetHoveredPlan, clearDebounce] = useDebounce(
-        store.setHoveredPlan,
-        200,
-      );
-
-      const clear = () => {
-        clearDebounce();
-        store.clearHoveredPlan();
-      };
-
-      return {
+    useHoveredPlanState(
+      (store) => ({
         hoveredPlanId: store.hoveredPlan?.id,
-        setHoveredPlan: debounceToSetHoveredPlan,
-        clearHoveredPlan: clear,
-      };
-    }, shallow);
+        setHoveredPlan: store.setHoveredPlan,
+        clearHoveredPlan: store.clearHoveredPlan,
+      }),
+      shallow,
+    );
 
   const { selectedPlanId, setSelectedPlan } = useSelectedPlanState(
     (store) => ({
@@ -58,6 +49,11 @@ const CalendarLayer = ({ className, planManager }: IProps) => {
   const plans = planManager.plans;
   const viewPlans = planManager.viewInfo;
 
+  const [debounceToSetHoveredPlan, clearDebounce] = useDebounce(
+    setHoveredPlan,
+    200,
+  );
+
   const onMouseEnter = useCallback(
     (e: React.MouseEvent<HTMLDivElement>, plan: Plan) => {
       if (isDragging || selectedPlanId === plan.id) return;
@@ -66,18 +62,23 @@ const CalendarLayer = ({ className, planManager }: IProps) => {
 
       const { top, left, right, bottom } = target.getBoundingClientRect();
 
-      setHoveredPlan({
+      debounceToSetHoveredPlan({
         hoveredPlan: plan,
         rect: { top, left, right, bottom },
       });
     },
-    [isDragging, selectedPlanId, setHoveredPlan],
+    [isDragging, selectedPlanId, debounceToSetHoveredPlan],
   );
+
+  const clear = useCallback(() => {
+    clearDebounce();
+    clearHoveredPlan();
+  }, [clearHoveredPlan]);
 
   const onMouseDown = useCallback(
     (plan: Plan) => {
       moveDragPlan(plan);
-      clearHoveredPlan();
+      clear();
     },
     [moveDragPlan, clearHoveredPlan],
   );
@@ -114,7 +115,7 @@ const CalendarLayer = ({ className, planManager }: IProps) => {
             isHovered={hoveredPlanId === plan.id}
             onMouseEnter={onMouseEnter}
             onMouseDown={onMouseDown}
-            onMouseLeave={clearHoveredPlan}
+            onMouseLeave={clear}
             onClick={onClick}
           />
         );
