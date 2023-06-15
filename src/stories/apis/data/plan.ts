@@ -25,7 +25,7 @@ class PlanStubManager {
     return PlanStubManager.instance;
   }
 
-  private createStub({
+  public createStub({
     startTime,
     endTime,
     ...planData
@@ -69,6 +69,7 @@ class PlanStubManager {
   public add(...args: Parameters<PlanStubManager['createStub']>) {
     const plan = this.createStub(...args);
     this.data.push(plan);
+    return plan;
   }
 
   public update(planData: Partial<IPlan> & { id: number }) {
@@ -86,6 +87,8 @@ class PlanStubManager {
         });
       }
     });
+
+    return target;
   }
 
   public clear() {
