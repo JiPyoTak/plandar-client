@@ -7,8 +7,8 @@ import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { TDateType, TDateYMDHM, TTimeHM } from '@/types/time';
 import { isValidDate } from '@/utils/plan/isValidPlan';
 
-const usePlanDateState = () =>
-  useFocusedPlanState(
+const usePlanDateState = () => {
+  return useFocusedPlanState(
     (store) => {
       const { focusedPlan, updateFocusedPlan } = store;
 
@@ -113,5 +113,6 @@ const usePlanDateState = () =>
       return shallow(prev.date, cur.date) && prev.isAllDay === cur.isAllDay;
     },
   );
+};
 
 export default usePlanDateState;
