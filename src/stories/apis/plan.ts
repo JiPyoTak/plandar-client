@@ -12,10 +12,8 @@ const getPlansApiHandler = serverAPI.get('/plan/between', (req, res, ctx) => {
     );
   }
 
-  return res(
-    ctx.status(200),
-    ctx.json(planStubManager.get({ timeMin, timeMax })),
-  );
+  const data = planStubManager.get({ timeMin, timeMax });
+  return res(ctx.status(200), ctx.json({ data, success: true }));
 });
 
 export { getPlansApiHandler };
