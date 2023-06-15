@@ -71,6 +71,23 @@ class PlanStubManager {
     this.data.push(plan);
   }
 
+  public update(planData: Partial<IPlan> & { id: number }) {
+    const target = this.data.find(({ id }) => id === planData?.id);
+
+    if (!target) throw Error('Plan Stub : update failed');
+
+    Object.keys(planData).forEach((key) => {
+      if (Object.hasOwnProperty.call(target, key)) {
+        Object.defineProperty(target, key, {
+          value: planData[key as keyof typeof planData],
+          configurable: true,
+          enumerable: true,
+          writable: true,
+        });
+      }
+    });
+  }
+
   public clear() {
     for (let i = this.data.length; i >= 0; i--) {
       delete this.data[i];
