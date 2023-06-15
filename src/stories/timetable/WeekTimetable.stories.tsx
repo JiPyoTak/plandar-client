@@ -8,9 +8,9 @@ import moment from 'moment';
 import { createPlanMock } from '../plan/createPlanMock';
 
 import Timetable from '@/components/timetable';
-import { addMockPlan, clearMockPlans } from '@/constants/mock';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
+import { addMockPlan, clearMockPlans } from '@/stories/apis/data/plan';
 
 export default {
   title: 'timetable/DayTimetable',
