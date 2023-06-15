@@ -94,6 +94,8 @@ const Container = styled.div`
 
   .large-calendar-main {
     flex: 1 0 0;
+
+    overflow-y: scroll;
   }
 `;
 
