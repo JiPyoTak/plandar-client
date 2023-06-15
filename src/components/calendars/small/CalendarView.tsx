@@ -35,7 +35,7 @@ const CalendarView: React.FC<IProps> = ({ date, storeDate, onChangeDate }) => {
             isWeeks={isWeeks}
             isWeeksStart={isWeeks && i % 7 === 0}
             isWeeksEnd={isWeeks && i % 7 === 6}
-            isSelected={compareDate(info, storeDate) && info.isInMonth}
+            isSelected={compareDate(info, date) && info.isInMonth}
             onClick={onChangeDate}
             key={`${info.month}${info.day}`}
           />
