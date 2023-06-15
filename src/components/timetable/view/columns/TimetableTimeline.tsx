@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -46,4 +46,4 @@ const HourSpan = styled.span`
   transform: translateY(-50%);
 `;
 
-export default TimetableTimeline;
+export default memo(TimetableTimeline);

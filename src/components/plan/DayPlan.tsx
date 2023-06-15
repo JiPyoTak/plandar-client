@@ -31,7 +31,7 @@ const DayPlan: React.FC<IProps> = (props) => {
     onMouseDown,
   } = props;
 
-  const { id, start, index, term, st, et } = view;
+  const { id, start, index, term, termAmount, st, et } = view;
 
   const isEqualStart = st.isSame(plan.startTime);
   const isEqualEnd = et.isSame(plan.endTime);
@@ -41,13 +41,15 @@ const DayPlan: React.FC<IProps> = (props) => {
   if (isSelected) className.push('is_selected');
   if (isHovered) className.push('is_hovered');
 
+  const cellPercent = (1 / termAmount) * 100;
+
   return (
     <Container
       key={id}
       style={{
-        left: `${start * 14.2857}%`,
+        left: `${start * cellPercent}%`,
         top: `${index * 24}px`,
-        width: `${term * 14.2857}%`,
+        width: `${term * cellPercent}%`,
       }}
       color={plan.color}
     >

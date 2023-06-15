@@ -18,7 +18,6 @@ interface IProps {
 
 const CalendarLayer = ({ planManager }: IProps) => {
   const timeRef = useRef<NodeJS.Timeout | null>(null);
-
   const { isDragging, focusedPlanId, moveDragPlan } = useFocusedPlanState(
     (store) => ({
       isDragging: store.isDragging,

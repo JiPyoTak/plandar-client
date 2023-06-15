@@ -5,6 +5,8 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
+import moment from 'moment';
+
 import {
   createPlanApi,
   deletePlanApi,
@@ -29,7 +31,10 @@ const executeCallbackByDate = (
   end: string,
   cb: (timemin: string, timemax: string) => void,
 ) => {
-  const [startYMD, endYMD] = getYMDByDateFormat(start, end);
+  const [startYMD, endYMD] = getYMDByDateFormat(
+    moment(start).startOf('w').startOf('d'),
+    moment(end).endOf('w').endOf('d'),
+  );
 
   const diff =
     endYMD.year * 12 + endYMD.month - (startYMD.year * 12 + startYMD.month);

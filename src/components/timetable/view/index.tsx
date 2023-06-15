@@ -3,57 +3,55 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Moment } from 'moment';
 
-import TimetableCellColumn from './TimetableCellColumn';
-import TimetablePlanColumn from './TimetablePlanColumn';
-import TimetableSelect from './TimetableSelect';
+import TimetableColumns from './columns';
+import TimetableAllDay from './TimetableAllDay';
+import { MONTH_PLANS_MOCK } from '@/constants/mock';
 import usePlanDrag from '@/hooks/usePlanDrag';
-import { TimetableViewMomentProvider } from '@/hooks/useTimetableViewMoment';
-import Plan from '@/plan/Plan';
-import { TIMETABLE_CELL_MIN_WIDTH } from '@/styles/timetable';
-import getColumnPlans from '@/utils/plan/getColumnPlans';
+import useDateState from '@/stores/date';
+import { divideTimePlans } from '@/utils/plan/divideTimePlans';
 
 type TProps = {
   dateMoments: Moment[];
-  timePlans: Plan[];
 };
 
-const TimetableView: React.FC<TProps> = ({ dateMoments, timePlans }) => {
-  const { currentDateRef, onMouseMove, changeCurrentDate } = usePlanDrag();
+const TimetableView: React.FC<TProps> = ({ dateMoments }) => {
+  const { onMouseMove, changeCurrentDate } = usePlanDrag();
 
-  const columnPlans = getColumnPlans(dateMoments, timePlans);
+  // TODO : React-Query를 이용해 Plans 가져오기
+  const { month } = useDateState();
+  const plans = MONTH_PLANS_MOCK[month];
+
+  // 종일, 시간에 들어가야 할 일정 분류하기
+  const { timePlans, allDayPlans } = divideTimePlans(plans);
 
   return (
-    <Container>
-      {dateMoments.map((dateMoment, i) => {
-        const plans = columnPlans[i];
-
-        return (
-          <Column
-            key={dateMoment.toString()}
-            onMouseMove={currentDateRef.current ? onMouseMove : undefined}
-            onMouseDown={changeCurrentDate}
-          >
-            <TimetableViewMomentProvider value={dateMoment}>
-              <TimetablePlanColumn plans={plans} />
-              <TimetableSelect />
-              <TimetableCellColumn />
-            </TimetableViewMomentProvider>
-          </Column>
-        );
-      })}
-    </Container>
+    <>
+      <TimetableHr />
+      <TimetableAllDay
+        dateMoments={dateMoments}
+        allDayPlans={allDayPlans}
+        onMouseMove={onMouseMove}
+        changeCurrentDate={changeCurrentDate}
+      />
+      <TimetableHr />
+      <TimetableColumns
+        dateMoments={dateMoments}
+        timePlans={timePlans}
+        onMouseMove={onMouseMove}
+        changeCurrentDate={changeCurrentDate}
+      />
+      <TimetableHr />
+    </>
   );
 };
 
-const Container = styled.div`
-  display: flex;
-`;
+const TimetableHr = styled.hr`
+  flex: 0;
+  width: 100%;
+  margin: 0;
 
-const Column = styled.div`
-  flex: 1 0 0;
-  min-width: ${TIMETABLE_CELL_MIN_WIDTH};
-
-  border-right: 1px solid ${({ theme }) => theme.border2};
+  border: none;
+  border-bottom: 1px solid ${({ theme }) => theme.border2};
 `;
 
 export default TimetableView;

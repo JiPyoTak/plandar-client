@@ -17,7 +17,7 @@ import { getDaysPlanManager } from '@/utils/plan/getDaysPlanManager';
 const CalendarView = () => {
   const { year, month, day } = useDateState();
   const { focusedPlan, isDragging, createDragPlan } = useFocusedPlanState();
-  const { currentDateRef, onMouseMove, changeCurrentDate } = usePlanDrag();
+  const { onMouseMove, changeCurrentDate } = usePlanDrag();
 
   const calendarInfos = useMemo(
     () => getCalendarInfo({ year, month, day }),
@@ -61,7 +61,7 @@ const CalendarView = () => {
   return (
     <Container
       className={isDragging ? 'isDragging' : ''}
-      onMouseMove={currentDateRef.current ? onMouseMove : undefined}
+      onMouseMove={onMouseMove}
       onMouseDown={changeCurrentDate}
     >
       {calendarInfos.map((week, i) => (
