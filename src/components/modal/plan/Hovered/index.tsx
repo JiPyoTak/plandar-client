@@ -1,45 +1,51 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 import styled from '@emotion/styled';
 
+import { shallow } from 'zustand/shallow';
+
+import Category from '@/components/common/modal/Category';
+import { Color, TITLE_STYLE } from '@/components/common/modal/styles';
 import TimeStamp from '@/components/common/modal/Timestamp';
 import Modal from '@/components/modal';
+import { useEffectModal } from '@/hooks/useEffectModal';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 
-import { FONT_REGULAR_4, FONT_REGULAR_5 } from '@/styles/font';
+import { FONT_REGULAR_5 } from '@/styles/font';
 import { getPositionByViewPort } from '@/utils/calendar/getPositionByViewPort';
 
 const Hovered = () => {
-  const ref = useRef<HTMLDivElement>(null);
-  const { hoveredPlan, rect } = useHoveredPlanState();
+  const { hoveredPlan, rect } = useHoveredPlanState(
+    (state) => ({
+      hoveredPlan: state.hoveredPlan,
+      rect: state.rect,
+    }),
+    shallow,
+  );
 
-  useEffect(() => {
-    if (!ref.current || !hoveredPlan) return;
+  const [plan, ref] = useEffectModal({ initialPlan: hoveredPlan });
 
-    const { width, height } = ref.current.getBoundingClientRect();
+  if (!plan) return null;
 
-    const rec = getPositionByViewPort(rect, { width, height });
-
-    ref.current.style.top = `${rec.top}px`;
-    ref.current.style.left = `${rec.left}px`;
-  }, [hoveredPlan, ref.current]);
-
-  if (!hoveredPlan) return <></>;
-
-  const { startTime, endTime, title, type } = hoveredPlan;
+  const { startTime, endTime, title, type, categoryId, color } = plan;
+  const position = getPositionByViewPort(rect, {
+    width: 300,
+    height: categoryId === null ? 100 : 150,
+  });
 
   return (
-    hoveredPlan && (
-      <HoveredModal ref={ref} isCloseBtn={false}>
-        <div>카테고리</div>
-        <div css={FONT_REGULAR_4}>{title}</div>
-        <TimeStamp startTime={startTime} endTime={endTime} type={type} />
-      </HoveredModal>
-    )
+    <HoveredModal ref={ref} isCloseBtn={false} css={position}>
+      <Color width={12} height={12} backgroundColor={color} />
+      <h3 css={TITLE_STYLE}>{title}</h3>
+      {categoryId !== null && <Category categoryId={categoryId} />}
+      <TimeStamp startTime={startTime} endTime={endTime} type={type} />
+    </HoveredModal>
   );
 };
 
 const HoveredModal = styled(Modal)`
+  z-index: 101;
+
   display: flex;
   flex-direction: column;
   width: 300px;
@@ -48,15 +54,12 @@ const HoveredModal = styled(Modal)`
 
   border-radius: 10px;
 
-  gap: 0.5rem;
+  gap: 0.8rem;
   box-shadow: 1px 10px 25px rgba(0, 0, 0, 0.25);
 
-  & > div {
-    ${FONT_REGULAR_5}
-    white-space: pre-wrap;
-    word-break: break-all;
-    flex: 1;
-  }
+  transition: opacity 0.3s;
+
+  ${FONT_REGULAR_5}
 `;
 
 export default Hovered;

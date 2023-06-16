@@ -31,7 +31,7 @@ const useHoveredPlanState = create<IHoveredPlanState & IHoveredPlanAction>(
       set(data);
     },
     clearHoveredPlan: () => {
-      set({ ...initialState });
+      set({ hoveredPlan: null });
     },
   }),
 );

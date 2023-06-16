@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "compile:types": "tsc --noEmit"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
