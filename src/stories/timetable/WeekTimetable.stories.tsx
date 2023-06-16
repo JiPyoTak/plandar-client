@@ -5,12 +5,10 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import moment from 'moment';
 
-import { createPlanMock } from '../plan/createPlanMock';
-
 import Timetable from '@/components/timetable';
-import { addMockPlan, clearMockPlans } from '@/constants/mock';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
+import planStubManager from '@/stories/apis/data/plan';
 
 export default {
   title: 'timetable/DayTimetable',
@@ -41,15 +39,12 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
     const endTime = moment(minimumMoment).add(planTerm, 'days');
 
     setId((prevId) => {
-      addMockPlan({
-        month,
-        plan: createPlanMock({
-          id: prevId,
-          title: `임시 데이터 ${prevId}`,
-          isAllDay: true,
-          startTime,
-          endTime,
-        }),
+      planStubManager.add({
+        id: prevId,
+        title: `임시 데이터 ${prevId}`,
+        isAllDay: true,
+        startTime,
+        endTime,
       });
 
       return prevId + 1;
@@ -71,15 +66,12 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
     const endTime = moment(startTime).add(periodMinutes, 'minutes');
 
     setId((prevId) => {
-      addMockPlan({
-        month,
-        plan: createPlanMock({
-          id: prevId,
-          title: `임시 데이터 ${prevId}`,
-          isAllDay: false,
-          startTime,
-          endTime,
-        }),
+      planStubManager.add({
+        id: prevId,
+        title: `임시 데이터 ${prevId}`,
+        isAllDay: false,
+        startTime,
+        endTime,
       });
 
       return prevId + 1;
@@ -93,13 +85,13 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
   };
 
   const clearPlans = () => {
-    clearMockPlans();
+    planStubManager.clear();
     setId(1);
   };
 
   return (
     <Container>
-      <div className="day-timetable-controls">
+      <div className="week-timetable-controls">
         <TestButton onClick={addPlanGroup}>랜덤 10개 일정 추가하기</TestButton>
         <TestButton onClick={addRandomAlldayPlan}>
           범위 안 종일 일정 추가하기
@@ -109,7 +101,7 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
         </TestButton>
         <TestButton onClick={clearPlans}>모든 일정 삭제하기</TestButton>
       </div>
-      <div className="day-timetable-main">
+      <div className="week-timetable-main">
         <Timetable {...args} />
       </div>
     </Container>
@@ -123,7 +115,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 
-  .day-timetable-controls {
+  .week-timetable-controls {
     flex: 0;
     padding: 1rem;
 
@@ -131,7 +123,7 @@ const Container = styled.div`
     column-gap: 1rem;
   }
 
-  .day-timetable-main {
+  .week-timetable-main {
     flex: 1 0 0;
   }
 `;

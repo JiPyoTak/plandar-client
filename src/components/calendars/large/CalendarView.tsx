@@ -33,17 +33,12 @@ const CalendarView = () => {
     timemax: endFormat,
   });
 
-  const planManagers = useMemo(
-    () =>
-      getDaysPlanManager(
-        [
-          ...(data ?? []).filter((plan) => plan.id !== focusedPlan?.id),
-          ...(focusedPlan ? [focusedPlan] : []),
-        ],
-        calendarInfos,
-      ),
-    [data, focusedPlan, calendarInfos],
-  );
+  const planManagers = useMemo(() => {
+    const plans = (data ?? []).filter((plan) => plan.id !== focusedPlan?.id);
+    if (focusedPlan) plans.push(focusedPlan);
+
+    return getDaysPlanManager(plans, calendarInfos);
+  }, [data, focusedPlan, calendarInfos]);
 
   const onMouseDownCell: React.MouseEventHandler = useCallback((e) => {
     const targetDate = (
@@ -70,6 +65,7 @@ const CalendarView = () => {
             index={i}
             week={week}
             daysIndex={planManagers[i].daysIndex}
+            daysTimePlans={planManagers[i].daysTimePlans}
             onMouseDown={onMouseDownCell}
           />
           {planManagers[i].plans.length !== 0 && (

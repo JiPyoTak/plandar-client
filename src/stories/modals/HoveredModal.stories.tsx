@@ -1,9 +1,8 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import { createPlanMock } from '../plan/createPlanMock';
-
 import HoveredModal from '@/components/modal/plan/Hovered';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
+import planStubManager from '@/stories/apis/data/plan';
 
 export default {
   title: 'Modals/HoveredModal',
@@ -13,7 +12,7 @@ export default {
 const Template: ComponentStory<typeof HoveredModal> = () => {
   const set = useHoveredPlanState((state) => state.setHoveredPlan);
 
-  const MODKED_PLAN = createPlanMock({});
+  const MODKED_PLAN = planStubManager.createStub({});
 
   set({
     hoveredPlan: MODKED_PLAN,

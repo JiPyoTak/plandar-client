@@ -5,13 +5,13 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import moment from 'moment';
 
-import { createPlanMock } from '../plan/createPlanMock';
+import planStubManager from '../apis/data/plan';
 
 import Timetable from '@/components/timetable';
-import { addMockPlan, clearMockPlans } from '@/constants/mock';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import { padZero } from '@/utils/padZero';
+
 export default {
   title: 'timetable/DayTimetable',
   component: Timetable,
@@ -31,15 +31,12 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
 
   const addSameTimePlan = () => {
     setId((prevId) => {
-      addMockPlan({
-        month,
-        plan: createPlanMock({
-          id: prevId,
-          title: `임시 데이터 ${prevId}`,
-          isAllDay: false,
-          startTime: `${year}-${padZero(month)}-${padZero(day)}T03:00:00.000`,
-          endTime: `${year}-${padZero(month)}-${padZero(day)}T06:00:00.000`,
-        }),
+      planStubManager.add({
+        id: prevId,
+        title: `임시 데이터 ${prevId}`,
+        isAllDay: false,
+        startTime: `${year}-${padZero(month)}-${padZero(day)}T03:00:00.000`,
+        endTime: `${year}-${padZero(month)}-${padZero(day)}T06:00:00.000`,
       });
 
       return prevId + 1;
@@ -57,15 +54,12 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
     const endTime = moment(startTime).add(periodMinutes, 'minutes');
 
     setId((prevId) => {
-      addMockPlan({
-        month,
-        plan: createPlanMock({
-          id: prevId,
-          title: `임시 데이터 ${prevId}`,
-          isAllDay: false,
-          startTime,
-          endTime,
-        }),
+      planStubManager.add({
+        id: prevId,
+        title: `임시 데이터 ${prevId}`,
+        isAllDay: false,
+        startTime,
+        endTime,
       });
 
       return prevId + 1;
@@ -73,7 +67,7 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
   };
 
   const clearPlans = () => {
-    clearMockPlans();
+    planStubManager.clear();
     setId(1);
   };
 

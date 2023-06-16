@@ -1,9 +1,8 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import { createPlanMock } from '../plan/createPlanMock';
-
 import SelectedModal from '@/components/modal/plan/Selected';
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
+import planStubManager from '@/stories/apis/data/plan';
 
 export default {
   title: 'Modals/SelectedModal',
@@ -13,7 +12,7 @@ export default {
 const Template: ComponentStory<typeof SelectedModal> = () => {
   const set = useSelectedPlanState((state) => state.setSelectedPlan);
 
-  const MODKED_PLAN = createPlanMock({});
+  const MODKED_PLAN = planStubManager.createStub({});
 
   set({
     selectedPlan: MODKED_PLAN,
