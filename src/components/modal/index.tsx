@@ -94,11 +94,30 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  & button {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+
+    padding: 2px;
+    border-radius: 3px;
+
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.background3};
+    }
+  }
 `;
 
 const HeaderComponent = styled.span`
   display: flex;
-  gap: 8px;
+  gap: 5px;
 `;
 
 const HeaderLeft = styled(HeaderComponent)`
