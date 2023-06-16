@@ -99,11 +99,9 @@ const CalendarLayer = ({ className, planManager }: IProps) => {
     [isDragging, selectedPlanId, setSelectedPlan],
   );
 
-  const filteredPlan = plans.filter((plan) => viewPlans.get(plan.id));
-
   return (
     <Container className={className}>
-      {filteredPlan.map((plan, i) => (
+      {plans.map((plan, i) => (
         <DayPlan
           key={i}
           plan={plan}
