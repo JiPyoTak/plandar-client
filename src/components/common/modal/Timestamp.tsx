@@ -7,17 +7,17 @@ import { formatDateWithWeekday } from '@/utils/date/formatDate';
 interface IProps {
   startTime: string;
   endTime: string | null;
-  isAllDay: boolean;
+  hasTime: boolean;
 }
 
-const TimeStamp = ({ startTime, endTime, isAllDay }: IProps) => {
+const TimeStamp = ({ startTime, endTime, hasTime }: IProps) => {
   const st = new Date(startTime);
   const et = endTime ? new Date(endTime) : undefined;
 
   const [stDate, etDate] = formatDateWithWeekday({
     startDate: st,
     endDate: et,
-    isTimeStyle: !isAllDay,
+    isTimeStyle: hasTime,
   });
 
   const isSameDate = st.toDateString() === et?.toDateString();

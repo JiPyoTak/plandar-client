@@ -104,7 +104,7 @@ const Selected = () => {
     >
       <h3 css={TITLE_STYLE}>{title}</h3>
       {categoryId !== null && <Category categoryId={categoryId} />}
-      <TimeStamp startTime={startTime} endTime={endTime} isAllDay={isAllDay} />
+      <TimeStamp startTime={startTime} endTime={endTime} hasTime={!isAllDay} />
       <TagList>
         {tags.map((tag) => (
           <TagButton key={tag}>{tag}</TagButton>
