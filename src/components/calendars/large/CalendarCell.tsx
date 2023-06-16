@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 import styled from '@emotion/styled';
 
 import Day from '@/components/common/calendar/CalendarDay';
+import DayTimePlan from '@/components/plan/DayTimePlan';
 import Plan from '@/plan/Plan';
 import useDateState from '@/stores/date';
 import { ICalendarInfo } from '@/utils/calendar/getCalendarInfo';
@@ -46,7 +47,11 @@ const CalendarCell: React.FC<IProps> = (props) => {
         onClick={onChangeStoreDate}
       />
       <div style={{ height }} />
-      <div>{timePlans.map((t) => t.title)}</div>
+      <TimePlanList>
+        {timePlans.map((timePlan) => (
+          <DayTimePlan plan={timePlan} />
+        ))}
+      </TimePlanList>
     </Container>
   );
 };
@@ -75,6 +80,11 @@ const CellDay = styled(Day)`
   justify-content: flex-start;
 
   padding: 4px;
+`;
+
+const TimePlanList = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 export default memo(CalendarCell);
