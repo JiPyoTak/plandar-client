@@ -47,14 +47,16 @@ const CalendarView = () => {
 
   const onMouseDownCell: React.MouseEventHandler = useCallback((e) => {
     const targetDate = (
-      (e.target as HTMLElement).closest('.dateTime') as HTMLElement
+      (e.target as HTMLElement).closest('.date-time') as HTMLElement
     )?.dataset?.date;
 
     if (!targetDate) return;
 
+    const dateFormat = new Date(targetDate).toString();
+
     createDragPlan({
-      startTime: targetDate,
-      endTime: targetDate,
+      startTime: dateFormat,
+      endTime: dateFormat,
     });
   }, []);
 
@@ -95,6 +97,8 @@ const Container = styled.div`
   &.isDragging * {
     cursor: grabbing !important;
   }
+
+  overflow-y: auto;
 `;
 
 const Inner = styled.div`
