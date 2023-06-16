@@ -36,7 +36,7 @@ const Template: ComponentStory<typeof CalendarView> = () => {
   const { startFormat } = getFormattedDate(
     ...getStartAndEndDate({ year, month, day }),
   );
-  const { mutateAsync } = useCreatePlanMutation();
+  const { mutateAsync: createMutateAsync } = useCreatePlanMutation();
 
   const addRandomAlldayPlan = () => {
     const daysInMonth = moment({ year, month: month - 1, day }).daysInMonth();
@@ -47,11 +47,34 @@ const Template: ComponentStory<typeof CalendarView> = () => {
     const startTime = moment(startOfMonth).add(startGap, 'days');
     const endTime = moment(startTime).add(planTerm, 'days');
 
-    mutateAsync(
+    createMutateAsync(
       planStubManager.createStub({
         isAllDay: true,
         startTime: startTime.toString(),
         endTime: endTime.toString(),
+      }),
+    );
+  };
+
+  const addRandomTimePlan = () => {
+    const startOfMonth = moment(startFormat);
+    const startDay = Math.round(Math.random() * 42);
+    const startHour = Math.round(Math.random() * 21);
+    const startMinute = Math.round(Math.random() * 59);
+    const startPeriod = startHour * 60 + startMinute;
+
+    const startTime = moment(startOfMonth)
+      .add(startDay, 'days')
+      .add(startPeriod, 'minutes');
+
+    const periodMinutes = Math.round(Math.random() * (24 * 60 - 16)) + 15;
+    const endTime = moment(startTime).add(periodMinutes, 'minutes');
+
+    createMutateAsync(
+      planStubManager.createStub({
+        isAllDay: false,
+        startTime,
+        endTime,
       }),
     );
   };
@@ -61,6 +84,9 @@ const Template: ComponentStory<typeof CalendarView> = () => {
       <div className="large-calendar-controls">
         <TestButton onClick={addRandomAlldayPlan}>
           범위 안 종일 일정 추가하기
+        </TestButton>
+        <TestButton onClick={addRandomTimePlan}>
+          범위 안 시간 일정 추가하기
         </TestButton>
       </div>
       <div className="large-calendar-main">
