@@ -94,8 +94,21 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
 
-  & button {
+const HeaderComponent = styled.span`
+  display: flex;
+  gap: 5px;
+`;
+
+const HeaderLeft = styled(HeaderComponent)`
+  justify-content: flex-end;
+`;
+
+const HeaderRight = styled(HeaderComponent)`
+  justify-content: flex-start;
+
+  & > button {
     display: flex;
 
     align-items: center;
@@ -113,19 +126,6 @@ const Header = styled.div`
       background-color: ${({ theme }) => theme.background3};
     }
   }
-`;
-
-const HeaderComponent = styled.span`
-  display: flex;
-  gap: 5px;
-`;
-
-const HeaderLeft = styled(HeaderComponent)`
-  justify-content: flex-end;
-`;
-
-const HeaderRight = styled(HeaderComponent)`
-  justify-content: flex-start;
 `;
 
 export default forwardRef(Modal);
