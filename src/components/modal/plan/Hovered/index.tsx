@@ -44,6 +44,8 @@ const Hovered = () => {
 };
 
 const HoveredModal = styled(Modal)`
+  opacity: 0;
+
   z-index: 101;
 
   display: flex;
