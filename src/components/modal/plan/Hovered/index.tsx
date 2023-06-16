@@ -27,7 +27,7 @@ const Hovered = () => {
 
   if (!plan) return null;
 
-  const { startTime, endTime, title, type, categoryId, color } = plan;
+  const { startTime, endTime, title, isAllDay, categoryId, color } = plan;
   const position = getPositionByViewPort(rect, {
     width: 300,
     height: categoryId === null ? 100 : 150,
@@ -38,7 +38,7 @@ const Hovered = () => {
       <Color width={12} height={12} backgroundColor={color} />
       <h3 css={TITLE_STYLE}>{title}</h3>
       {categoryId !== null && <Category categoryId={categoryId} />}
-      <TimeStamp startTime={startTime} endTime={endTime} type={type} />
+      <TimeStamp startTime={startTime} endTime={endTime} isAllDay={isAllDay} />
     </HoveredModal>
   );
 };

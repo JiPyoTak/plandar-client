@@ -68,7 +68,7 @@ const Selected = () => {
 
   if (!plan) return null;
 
-  const { title, color, startTime, endTime, type, tags, categoryId } = plan;
+  const { title, color, startTime, endTime, tags, categoryId, isAllDay } = plan;
   const position = getPositionByViewPort(rect, {
     width: 350,
     height: categoryId === null ? 160 : 210,
@@ -105,7 +105,7 @@ const Selected = () => {
     >
       <h3 css={TITLE_STYLE}>{title}</h3>
       {categoryId !== null && <Category categoryId={categoryId} />}
-      <TimeStamp startTime={startTime} endTime={endTime} type={type} />
+      <TimeStamp startTime={startTime} endTime={endTime} isAllDay={isAllDay} />
       <TagList>
         {tags.map((tag) => (
           <TagButton key={tag}>{tag}</TagButton>

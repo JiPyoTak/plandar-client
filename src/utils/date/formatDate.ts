@@ -45,10 +45,7 @@ const formatDateWithWeekday = ({
   );
 
   const formattedEndDate = endDate
-    ? new Intl.DateTimeFormat(
-        'ko-KR',
-        isTimeStyle ? tomeStyleOptions : options,
-      ).format(endDate)
+    ? new Intl.DateTimeFormat('ko-KR', options).format(endDate)
     : null;
 
   return [formattedStartDate, formattedEndDate];
