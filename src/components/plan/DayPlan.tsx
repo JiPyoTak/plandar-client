@@ -16,6 +16,7 @@ interface IProps {
   isSelected?: boolean;
   isHovered?: boolean;
   onMouseEnter: (e: React.MouseEvent<HTMLDivElement>, plan: Plan) => void;
+  onClick: (e: React.MouseEvent<HTMLDivElement>, plan: Plan) => void;
   onMouseDown: (plan: Plan) => void;
   onMouseLeave: React.MouseEventHandler<HTMLDivElement>;
 }
@@ -26,6 +27,7 @@ const DayPlan: React.FC<IProps> = (props) => {
     view,
     isHovered,
     isSelected,
+    onClick,
     onMouseEnter,
     onMouseLeave,
     onMouseDown,
@@ -57,6 +59,7 @@ const DayPlan: React.FC<IProps> = (props) => {
         className={className.join(' ')}
         onMouseDown={() => onMouseDown(plan)}
         onMouseEnter={(e) => onMouseEnter(e, plan)}
+        onClick={(e) => onClick(e, plan)}
         onMouseLeave={onMouseLeave}
       >
         <div>
@@ -65,7 +68,7 @@ const DayPlan: React.FC<IProps> = (props) => {
               <ChevronIcon type="left" width={12} height={12} />
             </Icons>
           )}
-          <Title>일정 {view.id}</Title>
+          <Title>{plan.title}</Title>
           {!isEqualEnd && (
             <Icons>
               <ChevronIcon type="right" width={12} height={12} />
@@ -110,6 +113,7 @@ const Container = styled.div<{ color?: TColor }>`
     cursor: pointer;
   }
 
+  & > div:hover,
   & > div.is_hovered {
     & > div {
       background-color: rgba(0, 0, 0, 0.12);
