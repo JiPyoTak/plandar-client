@@ -10,6 +10,12 @@ import planStubManager from '../apis/data/plan';
 import Timetable from '@/components/timetable';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
+import {
+  createPlanApiHandler,
+  deletePlanApiHandler,
+  getPlansApiHandler,
+  updatePlanApiHandler,
+} from '@/stories/apis/plan';
 import { padZero } from '@/utils/padZero';
 
 export default {
@@ -115,3 +121,13 @@ const TestButton = styled.button`
 
 export const DayTimetable = AddableTemplate.bind({});
 DayTimetable.args = { rangeAmount: 1 };
+DayTimetable.parameters = {
+  msw: {
+    handlers: [
+      getPlansApiHandler,
+      createPlanApiHandler,
+      updatePlanApiHandler,
+      deletePlanApiHandler,
+    ],
+  },
+};

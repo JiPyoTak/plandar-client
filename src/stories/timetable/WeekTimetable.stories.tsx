@@ -9,6 +9,12 @@ import Timetable from '@/components/timetable';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import planStubManager from '@/stories/apis/data/plan';
+import {
+  createPlanApiHandler,
+  deletePlanApiHandler,
+  getPlansApiHandler,
+  updatePlanApiHandler,
+} from '@/stories/apis/plan';
 
 export default {
   title: 'timetable/DayTimetable',
@@ -136,3 +142,13 @@ const TestButton = styled.button`
 
 export const WeekTimetable = Template.bind({});
 WeekTimetable.args = { rangeAmount: 7 };
+WeekTimetable.parameters = {
+  msw: {
+    handlers: [
+      getPlansApiHandler,
+      createPlanApiHandler,
+      updatePlanApiHandler,
+      deletePlanApiHandler,
+    ],
+  },
+};
