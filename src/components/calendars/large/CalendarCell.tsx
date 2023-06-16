@@ -32,7 +32,7 @@ const CalendarCell: React.FC<IProps> = (props) => {
 
   return (
     <Container
-      className="dateTime"
+      className="date-time"
       isLastDay={isLastDay}
       isLastWeek={isLastWeek}
       data-date={format}
