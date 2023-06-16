@@ -7,7 +7,7 @@ import { shallow } from 'zustand/shallow';
 import DayPlan from '@/components/plan/DayPlan';
 
 import useDebounce from '@/hooks/useDebounce';
-import DaysPlanManager from '@/plan/DaysPlanManager';
+import DaysPlanManager, { IDayViewInfo } from '@/plan/DaysPlanManager';
 import Plan from '@/plan/Plan';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
@@ -99,27 +99,23 @@ const CalendarLayer = ({ className, planManager }: IProps) => {
     [isDragging, selectedPlanId, setSelectedPlan],
   );
 
+  const filteredPlan = plans.filter((plan) => viewPlans.get(plan.id));
+
   return (
     <Container className={className}>
-      {plans.map((plan, i) => {
-        const viewPlan = viewPlans.get(plan.id);
-
-        if (!viewPlan) return null;
-
-        return (
-          <DayPlan
-            key={i}
-            plan={plan}
-            view={viewPlan}
-            isSelected={focusedPlanId === plan.id || selectedPlanId === plan.id}
-            isHovered={hoveredPlanId === plan.id}
-            onMouseEnter={onMouseEnter}
-            onMouseDown={onMouseDown}
-            onMouseLeave={clear}
-            onClick={onClick}
-          />
-        );
-      })}
+      {filteredPlan.map((plan, i) => (
+        <DayPlan
+          key={i}
+          plan={plan}
+          view={viewPlans.get(plan.id) as IDayViewInfo}
+          isSelected={focusedPlanId === plan.id || selectedPlanId === plan.id}
+          isHovered={hoveredPlanId === plan.id}
+          onMouseEnter={onMouseEnter}
+          onMouseDown={onMouseDown}
+          onMouseLeave={clear}
+          onClick={onClick}
+        />
+      ))}
     </Container>
   );
 };
