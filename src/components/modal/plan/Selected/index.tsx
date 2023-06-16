@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 import { shallow } from 'zustand/shallow';
@@ -7,13 +7,27 @@ import TagButton from '@/components/buttons/TagButton';
 import Category from '@/components/common/modal/Category';
 import { Color, TITLE_STYLE } from '@/components/common/modal/styles';
 import TimeStamp from '@/components/common/modal/Timestamp';
+import DeleteIcon from '@/components/icons/DeleteIcon';
+import EditIcon from '@/components/icons/EditIcon';
 import ModalContainer from '@/components/modal';
+import { useDeletePlanMutation } from '@/hooks/rq/plan';
 import { useEffectModal } from '@/hooks/useEffectModal';
+import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { FONT_REGULAR_5 } from '@/styles/font';
 import { getPositionByViewPort } from '@/utils/calendar/getPositionByViewPort';
 
 const Selected = () => {
+  const { mutate } = useDeletePlanMutation();
+
+  const { focusedPlan, editDragPlan } = useFocusedPlanState(
+    (state) => ({
+      focusedPlan: state.focusedPlan,
+      editDragPlan: state.editDragPlan,
+    }),
+    shallow,
+  );
+
   const { selectedPlan, rect, clearPlan } = useSelectedPlanState(
     (state) => ({
       selectedPlan: state.selectedPlan,
@@ -28,6 +42,30 @@ const Selected = () => {
     delay: 0,
   });
 
+  useEffect(() => {
+    if (!focusedPlan) return;
+
+    clearPlan();
+  }, [focusedPlan]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+
+      const element = target.closest('.is_selected');
+
+      if (element || !(ref.current && !ref.current.contains(target))) return;
+
+      clearPlan();
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
   if (!plan) return null;
 
   const { title, color, startTime, endTime, type, tags, categoryId } = plan;
@@ -36,6 +74,15 @@ const Selected = () => {
     height: categoryId === null ? 160 : 210,
   });
 
+  const deletePlan = () => {
+    mutate(plan.id);
+    clearPlan();
+  };
+
+  const editPlan = () => {
+    editDragPlan(plan);
+  };
+
   return (
     <Modal
       ref={ref}
@@ -43,6 +90,16 @@ const Selected = () => {
       onClose={clearPlan}
       HeaderLeftComponent={
         <Color width={12} height={12} backgroundColor={color} />
+      }
+      HeaderRightComponent={
+        <>
+          <button onClick={editPlan}>
+            <EditIcon />
+          </button>
+          <button onClick={deletePlan}>
+            <DeleteIcon />
+          </button>
+        </>
       }
       css={{ ...position }}
     >
@@ -59,9 +116,13 @@ const Selected = () => {
 };
 
 const Modal = styled(ModalContainer)`
+  opacity: 0;
+
   display: flex;
   flex-direction: column;
   width: 350px;
+
+  z-index: 100;
 
   padding: 1rem;
 
