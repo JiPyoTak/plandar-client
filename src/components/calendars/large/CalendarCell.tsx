@@ -68,6 +68,9 @@ const Container = styled.div<Pick<IProps, 'isLastDay' | 'isLastWeek'>>`
 
   cursor: pointer;
 
+  // fix when give min-width
+  overflow: hidden;
+
   &.isDragging,
   &.isDragging * {
     cursor: grabbing !important;
