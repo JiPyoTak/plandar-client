@@ -7,8 +7,7 @@ import TagButton from '@/components/buttons/TagButton';
 import Category from '@/components/common/modal/Category';
 import { Color, TITLE_STYLE } from '@/components/common/modal/styles';
 import TimeStamp from '@/components/common/modal/Timestamp';
-import DeleteIcon from '@/components/icons/DeleteIcon';
-import EditIcon from '@/components/icons/EditIcon';
+import { PencilIcon, TrashcanIcon } from '@/components/icons';
 import ModalContainer from '@/components/modal';
 import { useDeletePlanMutation } from '@/hooks/rq/plan';
 import { useEffectModal } from '@/hooks/useEffectModal';
@@ -94,10 +93,10 @@ const Selected = () => {
       HeaderRightComponent={
         <>
           <button onClick={editPlan}>
-            <EditIcon />
+            <PencilIcon />
           </button>
           <button onClick={deletePlan}>
-            <DeleteIcon />
+            <TrashcanIcon />
           </button>
         </>
       }
