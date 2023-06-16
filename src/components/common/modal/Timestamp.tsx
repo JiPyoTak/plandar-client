@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styled from '@emotion/styled';
+
 import { TPlanType } from '@/types/rq/plan';
 import { formatDateWithWeekday } from '@/utils/date/formatDate';
 
@@ -19,13 +21,13 @@ const TimeStamp = ({ startTime, endTime, type }: IProps) => {
     isTimeStyle: type !== 'task',
   });
 
-  if (st.toDateString() === et?.toDateString()) return <div>{stDate}</div>;
+  const isSameDate = st.toDateString() === et?.toDateString();
 
-  return (
-    <div>
-      {stDate} ~ {etDate}
-    </div>
-  );
+  return <Container>{isSameDate ? stDate : `${stDate} - ${etDate}`}</Container>;
 };
+
+const Container = styled.div`
+  color: ${({ theme }) => theme.text3};
+`;
 
 export default TimeStamp;
