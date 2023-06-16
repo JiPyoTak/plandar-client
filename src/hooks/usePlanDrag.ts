@@ -10,16 +10,22 @@ export type MouseEventHandler = React.MouseEventHandler<HTMLDivElement>;
 const usePlanDrag = () => {
   const { mutateAsync } = useUpdatePlanMutation();
 
-  const { focusedPlan, onMoveMonthPlan, onDragTimePlan, onDragEndPlan } =
-    useFocusedPlanState(
-      (state) => ({
-        focusedPlan: state.focusedPlan,
-        onMoveMonthPlan: state.onMoveMonthPlan,
-        onDragTimePlan: state.onDragTimePlan,
-        onDragEndPlan: state.onDragEndPlan,
-      }),
-      shallow,
-    );
+  const {
+    currentPlan,
+    focusedPlan,
+    onMoveMonthPlan,
+    onDragTimePlan,
+    onDragEndPlan,
+  } = useFocusedPlanState(
+    (state) => ({
+      currentPlan: state.currentPlan,
+      focusedPlan: state.focusedPlan,
+      onMoveMonthPlan: state.onMoveMonthPlan,
+      onDragTimePlan: state.onDragTimePlan,
+      onDragEndPlan: state.onDragEndPlan,
+    }),
+    shallow,
+  );
   const currentDateRef = useRef<string | null>(null);
   const draggingDateRef = useRef<string | null>(null);
   const focusedPlanRef = useRef<typeof focusedPlan>(focusedPlan);
@@ -97,13 +103,8 @@ const usePlanDrag = () => {
       if (!currentDateRef.current || !focusedPlanRef.current || !focusedPlan)
         return;
 
-      if (focusedPlan.id >= 0) {
-        const input = {
-          ...focusedPlan,
-          tags: focusedPlan.tags,
-        };
-
-        await mutateAsync(input);
+      if (focusedPlan.id >= 0 && !shallow(currentPlan, focusedPlan)) {
+        await mutateAsync(focusedPlan);
       }
 
       timeTypeRef.current = null;
