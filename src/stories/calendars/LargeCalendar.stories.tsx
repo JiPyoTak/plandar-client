@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import { useEffect, useReducer } from 'react';
 
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import moment from 'moment';
 
 import CalendarView from '@/components/calendars/large';
@@ -37,6 +38,8 @@ const Template: ComponentStory<typeof CalendarView> = () => {
     ...getStartAndEndDate({ year, month, day }),
   );
   const { mutateAsync: createMutateAsync } = useCreatePlanMutation();
+  const queryClient = useQueryClient();
+  const forceUpdate = useReducer(() => ({}), {})[1];
 
   const addRandomAlldayPlan = () => {
     const daysInMonth = moment({ year, month: month - 1, day }).daysInMonth();
@@ -79,6 +82,12 @@ const Template: ComponentStory<typeof CalendarView> = () => {
     );
   };
 
+  const clearPlans = () => {
+    planStubManager.clear();
+    queryClient.clear();
+    forceUpdate();
+  };
+
   return (
     <Container>
       <div className="large-calendar-controls">
@@ -88,6 +97,7 @@ const Template: ComponentStory<typeof CalendarView> = () => {
         <TestButton onClick={addRandomTimePlan}>
           범위 안 시간 일정 추가하기
         </TestButton>
+        <TestButton onClick={clearPlans}>전체 일정 삭제하기</TestButton>
       </div>
       <div className="large-calendar-main">
         <CalendarView />
