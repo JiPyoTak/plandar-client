@@ -12,7 +12,7 @@ type TProps = {
   type: IChangePlanViewType;
 };
 
-const DAY_MAX_MINUTE = 24 * 60;
+const DAY_MAX_MINUTE = 24 * 60 - 15;
 
 const getCreatedTimePlan = (props: TProps) => {
   const { targetDate, currentDate, focusedPlan } = props;
