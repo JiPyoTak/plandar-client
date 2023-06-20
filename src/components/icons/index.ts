@@ -9,6 +9,7 @@ import { ReactComponent as PencilIconComponent } from '@/assets/pencil-icon.svg'
 import { ReactComponent as PlusIconComponent } from '@/assets/plus-icon.svg';
 import { ReactComponent as SearchIconComponent } from '@/assets/search-icon.svg';
 import { ReactComponent as TagIconComponent } from '@/assets/tag-icon.svg';
+import { ReactComponent as TrashcanIconComponent } from '@/assets/trashcan-icon.svg';
 import IconFrameComponent from '@/components/common/IconFrameComponent';
 
 const ICON_COMPONENTS = {
@@ -23,6 +24,7 @@ const ICON_COMPONENTS = {
   TagIcon: TagIconComponent,
   CategoryIcon: CategoryIconComponent,
   HamburgerIcon: HamburgerIconComponent,
+  TrashcanIcon: TrashcanIconComponent,
 } as const;
 
 export const {
@@ -37,6 +39,7 @@ export const {
   TagIcon,
   CategoryIcon,
   HamburgerIcon,
+  TrashcanIcon,
 } = Object.entries(ICON_COMPONENTS).reduce(
   (result, [key, IconComponent]) => ({
     ...result,

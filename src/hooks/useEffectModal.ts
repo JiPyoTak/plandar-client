@@ -20,7 +20,9 @@ const useEffectModal = ({ initialPlan, delay = 300 }: IProps) => {
     }
 
     if (!initialPlan) {
-      ref.current!.style.opacity = '0';
+      if (!ref.current) return;
+
+      ref.current.style.opacity = '0';
 
       timeRef.current = setTimeout(() => {
         setPlan(null);
@@ -29,6 +31,8 @@ const useEffectModal = ({ initialPlan, delay = 300 }: IProps) => {
       setPlan(initialPlan);
 
       timeRef.current = setTimeout(() => {
+        if (!ref.current) return;
+
         ref.current!.style.opacity = '1';
       }, delay);
     }

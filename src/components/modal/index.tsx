@@ -98,7 +98,7 @@ const Header = styled.div`
 
 const HeaderComponent = styled.span`
   display: flex;
-  gap: 8px;
+  gap: 5px;
 `;
 
 const HeaderLeft = styled(HeaderComponent)`
@@ -107,6 +107,25 @@ const HeaderLeft = styled(HeaderComponent)`
 
 const HeaderRight = styled(HeaderComponent)`
   justify-content: flex-start;
+
+  & > button {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+
+    padding: 2px;
+    border-radius: 3px;
+
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.background3};
+    }
+  }
 `;
 
 export default forwardRef(Modal);

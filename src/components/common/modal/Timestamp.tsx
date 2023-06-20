@@ -2,31 +2,44 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import { TPlanType } from '@/types/rq/plan';
 import { formatDateWithWeekday } from '@/utils/date/formatDate';
 
 interface IProps {
   startTime: string;
   endTime: string | null;
-  type: TPlanType;
+  hasTime: boolean;
 }
 
-const TimeStamp = ({ startTime, endTime, type }: IProps) => {
+const TimeStamp = ({ startTime, endTime, hasTime }: IProps) => {
   const st = new Date(startTime);
   const et = endTime ? new Date(endTime) : undefined;
 
   const [stDate, etDate] = formatDateWithWeekday({
     startDate: st,
     endDate: et,
-    isTimeStyle: type !== 'task',
+    isTimeStyle: hasTime,
   });
 
   const isSameDate = st.toDateString() === et?.toDateString();
 
-  return <Container>{isSameDate ? stDate : `${stDate} - ${etDate}`}</Container>;
+  return (
+    <Container>
+      {isSameDate ? (
+        <div>{stDate}</div>
+      ) : (
+        <>
+          <div>{stDate}</div> <div>&nbsp;-&nbsp;</div> <div>{etDate}</div>
+        </>
+      )}
+    </Container>
+  );
 };
 
 const Container = styled.div`
+  display: flex;
+
+  flex-wrap: wrap;
+
   color: ${({ theme }) => theme.text3};
 `;
 
