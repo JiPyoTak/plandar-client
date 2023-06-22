@@ -1,15 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import moment from 'moment';
 
 import planStubManager from '../apis/data/plan';
 
 import Timetable from '@/components/timetable';
+import { useCreatePlanMutation } from '@/hooks/rq/plan';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
+import {
+  createPlanApiHandler,
+  deletePlanApiHandler,
+  getPlansApiHandler,
+  updatePlanApiHandler,
+} from '@/stories/apis/plan';
 import { padZero } from '@/utils/padZero';
 
 export default {
@@ -21,7 +29,6 @@ export default {
 } as ComponentMeta<typeof Timetable>;
 
 const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
-  const setId = useState<number>(1)[1];
   const { year, month, day } = useDateState();
 
   const { selectCalendarUnit } = useCalendarUnitState();
@@ -29,18 +36,18 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
     selectCalendarUnit('일');
   }, []);
 
+  const { mutateAsync: createMutateAsync } = useCreatePlanMutation();
+  const queryClient = useQueryClient();
+  const forceUpdate = useReducer(() => ({}), {})[1];
+
   const addSameTimePlan = () => {
-    setId((prevId) => {
+    createMutateAsync(
       planStubManager.add({
-        id: prevId,
-        title: `임시 데이터 ${prevId}`,
         isAllDay: false,
         startTime: `${year}-${padZero(month)}-${padZero(day)}T03:00:00.000`,
         endTime: `${year}-${padZero(month)}-${padZero(day)}T06:00:00.000`,
-      });
-
-      return prevId + 1;
-    });
+      }),
+    );
   };
 
   const addRandomTimePlan = () => {
@@ -52,23 +59,19 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
 
     const periodMinutes = Math.round(Math.random() * 24 * 60);
     const endTime = moment(startTime).add(periodMinutes, 'minutes');
-
-    setId((prevId) => {
+    createMutateAsync(
       planStubManager.add({
-        id: prevId,
-        title: `임시 데이터 ${prevId}`,
         isAllDay: false,
         startTime,
         endTime,
-      });
-
-      return prevId + 1;
-    });
+      }),
+    );
   };
 
   const clearPlans = () => {
     planStubManager.clear();
-    setId(1);
+    queryClient.clear();
+    forceUpdate();
   };
 
   return (
@@ -115,3 +118,13 @@ const TestButton = styled.button`
 
 export const DayTimetable = AddableTemplate.bind({});
 DayTimetable.args = { rangeAmount: 1 };
+DayTimetable.parameters = {
+  msw: {
+    handlers: [
+      getPlansApiHandler,
+      createPlanApiHandler,
+      updatePlanApiHandler,
+      deletePlanApiHandler,
+    ],
+  },
+};

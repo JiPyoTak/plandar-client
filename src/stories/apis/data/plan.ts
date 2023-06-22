@@ -109,6 +109,7 @@ class PlanStubManager {
   }
 
   public clear() {
+    this.id = 0;
     for (let i = this.data.length; i >= 0; i--) {
       delete this.data[i];
     }

@@ -1,14 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import moment from 'moment';
 
 import Timetable from '@/components/timetable';
+import { useCreatePlanMutation } from '@/hooks/rq/plan';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import planStubManager from '@/stories/apis/data/plan';
+import {
+  createPlanApiHandler,
+  deletePlanApiHandler,
+  getPlansApiHandler,
+  updatePlanApiHandler,
+} from '@/stories/apis/plan';
 
 export default {
   title: 'timetable/DayTimetable',
@@ -19,13 +27,16 @@ export default {
 } as ComponentMeta<typeof Timetable>;
 
 const Template: ComponentStory<typeof Timetable> = (args) => {
-  const setId = useState<number>(1)[1];
   const { year, month, day } = useDateState();
 
   const { selectCalendarUnit } = useCalendarUnitState();
   useEffect(() => {
     selectCalendarUnit('주');
   }, []);
+
+  const { mutateAsync: createMutateAsync } = useCreatePlanMutation();
+  const queryClient = useQueryClient();
+  const forceUpdate = useReducer(() => ({}), {})[1];
 
   const addRandomAlldayPlan = () => {
     const startOfWeek = moment(`${year}-${month}-${day}`).startOf('week');
@@ -38,17 +49,13 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
       : startTime;
     const endTime = moment(minimumMoment).add(planTerm, 'days');
 
-    setId((prevId) => {
+    createMutateAsync(
       planStubManager.add({
-        id: prevId,
-        title: `임시 데이터 ${prevId}`,
         isAllDay: true,
         startTime,
         endTime,
-      });
-
-      return prevId + 1;
-    });
+      }),
+    );
   };
 
   const addRandomTimePlan = () => {
@@ -65,17 +72,13 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
     const periodMinutes = Math.round(Math.random() * (24 * 60 - 16)) + 15;
     const endTime = moment(startTime).add(periodMinutes, 'minutes');
 
-    setId((prevId) => {
+    createMutateAsync(
       planStubManager.add({
-        id: prevId,
-        title: `임시 데이터 ${prevId}`,
         isAllDay: false,
         startTime,
         endTime,
-      });
-
-      return prevId + 1;
-    });
+      }),
+    );
   };
 
   const addPlanGroup = () => {
@@ -86,7 +89,8 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
 
   const clearPlans = () => {
     planStubManager.clear();
-    setId(1);
+    queryClient.clear();
+    forceUpdate();
   };
 
   return (
@@ -136,3 +140,13 @@ const TestButton = styled.button`
 
 export const WeekTimetable = Template.bind({});
 WeekTimetable.args = { rangeAmount: 7 };
+WeekTimetable.parameters = {
+  msw: {
+    handlers: [
+      getPlansApiHandler,
+      createPlanApiHandler,
+      updatePlanApiHandler,
+      deletePlanApiHandler,
+    ],
+  },
+};

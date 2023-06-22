@@ -3,9 +3,9 @@ import React from 'react';
 import styled from '@emotion/styled';
 import moment, { Moment } from 'moment';
 
+import TimetableScroller from './TimetableScroller';
 import CalendarDay from '@/components/common/calendar/CalendarDay';
 
-import TimetableScroller from './TimetableScroller';
 import { DAY_OF_WEEK_UNIT } from '@/constants';
 import useDateState from '@/stores/date';
 import { FONT_REGULAR_5 } from '@/styles/font';
@@ -51,8 +51,8 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
           const { year, month, day } = calendarInfo;
 
           return (
-            <DaySizer>
-              <DayContent key={calendarInfo.format}>
+            <DaySizer key={calendarInfo.format}>
+              <DayContent>
                 <DayNumber
                   {...calendarInfo}
                   onClick={() => onChangeStoreDate({ year, month, day })}
