@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
-import ToastTransition from './Transitions';
+import ToastTransition from './ToastTransition';
 import { useToast } from '@/hooks/useToast';
 import {
   TOAST_MAX_HEIGHT,
