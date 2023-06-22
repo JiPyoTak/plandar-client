@@ -52,7 +52,7 @@ class Plan implements IPlan {
 
   get isTimePlan() {
     const period = Math.abs(this.startMoment.diff(this.endMoment, 'minutes'));
-    const isSameDay = period < 24 * 60;
+    const isSameDay = period < 24 * 60 - 1;
 
     return !this.isAllDay && isSameDay;
   }

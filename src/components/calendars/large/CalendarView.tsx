@@ -2,6 +2,8 @@ import React, { useCallback, useMemo } from 'react';
 
 import styled from '@emotion/styled';
 
+import moment from 'moment';
+
 import CalendarLayer from './CalendarLayer';
 import CalendarOverlay from './CalendarOverlay';
 import CalendarWeek from './CalendarWeek';
@@ -47,11 +49,11 @@ const CalendarView = () => {
 
     if (!targetDate) return;
 
-    const dateFormat = new Date(targetDate).toString();
+    const dateFormat = moment(targetDate);
 
     createDragPlan({
-      startTime: dateFormat,
-      endTime: dateFormat,
+      startTime: dateFormat.toDate().toUTCString(),
+      endTime: dateFormat.endOf('day').toDate().toUTCString(),
     });
   }, []);
 
