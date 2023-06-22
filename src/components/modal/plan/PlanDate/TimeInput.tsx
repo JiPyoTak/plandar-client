@@ -61,7 +61,6 @@ const TimeInput = ({ setTime, time }: Props) => {
         onChange={(e) => setInputTime(e.target.value)}
         onKeyDown={onInputEnter}
         onBlur={onBlurHandler}
-        size={6}
       />
       {openedOptions && (
         <TimeOptionList timeInfo={timeInfo} setTime={setInputTime} />
@@ -76,6 +75,7 @@ const Input = styled.input<{ invalid?: boolean }>`
   border-radius: 5px;
   margin: 0 2px;
   text-align: center;
+  width: 86px;
   ${FONT_REGULAR_3}
   &:hover {
     background-color: ${({ theme }) => theme.background3};
