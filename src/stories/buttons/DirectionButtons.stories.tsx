@@ -7,9 +7,12 @@ export default {
   component: DirectionButtons,
 } as ComponentMeta<typeof DirectionButtons>;
 
-const Template: ComponentStory<typeof DirectionButtons> = () => (
-  <DirectionButtons />
+const Template: ComponentStory<typeof DirectionButtons> = (args) => (
+  <DirectionButtons {...args} />
 );
 
 export const Primary = Template.bind({});
-Primary.args = {};
+Primary.args = {
+  onClickLeftButton: () => console.log('왼쪽 클릭'),
+  onClickRightButton: () => console.log('오른쪽 클릭'),
+};

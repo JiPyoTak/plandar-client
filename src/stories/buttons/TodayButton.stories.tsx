@@ -7,7 +7,11 @@ export default {
   component: TodayButton,
 } as ComponentMeta<typeof TodayButton>;
 
-const Template: ComponentStory<typeof TodayButton> = () => <TodayButton />;
+const Template: ComponentStory<typeof TodayButton> = (arg) => (
+  <TodayButton {...arg} />
+);
 
 export const Primary = Template.bind({});
-Primary.args = {};
+Primary.args = {
+  onClick: () => console.log('today'),
+};

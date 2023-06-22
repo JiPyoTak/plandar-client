@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import Calendar from '@/components/calendars/small/index';
+import SmallCalendar from '@/components/sidebar/SmallCalendar';
 import { CALENDAR_UNIT } from '@/constants';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 
@@ -31,13 +32,14 @@ const Template: ComponentStory<
   }>
 > = ({ selectedCalendarIndex }) => {
   const { selectCalendarUnit } = useCalendarUnitState();
+
   useEffect(() => {
     selectCalendarUnit(CALENDAR_UNIT[selectedCalendarIndex]);
   }, [selectedCalendarIndex]);
 
   return (
     <Container>
-      <Calendar />
+      <SmallCalendar />
     </Container>
   );
 };
