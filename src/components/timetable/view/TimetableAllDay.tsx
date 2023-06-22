@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 
 import styled from '@emotion/styled';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 
 import CalendarLayer from '@/components/calendars/large/CalendarLayer';
 
@@ -71,9 +71,11 @@ const TimetableAllDay: React.FC<TProps> = ({
 
       if (!targetDate) return;
 
+      const dateFormat = moment(targetDate);
+
       createDragPlan({
-        startTime: targetDate,
-        endTime: targetDate,
+        startTime: dateFormat.toDate().toUTCString(),
+        endTime: dateFormat.endOf('day').toDate().toUTCString(),
       });
     },
     [createDragPlan],

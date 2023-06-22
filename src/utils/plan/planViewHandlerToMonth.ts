@@ -1,5 +1,6 @@
 import moment, { Moment } from 'moment';
 
+import Plan from '@/plan/Plan';
 import { IChangePlanViewType } from '@/stores/plan/focusedPlan';
 import { IPlan } from '@/types/rq/plan';
 
@@ -40,7 +41,7 @@ const changePlanView = ({
   return newPlan;
 };
 
-const createPlanView = (props: ICreatePlanView): IPlan => {
+const createPlanView = (props: ICreatePlanView) => {
   const { targetDate, currentDate, focusedPlan } = props;
 
   let planStart = currentDate.clone().startOf('d');
@@ -52,11 +53,9 @@ const createPlanView = (props: ICreatePlanView): IPlan => {
     planEnd = targetDate.endOf('d');
   }
 
-  const newPlan: IPlan = {
-    ...focusedPlan,
-    startTime: planStart.format(),
-    endTime: planEnd.format(),
-  };
+  const newPlan = new Plan(focusedPlan);
+  newPlan._startTime = planStart.format();
+  newPlan._endTime = planEnd.format();
 
   return newPlan;
 };
@@ -64,8 +63,8 @@ const createPlanView = (props: ICreatePlanView): IPlan => {
 const editPlanView = (props: IEditPlanView) => {
   const { targetDate, currentDate, focusedPlan, currentPlan } = props;
 
-  const currentStart = moment(currentPlan.startTime).utc();
-  const currentEnd = moment(currentPlan.endTime).utc();
+  const currentStart = moment(currentPlan.startTime);
+  const currentEnd = moment(currentPlan.endTime);
 
   const termStart = currentDate.endOf('d').diff(currentPlan.startTime, 'd');
   const termEnd = Math.abs(
@@ -85,11 +84,9 @@ const editPlanView = (props: IEditPlanView) => {
     .hours(currentEnd.hours())
     .minutes(currentEnd.minutes());
 
-  const newPlan = {
-    ...focusedPlan,
-    startTime: startTime.format(),
-    endTime: endTime.format(),
-  };
+  const newPlan = new Plan(focusedPlan);
+  newPlan._startTime = startTime;
+  newPlan._endTime = endTime;
 
   return newPlan;
 };
