@@ -58,8 +58,12 @@ class StubManager<Data extends { id: number }> {
   }
 
   public clear() {
-    this.id = 0;
+    this.id = this.initialDataArray.length;
     this.data = [...this.initialDataArray];
+  }
+
+  public getId() {
+    return this.id;
   }
 }
 

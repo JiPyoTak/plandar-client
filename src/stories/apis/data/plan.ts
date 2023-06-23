@@ -23,7 +23,7 @@ class PlanStubManager extends StubManager<Plan> {
   }: Omit<Partial<IPlan>, 'startTime' | 'endTime'> & {
     startTime?: MomentInput;
     endTime?: MomentInput;
-  }) {
+  } = {}) {
     if (isNaN(Number(planData?.id))) {
       ++this.id;
     }
