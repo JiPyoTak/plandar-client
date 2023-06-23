@@ -5,11 +5,8 @@ import { Moment } from 'moment';
 
 import TimetableColumns from './columns';
 import TimetableAllDay from './TimetableAllDay';
-import { useGetPlansQuery } from '@/hooks/rq/plan';
+import useClassifiedPlans from '@/hooks/useClassifiedPlans';
 import usePlanDrag from '@/hooks/usePlanDrag';
-import useDateState from '@/stores/date';
-import { getFormattedDate } from '@/utils/date/getFormattedDate';
-import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
 import { divideTimePlans } from '@/utils/plan/divideTimePlans';
 
 type TProps = {
@@ -19,16 +16,7 @@ type TProps = {
 const TimetableView: React.FC<TProps> = ({ dateMoments }) => {
   const { onMouseMove, changeCurrentDate } = usePlanDrag();
 
-  const { year, month, day } = useDateState();
-  const { startFormat, endFormat } = getFormattedDate(
-    ...getStartAndEndDate({ year, month, day }),
-  );
-  const { data: plans } = useGetPlansQuery({
-    timemin: startFormat,
-    timemax: endFormat,
-  });
-
-  // 종일, 시간에 들어가야 할 일정 분류하기
+  const plans = useClassifiedPlans();
   const { timePlans, allDayPlans } = divideTimePlans(plans ?? []);
 
   return (
