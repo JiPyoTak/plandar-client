@@ -2,14 +2,8 @@ import moment, { MomentInput } from 'moment';
 
 import Plan from '@/plan/Plan';
 import StubManager from '@/stories/apis/data';
-import { TColor } from '@/types';
+import createRandomColor from '@/stories/utils/createRandomColor';
 import { IPlan } from '@/types/rq/plan';
-
-const createRandomColor = () => {
-  return `#${Math.round(Math.random() * 0xffffff)
-    .toString(16)
-    .padStart(6, '0')}` as TColor;
-};
 
 class PlanStubManager extends StubManager<Plan> {
   private static instance: PlanStubManager;

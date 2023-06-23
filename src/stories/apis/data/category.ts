@@ -1,4 +1,5 @@
 import StubManager from '@/stories/apis/data';
+import createRandomColor from '@/stories/utils/createRandomColor';
 import { theme } from '@/styles/theme';
 import { ICategory } from '@/types/rq/category';
 
@@ -21,7 +22,7 @@ class CategoryStubManager extends StubManager<ICategory> {
     CategoryStubManager.instance = this;
   }
 
-  public createStub({ ...categoryData }: Partial<ICategory>): ICategory {
+  public createStub({ ...categoryData }: Partial<ICategory> = {}): ICategory {
     if (isNaN(Number(categoryData?.id))) {
       ++this.id;
     }
@@ -29,7 +30,7 @@ class CategoryStubManager extends StubManager<ICategory> {
     const categoryStub = {
       id: this.id,
       name: `카테고리 ${this.id}`,
-      color: theme.primary,
+      color: createRandomColor(),
       ...categoryData,
     };
 
