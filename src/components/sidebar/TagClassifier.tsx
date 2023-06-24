@@ -45,7 +45,6 @@ const TagClassifier: React.FC = () => {
           key={title}
           onClick={() => toggleTagShow(title)}
           isActive={!hiddenTags.has(title)}
-          onEdit={() => undefined}
           text={title}
         />
       ))}
