@@ -20,7 +20,7 @@ import useCategoryClassifierState from '@/stores/classifier/category';
 import { TColor } from '@/types';
 
 const CategoryClassifier: React.FC = () => {
-  const { data: categoryData, isLoading } = useCategoryQuery();
+  const { data: categoryData } = useCategoryQuery();
   const { mutate: categoryCreate } = useCategoryCreate();
   const { mutate: categoryUpdate } = useCategoryUpdate();
   const [modalState, setModalState] = useState<TCategoryModalProps | null>(
@@ -70,8 +70,6 @@ const CategoryClassifier: React.FC = () => {
       },
     });
   };
-
-  if (isLoading) return null;
 
   return (
     <>
