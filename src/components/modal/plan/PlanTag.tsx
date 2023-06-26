@@ -12,6 +12,7 @@ import {
   ClassifierAdditionalFontStyle,
   ClassifierAdditionalMarginRight,
   PlanModalClassifierTitle,
+  PlanModalCollapseDuration,
 } from '@/styles/planModal';
 
 const PlanTag: React.FC = () => {
@@ -64,7 +65,7 @@ const PlanTag: React.FC = () => {
   };
 
   return (
-    <Container>
+    <Container duration={PlanModalCollapseDuration} defaultVisibility={true}>
       <Dropdown.Controller>
         <PlanModalClassifierTitle
           title="태그"
