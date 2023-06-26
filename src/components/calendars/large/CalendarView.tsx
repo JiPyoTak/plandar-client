@@ -43,9 +43,12 @@ const CalendarView = () => {
   }, [data, focusedPlan, calendarInfos]);
 
   const onMouseDownCell: React.MouseEventHandler = useCallback((e) => {
-    const targetDate = (
-      (e.target as HTMLElement).closest('.date-time') as HTMLElement
-    )?.dataset?.date;
+    const target = e.target as HTMLElement;
+
+    if (target.closest('.time-plan')) return;
+
+    const targetDate = (target.closest('.date-time') as HTMLElement)?.dataset
+      ?.date;
 
     if (!targetDate) return;
 
