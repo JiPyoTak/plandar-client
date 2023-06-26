@@ -12,7 +12,12 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { staleTime: Infinity, cacheTime: Infinity },
+  },
+});
+
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
