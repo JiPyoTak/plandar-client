@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 import styled from '@emotion/styled';
 
 import Day from '@/components/common/calendar/CalendarDay';
-import DayTimePlan from '@/components/plan/DayTimePlan';
+import TimePlanList from '@/components/common/calendar/TimePlanList';
 import Plan from '@/plan/Plan';
 import useDateState from '@/stores/date';
 import { ICalendarInfo } from '@/utils/calendar/getCalendarInfo';
@@ -46,12 +46,8 @@ const CalendarCell: React.FC<IProps> = (props) => {
         isSelected={isSelected}
         onClick={onChangeStoreDate}
       />
-      <div style={{ height }} />
-      <TimePlanList>
-        {timePlans.map((timePlan) => (
-          <DayTimePlan plan={timePlan} />
-        ))}
-      </TimePlanList>
+      <div css={{ height, transition: 'height 0.2s' }} />
+      <TimePlanList timePlans={timePlans} />
     </Container>
   );
 };
@@ -68,7 +64,6 @@ const Container = styled.div<Pick<IProps, 'isLastDay' | 'isLastWeek'>>`
 
   cursor: pointer;
 
-  // fix when give min-width
   overflow: hidden;
 
   &.isDragging,
@@ -83,11 +78,6 @@ const CellDay = styled(Day)`
   justify-content: flex-start;
 
   padding: 4px;
-`;
-
-const TimePlanList = styled.div`
-  display: flex;
-  flex-direction: column;
 `;
 
 export default memo(CalendarCell);
