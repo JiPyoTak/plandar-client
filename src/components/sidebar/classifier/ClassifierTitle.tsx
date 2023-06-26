@@ -40,7 +40,7 @@ const ClassifierTitle: React.FC<TProps> = ({
         <ChevronIcon
           width={CLASSIFIER_TITLE_ICON_SIZE}
           height={CLASSIFIER_TITLE_ICON_SIZE}
-          type={isShow ? 'down' : 'up'}
+          type={isShow ? 'up' : 'down'}
         />
       </div>
     </Container>
