@@ -46,6 +46,8 @@ const ToastTransition = ({
   }, []);
 
   useEffect(() => {
+    if (isIn) return;
+
     const node = nodeRef.current!;
 
     const onExited = () => {
@@ -55,11 +57,11 @@ const ToastTransition = ({
 
     const onExit = () => {
       animationStep.current = 'exit';
-      node.className += ` ${exitClassName}`;
+      node.classList.add(exitClassName);
       node.addEventListener('animationend', onExited);
     };
 
-    if (!isIn) onExit();
+    onExit();
   }, [isIn]);
 
   return <>{children}</>;
