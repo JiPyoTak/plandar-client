@@ -11,6 +11,7 @@ import {
   ClassifierAdditionalFontStyle,
   ClassifierAdditionalMarginRight,
   PlanModalClassifierTitle,
+  PlanModalCollapseDuration,
 } from '@/styles/planModal';
 
 const PlanMemo: React.FC = () => {
@@ -41,7 +42,7 @@ const PlanMemo: React.FC = () => {
   };
 
   return (
-    <Container duration={0.5}>
+    <Container duration={PlanModalCollapseDuration} defaultVisibility={true}>
       <Dropdown.Controller>
         <PlanModalClassifierTitle
           title="메모"
