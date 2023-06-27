@@ -52,7 +52,7 @@ class PlanStubManager extends StubManager<Plan> {
   public get(query: { timeMin: string; timeMax: string }): Plan[];
   public get(query?: { timeMin: string; timeMax: string }) {
     if (!query) {
-      return this.get();
+      return super.get();
     }
 
     const { timeMin, timeMax } = query;
