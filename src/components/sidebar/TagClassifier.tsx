@@ -18,7 +18,7 @@ const TagClassifier: React.FC = () => {
     ...getStartAndEndDate({ year, month, day }),
   );
 
-  const { data } = useGetPlansQuery({
+  const { data: planData } = useGetPlansQuery({
     timemin: startFormat,
     timemax: endFormat,
   });
@@ -26,14 +26,14 @@ const TagClassifier: React.FC = () => {
   const tags = useMemo(() => {
     const tagNameSet = new Set<string>();
 
-    for (const { tags } of data ?? []) {
+    for (const { tags } of planData ?? []) {
       for (const tag of tags ?? []) {
         tagNameSet.add(tag);
       }
     }
 
     return [...tagNameSet].sort();
-  }, [data]);
+  }, [planData]);
 
   return (
     <Dropdown>
