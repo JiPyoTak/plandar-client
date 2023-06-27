@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import App from '@/App';
+import { ToastContainer } from '@/components/toast/ToastContainer';
 import { theme } from '@/styles/theme';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -19,6 +20,7 @@ root.render(
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={!isProduction} />
         <App />
+        <ToastContainer />
       </QueryClientProvider>
     </ThemeProvider>
   </React.StrictMode>,
