@@ -18,6 +18,5 @@ Create.args = {
 
 export const Update = Template.bind({});
 Update.args = {
-  isEdit: true,
   openModal: true,
 };

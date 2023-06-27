@@ -12,7 +12,10 @@ import { MAX_CANDIDATE_LENGTH } from '@/constants';
 import { useCategoryQuery } from '@/hooks/rq/category';
 import useDebounce from '@/hooks/useDebounce';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
-import { PlanModalClassifierTitle } from '@/styles/planModal';
+import {
+  PlanModalClassifierTitle,
+  PlanModalCollapseDuration,
+} from '@/styles/planModal';
 import { ICategory } from '@/types/rq/category';
 
 // 입력과 일치하는 category 존재여부에 따라 다른 것을 보여주기 위해 정의한 타입
@@ -83,7 +86,7 @@ const PlanCategory: React.FC = () => {
   };
 
   return (
-    <Container>
+    <Container duration={PlanModalCollapseDuration}>
       <Dropdown.Controller>
         <PlanModalClassifierTitle
           title="카테고리"
