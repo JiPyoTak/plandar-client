@@ -22,6 +22,7 @@ const ToastTransition = ({
   const exitClassName = 'bounce-exit';
   const animationStep = useRef<TAnimationStep>('enter');
 
+  // when toast is mounted
   useLayoutEffect(() => {
     const node = nodeRef.current!;
     const classToToken = enterClassName.split(' ');
@@ -45,6 +46,7 @@ const ToastTransition = ({
     onEnter();
   }, []);
 
+  // when toast should go out
   useEffect(() => {
     if (isIn) return;
 
