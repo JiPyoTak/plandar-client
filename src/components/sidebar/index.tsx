@@ -5,7 +5,6 @@ import styled from '@emotion/styled';
 import CategoryClassifier from './CategoryClassifier';
 import SmallCalendar from './SmallCalendar';
 import TagClassifier from './TagClassifier';
-import TypeClassifier from './TypeClassifier';
 import useDrawerState from '@/stores/drawer';
 import { SIDEBAR_WIDTH } from '@/styles/home';
 
@@ -16,7 +15,10 @@ const SideBar: React.FC = () => {
     <Container css={{ width: isOpened ? SIDEBAR_WIDTH : 0 }}>
       <InnerContainer>
         <SmallCalendar />
+        {/*         
+        Type 구현이 완료된 후 사용 할 것
         <TypeClassifier />
+        */}
         <CategoryClassifier />
         <TagClassifier />
       </InnerContainer>
