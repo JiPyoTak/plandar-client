@@ -37,7 +37,7 @@ export const Toast: React.FC<IToastProps> = (props) => {
     <ToastTransition isIn={isIn} done={deleteToast} nodeRef={toastRef}>
       <ToastBodyContainer
         closeOnClick={closeOnClick}
-        id={toastId as string}
+        id={String(toastId)}
         {...eventHandlers}
         ref={toastRef}
       >

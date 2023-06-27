@@ -32,7 +32,7 @@ const PlanModal: TPlanModal = ({
   onClose,
   onDone,
 }: TPlanModalProps) => {
-const { focusedPlan, openModal, clearPlan, isDisabled, isEdit } =
+  const { focusedPlan, openModal, clearPlan, isDisabled, isEdit } =
     useFocusedPlanState(
       ({ focusedPlan, isDragging, clearDraggedPlan, type }) => ({
         focusedPlan,
