@@ -20,12 +20,9 @@ import { getPositionByViewPort } from '@/utils/calendar/getPositionByViewPort';
 const Selected = () => {
   const { mutate } = useDeletePlanMutation();
 
-  const { focusedPlan, editDragPlan } = useFocusedPlanState(
-    (state) => ({
-      focusedPlan: state.focusedPlan,
-      editDragPlan: state.editDragPlan,
-    }),
-    shallow,
+  const editDragPlan = useFocusedPlanState(
+    (state) => state.editDragPlan,
+    (prev, next) => prev === next,
   );
 
   const { selectedPlan, rect, clearPlan } = useSelectedPlanState(
@@ -41,12 +38,6 @@ const Selected = () => {
     initialPlan: selectedPlan,
     delay: 0,
   });
-
-  useEffect(() => {
-    if (!focusedPlan) return;
-
-    clearPlan();
-  }, [focusedPlan]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -88,6 +79,7 @@ const Selected = () => {
 
   const editPlan = () => {
     editDragPlan(plan);
+    clearPlan();
   };
 
   return (
