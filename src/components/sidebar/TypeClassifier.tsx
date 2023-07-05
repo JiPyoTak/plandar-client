@@ -10,8 +10,14 @@ import useTypeClassifierState from '@/stores/classifier/type';
 const TypeClassifier: React.FC = () => {
   const theme = useTheme();
 
-  const { type, toggleEventShow, toggleTaskShow, toggleAlarmShow } =
-    useTypeClassifierState();
+  const {
+    showEvent,
+    showTask,
+    showAlarm,
+    toggleEventShow,
+    toggleTaskShow,
+    toggleAlarmShow,
+  } = useTypeClassifierState();
 
   return (
     <Dropdown>
@@ -20,19 +26,19 @@ const TypeClassifier: React.FC = () => {
       </Dropdown.Controller>
       <ClassifierItem
         onClick={toggleEventShow}
-        isActive={type.showEvent}
+        isActive={showEvent}
         text={'기념일'}
         color={theme.orange}
       />
       <ClassifierItem
         onClick={toggleTaskShow}
-        isActive={type.showTask}
+        isActive={showTask}
         text={'할 일'}
         color={theme.blue}
       />
       <ClassifierItem
         onClick={toggleAlarmShow}
-        isActive={type.showAlarm}
+        isActive={showAlarm}
         text={'알림'}
         color={theme.red}
       />

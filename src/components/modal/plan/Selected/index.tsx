@@ -14,6 +14,7 @@ import { useEffectModal } from '@/hooks/useEffectModal';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { FONT_REGULAR_5 } from '@/styles/font';
+import { toast } from '@/toast';
 import { getPositionByViewPort } from '@/utils/calendar/getPositionByViewPort';
 
 const Selected = () => {
@@ -65,8 +66,15 @@ const Selected = () => {
   });
 
   const deletePlan = () => {
-    mutate(plan.id);
-    clearPlan();
+    mutate(plan.id, {
+      onSuccess: () => {
+        clearPlan();
+        toast(`${plan.title} 일정이 삭제되었습니다`);
+      },
+      onError: () => {
+        toast('일정 삭제에 실패했습니다');
+      },
+    });
   };
 
   const editPlan = () => {

@@ -16,9 +16,10 @@ import PlanTag from '@/components/modal/plan/PlanTag';
 import PlanTitleInput from '@/components/modal/plan/PlanTitleInput';
 import { useCreatePlanMutation, useUpdatePlanMutation } from '@/hooks/rq/plan';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
+import { ColorCircle } from '@/styles/category';
+import { toast } from '@/toast';
 
 type TPlanModalProps = {
-  isEdit?: boolean;
   onClose?: () => void;
   onDone?: () => void;
   openModal?: boolean;
@@ -28,19 +29,20 @@ type TPlanModal = React.FC<TPlanModalProps>;
 
 const PlanModal: TPlanModal = ({
   openModal: initOpenModal,
-  isEdit = false,
   onClose,
   onDone,
 }: TPlanModalProps) => {
-  const { focusedPlan, openModal, clearPlan, isDisabled } = useFocusedPlanState(
-    ({ focusedPlan, isDragging, clearDraggedPlan }) => ({
-      focusedPlan,
-      openModal: initOpenModal || (!isDragging && !!focusedPlan),
-      clearPlan: clearDraggedPlan,
-      isDisabled: !focusedPlan?.startTime || !focusedPlan?.endTime,
-    }),
-    shallow,
-  );
+  const { focusedPlan, openModal, clearPlan, isDisabled, isEdit } =
+    useFocusedPlanState(
+      ({ focusedPlan, isDragging, clearDraggedPlan, type }) => ({
+        focusedPlan,
+        openModal: initOpenModal || (!isDragging && !!focusedPlan),
+        clearPlan: clearDraggedPlan,
+        isDisabled: !focusedPlan?.startTime || !focusedPlan?.endTime,
+        isEdit: type === 'edit',
+      }),
+      shallow,
+    );
   const { mutateAsync: createMutate } = useCreatePlanMutation();
   const { mutateAsync: updateMutate } = useUpdatePlanMutation();
 
@@ -56,12 +58,25 @@ const PlanModal: TPlanModal = ({
     try {
       if (isEdit) {
         await updateMutate({ id, ...rest });
+        toast(
+          <div>
+            <ColorCircle color={focusedPlan.color} />
+            {` ${focusedPlan.title}`} 으로 일정을 수정했습니다
+          </div>,
+        );
       } else {
         await createMutate(rest);
+        toast(
+          <div>
+            <ColorCircle color={focusedPlan.color} />
+            {` ${focusedPlan.title}`} 일정을 생성했습니다
+          </div>,
+        );
       }
       onDone?.();
+      clearPlan();
     } catch (e) {
-      alert('일정 생성에 실패했습니다.');
+      toast(`일정 ${isEdit ? '수정' : '생성'}에 실패했습니다.`);
     }
   };
 
@@ -104,7 +119,7 @@ const Modal = styled(ModalContainer)`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
+  min-width: 400px;
   padding: 24px;
   box-shadow: 1px 10px 25px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
@@ -116,4 +131,5 @@ const Hr = styled.hr`
   border: none;
   background-color: ${({ theme }) => theme.border1};
 `;
+
 export default PlanModal;

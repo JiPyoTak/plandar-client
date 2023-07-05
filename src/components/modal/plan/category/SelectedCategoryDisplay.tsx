@@ -5,10 +5,12 @@ import styled from '@emotion/styled';
 
 import ColorPicker from '@/components/common/ColorPicker';
 import { useCategoryUpdate } from '@/hooks/rq/category';
+import { ColorCircle } from '@/styles/category';
 import {
   ClassifierAdditionalFontStyle,
   ClassifierAdditionalMarginRight,
 } from '@/styles/planModal';
+import { toast } from '@/toast';
 import { TColor } from '@/types';
 import { ICategory, ICategoryWithoutId } from '@/types/rq/category';
 
@@ -29,8 +31,7 @@ const SelectedCategoryDisplay: TSelectedCategoryDisplay = ({
   const onSelect = async (newColor: TColor) => {
     // id가 없다면 아직 서버로부터 생성되지 않은 상태므로 return
     if (!Object.hasOwnProperty.call(category, 'id')) {
-      alert('카테고리가 생성되지 않았습니다.');
-      // todo: 토스트 메시지로 실패했다고 알림
+      toast('카테고리가 생성되지 않았습니다');
       return;
     }
 
@@ -40,9 +41,14 @@ const SelectedCategoryDisplay: TSelectedCategoryDisplay = ({
 
       await updateCategory(newCategory);
       onUpdateCategory(newCategory.id);
+      toast(
+        <div>
+          {newCategory.name} 카테고리 색상이 <ColorCircle color={newColor} />
+          으로 수정되었습니다.
+        </div>,
+      );
     } catch (e) {
-      alert('카테고리 수정에 실패했습니다.');
-      // todo: 토스트 메시지로 실패했다고 알림
+      toast('카테고리 수정에 실패했습니다');
     }
   };
 

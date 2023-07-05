@@ -1,21 +1,21 @@
 import { create } from 'zustand';
 
 interface ITagClassifierState {
-  hiddenTags: Set<number>;
+  hiddenTags: Set<string>;
 
-  toggleTagShow: (tagId: number) => void;
+  toggleTagShow: (tagId: string) => void;
 
   reset: () => void;
 }
 
 const initialState = {
-  hiddenTags: new Set<number>(),
+  hiddenTags: new Set<string>(),
 } as const;
 
 const useTagClassifierState = create<ITagClassifierState>((set) => ({
   ...initialState,
 
-  toggleTagShow: (tagId: number) =>
+  toggleTagShow: (tagId: string) =>
     set((state) => {
       const newHiddenTags = new Set(state.hiddenTags);
       if (newHiddenTags.has(tagId)) newHiddenTags.delete(tagId);

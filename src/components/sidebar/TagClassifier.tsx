@@ -1,30 +1,50 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 
 import Dropdown from '../common/dropdown';
 
 import ClassifierItem from '@/components/sidebar/classifier/ClassifierItem';
 import ClassifierTitle from '@/components/sidebar/classifier/ClassifierTitle';
+import { useGetPlansQuery } from '@/hooks/rq/plan';
 import useTagClassifierState from '@/stores/classifier/tag';
+import useDateState from '@/stores/date';
+import { getFormattedDate } from '@/utils/date/getFormattedDate';
+import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
 
 const TagClassifier: React.FC = () => {
-  const [testTags] = useState([
-    { id: 1, title: '테스트1' },
-    { id: 2, title: '테스트2' },
-  ]);
-
   const { hiddenTags, toggleTagShow } = useTagClassifierState();
+
+  const { year, month, day } = useDateState();
+  const { startFormat, endFormat } = getFormattedDate(
+    ...getStartAndEndDate({ year, month, day }),
+  );
+
+  const { data: planData } = useGetPlansQuery({
+    timemin: startFormat,
+    timemax: endFormat,
+  });
+
+  const tags = useMemo(() => {
+    const tagNameSet = new Set<string>();
+
+    for (const { tags } of planData ?? []) {
+      for (const tag of tags ?? []) {
+        tagNameSet.add(tag);
+      }
+    }
+
+    return [...tagNameSet].sort();
+  }, [planData]);
 
   return (
     <Dropdown>
       <Dropdown.Controller>
         <ClassifierTitle title={'태그'} />
       </Dropdown.Controller>
-      {testTags.map(({ id, title }) => (
+      {tags.map((title) => (
         <ClassifierItem
-          key={id}
-          onClick={() => toggleTagShow(id)}
-          isActive={!hiddenTags.has(id)}
-          onEdit={() => undefined}
+          key={title}
+          onClick={() => toggleTagShow(title)}
+          isActive={!hiddenTags.has(title)}
           text={title}
         />
       ))}

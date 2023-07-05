@@ -10,6 +10,7 @@ import styled from '@emotion/styled';
 
 import { CheckIcon } from '@/components/icons';
 import { SELECTABLE_COLOR } from '@/constants';
+import { ColorCircle } from '@/styles/category';
 import { TColor } from '@/types';
 
 type TColorPickerProps = {
@@ -23,8 +24,8 @@ type TColorPickerProps = {
 type TColorPicker = React.FC<TColorPickerProps>;
 
 const CIRCLE_SIZE = {
-  small: '10px',
-  middle: '14px',
+  small: 10,
+  middle: 14,
 };
 
 const ColorPicker: TColorPicker = ({
@@ -51,14 +52,7 @@ const ColorPicker: TColorPicker = ({
   return (
     <span css={{ position: 'relative' }}>
       <PickerButton onClick={onClickPickerButton} className={className}>
-        <span
-          css={{
-            backgroundColor: selectedColor,
-            width: CIRCLE_SIZE[circleSize],
-            height: CIRCLE_SIZE[circleSize],
-            borderRadius: '50%',
-          }}
-        />
+        <ColorCircle color={selectedColor} size={CIRCLE_SIZE[circleSize]} />
         {additionalComponent}
       </PickerButton>
       {popupOpened && (
@@ -69,7 +63,7 @@ const ColorPicker: TColorPicker = ({
               css={{ position: 'relative' }}
               key={color}
             >
-              <ColorCircle css={{ backgroundColor: color }} />
+              <ColorCircle color={color} size={22} css={{ display: 'block' }} />
               {selectedColor === color && <CheckMarker color={theme.white} />}
             </button>
           ))}
@@ -108,12 +102,6 @@ const Popup = styled.div`
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
   z-index: 50;
-`;
-
-const ColorCircle = styled.div`
-  width: 22px;
-  height: 22px;
-  border-radius: 100%;
 `;
 
 const CheckMarker = styled(CheckIcon)`

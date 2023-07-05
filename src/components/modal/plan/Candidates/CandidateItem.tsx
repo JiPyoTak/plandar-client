@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 
 import { CheckIcon } from '@/components/icons';
 import { SELECTABLE_COLOR } from '@/constants';
+import { ColorCircle } from '@/styles/category';
 import { TColor } from '@/types';
 
 type TCandidateItemProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -41,7 +42,7 @@ const CandidateItem: TCandidateItem = ({
         </>
       ) : (
         <>
-          <ColorCircle css={{ backgroundColor: color }} />
+          <ColorCircle color={color} size={20} />
           <Title>{name}</Title>
           <CheckIconContainer>
             {isSelected && (
@@ -87,12 +88,6 @@ const CheckIconContainer = styled.div`
 const Title = styled.span`
   flex: 1;
   text-align: left;
-`;
-
-const ColorCircle = styled.span`
-  width: 20px;
-  height: 20px;
-  border-radius: 100%;
 `;
 
 export default CandidateItem;

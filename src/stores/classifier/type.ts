@@ -1,12 +1,9 @@
 import { create } from 'zustand';
 
 interface ITypeClassifierState {
-  type: {
-    showEvent: boolean;
-    showTask: boolean;
-    showAlarm: boolean;
-  };
-
+  showEvent: boolean;
+  showTask: boolean;
+  showAlarm: boolean;
   toggleEventShow: () => void;
   toggleTaskShow: () => void;
   toggleAlarmShow: () => void;
@@ -15,11 +12,9 @@ interface ITypeClassifierState {
 }
 
 const initialState = {
-  type: {
-    showEvent: true,
-    showTask: true,
-    showAlarm: true,
-  },
+  showEvent: true,
+  showTask: true,
+  showAlarm: true,
 } as const;
 
 const useTypeClassifierState = create<ITypeClassifierState>((set) => ({
@@ -27,15 +22,15 @@ const useTypeClassifierState = create<ITypeClassifierState>((set) => ({
 
   toggleEventShow: () =>
     set((state) => ({
-      type: { ...state.type, showEvent: !state.type.showEvent },
+      showEvent: !state.showEvent,
     })),
   toggleTaskShow: () =>
     set((state) => ({
-      type: { ...state.type, showTask: !state.type.showTask },
+      showTask: !state.showTask,
     })),
   toggleAlarmShow: () =>
     set((state) => ({
-      type: { ...state.type, showAlarm: !state.type.showAlarm },
+      showAlarm: !state.showAlarm,
     })),
 
   reset: () => set({ ...initialState }),

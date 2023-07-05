@@ -17,10 +17,12 @@ import {
   useCategoryUpdate,
 } from '@/hooks/rq/category';
 import useCategoryClassifierState from '@/stores/classifier/category';
+import { ColorCircle } from '@/styles/category';
+import { toast } from '@/toast';
 import { TColor } from '@/types';
 
 const CategoryClassifier: React.FC = () => {
-  const { data: categoryData, isLoading } = useCategoryQuery();
+  const { data: categoryData } = useCategoryQuery();
   const { mutate: categoryCreate } = useCategoryCreate();
   const { mutate: categoryUpdate } = useCategoryUpdate();
   const [modalState, setModalState] = useState<TCategoryModalProps | null>(
@@ -41,8 +43,19 @@ const CategoryClassifier: React.FC = () => {
         categoryName: string;
         color: TColor;
       }) => {
-        categoryCreate({ name, color });
-        setModalState(null);
+        try {
+          categoryCreate({ name, color });
+          setModalState(null);
+          toast(
+            <div>
+              <ColorCircle color={color} />
+              {` ${name} `}
+              카테고리를 생성했습니다
+            </div>,
+          );
+        } catch (e) {
+          toast('카테고리 생성에 실패했습니다');
+        }
       },
     });
   };
@@ -65,13 +78,23 @@ const CategoryClassifier: React.FC = () => {
         categoryName: string;
         color: TColor;
       }) => {
-        categoryUpdate({ id, name, color });
-        setModalState(null);
+        try {
+          categoryUpdate({ id, name, color });
+          setModalState(null);
+          toast(
+            <div>
+              <ColorCircle color={originalCategory.color} />
+              {` ${originalCategory.name} `} 카테고리를{' '}
+              <ColorCircle color={color} />
+              {` ${name} `}으로 수정했습니다
+            </div>,
+          );
+        } catch (e) {
+          toast('카테고리 수정에 실패했습니다');
+        }
       },
     });
   };
-
-  if (isLoading) return null;
 
   return (
     <>
