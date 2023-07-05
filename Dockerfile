@@ -1,4 +1,4 @@
-FROM node:14 AS build
+FROM node:16-alpine AS builder
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ RUN npm run build
 
 FROM nginx:1.14.2
 
-COPY --from=build /app/dist /dist
+COPY --from=builder /app/dist /dist
 
 # 컨테이너의 80번 포트를 열어준다.
 EXPOSE 80
