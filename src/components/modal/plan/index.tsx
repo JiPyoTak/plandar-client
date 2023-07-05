@@ -16,6 +16,8 @@ import PlanTag from '@/components/modal/plan/PlanTag';
 import PlanTitleInput from '@/components/modal/plan/PlanTitleInput';
 import { useCreatePlanMutation, useUpdatePlanMutation } from '@/hooks/rq/plan';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
+import { ColorCircle } from '@/styles/category';
+import { toast } from '@/toast';
 
 type TPlanModalProps = {
   onClose?: () => void;
@@ -56,13 +58,25 @@ const PlanModal: TPlanModal = ({
     try {
       if (isEdit) {
         await updateMutate({ id, ...rest });
+        toast(
+          <div>
+            <ColorCircle color={focusedPlan.color} />
+            {` ${focusedPlan.title}`} 으로 일정을 수정했습니다
+          </div>,
+        );
       } else {
         await createMutate(rest);
+        toast(
+          <div>
+            <ColorCircle color={focusedPlan.color} />
+            {` ${focusedPlan.title}`} 일정을 생성했습니다
+          </div>,
+        );
       }
       onDone?.();
       clearPlan();
     } catch (e) {
-      alert('일정 생성에 실패했습니다.');
+      toast(`일정 ${isEdit ? '수정' : '생성'}에 실패했습니다.`);
     }
   };
 

@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import useLogout from '@/hooks/useLogout';
 import useUserStore from '@/stores/user';
 import { FONT_REGULAR_3, FONT_REGULAR_4, FONT_REGULAR_5 } from '@/styles/font';
+import { toast } from '@/toast';
 
 const ProfilePopup = () => {
   const { user } = useUserStore();
@@ -10,8 +11,9 @@ const ProfilePopup = () => {
   const onLogout = async () => {
     try {
       await logout();
+      toast(`${user!.username}님, 안녕히가세요`);
     } catch (e) {
-      alert('로그아웃에 실패했습니다');
+      toast('로그아웃에 실패했습니다');
     }
   };
 

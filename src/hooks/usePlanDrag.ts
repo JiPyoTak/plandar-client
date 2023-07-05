@@ -4,6 +4,7 @@ import { shallow } from 'zustand/shallow';
 
 import { useUpdatePlanMutation } from './rq/plan';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
+import { toast } from '@/toast';
 
 export type MouseEventHandler = React.MouseEventHandler<HTMLDivElement>;
 
@@ -105,6 +106,7 @@ const usePlanDrag = () => {
 
       if (focusedPlan.id >= 0 && !shallow(currentPlan, focusedPlan)) {
         await mutateAsync(focusedPlan);
+        toast(`${focusedPlan.title} 일정 날짜가 변경되었습니다`);
       }
 
       timeTypeRef.current = null;

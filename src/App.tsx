@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import styled from '@emotion/styled';
@@ -7,10 +8,19 @@ import useLogin from './hooks/useLogin';
 import Login from './pages/Login';
 import Home from '@/pages';
 import Test from '@/pages/Test';
+import useUserStore from '@/stores/user';
 import GlobalStyle from '@/styles/GlobalStyle';
+import { toast } from '@/toast';
 
 const App = () => {
   const { isLoading: isLoginLoading } = useLogin();
+  const isFirstTime = useRef(true);
+  const username = useUserStore((state) => state?.user?.username);
+
+  if (isFirstTime.current && username) {
+    isFirstTime.current = false;
+    toast(`${username}님, 환영합니다`);
+  }
 
   return (
     <Wrapper id="App">
