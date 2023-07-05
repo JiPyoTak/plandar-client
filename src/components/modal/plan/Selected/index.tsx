@@ -21,7 +21,7 @@ const Selected = () => {
 
   const editDragPlan = useFocusedPlanState(
     (state) => state.editDragPlan,
-    shallow,
+    (prev, next) => prev === next,
   );
 
   const { selectedPlan, rect, clearPlan } = useSelectedPlanState(
