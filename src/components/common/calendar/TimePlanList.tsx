@@ -11,7 +11,7 @@ interface IProps {
 }
 
 const TimePlanList: React.FC<IProps> = ({ timePlans }) => {
-  const [
+  const {
     focusedPlanId,
     hoveredPlanId,
     selectedPlanId,
@@ -19,7 +19,7 @@ const TimePlanList: React.FC<IProps> = ({ timePlans }) => {
     onMouseDown,
     onMouseEnter,
     onMouseLeave,
-  ] = usePlanActive();
+  } = usePlanActive();
 
   return (
     <Container>

@@ -13,7 +13,7 @@ interface IProps {
 }
 
 const CalendarLayer = ({ className, planManager }: IProps) => {
-  const [
+  const {
     focusedPlanId,
     hoveredPlanId,
     selectedPlanId,
@@ -21,7 +21,7 @@ const CalendarLayer = ({ className, planManager }: IProps) => {
     onMouseDown,
     onMouseEnter,
     onMouseLeave,
-  ] = usePlanActive();
+  } = usePlanActive();
 
   const plans = planManager.plans;
   const viewPlans = planManager.viewInfo;

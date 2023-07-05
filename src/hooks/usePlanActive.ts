@@ -61,7 +61,7 @@ const usePlanActive = () => {
     [isDragging, selectedPlanId, debounceToSetHoveredPlan],
   );
 
-  const clear = useCallback(() => {
+  const onMouseLeave = useCallback(() => {
     clearDebounce();
     clearHoveredPlan();
   }, [clearHoveredPlan, clearDebounce]);
@@ -69,9 +69,9 @@ const usePlanActive = () => {
   const onMouseDown = useCallback(
     (plan: Plan) => {
       moveDragPlan(plan);
-      clear();
+      onMouseLeave();
     },
-    [moveDragPlan, clearHoveredPlan, clear],
+    [moveDragPlan, clearHoveredPlan, onMouseLeave],
   );
 
   const onClick = useCallback(
@@ -90,15 +90,15 @@ const usePlanActive = () => {
     [isDragging, selectedPlanId, setSelectedPlan],
   );
 
-  return [
+  return {
     focusedPlanId,
     hoveredPlanId,
     selectedPlanId,
     onClick,
     onMouseDown,
     onMouseEnter,
-    clear,
-  ] as const;
+    onMouseLeave,
+  } as const;
 };
 
 export default usePlanActive;
