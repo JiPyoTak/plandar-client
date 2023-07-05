@@ -1,30 +1,19 @@
 import moment, { MomentInput } from 'moment';
 
 import Plan from '@/plan/Plan';
-import { TColor } from '@/types';
+import StubManager from '@/stories/apis/data';
+import createRandomColor from '@/stories/utils/createRandomColor';
 import { IPlan } from '@/types/rq/plan';
 
-const createRandomColor = () => {
-  return `#${Math.round(Math.random() * 0xffffff)
-    .toString(16)
-    .padStart(6, '0')}` as TColor;
-};
-
-class PlanStubManager {
-  private data: Plan[];
-  private id: number;
-
-  // Use Singleton Pattern
+class PlanStubManager extends StubManager<Plan> {
   private static instance: PlanStubManager;
-  private constructor() {
-    this.data = [];
-    this.id = 0;
-  }
-  public static getInstance() {
-    if (!PlanStubManager.instance) {
-      PlanStubManager.instance = new PlanStubManager();
+  constructor() {
+    if (PlanStubManager.instance) {
+      return PlanStubManager.instance;
     }
-    return PlanStubManager.instance;
+
+    super();
+    PlanStubManager.instance = this;
   }
 
   public createStub({
@@ -34,7 +23,7 @@ class PlanStubManager {
   }: Omit<Partial<IPlan>, 'startTime' | 'endTime'> & {
     startTime?: MomentInput;
     endTime?: MomentInput;
-  }) {
+  } = {}) {
     if (isNaN(Number(planData?.id))) {
       ++this.id;
     }
@@ -59,7 +48,14 @@ class PlanStubManager {
     return mockedPlan;
   }
 
-  public get({ timeMin, timeMax }: { timeMin: string; timeMax: string }) {
+  public get(): Plan[];
+  public get(query: { timeMin: string; timeMax: string }): Plan[];
+  public get(query?: { timeMin: string; timeMax: string }) {
+    if (!query) {
+      return super.get();
+    }
+
+    const { timeMin, timeMax } = query;
     const st = moment(timeMin);
     const et = moment(timeMax);
 
@@ -74,48 +70,8 @@ class PlanStubManager {
       return isStartBetween || isEndBetween || isTimeBigger;
     });
   }
-
-  public add(...args: Parameters<PlanStubManager['createStub']>) {
-    const plan = this.createStub(...args);
-    this.data.push(plan);
-    return plan;
-  }
-
-  public update(planData: Partial<IPlan> & { id: number }) {
-    const target = this.data.find(({ id }) => id === planData?.id);
-
-    if (!target) throw Error('Plan Stub : update failed');
-
-    Object.keys(planData).forEach((key) => {
-      if (Object.hasOwnProperty.call(target, key)) {
-        Object.defineProperty(target, key, {
-          value: planData[key as keyof typeof planData],
-          configurable: true,
-          enumerable: true,
-          writable: true,
-        });
-      }
-    });
-
-    return target;
-  }
-
-  public delete(planId: number) {
-    const index = this.data.findIndex(({ id }) => id === planId);
-
-    if (index === -1) throw Error('Plan Stub : delete failed');
-
-    return this.data.splice(index, 1)[0];
-  }
-
-  public clear() {
-    this.id = 0;
-    for (let i = this.data.length; i >= 0; i--) {
-      delete this.data[i];
-    }
-  }
 }
 
-const planStubManager = PlanStubManager.getInstance();
+const planStubManager = new PlanStubManager();
 
 export default planStubManager;
