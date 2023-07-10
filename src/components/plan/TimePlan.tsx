@@ -17,8 +17,8 @@ type TProps = {
   plan: Plan;
   viewInfo: ITimeViewInfo;
   isFocused?: boolean;
-  isSelected: boolean;
-  isHovered: boolean;
+  isSelected?: boolean;
+  isHovered?: boolean;
   onClick?: (e: React.MouseEvent<HTMLDivElement>, plan: Plan) => void;
   onMouseEnter?: (e: React.MouseEvent<HTMLDivElement>, plan: Plan) => void;
   onMouseLeave?: () => void;
