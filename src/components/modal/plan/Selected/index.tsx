@@ -59,7 +59,17 @@ const Selected = () => {
 
   if (!plan) return null;
 
-  const { title, color, startTime, endTime, tags, categoryId, isAllDay } = plan;
+  const {
+    title,
+    description,
+    color,
+    startTime,
+    endTime,
+    tags,
+    categoryId,
+    isAllDay,
+  } = plan;
+
   const position = getPositionByViewPort(rect, {
     width: 350,
     height: categoryId === null ? 160 : 210,
@@ -103,6 +113,7 @@ const Selected = () => {
       css={{ ...position }}
     >
       <h3 css={TITLE_STYLE}>{title}</h3>
+      {description && <p>{description}</p>}
       {categoryId !== null && <Category categoryId={categoryId} />}
       <TimeStamp startTime={startTime} endTime={endTime} hasTime={!isAllDay} />
       <TagList>
