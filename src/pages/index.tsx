@@ -6,7 +6,7 @@ import HamburgerButton from '@/components/buttons/HamburgerButton';
 import MainCalendar from '@/components/calendars/large';
 import CalendarHeader from '@/components/common/calendar/CalendarHeader';
 import Logo from '@/components/logo';
-import PlanModal from '@/components/modal/plan';
+import PlanModal from '@/components/modal/plan/Created';
 import HoveredPlanModal from '@/components/modal/plan/Hovered';
 import SelectedPlanModal from '@/components/modal/plan/Selected';
 import SideBar from '@/components/sidebar';

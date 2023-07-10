@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import PlanMemo from '@/components/modal/plan/PlanMemo';
+import PlanMemo from '@/components/modal/plan/Created/PlanMemo';
 
 export default {
   title: 'Plan/PlanMemo',
