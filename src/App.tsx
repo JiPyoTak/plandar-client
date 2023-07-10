@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import styled from '@emotion/styled';
@@ -17,12 +17,10 @@ const App = () => {
   const isFirstTime = useRef(true);
   const username = useUserStore((state) => state?.user?.username);
 
-  useEffect(() => {
-    if (!(isFirstTime.current && username)) return;
-
+  if (isFirstTime.current && username) {
     isFirstTime.current = false;
     toast(`${username}님, 환영합니다`);
-  }, [username, isFirstTime.current]);
+  }
 
   return (
     <Wrapper id="App">

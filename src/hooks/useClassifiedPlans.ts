@@ -34,13 +34,12 @@ const useClassifiedPlans = () => {
     const { categoryId, tags } = plan;
 
     if (categoryId && hiddenCategories.has(categoryId)) return result;
-    if (tags.length && tags.every((tag) => hiddenTags.has(tag))) return result;
+    if (tags.every((tag) => hiddenTags.has(tag))) return result;
     if (!showAlarm && plan.type === 'alarm') return result;
     if (!showEvent && plan.type === 'event') return result;
     if (!showTask && plan.type === 'task') return result;
 
     result.push(plan);
-
     return result;
   }, [] as IPlan[]);
 

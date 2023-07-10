@@ -93,23 +93,22 @@ const TimetableAllDay: React.FC<TProps> = ({
           </GuideSizer>
         }
       >
-        <div
-          css={{ flex: 1 }}
-          onMouseMove={onMouseMove}
-          onMouseDown={changeCurrentDate}
-        >
+        <div css={{ flex: 1 }} onMouseMove={onMouseMove}>
           <AllDayPlanPositioner>
             <CalendarLayer
               css={{ top: TIMETABLE_ALLDAY_VERTICAL_PADDING }}
               planManager={planManager}
             />
           </AllDayPlanPositioner>
-          <AllDayCellList css={{ height: getAllDayHeight(itemMaxLength) }}>
+          <AllDayCellList
+            css={{ height: getAllDayHeight(itemMaxLength) }}
+            onMouseDown={changeCurrentDate}
+          >
             {dateMoments.map((dateMoment, index) => {
               return (
                 <AllDayCell
                   key={index}
-                  className="date-time"
+                  className={'date-time'}
                   onMouseDown={onMouseDownCell}
                   data-date={dateMoment.format('YYYY-MM-DD')}
                 />

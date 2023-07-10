@@ -1,7 +1,6 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import TimePlan from '@/components/plan/TimePlan';
-import usePlanActive from '@/hooks/usePlanActive';
 import useTimetableViewMoment from '@/hooks/useTimetableViewMoment';
 import Plan from '@/plan/Plan';
 import TimePlanManager from '@/plan/TimePlanManager';
@@ -19,9 +18,6 @@ const TimetablePlanColumn: React.FC<TProps> = ({ plans }) => {
     [plans, viewMoment],
   );
 
-  const { selectedPlanId, hoveredPlanId, onClick, onMouseEnter, onMouseLeave } =
-    usePlanActive();
-
   return (
     <div css={{ width: 'calc(100% - 0.75rem)', position: 'relative' }}>
       <div css={{ width: '100%', position: 'absolute' }}>
@@ -36,11 +32,6 @@ const TimetablePlanColumn: React.FC<TProps> = ({ plans }) => {
                 plan={plan}
                 viewInfo={viewInfo}
                 isFocused={id === focusedPlan?.id}
-                isSelected={id === selectedPlanId}
-                isHovered={id === hoveredPlanId}
-                onClick={onClick}
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
               />
             )
           );

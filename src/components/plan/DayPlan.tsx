@@ -114,8 +114,7 @@ const Container = styled.div<{ color?: TColor }>`
   }
 
   & > div:hover,
-  & > div.is_hovered,
-  & > div.is_selected {
+  & > div.is_hovered {
     & > div {
       background-color: rgba(0, 0, 0, 0.12);
     }
@@ -123,6 +122,7 @@ const Container = styled.div<{ color?: TColor }>`
 
   & > div.is_selected {
     & > div {
+      background-color: rgba(0, 0, 0, 0.12);
       box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.12);
     }
   }
