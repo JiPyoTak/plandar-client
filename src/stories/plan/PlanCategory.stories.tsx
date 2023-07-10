@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import PlanCategory from '@/components/modal/plan/PlanCategory';
+import PlanCategory from '@/components/modal/plan/Created/PlanCategory';
 
 export default {
   title: 'Plan/PlanCategory',
