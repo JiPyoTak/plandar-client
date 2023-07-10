@@ -4,6 +4,7 @@ import { ReactComponent as CrossIconComponent } from '@/assets/cross-icon.svg';
 import { ReactComponent as GoogleIconComponent } from '@/assets/google-icon.svg';
 import { ReactComponent as HamburgerIconComponent } from '@/assets/hamburger-icon.svg';
 import { ReactComponent as KakaoIconComponent } from '@/assets/kakao-icon.svg';
+import { ReactComponent as LogoIconComponent } from '@/assets/logo-icon.svg';
 import { ReactComponent as MemoIconComponent } from '@/assets/memo-icon.svg';
 import { ReactComponent as PencilIconComponent } from '@/assets/pencil-icon.svg';
 import { ReactComponent as PlusIconComponent } from '@/assets/plus-icon.svg';
@@ -20,6 +21,7 @@ const ICON_COMPONENTS = {
   SearchIcon: SearchIconComponent,
   GoogleIcon: GoogleIconComponent,
   KakaoIcon: KakaoIconComponent,
+  LogoIcon: LogoIconComponent,
   MemoIcon: MemoIconComponent,
   TagIcon: TagIconComponent,
   CategoryIcon: CategoryIconComponent,
@@ -35,6 +37,7 @@ export const {
   SearchIcon,
   KakaoIcon,
   GoogleIcon,
+  LogoIcon,
   MemoIcon,
   TagIcon,
   CategoryIcon,
