@@ -36,19 +36,21 @@ const TagClassifier: React.FC = () => {
   }, [planData]);
 
   return (
-    <Dropdown>
-      <Dropdown.Controller>
-        <ClassifierTitle title={'태그'} />
-      </Dropdown.Controller>
-      {tags.map((title) => (
-        <ClassifierItem
-          key={title}
-          onClick={() => toggleTagShow(title)}
-          isActive={!hiddenTags.has(title)}
-          text={title}
-        />
-      ))}
-    </Dropdown>
+    <div css={{ padding: '1rem 0' }}>
+      <Dropdown>
+        <Dropdown.Controller>
+          <ClassifierTitle title={'태그'} />
+        </Dropdown.Controller>
+        {tags.map((title) => (
+          <ClassifierItem
+            key={title}
+            onClick={() => toggleTagShow(title)}
+            isActive={!hiddenTags.has(title)}
+            text={title}
+          />
+        ))}
+      </Dropdown>
+    </div>
   );
 };
 

@@ -51,10 +51,21 @@ const InnerContainer = styled.div`
   & > .sidebar-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
+    height: 4rem;
+
+    padding: 0.5rem 1rem;
+
     background-color: ${({ theme }) => theme.background1};
   }
 
   & > .sidebar-contents {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1rem;
+
     padding: 1rem;
 
     & > div {

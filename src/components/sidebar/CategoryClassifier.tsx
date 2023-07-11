@@ -98,31 +98,33 @@ const CategoryClassifier: React.FC = () => {
 
   return (
     <>
-      <Dropdown>
-        <Dropdown.Controller>
-          <ClassifierTitle
-            title={'카테고리'}
-            additionalComponent={
-              <button onClick={onClickAdd}>
-                <PlusIcon
-                  width={CLASSIFIER_TITLE_ICON_SIZE}
-                  height={CLASSIFIER_TITLE_ICON_SIZE}
-                />
-              </button>
-            }
-          />
-        </Dropdown.Controller>
-        {categoryData?.map(({ id, name, color }) => (
-          <ClassifierItem
-            key={id}
-            onClick={() => toggleCategoryShow(id)}
-            isActive={!hiddenCategories.has(id)}
-            text={name}
-            color={color}
-            onEdit={() => onClickEdit(id)}
-          />
-        ))}
-      </Dropdown>
+      <div css={{ padding: '1rem 0' }}>
+        <Dropdown>
+          <Dropdown.Controller>
+            <ClassifierTitle
+              title={'카테고리'}
+              additionalComponent={
+                <button onClick={onClickAdd}>
+                  <PlusIcon
+                    width={CLASSIFIER_TITLE_ICON_SIZE}
+                    height={CLASSIFIER_TITLE_ICON_SIZE}
+                  />
+                </button>
+              }
+            />
+          </Dropdown.Controller>
+          {categoryData?.map(({ id, name, color }) => (
+            <ClassifierItem
+              key={id}
+              onClick={() => toggleCategoryShow(id)}
+              isActive={!hiddenCategories.has(id)}
+              text={name}
+              color={color}
+              onEdit={() => onClickEdit(id)}
+            />
+          ))}
+        </Dropdown>
+      </div>
       {modalState && <CategoryModal {...modalState} />}
     </>
   );
