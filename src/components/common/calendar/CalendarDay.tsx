@@ -127,7 +127,7 @@ const DayNumber = styled.button`
   }
 
   &.is_selected {
-    background-color: ${({ theme }) => theme.emerald};
+    background-color: ${({ theme }) => theme.primary}3F;
   }
 
   &.is_today {
@@ -136,7 +136,7 @@ const DayNumber = styled.button`
   }
 
   &.hover:hover {
-    background-color: ${({ theme }) => theme.emerald_light};
+    background-color: ${({ theme }) => theme.primary}19;
   }
 `;
 
