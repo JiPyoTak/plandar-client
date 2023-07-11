@@ -28,21 +28,16 @@ const ClassifierTitle: React.FC<TProps> = ({
         {titleIcon}
         {title}
       </Title>
-      <div
-        css={{
-          display: 'flex',
-          columnGap: 5,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+      <Nav>
         {additionalComponent}
-        <ChevronIcon
-          width={CLASSIFIER_TITLE_ICON_SIZE}
-          height={CLASSIFIER_TITLE_ICON_SIZE}
-          type={isShow ? 'up' : 'down'}
-        />
-      </div>
+        <button>
+          <ChevronIcon
+            width={CLASSIFIER_TITLE_ICON_SIZE}
+            height={CLASSIFIER_TITLE_ICON_SIZE}
+            type={isShow ? 'up' : 'down'}
+          />
+        </button>
+      </Nav>
     </Container>
   );
 };
@@ -51,7 +46,6 @@ const Container = styled.div`
   width: 100%;
   height: 2.875rem;
   padding: 0.75rem 1.5rem;
-  margin-top: 1rem;
 
   display: flex;
   align-items: center;
@@ -64,6 +58,26 @@ const Title = styled.div`
   align-items: center;
   column-gap: 8px;
   ${FONT_BOLD_3}
+`;
+
+const Nav = styled.div`
+  display: flex;
+  column-gap: 2px;
+  justify-content: center;
+  align-items: center;
+
+  & > button {
+    display: flex;
+
+    padding: 0.2rem;
+    border-radius: 4px;
+
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.background3};
+    }
+  }
 `;
 
 export { CLASSIFIER_TITLE_ICON_SIZE };
