@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import { TDateYMD } from '@/stores/date';
 import { ICalendarInfo } from '@/utils/calendar/getCalendarInfo';
 import { getDayClassName } from '@/utils/calendar/getDayClassName';
+import { isBgBright } from '@/utils/color';
 
 interface IProps extends ICalendarInfo {
   isSelected: boolean;
@@ -85,7 +86,7 @@ const Container = styled.div`
   padding: 0.2rem 0;
 
   &.is_weeks {
-    background-color: ${({ theme }) => theme.emerald_light};
+    background-color: ${({ theme }) => theme.primary_light}22;
   }
 
   &.is_weeks_start {
@@ -127,7 +128,9 @@ const DayNumber = styled.button`
   }
 
   &.is_selected {
-    background-color: ${({ theme }) => theme.primary}3F;
+    background-color: ${({ theme }) => theme.primary_light};
+    color: ${({ theme }) =>
+      isBgBright(theme.primary_light2) ? theme.text1 : theme.white};
   }
 
   &.is_today {
@@ -136,7 +139,7 @@ const DayNumber = styled.button`
   }
 
   &.hover:hover {
-    background-color: ${({ theme }) => theme.primary}19;
+    background-color: ${({ theme }) => theme.primary_light2};
   }
 `;
 
