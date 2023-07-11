@@ -60,7 +60,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 
-  background-color: ${({ theme }) => theme.primary_light3};
+  background-color: ${({ theme }) => theme.primary_light2};
 `;
 
 const Header = styled.header`

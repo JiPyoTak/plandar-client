@@ -89,7 +89,7 @@ const TimeCell = styled.div`
     z-index: ${TIMETABLE_Z_INDEX['timeCellHover']};
 
     color: ${({ theme }) => theme.primary};
-    background-color: ${({ theme }) => theme.primary_light3};
+    background-color: ${({ theme }) => theme.primary_light2};
     cursor: pointer;
   }
 `;
