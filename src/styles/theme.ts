@@ -3,8 +3,8 @@ import { TColor } from '@/types';
 export const theme = {
   primary: '#176B87',
   primary_dark: '#001C30',
-  primary_light: '#64CCC5',
-  primary_light2: '#DAFFFB',
+  primary_light: '#63B8D4',
+  primary_light2: '#D6F0F3',
   point: '#FFF8B5',
   placeholder: '#868686',
   border1: '#F3F3F3',
