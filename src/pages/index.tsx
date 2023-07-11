@@ -26,10 +26,12 @@ const Home: React.FC = () => {
     <>
       <Container>
         <SideBar />
-        <section className="content-main">
+        <CalendarContainer>
           <CalendarHeader />
-          <CalendarComponent />
-        </section>
+          <div className="calendar-main">
+            <CalendarComponent />
+          </div>
+        </CalendarContainer>
       </Container>
       <HoveredPlanModal />
       <SelectedPlanModal />
@@ -43,15 +45,22 @@ const Container = styled.div`
   height: 100%;
 
   display: flex;
+`;
 
-  & > .content-main {
+const CalendarContainer = styled.section`
+  flex: 1 0 0;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  & > .calendar-main {
     flex: 1 0 0;
-    height: 100%;
-
-    display: flex;
-    flex-direction: column;
-
     overflow: hidden;
+
+    border-top: 1px solid ${({ theme }) => theme.background3};
   }
 `;
 

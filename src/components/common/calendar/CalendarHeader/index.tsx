@@ -40,7 +40,6 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  border-bottom: 1px solid ${({ theme }) => theme.border1};
   background-color: ${({ theme }) => theme.white};
 `;
 
