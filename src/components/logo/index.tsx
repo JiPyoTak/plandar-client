@@ -25,8 +25,6 @@ const Logo: React.FC<TProps> = ({
 };
 
 const HyperlinkContainer = styled.a`
-  height: 4rem;
-  padding: 0.5rem 1rem;
   display: flex;
   align-items: center;
   column-gap: 1rem;
