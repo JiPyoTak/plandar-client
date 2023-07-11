@@ -7,7 +7,6 @@ import moment from 'moment';
 import HeaderButtons from './HeaderButtons';
 import HeaderTitle from './HeaderTitle';
 import CalendarUnitButton from '@/components/buttons/CalendarUnitButton';
-import ProfileButton from '@/components/buttons/ProfileButton';
 import { DAY_OF_WEEK_UNIT } from '@/constants';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
@@ -28,7 +27,6 @@ const CalendarHeader = () => {
         dayOfWeek={DAY_OF_WEEK_UNIT[date.day()]}
       />
       <CalendarUnitButton />
-      <ProfileButton css={{ marginLeft: 10 }} />
     </Container>
   );
 };
@@ -37,9 +35,12 @@ const Container = styled.div`
   width: 100%;
   height: 4rem;
   padding: 0.5rem 1rem;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  border-bottom: 1px solid ${({ theme }) => theme.border1};
   background-color: ${({ theme }) => theme.white};
 `;
 
