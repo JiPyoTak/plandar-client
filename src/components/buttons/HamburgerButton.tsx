@@ -16,8 +16,11 @@ const HamburgerButton: React.FC = () => {
 };
 
 const Container = styled.button`
+  display: flex;
+
   border-radius: 5px;
-  padding: 5px;
+  padding: 0.3rem;
+
   &:hover {
     background-color: ${({ theme }) => theme.background3};
   }
