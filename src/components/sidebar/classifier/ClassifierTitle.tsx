@@ -51,7 +51,7 @@ const Container = styled.div`
   width: 100%;
   height: 2.875rem;
   padding: 0.75rem 1.5rem;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 
   display: flex;
   align-items: center;
