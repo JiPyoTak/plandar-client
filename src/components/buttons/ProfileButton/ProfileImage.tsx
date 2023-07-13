@@ -54,6 +54,8 @@ const Placeholder = styled.div`
 
 const Image = styled.img`
   object-fit: cover;
+
+  border-radius: 50%;
 `;
 
 export default ProfileImage;
