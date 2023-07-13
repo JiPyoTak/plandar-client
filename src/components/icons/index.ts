@@ -3,6 +3,7 @@ import { ReactComponent as CheckIconComponent } from '@/assets/check-icon.svg';
 import { ReactComponent as CrossIconComponent } from '@/assets/cross-icon.svg';
 import { ReactComponent as GoogleIconComponent } from '@/assets/google-icon.svg';
 import { ReactComponent as HamburgerIconComponent } from '@/assets/hamburger-icon.svg';
+import { ReactComponent as HomeIconComponent } from '@/assets/home-icon.svg';
 import { ReactComponent as KakaoIconComponent } from '@/assets/kakao-icon.svg';
 import { ReactComponent as LogoIconComponent } from '@/assets/logo-icon.svg';
 import { ReactComponent as MemoIconComponent } from '@/assets/memo-icon.svg';
@@ -21,6 +22,7 @@ const ICON_COMPONENTS = {
   CrossIcon: CrossIconComponent,
   SearchIcon: SearchIconComponent,
   GoogleIcon: GoogleIconComponent,
+  HomeIcon: HomeIconComponent,
   KakaoIcon: KakaoIconComponent,
   LogoIcon: LogoIconComponent,
   MemoIcon: MemoIconComponent,
@@ -39,6 +41,7 @@ export const {
   SearchIcon,
   KakaoIcon,
   GoogleIcon,
+  HomeIcon,
   LogoIcon,
   MemoIcon,
   OnlyLogoIcon,
