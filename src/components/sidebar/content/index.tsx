@@ -9,10 +9,13 @@ import TagClassifier from './TagClassifier';
 import ChevronIcon from '@/components/icons/ChevronIcon';
 import Logo from '@/components/logo';
 import UserInfo from '@/components/sidebar/content/UserInfo';
-import { MenuBorder, MenuIconWrapper } from '@/components/sidebar/styles';
+import {
+  MENU_CONTENT_WIDTH,
+  MENU_PROFILE_HEIGHT,
+  MenuBorder,
+  MenuIconWrapper,
+} from '@/components/sidebar/styles';
 import useMenuState from '@/stores/menu';
-
-const WIDTH = '21.25rem';
 
 const SidebarContent: React.FC = () => {
   const { isOpened, selected, closeMenu } = useMenuState();
@@ -24,7 +27,7 @@ const SidebarContent: React.FC = () => {
   const isTagShow = isAllShow || selected === 'tag';
 
   return (
-    <Container css={{ width: isOpened ? WIDTH : 0 }}>
+    <Container css={{ width: isOpened ? MENU_CONTENT_WIDTH : 0 }}>
       <InnerContainer>
         <Header>
           <Logo showPicture={false} css={{ color: theme.white }} />
@@ -54,15 +57,16 @@ const SidebarContent: React.FC = () => {
 };
 
 const Container = styled.div`
+  height: 100%;
+  max-height: 100vh;
   position: relative;
 
-  height: 100%;
   overflow: hidden;
   transition: width 0.3s ease-in-out;
 `;
 
 const InnerContainer = styled.div`
-  width: ${WIDTH};
+  width: ${MENU_CONTENT_WIDTH};
   min-height: 100%;
 
   display: flex;
@@ -71,17 +75,18 @@ const InnerContainer = styled.div`
 `;
 
 const Header = styled.div`
+  flex: 0 0 4rem;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  height: 4rem;
 
   padding: 0.5rem 1rem;
 `;
 
 const Content = styled.div`
-  flex: 1;
+  flex: 1 0 0;
+  margin-bottom: ${MENU_PROFILE_HEIGHT};
 
   display: flex;
   flex-direction: column;
@@ -89,6 +94,17 @@ const Content = styled.div`
   gap: 1rem;
 
   padding: 1rem;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+    border: none;
+    background-color: ${({ theme }) => theme.text3};
+  }
 
   & > div {
     border-radius: 10px;

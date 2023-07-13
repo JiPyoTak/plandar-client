@@ -12,6 +12,7 @@ import {
   TagIcon,
 } from '@/components/icons';
 import {
+  MENU_PROFILE_HEIGHT,
   MenuBorder,
   MenuIconWrapper,
   MenuSelectedIcon,
@@ -43,9 +44,9 @@ const SidebarIcons = () => {
 
   return (
     <Container>
-      <IconContainer>
+      <Header>
         <OnlyLogoIcon width={40} height={40} color={theme.white} />
-      </IconContainer>
+      </Header>
       <Menu onClick={onClickMenuIcon}>
         {Object.entries(ICON_COMPONENTS).map(([key, IconComponent]) => (
           <MenuIconWrapper
@@ -57,15 +58,16 @@ const SidebarIcons = () => {
           </MenuIconWrapper>
         ))}
       </Menu>
-      <IconContainer css={{ position: 'absolute', bottom: 0 }}>
+      <Footer>
         <ProfileImage width={40} height={40} />
-      </IconContainer>
+      </Footer>
     </Container>
   );
 };
 
 const Container = styled.div`
   height: 100%;
+  max-height: 100vh;
 
   display: flex;
   flex-direction: column;
@@ -73,7 +75,7 @@ const Container = styled.div`
   ${MenuBorder}
 `;
 
-const IconContainer = styled.div`
+const Header = styled.div`
   height: 4rem;
   padding: 0.75rem;
 
@@ -86,12 +88,19 @@ const IconContainer = styled.div`
 
 const Menu = styled.div`
   flex: 1;
+  margin-bottom: ${MENU_PROFILE_HEIGHT};
   padding: 0.5rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   row-gap: 0.5rem;
+`;
+
+const Footer = styled(Header)`
+  height: ${MENU_PROFILE_HEIGHT};
+  position: absolute;
+  bottom: 0;
 `;
 
 export default SidebarIcons;

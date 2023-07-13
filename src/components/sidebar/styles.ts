@@ -1,6 +1,9 @@
 import { Theme, css } from '@emotion/react';
 import styled from '@emotion/styled';
 
+const MENU_CONTENT_WIDTH = '21.25rem';
+const MENU_PROFILE_HEIGHT = '4rem';
+
 const MenuSelectedIcon = ({ theme }: { theme: Theme }) => css`
   background-color: ${theme.white};
 
@@ -37,4 +40,10 @@ const MenuIconWrapper = styled.button`
   }
 `;
 
-export { MenuIconWrapper, MenuSelectedIcon, MenuBorder };
+export {
+  MENU_CONTENT_WIDTH,
+  MENU_PROFILE_HEIGHT,
+  MenuIconWrapper,
+  MenuSelectedIcon,
+  MenuBorder,
+};
