@@ -15,7 +15,12 @@ const Sidebar = () => {
 };
 
 const Container = styled.div`
+  height: 100%;
+
   display: flex;
+
+  color: ${({ theme }) => theme.white};
+  background-color: ${({ theme }) => theme.primary};
 `;
 
 export default Sidebar;
