@@ -19,7 +19,6 @@ const Container = styled.div`
 
   display: flex;
 
-  color: ${({ theme }) => theme.white};
   background-color: ${({ theme }) => theme.primary};
 `;
 
