@@ -9,13 +9,13 @@ import TagClassifier from './TagClassifier';
 import ChevronIcon from '@/components/icons/ChevronIcon';
 import Logo from '@/components/logo';
 import UserInfo from '@/components/sidebar/content/UserInfo';
+import useMenuState from '@/stores/menu';
 import {
   MENU_CONTENT_WIDTH,
   MENU_PROFILE_HEIGHT,
   MenuBorder,
   MenuIconWrapper,
-} from '@/components/sidebar/styles';
-import useMenuState from '@/stores/menu';
+} from '@/styles/sidebar';
 
 const SidebarContent: React.FC = () => {
   const { isOpened, selected, closeMenu } = useMenuState();

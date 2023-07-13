@@ -11,13 +11,13 @@ import {
   OnlyLogoIcon,
   TagIcon,
 } from '@/components/icons';
+import useMenuState, { TMenuState } from '@/stores/menu';
 import {
   MENU_PROFILE_HEIGHT,
   MenuBorder,
   MenuIconWrapper,
   MenuSelectedIcon,
-} from '@/components/sidebar/styles';
-import useMenuState, { TMenuState } from '@/stores/menu';
+} from '@/styles/sidebar';
 
 const ICON_COMPONENTS = {
   home: HomeIcon,

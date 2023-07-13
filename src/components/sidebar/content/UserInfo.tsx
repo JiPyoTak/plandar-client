@@ -2,13 +2,10 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import {
-  MENU_CONTENT_WIDTH,
-  MENU_PROFILE_HEIGHT,
-} from '@/components/sidebar/styles';
 import useLogout from '@/hooks/useLogout';
 import useUserStore from '@/stores/user';
 import { FONT_BOLD_3, FONT_REGULAR_4 } from '@/styles/font';
+import { MENU_CONTENT_WIDTH, MENU_PROFILE_HEIGHT } from '@/styles/sidebar';
 
 const UserInfo = () => {
   const { user } = useUserStore();
