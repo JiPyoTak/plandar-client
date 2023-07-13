@@ -8,14 +8,30 @@ type TImageState = 'loading' | 'error' | 'success';
 
 const DEFAULT_PROFILE = '/images/default-profile.png';
 
-const ProfileImage: React.FC = () => {
+type TProps = {
+  width?: string | number;
+  height?: string | number;
+};
+
+const ProfileImage: React.FC<TProps> = ({ width, height }) => {
   const { user } = useUserStore();
   const [imageState, setImageState] = useState<TImageState>('loading');
 
   return (
     <>
-      {imageState === 'loading' && <Placeholder />}
+      {imageState === 'loading' && (
+        <Placeholder
+          css={{
+            width: width ? width : '100%',
+            height: height ? height : '100%',
+          }}
+        />
+      )}
       <Image
+        css={{
+          width: width ? width : '100%',
+          height: height ? height : '100%',
+        }}
         src={user?.profileImage}
         alt="프로필 이미지"
         onLoad={() => {
@@ -33,14 +49,10 @@ const ProfileImage: React.FC = () => {
 
 const Placeholder = styled.div`
   position: absolute;
-  width: 100%;
-  height: 100%;
   background-color: ${({ theme }) => theme.background3};
 `;
 
 const Image = styled.img`
-  width: 100%;
-  height: 100%;
   object-fit: cover;
 `;
 

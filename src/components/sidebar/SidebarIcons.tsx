@@ -30,7 +30,7 @@ const SidebarIcons = () => {
         ))}
       </Menu>
       <IconContainer>
-        <ProfileImage />
+        <ProfileImage width={40} height={40} />
       </IconContainer>
     </Container>
   );
