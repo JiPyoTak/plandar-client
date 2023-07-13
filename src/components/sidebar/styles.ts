@@ -11,7 +11,7 @@ const MenuSelectedIcon = ({ theme }: { theme: Theme }) => css`
 `;
 
 const MenuBorder = ({ theme }: { theme: Theme }) => css`
-  &:not(:first-child) {
+  & > div:not(:first-child) {
     border-top: 1px solid ${theme.border1};
   }
 `;

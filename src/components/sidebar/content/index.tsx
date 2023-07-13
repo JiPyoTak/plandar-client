@@ -60,6 +60,7 @@ const InnerContainer = styled.div`
 
   display: flex;
   flex-direction: column;
+  ${MenuBorder}
 `;
 
 const Header = styled.div`
@@ -70,8 +71,6 @@ const Header = styled.div`
   height: 4rem;
 
   padding: 0.5rem 1rem;
-
-  ${MenuBorder}
 `;
 
 const Content = styled.div`
@@ -83,8 +82,6 @@ const Content = styled.div`
   gap: 1rem;
 
   padding: 1rem;
-
-  ${MenuBorder}
 
   & > div {
     border-radius: 10px;
