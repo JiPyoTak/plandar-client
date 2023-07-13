@@ -3,8 +3,8 @@ import React from 'react';
 import { useTheme } from '@emotion/react';
 
 import Dropdown from '@/components/common/dropdown';
-import ClassifierItem from '@/components/sidebar/classifier/ClassifierItem';
-import ClassifierTitle from '@/components/sidebar/classifier/ClassifierTitle';
+import ClassifierItem from '@/components/sidebar/content/classifier/ClassifierItem';
+import ClassifierTitle from '@/components/sidebar/content/classifier/ClassifierTitle';
 import useTypeClassifierState from '@/stores/classifier/type';
 
 const TypeClassifier: React.FC = () => {

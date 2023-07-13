@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react';
 
-import Dropdown from '../common/dropdown';
-
-import ClassifierItem from '@/components/sidebar/classifier/ClassifierItem';
-import ClassifierTitle from '@/components/sidebar/classifier/ClassifierTitle';
+import Dropdown from '@/components/common/dropdown';
+import ClassifierItem from '@/components/sidebar/content/classifier/ClassifierItem';
+import ClassifierTitle from '@/components/sidebar/content/classifier/ClassifierTitle';
 import { useGetPlansQuery } from '@/hooks/rq/plan';
 import useTagClassifierState from '@/stores/classifier/tag';
 import useDateState from '@/stores/date';
@@ -36,19 +35,21 @@ const TagClassifier: React.FC = () => {
   }, [planData]);
 
   return (
-    <Dropdown>
-      <Dropdown.Controller>
-        <ClassifierTitle title={'태그'} />
-      </Dropdown.Controller>
-      {tags.map((title) => (
-        <ClassifierItem
-          key={title}
-          onClick={() => toggleTagShow(title)}
-          isActive={!hiddenTags.has(title)}
-          text={title}
-        />
-      ))}
-    </Dropdown>
+    <div css={{ padding: '1rem 0' }}>
+      <Dropdown>
+        <Dropdown.Controller>
+          <ClassifierTitle title={'태그'} />
+        </Dropdown.Controller>
+        {tags.map((title) => (
+          <ClassifierItem
+            key={title}
+            onClick={() => toggleTagShow(title)}
+            isActive={!hiddenTags.has(title)}
+            text={title}
+          />
+        ))}
+      </Dropdown>
+    </div>
   );
 };
 
