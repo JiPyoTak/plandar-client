@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from 'react';
 
-import { css, useTheme } from '@emotion/react';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import Plan from '@/plan/Plan';
@@ -37,7 +37,6 @@ const TimePlan: React.FC<TProps> = (props) => {
   } = props;
 
   const { title, startTime, color } = plan;
-  const theme = useTheme();
   const moveDragPlan = useFocusedPlanState((state) => state.moveDragPlan);
   const editDragPlan = useFocusedPlanState((state) => state.editDragPlan);
   const className: string[] = [];
@@ -84,7 +83,6 @@ const TimePlan: React.FC<TProps> = (props) => {
         cellHeight(viewInfo),
         {
           opacity: isFocused ? 0.6 : 1,
-          color: isBgBright(color) ? theme.text2 : theme.white,
           backgroundColor: color,
         },
       ]}
@@ -183,7 +181,7 @@ const TitleSpan = styled.span<{ backgroundColor: TColor }>`
   word-wrap: break-word;
 
   color: ${({ backgroundColor, theme }) =>
-    isBgBright(backgroundColor) ? theme.white : theme.text2};
+    isBgBright(backgroundColor) ? theme.white : theme.text1};
 `;
 
 const ScrollTargeter = styled.div`

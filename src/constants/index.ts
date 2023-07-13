@@ -6,16 +6,16 @@ const CALENDAR_UNIT = ['일', '주', '월'] as const;
 const DAY_OF_WEEK_UNIT = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
 const SELECTABLE_COLOR: ReadonlyArray<TColor> = [
-  'primary',
-  'primary_dark',
-  'red',
-  'red_dark',
-  'orange',
-  'orange_dark',
-  'emerald_dark1',
-  'emerald_dark2',
+  'primary_light',
   'blue',
+  'red',
+  'orange',
+  'emerald_dark1',
+  'primary',
   'blue_dark',
+  'red_dark',
+  'orange_dark',
+  'emerald_dark2',
 ].map((colorName) => theme[colorName as keyof typeof theme] as TColor);
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;

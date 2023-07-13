@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import ChevronIcon from '@/components/icons/ChevronIcon';
@@ -9,6 +10,7 @@ import Plan from '@/plan/Plan';
 
 import { FONT_REGULAR_5 } from '@/styles/font';
 import { TColor } from '@/types';
+import { isBgBright } from '@/utils/color';
 
 interface IProps {
   view: IDayViewInfo;
@@ -32,6 +34,8 @@ const DayPlan: React.FC<IProps> = (props) => {
     onMouseLeave,
     onMouseDown,
   } = props;
+  const theme = useTheme();
+  const textColor = isBgBright(plan.color) ? theme.white : theme.text1;
 
   const { id, start, index, term, termAmount, st, et } = view;
 
@@ -57,6 +61,7 @@ const DayPlan: React.FC<IProps> = (props) => {
     >
       <div
         className={className.join(' ')}
+        css={{ color: textColor }}
         onMouseDown={() => onMouseDown(plan)}
         onMouseEnter={(e) => onMouseEnter(e, plan)}
         onClick={(e) => onClick(e, plan)}
@@ -65,13 +70,23 @@ const DayPlan: React.FC<IProps> = (props) => {
         <div>
           {!isEqualStart && (
             <Icons>
-              <ChevronIcon type="left" width={12} height={12} />
+              <ChevronIcon
+                type="left"
+                width={12}
+                height={12}
+                color={textColor}
+              />
             </Icons>
           )}
           <Title>{plan.title}</Title>
           {!isEqualEnd && (
             <Icons>
-              <ChevronIcon type="right" width={12} height={12} />
+              <ChevronIcon
+                type="right"
+                width={12}
+                height={12}
+                color={textColor}
+              />
             </Icons>
           )}
         </div>

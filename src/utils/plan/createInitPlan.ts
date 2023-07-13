@@ -1,4 +1,5 @@
 import Plan from '@/plan/Plan';
+import { theme } from '@/styles/theme';
 import { IPlan } from '@/types/rq/plan';
 
 const createInitPlan = (planData: Partial<IPlan>) => {
@@ -8,7 +9,7 @@ const createInitPlan = (planData: Partial<IPlan>) => {
     description: null,
     isAllDay: false,
     type: 'task',
-    color: '#52D681',
+    color: theme.primary_light,
     categoryId: null,
     tags: [],
     startTime: '',
