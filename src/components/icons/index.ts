@@ -6,6 +6,7 @@ import { ReactComponent as HamburgerIconComponent } from '@/assets/hamburger-ico
 import { ReactComponent as KakaoIconComponent } from '@/assets/kakao-icon.svg';
 import { ReactComponent as LogoIconComponent } from '@/assets/logo-icon.svg';
 import { ReactComponent as MemoIconComponent } from '@/assets/memo-icon.svg';
+import { ReactComponent as OnlyLogoIconComponent } from '@/assets/only-logo-icon.svg';
 import { ReactComponent as PencilIconComponent } from '@/assets/pencil-icon.svg';
 import { ReactComponent as PlusIconComponent } from '@/assets/plus-icon.svg';
 import { ReactComponent as SearchIconComponent } from '@/assets/search-icon.svg';
@@ -23,6 +24,7 @@ const ICON_COMPONENTS = {
   KakaoIcon: KakaoIconComponent,
   LogoIcon: LogoIconComponent,
   MemoIcon: MemoIconComponent,
+  OnlyLogoIcon: OnlyLogoIconComponent,
   TagIcon: TagIconComponent,
   CategoryIcon: CategoryIconComponent,
   HamburgerIcon: HamburgerIconComponent,
@@ -39,6 +41,7 @@ export const {
   GoogleIcon,
   LogoIcon,
   MemoIcon,
+  OnlyLogoIcon,
   TagIcon,
   CategoryIcon,
   HamburgerIcon,
