@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import TypeClassifier from '@/components/sidebar/TypeClassifier';
+import TypeClassifier from '@/components/sidebar/content/TypeClassifier';
 import { useCreatePlanMutation } from '@/hooks/rq/plan';
 import useClassifiedPlans from '@/hooks/useClassifiedPlans';
 import useDateState from '@/stores/date';

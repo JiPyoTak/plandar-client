@@ -1,16 +1,15 @@
 import React, { MouseEventHandler, useState } from 'react';
 
-import Dropdown from '../common/dropdown';
-
+import Dropdown from '@/components/common/dropdown';
 import { PlusIcon } from '@/components/icons';
 import CategoryModal, {
   TCategoryModalProps,
 } from '@/components/modal/CategoryModal';
-import ClassifierItem from '@/components/sidebar/classifier/ClassifierItem';
+import ClassifierItem from '@/components/sidebar/content/classifier/ClassifierItem';
 
 import ClassifierTitle, {
   CLASSIFIER_TITLE_ICON_SIZE,
-} from '@/components/sidebar/classifier/ClassifierTitle';
+} from '@/components/sidebar/content/classifier/ClassifierTitle';
 import {
   useCategoryCreate,
   useCategoryQuery,

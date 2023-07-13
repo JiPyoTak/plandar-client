@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import Calendar from '@/components/calendars/small/index';
-import SmallCalendar from '@/components/sidebar/SmallCalendar';
+import SmallCalendar from '@/components/sidebar/content/SmallCalendar';
 import { CALENDAR_UNIT } from '@/constants';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 

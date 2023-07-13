@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import ClassifierTitle from '@/components/sidebar/classifier/ClassifierTitle';
+import ClassifierTitle from '@/components/sidebar/content/classifier/ClassifierTitle';
 import { FONT_REGULAR_7 } from '@/styles/font';
 
 const ClassifierAdditionalMarginRight = '5px';

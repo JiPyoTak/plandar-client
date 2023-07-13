@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import CategoryClassifier from '@/components/sidebar/CategoryClassifier';
+import CategoryClassifier from '@/components/sidebar/content/CategoryClassifier';
 import { useCategoryCreate, useCategoryQuery } from '@/hooks/rq/category';
 import { useCreatePlanMutation } from '@/hooks/rq/plan';
 import useClassifiedPlans from '@/hooks/useClassifiedPlans';
