@@ -47,16 +47,16 @@ const Container = styled.span`
   cursor: default;
   user-select: none;
   color: ${({ theme }) => theme.primary};
-  background-color: ${({ theme }) => theme.primary_light3};
+  background-color: ${({ theme }) => theme.primary_light2};
   ${FONT_WEIGHT['bold']};
   ${FONT_SIZE['14']};
 
   &:hover {
-    color: ${({ theme }) => theme.primary_light3};
+    color: ${({ theme }) => theme.primary_light2};
     background-color: ${({ theme }) => theme.primary};
 
     & .x-icon > path {
-      stroke: ${({ theme }) => theme.primary_light3};
+      stroke: ${({ theme }) => theme.primary_light2};
     }
   }
 `;

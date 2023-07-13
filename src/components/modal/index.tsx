@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import { CrossIcon } from '@/components/icons';
 
 type TModalProps = PropsWithChildren<{
-  onClose?: (args: any) => any;
+  onClose?: (args: unknown) => unknown;
   isBgBlack?: boolean;
   isCloseBtn?: boolean;
   HeaderLeftComponent?: React.ReactNode;
@@ -75,7 +75,7 @@ const Background = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: ${({ theme }) => theme.black};
-  opacity: 0.7;
+  opacity: 0.3;
   z-index: 100;
 `;
 

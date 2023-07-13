@@ -1,11 +1,10 @@
 import { TColor } from '@/types';
 
 export const theme = {
-  primary: '#00AD7C',
-  primary_dark: '#00936E',
-  primary_light: '#52D681',
-  primary_light2: '#B5FF7D',
-  primary_light3: '#DCF0E7',
+  primary: '#176B87',
+  primary_dark: '#001C30',
+  primary_light: '#63B8D4',
+  primary_light2: '#D6F0F3',
   point: '#FFF8B5',
   placeholder: '#868686',
   border1: '#F3F3F3',

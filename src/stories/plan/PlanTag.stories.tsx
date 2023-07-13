@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import PlanTag from '@/components/modal/plan/PlanTag';
+import PlanTag from '@/components/modal/plan/Created/PlanTag';
 
 export default {
   title: 'Plan/PlanTag',

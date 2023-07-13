@@ -2,38 +2,24 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import CategoryClassifier from './CategoryClassifier';
-import SmallCalendar from './SmallCalendar';
-import TagClassifier from './TagClassifier';
-import TypeClassifier from './TypeClassifier';
-import useDrawerState from '@/stores/drawer';
-import { SIDEBAR_WIDTH } from '@/styles/home';
+import SidebarContent from '@/components/sidebar/content';
+import SidebarIcons from '@/components/sidebar/SidebarIcons';
 
-const SideBar: React.FC = () => {
-  const { isOpened } = useDrawerState();
-
+const Sidebar = () => {
   return (
-    <Container css={{ width: isOpened ? SIDEBAR_WIDTH : 0 }}>
-      <InnerContainer>
-        <SmallCalendar />
-        <TypeClassifier />
-        <CategoryClassifier />
-        <TagClassifier />
-      </InnerContainer>
+    <Container>
+      <SidebarIcons />
+      <SidebarContent />
     </Container>
   );
 };
 
-const InnerContainer = styled.div`
-  width: ${SIDEBAR_WIDTH};
-  padding: 2rem;
-`;
-
 const Container = styled.div`
   height: 100%;
-  background-color: ${({ theme }) => theme.white};
-  overflow: hidden;
-  transition: width 0.3s ease-in-out;
+
+  display: flex;
+
+  background-color: ${({ theme }) => theme.primary};
 `;
 
-export default SideBar;
+export default Sidebar;

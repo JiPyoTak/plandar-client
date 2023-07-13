@@ -1,6 +1,6 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 
-import { css, useTheme } from '@emotion/react';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import Plan from '@/plan/Plan';
@@ -17,13 +17,32 @@ type TProps = {
   plan: Plan;
   viewInfo: ITimeViewInfo;
   isFocused?: boolean;
+  isSelected?: boolean;
+  isHovered?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>, plan: Plan) => void;
+  onMouseEnter?: (e: React.MouseEvent<HTMLDivElement>, plan: Plan) => void;
+  onMouseLeave?: () => void;
 };
 
-const TimePlan: React.FC<TProps> = ({ plan, viewInfo, isFocused }) => {
+const TimePlan: React.FC<TProps> = (props) => {
+  const {
+    plan,
+    viewInfo,
+    isFocused = false,
+    isSelected,
+    isHovered,
+    onClick,
+    onMouseEnter,
+    onMouseLeave,
+  } = props;
+
   const { title, startTime, color } = plan;
-  const theme = useTheme();
   const moveDragPlan = useFocusedPlanState((state) => state.moveDragPlan);
   const editDragPlan = useFocusedPlanState((state) => state.editDragPlan);
+  const className: string[] = [];
+
+  if (isSelected) className.push('is_selected');
+  if (isHovered) className.push('is_hovered');
 
   const onMouseDownPlan = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const target = e.target as HTMLElement | null;
@@ -36,10 +55,27 @@ const TimePlan: React.FC<TProps> = ({ plan, viewInfo, isFocused }) => {
     } else {
       moveDragPlan(plan);
     }
+
+    onMouseLeave?.();
   };
+
+  const onClickPlan = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      onClick?.(e, plan);
+    },
+    [plan, onClick],
+  );
+
+  const onMouseEnterPlan = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      onMouseEnter?.(e, plan);
+    },
+    [plan, onMouseEnter],
+  );
 
   return (
     <Container
+      className={className.join(' ')}
       css={[
         cellTop(viewInfo),
         cellLeft(viewInfo),
@@ -47,11 +83,13 @@ const TimePlan: React.FC<TProps> = ({ plan, viewInfo, isFocused }) => {
         cellHeight(viewInfo),
         {
           opacity: isFocused ? 0.6 : 1,
-          color: isBgBright(color) ? theme.text2 : theme.white,
           backgroundColor: color,
         },
       ]}
       onMouseDown={onMouseDownPlan}
+      onClick={onClickPlan}
+      onMouseEnter={onMouseEnterPlan}
+      onMouseLeave={onMouseLeave}
     >
       <TimeSpan backgroundColor={color}>
         {getTimeString(new Date(startTime))}
@@ -109,6 +147,13 @@ const Container = styled.div`
   overflow: hidden;
   cursor: pointer;
 
+  transition: box-shadow 0.2s;
+
+  &.is_selected,
+  &.is_hovered {
+    box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.12);
+  }
+
   &:hover {
     z-index: ${TIMETABLE_Z_INDEX['timePlanHover']};
   }
@@ -136,7 +181,7 @@ const TitleSpan = styled.span<{ backgroundColor: TColor }>`
   word-wrap: break-word;
 
   color: ${({ backgroundColor, theme }) =>
-    isBgBright(backgroundColor) ? theme.white : theme.text2};
+    isBgBright(backgroundColor) ? theme.white : theme.text1};
 `;
 
 const ScrollTargeter = styled.div`

@@ -7,13 +7,11 @@ import moment from 'moment';
 import CalendarLayer from './CalendarLayer';
 import CalendarOverlay from './CalendarOverlay';
 import CalendarWeek from './CalendarWeek';
-import { useGetPlansQuery } from '@/hooks/rq/plan';
+import useClassifiedPlans from '@/hooks/useClassifiedPlans';
 import usePlanDrag from '@/hooks/usePlanDrag';
 import useDateState from '@/stores/date';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { getCalendarInfo } from '@/utils/calendar/getCalendarInfo';
-import { getFormattedDate } from '@/utils/date/getFormattedDate';
-import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
 import { getDaysPlanManager } from '@/utils/plan/getDaysPlanManager';
 
 const CalendarView = () => {
@@ -26,14 +24,7 @@ const CalendarView = () => {
     [year, month, day],
   );
 
-  const { startFormat, endFormat } = getFormattedDate(
-    ...getStartAndEndDate({ year, month, day }),
-  );
-
-  const { data } = useGetPlansQuery({
-    timemin: startFormat,
-    timemax: endFormat,
-  });
+  const data = useClassifiedPlans();
 
   const planManagers = useMemo(() => {
     const plans = (data ?? []).filter((plan) => plan.id !== focusedPlan?.id);
@@ -43,9 +34,12 @@ const CalendarView = () => {
   }, [data, focusedPlan, calendarInfos]);
 
   const onMouseDownCell: React.MouseEventHandler = useCallback((e) => {
-    const targetDate = (
-      (e.target as HTMLElement).closest('.date-time') as HTMLElement
-    )?.dataset?.date;
+    const target = e.target as HTMLElement;
+
+    if (target.closest('.time-plan')) return;
+
+    const targetDate = (target.closest('.date-time') as HTMLElement)?.dataset
+      ?.date;
 
     if (!targetDate) return;
 

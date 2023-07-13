@@ -25,6 +25,11 @@ const ClassifierItem: React.FC<TProps> = ({
 }) => {
   const theme = useTheme();
 
+  const onPencilEdit: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    onEdit?.();
+  };
+
   return (
     <Wrapper {...restProps}>
       <CircleDiv
@@ -36,7 +41,7 @@ const ClassifierItem: React.FC<TProps> = ({
       </CircleDiv>
       <span css={{ flex: 1 }}>{text}</span>
       {onEdit && (
-        <button onClick={onEdit}>
+        <button onClick={onPencilEdit}>
           <PencilIcon
             className={CLASSIFIER_EDITABLE_ITEM_CLASS}
             width={20}

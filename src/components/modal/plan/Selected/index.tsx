@@ -14,17 +14,15 @@ import { useEffectModal } from '@/hooks/useEffectModal';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { FONT_REGULAR_5 } from '@/styles/font';
+import { toast } from '@/toast';
 import { getPositionByViewPort } from '@/utils/calendar/getPositionByViewPort';
 
 const Selected = () => {
   const { mutate } = useDeletePlanMutation();
 
-  const { focusedPlan, editDragPlan } = useFocusedPlanState(
-    (state) => ({
-      focusedPlan: state.focusedPlan,
-      editDragPlan: state.editDragPlan,
-    }),
-    shallow,
+  const editDragPlan = useFocusedPlanState(
+    (state) => state.editDragPlan,
+    (prev, next) => prev === next,
   );
 
   const { selectedPlan, rect, clearPlan } = useSelectedPlanState(
@@ -40,12 +38,6 @@ const Selected = () => {
     initialPlan: selectedPlan,
     delay: 0,
   });
-
-  useEffect(() => {
-    if (!focusedPlan) return;
-
-    clearPlan();
-  }, [focusedPlan]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -67,19 +59,37 @@ const Selected = () => {
 
   if (!plan) return null;
 
-  const { title, color, startTime, endTime, tags, categoryId, isAllDay } = plan;
+  const {
+    title,
+    description,
+    color,
+    startTime,
+    endTime,
+    tags,
+    categoryId,
+    isAllDay,
+  } = plan;
+
   const position = getPositionByViewPort(rect, {
     width: 350,
     height: categoryId === null ? 160 : 210,
   });
 
   const deletePlan = () => {
-    mutate(plan.id);
-    clearPlan();
+    mutate(plan.id, {
+      onSuccess: () => {
+        clearPlan();
+        toast(`${plan.title} 일정이 삭제되었습니다`);
+      },
+      onError: () => {
+        toast('일정 삭제에 실패했습니다');
+      },
+    });
   };
 
   const editPlan = () => {
     editDragPlan(plan);
+    clearPlan();
   };
 
   return (
@@ -103,6 +113,7 @@ const Selected = () => {
       css={{ ...position }}
     >
       <h3 css={TITLE_STYLE}>{title}</h3>
+      {description && <p>{description}</p>}
       {categoryId !== null && <Category categoryId={categoryId} />}
       <TimeStamp startTime={startTime} endTime={endTime} hasTime={!isAllDay} />
       <TagList>
