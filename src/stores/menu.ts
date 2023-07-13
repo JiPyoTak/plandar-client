@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type TMenuState = 'calendar' | 'category' | 'tag' | 'home' | null;
+type TMenuState = 'calendar' | 'category' | 'tag' | 'home';
 
 interface IMenuState {
   isOpened: boolean;
@@ -15,10 +15,10 @@ interface IMenuActions {
 const useMenuState = create<IMenuState & IMenuActions>((set) => ({
   isOpened: true,
   selected: 'home',
-  closeMenu: () => set({ isOpened: false, selected: null }),
+  closeMenu: () => set({ isOpened: false }),
   selectMenu: (selected: TMenuState) =>
     set((state) => ({
-      selected: state.selected === selected ? null : selected,
+      selected,
       isOpened: state.selected === selected ? !state.isOpened : true,
     })),
 }));

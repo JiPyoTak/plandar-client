@@ -15,8 +15,13 @@ import useMenuState from '@/stores/menu';
 const WIDTH = '21.25rem';
 
 const SidebarContent: React.FC = () => {
-  const { isOpened, closeMenu } = useMenuState();
+  const { isOpened, selected, closeMenu } = useMenuState();
   const theme = useTheme();
+
+  const isAllShow = selected === 'home';
+  const isCalendarShow = isAllShow || selected === 'calendar';
+  const isCategoryShow = isAllShow || selected === 'category' || isAllShow;
+  const isTagShow = isAllShow || selected === 'tag';
 
   return (
     <Container css={{ width: isOpened ? WIDTH : 0 }}>
@@ -33,12 +38,14 @@ const SidebarContent: React.FC = () => {
           </MenuIconWrapper>
         </Header>
         <Content>
-          <SmallCalendarSizer>
-            <SmallCalendar />
-          </SmallCalendarSizer>
+          {isCalendarShow && (
+            <SmallCalendarSizer>
+              <SmallCalendar />
+            </SmallCalendarSizer>
+          )}
           {/* <TypeClassifier /> */}
-          <CategoryClassifier />
-          <TagClassifier />
+          {isCategoryShow && <CategoryClassifier />}
+          {isTagShow && <TagClassifier />}
         </Content>
         <UserInfo />
       </InnerContainer>

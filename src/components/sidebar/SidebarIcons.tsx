@@ -27,10 +27,7 @@ const ICON_COMPONENTS = {
 
 const SidebarIcons = () => {
   const theme = useTheme();
-  const { selected, selectMenu } = useMenuState((state) => ({
-    selected: state.selected,
-    selectMenu: state.selectMenu,
-  }));
+  const { isOpened, selected, selectMenu } = useMenuState();
 
   const onClickMenuIcon: React.MouseEventHandler = (e) => {
     const target = e.target as HTMLButtonElement;
@@ -54,7 +51,7 @@ const SidebarIcons = () => {
           <MenuIconWrapper
             key={key}
             name={key}
-            css={key === selected && MenuSelectedIcon({ theme })}
+            css={key === selected && isOpened && MenuSelectedIcon({ theme })}
           >
             <IconComponent width={32} height={32} />
           </MenuIconWrapper>
