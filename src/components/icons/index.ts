@@ -1,3 +1,4 @@
+import { ReactComponent as CalendarIconComponent } from '@/assets/calendar-icon.svg';
 import { ReactComponent as CategoryIconComponent } from '@/assets/category-icon.svg';
 import { ReactComponent as CheckIconComponent } from '@/assets/check-icon.svg';
 import { ReactComponent as CrossIconComponent } from '@/assets/cross-icon.svg';
@@ -16,6 +17,7 @@ import { ReactComponent as TrashcanIconComponent } from '@/assets/trashcan-icon.
 import IconFrameComponent from '@/components/common/IconFrameComponent';
 
 const ICON_COMPONENTS = {
+  CalendarIcon: CalendarIconComponent,
   CheckIcon: CheckIconComponent,
   PencilIcon: PencilIconComponent,
   PlusIcon: PlusIconComponent,
@@ -34,6 +36,7 @@ const ICON_COMPONENTS = {
 } as const;
 
 export const {
+  CalendarIcon,
   CheckIcon,
   PencilIcon,
   PlusIcon,
