@@ -1,6 +1,7 @@
 import { Theme, css } from '@emotion/react';
+import styled from '@emotion/styled';
 
-const SelectedIcon = ({ theme }: { theme: Theme }) => css`
+const MenuSelectedIcon = ({ theme }: { theme: Theme }) => css`
   background-color: ${theme.white};
 
   & > svg * {
@@ -9,4 +10,31 @@ const SelectedIcon = ({ theme }: { theme: Theme }) => css`
   }
 `;
 
-export { SelectedIcon };
+const MenuBorder = ({ theme }: { theme: Theme }) => css`
+  &:not(:first-child) {
+    border-top: 1px solid ${theme.border1};
+  }
+`;
+
+const MenuIconWrapper = styled.button`
+  padding: 0.25rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+
+  & > svg * {
+    color: ${({ theme }) => theme.white};
+    stroke: ${({ theme }) => theme.white};
+  }
+
+  &:hover {
+    ${MenuSelectedIcon}
+  }
+`;
+
+export { MenuIconWrapper, MenuSelectedIcon, MenuBorder };
