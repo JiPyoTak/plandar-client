@@ -7,7 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import moment from 'moment';
 
 import CalendarView from '@/components/home/main/calendar';
-import Header from '@/components/home/main/header';
+import CalendarHeader from '@/components/home/main/header';
 import { CALENDAR_UNIT } from '@/constants';
 import { useCreatePlanMutation } from '@/hooks/query/plan';
 import useDateState from '@/stores/date';
@@ -105,7 +105,7 @@ const Template: ComponentStory<typeof CalendarView> = () => {
     </Container>
   );
 };
-const Template2 = () => <Header />;
+const Template2 = () => <CalendarHeader />;
 
 const Container = styled.div`
   width: 100%;
