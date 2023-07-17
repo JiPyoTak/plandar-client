@@ -1,6 +1,6 @@
 import { Moment } from 'moment';
 
-import { IPlan } from './rq/plan';
+import { IPlan } from './query/plan';
 import { Union } from './union';
 import { CALENDAR_UNIT, DAY_OF_WEEK_UNIT } from '@/constants';
 import { ICalendarInfo } from '@/utils/calendar/getCalendarInfo';

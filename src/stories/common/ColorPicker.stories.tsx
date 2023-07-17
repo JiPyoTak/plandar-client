@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import ColorPicker from '@/components/common/ColorPicker';
-import ChevronIcon from '@/components/icons/ChevronIcon';
+import ChevronIcon from '@/components/common/icons/ChevronIcon';
 import { SELECTABLE_COLOR } from '@/constants';
 import { TColor } from '@/types';
 

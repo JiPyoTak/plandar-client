@@ -5,9 +5,9 @@ import { Navigate } from 'react-router-dom';
 import { Theme, css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import GoogleButton from '@/components/buttons/GoogleButton';
-import KakaoButton from '@/components/buttons/KakaoButton';
-import Logo from '@/components/logo';
+import Logo from '@/components/common/Logo';
+import GoogleButton from '@/components/login/GoogleButton';
+import KakaoButton from '@/components/login/KakaoButton';
 import { SERVER_URL } from '@/constants';
 import useUserStore from '@/stores/user';
 import { FONT_REGULAR_4 } from '@/styles/font';

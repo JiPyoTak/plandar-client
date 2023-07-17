@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import StylishButton from '@/components/buttons/StylishButton';
+import StylishButton from '@/components/core/buttons/StylishButton';
 
 export default {
   title: 'Buttons/StylishButton',

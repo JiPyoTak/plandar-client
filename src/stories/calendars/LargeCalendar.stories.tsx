@@ -6,10 +6,10 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { useQueryClient } from '@tanstack/react-query';
 import moment from 'moment';
 
-import CalendarView from '@/components/calendars/large';
-import CalendarHeader from '@/components/common/calendar/CalendarHeader';
+import CalendarView from '@/components/home/main/calendar';
+import Header from '@/components/home/main/header';
 import { CALENDAR_UNIT } from '@/constants';
-import { useCreatePlanMutation } from '@/hooks/rq/plan';
+import { useCreatePlanMutation } from '@/hooks/query/plan';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import planStubManager from '@/stories/apis/data/plan';
@@ -105,7 +105,7 @@ const Template: ComponentStory<typeof CalendarView> = () => {
     </Container>
   );
 };
-const Template2 = () => <CalendarHeader />;
+const Template2 = () => <Header />;
 
 const Container = styled.div`
   width: 100%;

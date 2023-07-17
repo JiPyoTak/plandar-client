@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import HoveredModal from '@/components/modal/plan/Hovered';
+import HoveredModal from '@/components/modal/plan/hover';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 import planStubManager from '@/stories/apis/data/plan';
 

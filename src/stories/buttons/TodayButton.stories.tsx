@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import TodayButton from '@/components/buttons/TodayButton';
+import TodayButton from '@/components/core/buttons/TodayButton';
 
 export default {
   title: 'Buttons/TodayButton',

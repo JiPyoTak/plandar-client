@@ -1,8 +1,8 @@
 import moment, { Moment } from 'moment';
 
-import Plan from '@/plan/Plan';
+import Plan from '@/core/plan/Plan';
 import { IChangePlanViewType } from '@/stores/plan/focusedPlan';
-import { IPlan } from '@/types/rq/plan';
+import { IPlan } from '@/types/query/plan';
 
 interface IBaseArgs {
   targetDate: Moment;

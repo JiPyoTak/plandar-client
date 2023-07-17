@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import CategoryModal from '@/components/modal/CategoryModal';
+import CategoryModal from '@/components/modal/cateogry';
 import { SELECTABLE_COLOR } from '@/constants';
 
 export default {

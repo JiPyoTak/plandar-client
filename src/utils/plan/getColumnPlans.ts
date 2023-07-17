@@ -1,6 +1,6 @@
 import { Moment } from 'moment';
 
-import Plan from '@/plan/Plan';
+import Plan from '@/core/plan/Plan';
 
 const format = 'YYYYMMDD';
 

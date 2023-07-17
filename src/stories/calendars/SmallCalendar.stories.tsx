@@ -3,14 +3,14 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import Calendar from '@/components/calendars/small/index';
-import SmallCalendar from '@/components/sidebar/content/SmallCalendar';
+import MiniCalendar from '@/components/common/mini-calendar/index';
+import SmallCalendar from '@/components/home/sidebar/content/SmallCalendar';
 import { CALENDAR_UNIT } from '@/constants';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 
 export default {
   title: 'calendars/SmallCalendar',
-  component: Calendar,
+  component: MiniCalendar,
   argTypes: {
     selectedCalendarIndex: {
       options: [0, 1, 2],
@@ -20,7 +20,7 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof Calendar>;
+} as ComponentMeta<typeof MiniCalendar>;
 
 const Container = styled.div`
   width: 300px;

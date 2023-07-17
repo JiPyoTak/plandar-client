@@ -3,7 +3,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { Color } from './styles';
-import { useCategoryQuery } from '@/hooks/rq/category';
+import { useCategoryQuery } from '@/hooks/query/category';
 
 interface IProps {
   categoryId: number;
