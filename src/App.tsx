@@ -3,14 +3,13 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import styled from '@emotion/styled';
 
-import PrivateRoute from './components/common/PrivateRoute';
+import PrivateRoute from './components/core/PrivateRoute';
 import useLogin from './hooks/useLogin';
 import Login from './pages/Login';
+import { toast } from '@/core/toast';
 import Home from '@/pages';
-import Test from '@/pages/Test';
 import useUserStore from '@/stores/user';
 import GlobalStyle from '@/styles/GlobalStyle';
-import { toast } from '@/toast';
 
 const App = () => {
   const { isLoading: isLoginLoading } = useLogin();
@@ -34,7 +33,6 @@ const App = () => {
               <Route path="/" element={<Home />} />
             </Route>
             <Route path="/login" element={<Login />} />
-            <Route path="/test" element={<Test />} />
           </Routes>
         </BrowserRouter>
       )}

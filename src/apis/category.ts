@@ -1,5 +1,5 @@
 import { axiosAPI } from '@/apis/axios';
-import { ICategory, ICategoryWithoutId } from '@/types/rq/category';
+import { ICategory, ICategoryWithoutId } from '@/types/query/category';
 
 const getCategoryAPI = async (): Promise<ICategory[]> => {
   const { data } = await axiosAPI.get(`/category`);

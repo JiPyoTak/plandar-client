@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 
-import { FONT_SIZE } from './fontSize';
-import { FONT_WEIGHT } from './fontWeight';
+import { FONT_SIZE } from './sizes';
+import { FONT_WEIGHT } from './weights';
 
 const FONT_BOLD_1 = css([FONT_SIZE[22], FONT_WEIGHT.bold]);
 const FONT_BOLD_2 = css([FONT_SIZE[18], FONT_WEIGHT.bold]);

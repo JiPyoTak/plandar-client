@@ -2,13 +2,13 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import MainCalendar from '@/components/calendars/large';
-import CalendarHeader from '@/components/common/calendar/CalendarHeader';
-import PlanModal from '@/components/modal/plan/Created';
-import HoveredPlanModal from '@/components/modal/plan/Hovered';
-import SelectedPlanModal from '@/components/modal/plan/Selected';
-import SideBar from '@/components/sidebar';
-import Timetable from '@/components/timetable';
+import MainCalendar from '@/components/home/main/calendar';
+import Header from '@/components/home/main/header';
+import Timetable from '@/components/home/main/timetable';
+import SideBar from '@/components/home/sidebar';
+import PlanModal from '@/components/modal/plan/create';
+import HoveredPlanModal from '@/components/modal/plan/hover';
+import SelectedPlanModal from '@/components/modal/plan/select';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 
 const CALENDAR_COMPONENTS = {
@@ -27,7 +27,7 @@ const Home: React.FC = () => {
       <Container>
         <SideBar />
         <CalendarContainer>
-          <CalendarHeader />
+          <Header />
           <div className="calendar-main">
             <CalendarComponent />
           </div>

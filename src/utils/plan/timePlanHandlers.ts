@@ -1,7 +1,7 @@
 import moment, { Moment } from 'moment';
 
 import { TIMETABLE_CELL_UNIT } from '@/constants';
-import Plan from '@/plan/Plan';
+import Plan from '@/core/plan/Plan';
 import { IChangePlanViewType } from '@/stores/plan/focusedPlan';
 
 type TProps = {

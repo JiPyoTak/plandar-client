@@ -1,7 +1,7 @@
-import DaysPlanManager from '@/plan/DaysPlanManager';
-import Plan from '@/plan/Plan';
+import DaysPlanManager from '@/core/plan/DaysPlanManager';
+import Plan from '@/core/plan/Plan';
 import { TDateYMD } from '@/stores/date';
-import { IPlan } from '@/types/rq/plan';
+import { IPlan } from '@/types/query/plan';
 import { ICalendarInfo } from '@/utils/calendar/getCalendarInfo';
 
 const getYMD = <T extends TDateYMD>(date: T) => {

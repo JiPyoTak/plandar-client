@@ -1,5 +1,5 @@
-import Plan from '@/plan/Plan';
-import { IPlan } from '@/types/rq/plan';
+import Plan from '@/core/plan/Plan';
+import { IPlan } from '@/types/query/plan';
 
 const divideTimePlans = (plans: IPlan[]) => {
   return plans.reduce(

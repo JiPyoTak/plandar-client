@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import DirectionButtons from '@/components/buttons/DirectionButtons';
+import DirectionButtons from '@/components/core/buttons/DirectionButtons';
 
 export default {
   title: 'Buttons/DirectionButtons',

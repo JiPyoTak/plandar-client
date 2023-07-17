@@ -2,9 +2,9 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { shallow } from 'zustand/shallow';
 
-import { useUpdatePlanMutation } from './rq/plan';
+import { useUpdatePlanMutation } from './query/plan';
+import { toast } from '@/core/toast';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
-import { toast } from '@/toast';
 
 export type MouseEventHandler = React.MouseEventHandler<HTMLDivElement>;
 

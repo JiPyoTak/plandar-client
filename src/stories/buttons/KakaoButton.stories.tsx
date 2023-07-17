@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import KakaoButton from '@/components/buttons/KakaoButton';
+import KakaoButton from '@/components/login/KakaoButton';
 
 export default {
   title: 'Buttons/KakaoButton',

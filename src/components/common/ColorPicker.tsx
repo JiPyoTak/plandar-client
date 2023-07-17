@@ -8,7 +8,7 @@ import React, {
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { CheckIcon } from '@/components/icons';
+import { CheckIcon } from '@/components/common/icons';
 import { SELECTABLE_COLOR } from '@/constants';
 import { ColorCircle } from '@/styles/category';
 import { TColor } from '@/types';

@@ -1,9 +1,9 @@
-import { useGetPlansQuery } from '@/hooks/rq/plan';
+import { useGetPlansQuery } from '@/hooks/query/plan';
 import useCategoryClassifierState from '@/stores/classifier/category';
 import useTagClassifierState from '@/stores/classifier/tag';
 import useTypeClassifierState from '@/stores/classifier/type';
 import useDateState from '@/stores/date';
-import { IPlan } from '@/types/rq/plan';
+import { IPlan } from '@/types/query/plan';
 import { getFormattedDate } from '@/utils/date/getFormattedDate';
 import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
 

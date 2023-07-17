@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import Checkbox from '@/components/buttons/Checkbox';
+import Checkbox from '@/components/core/buttons/Checkbox';
 
 export default {
   title: 'Buttons/Checkbox',

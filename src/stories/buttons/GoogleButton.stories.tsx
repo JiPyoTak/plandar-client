@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import GoogleButton from '@/components/buttons/GoogleButton';
+import GoogleButton from '@/components/login/GoogleButton';
 
 export default {
   title: 'Buttons/GoogleButton',

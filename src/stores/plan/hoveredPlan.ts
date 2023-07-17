@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import Plan from '@/plan/Plan';
+import Plan from '@/core/plan/Plan';
 
 type TRect = 'top' | 'left' | 'right' | 'bottom';
 

@@ -1,7 +1,7 @@
 import StubManager from '@/stories/apis/data';
 import createRandomColor from '@/stories/utils/createRandomColor';
 import { theme } from '@/styles/theme';
-import { ICategory } from '@/types/rq/category';
+import { ICategory } from '@/types/query/category';
 
 const initialCategories = [
   {
