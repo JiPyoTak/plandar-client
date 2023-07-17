@@ -1,9 +1,9 @@
 import moment, { MomentInput } from 'moment';
 
-import Plan from '@/plan/Plan';
+import Plan from '@/core/plan/Plan';
 import StubManager from '@/stories/apis/data';
 import createRandomColor from '@/stories/utils/createRandomColor';
-import { IPlan } from '@/types/rq/plan';
+import { IPlan } from '@/types/query/plan';
 
 class PlanStubManager extends StubManager<Plan> {
   private static instance: PlanStubManager;

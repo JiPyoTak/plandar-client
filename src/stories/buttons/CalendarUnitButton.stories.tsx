@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import CalendarUnitButton from '@/components/buttons/CalendarUnitButton';
+import CalendarUnitButton from '@/components/core/buttons/CalendarUnitButton';
 
 export default {
   title: 'Buttons/CalendarUnitButton',

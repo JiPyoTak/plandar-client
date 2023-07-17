@@ -2,7 +2,7 @@ import { useRef } from 'react';
 
 import { ComponentStory } from '@storybook/react';
 
-import Input from '@/components/common/Input';
+import Input from '@/components/core/Input';
 
 export default {
   title: 'Common/Input',

@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import SelectedModal from '@/components/modal/plan/Selected';
+import SelectedModal from '@/components/modal/plan/select';
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import planStubManager from '@/stories/apis/data/plan';
 

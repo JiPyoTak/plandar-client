@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import PlanModal from '@/components/modal/plan/Created';
+import PlanModal from '@/components/modal/plan/create';
 
 export default {
   title: 'Modals/PlanModal',

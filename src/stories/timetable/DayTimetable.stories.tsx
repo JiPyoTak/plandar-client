@@ -8,8 +8,8 @@ import moment from 'moment';
 
 import planStubManager from '../apis/data/plan';
 
-import Timetable from '@/components/timetable';
-import { useCreatePlanMutation } from '@/hooks/rq/plan';
+import Timetable from '@/components/home/main/timetable';
+import { useCreatePlanMutation } from '@/hooks/query/plan';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import {

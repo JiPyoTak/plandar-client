@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import Plan from '@/plan/Plan';
+import Plan from '@/core/plan/Plan';
 import { TDateYMD } from '@/stores/date';
 import { TDateYMDHM } from '@/types/time';
 

@@ -6,8 +6,8 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { useQueryClient } from '@tanstack/react-query';
 import moment from 'moment';
 
-import Timetable from '@/components/timetable';
-import { useCreatePlanMutation } from '@/hooks/rq/plan';
+import Timetable from '@/components/home/main/timetable';
+import { useCreatePlanMutation } from '@/hooks/query/plan';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
 import planStubManager from '@/stories/apis/data/plan';

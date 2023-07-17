@@ -1,6 +1,6 @@
 import { axiosAPI } from './axios';
-import { IGetPlansPayload } from '@/hooks/rq/plan';
-import { IPlan, TPlanInput } from '@/types/rq/plan';
+import { IGetPlansPayload } from '@/hooks/query/plan';
+import { IPlan, TPlanInput } from '@/types/query/plan';
 
 const getPlansApi = async ({ timemin, timemax }: IGetPlansPayload) => {
   const { data } = await axiosAPI.get('/plan/between', {

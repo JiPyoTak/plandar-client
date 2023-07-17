@@ -1,8 +1,8 @@
 import moment from 'moment';
 import { create } from 'zustand';
 
-import Plan from '@/plan/Plan';
-import { IPlan } from '@/types/rq/plan';
+import Plan from '@/core/plan/Plan';
+import { IPlan } from '@/types/query/plan';
 import { createInitPlan } from '@/utils/plan/createInitPlan';
 import { changePlanView } from '@/utils/plan/planViewHandlerToMonth';
 import { timePlanHandlers } from '@/utils/plan/timePlanHandlers';

@@ -9,7 +9,7 @@ import {
   ReactNode,
 } from 'react';
 
-import { eventManager } from '@/toast/eventManager';
+import { eventManager } from '@/core/toast/eventManager';
 import {
   TToastId,
   TToastContainerProps,

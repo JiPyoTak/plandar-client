@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import Plan from '@/plan/Plan';
+import Plan from '@/core/plan/Plan';
 
 interface IProps {
   initialPlan: Plan | null;

@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import TypeClassifier from '@/components/sidebar/content/TypeClassifier';
-import { useCreatePlanMutation } from '@/hooks/rq/plan';
+import TypeClassifier from '@/components/home/sidebar/content/classifier/TypeClassifier';
+import { useCreatePlanMutation } from '@/hooks/query/plan';
 import useClassifiedPlans from '@/hooks/useClassifiedPlans';
 import useDateState from '@/stores/date';
 import planStubManager from '@/stories/apis/data/plan';
 import { createPlanApiHandler, getPlansApiHandler } from '@/stories/apis/plan';
 import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
-import { TPlanType } from '@/types/rq/plan';
+import { TPlanType } from '@/types/query/plan';
 
 export default {
   title: 'Sidebar/Classifier',

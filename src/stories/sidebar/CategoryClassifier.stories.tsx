@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import CategoryClassifier from '@/components/sidebar/content/CategoryClassifier';
-import { useCategoryCreate, useCategoryQuery } from '@/hooks/rq/category';
-import { useCreatePlanMutation } from '@/hooks/rq/plan';
+import CategoryClassifier from '@/components/home/sidebar/content/classifier/CategoryClassifier';
+import { useCategoryCreate, useCategoryQuery } from '@/hooks/query/category';
+import { useCreatePlanMutation } from '@/hooks/query/plan';
 import useClassifiedPlans from '@/hooks/useClassifiedPlans';
 import useDateState from '@/stores/date';
 import {

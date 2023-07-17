@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import Logo from '@/components/logo';
+import Logo from '@/components/common/Logo';
 
 export default {
   title: 'logo/Logo',

@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 
 import { shallow } from 'zustand/shallow';
 
+import Plan from '@/core/plan/Plan';
 import useDebounce from '@/hooks/useDebounce';
-import Plan from '@/plan/Plan';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
