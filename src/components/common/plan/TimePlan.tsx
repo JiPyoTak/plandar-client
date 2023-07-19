@@ -98,7 +98,7 @@ const TimePlan: React.FC<TProps> = (props) => {
         {getTimeString(new Date(startTime))}
       </TimeSpan>
       <TitleSpan backgroundColor={color}>{title}</TitleSpan>
-      <ScrollTargeter data-type="resizer" />
+      <ResizeButton data-type="resizer" />
     </Container>
   );
 };
@@ -187,7 +187,7 @@ const TitleSpan = styled.span<{ backgroundColor: TColor }>`
     isBgBright(backgroundColor) ? theme.white : theme.text1};
 `;
 
-const ScrollTargeter = styled.div`
+const ResizeButton = styled.button`
   width: 100%;
   height: 0.5rem;
   position: absolute;
