@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import useTimetableScroll, {
   TTimetableScrollController,
 } from '@/hooks/useTimetableScroll';
+import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { FONT_BOLD_8 } from '@/styles/font';
 import {
   TIMETABLE_SCROLL_STYLE,
@@ -67,14 +68,18 @@ const HorizontalScroll: React.FC<THorizontalScrollProps> = ({
 
 type TVerticalScrollProps = PropsWithChildren<{
   className?: string;
-  showScroll?: boolean;
 }>;
 
 const VerticalScroll: React.FC<TVerticalScrollProps> = ({
   children,
   className,
-  showScroll = true,
 }) => {
+  const selectedPlanId = useSelectedPlanState(
+    (state) => state.selectedPlan?.id,
+    (prev, next) => prev === next,
+  );
+  const showScroll = !selectedPlanId;
+
   return (
     <VerticalFlexibleContainer className={className}>
       <VerticalScrollDiv css={{ overflowY: showScroll ? 'scroll' : 'hidden' }}>

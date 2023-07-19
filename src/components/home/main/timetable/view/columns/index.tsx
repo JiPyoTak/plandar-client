@@ -11,7 +11,6 @@ import TimetableScroll from '@/components/home/main/timetable/TimetableScroll';
 import Plan from '@/core/plan/Plan';
 import usePlanDrag from '@/hooks/usePlanDrag';
 import { TimetableViewMomentProvider } from '@/hooks/useTimetableViewMoment';
-import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { TIMETABLE_CELL_MIN_WIDTH } from '@/styles/timetable';
 import getColumnPlans from '@/utils/plan/getColumnPlans';
 
@@ -29,13 +28,9 @@ const TimetableColumns: React.FC<TProps> = ({
   changeCurrentDate,
 }) => {
   const columnPlans = getColumnPlans(dateMoments, timePlans);
-  const selectedPlanId = useSelectedPlanState(
-    (state) => state.selectedPlan?.id,
-    (prev, next) => prev === next,
-  );
 
   return (
-    <TimetableScroll.Vertical showScroll={!selectedPlanId}>
+    <TimetableScroll.Vertical>
       <TimetableScroll.Horizontal
         scrollId="view"
         fixedComponent={<TimetableTimeline />}
