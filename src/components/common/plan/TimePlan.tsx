@@ -87,6 +87,9 @@ const TimePlan: React.FC<TProps> = (props) => {
         {
           opacity: isFocused ? 0.6 : 1,
           backgroundColor: color,
+          zIndex: isSelected
+            ? TIMETABLE_Z_INDEX.timePlanCreate
+            : TIMETABLE_Z_INDEX.timePlan,
         },
       ]}
       onMouseDown={onMouseDownPlan}
@@ -143,7 +146,6 @@ const cellHeight = ({ term }: ITimeViewInfo) => {
 
 const Container = styled.div`
   position: absolute;
-  z-index: ${TIMETABLE_Z_INDEX['timePlan']};
 
   border: 1px solid white;
   border-radius: 8px;
@@ -187,7 +189,7 @@ const TitleSpan = styled.span<{ backgroundColor: TColor }>`
     isBgBright(backgroundColor) ? theme.white : theme.text1};
 `;
 
-const ResizeButton = styled.button`
+const ResizeButton = styled.div`
   width: 100%;
   height: 0.5rem;
   position: absolute;
