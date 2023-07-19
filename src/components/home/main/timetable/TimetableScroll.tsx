@@ -6,7 +6,10 @@ import useTimetableScroll, {
   TTimetableScrollController,
 } from '@/hooks/useTimetableScroll';
 import { FONT_BOLD_8 } from '@/styles/font';
-import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
+import {
+  TIMETABLE_SCROLL_STYLE,
+  TIMETABLE_SCROLL_WIDTH,
+} from '@/styles/timetable';
 
 type TCompounds = {
   Horizontal: typeof HorizontalScroll;
@@ -62,6 +65,28 @@ const HorizontalScroll: React.FC<THorizontalScrollProps> = ({
   );
 };
 
+type TVerticalScrollProps = PropsWithChildren<{
+  className?: string;
+  showScroll?: boolean;
+}>;
+
+const VerticalScroll: React.FC<TVerticalScrollProps> = ({
+  children,
+  className,
+  showScroll = true,
+}) => {
+  return (
+    <VerticalFlexibleContainer className={className}>
+      <VerticalScrollDiv css={{ overflowY: showScroll ? 'scroll' : 'hidden' }}>
+        {children}
+      </VerticalScrollDiv>
+      {!showScroll && (
+        <div css={{ flex: `0 0 ${TIMETABLE_SCROLL_WIDTH}` }}></div>
+      )}
+    </VerticalFlexibleContainer>
+  );
+};
+
 const FlexibleContainer = styled.div`
   display: flex;
   overflow: hidden;
@@ -86,14 +111,19 @@ const HorizontalScrollDiv = styled.div`
   overflow-y: hidden;
 `;
 
-const VerticalScroll = styled.div`
-  ${TIMETABLE_SCROLL_STYLE}
-
+const VerticalFlexibleContainer = styled.div`
   flex: 1 0 0;
   min-width: 100%;
 
+  display: flex;
+  overflow: hidden;
+`;
+
+const VerticalScrollDiv = styled.div`
+  ${TIMETABLE_SCROLL_STYLE}
+
+  flex: 1 0 0;
   overflow-x: hidden;
-  overflow-y: scroll;
 `;
 
 TimetableScroll.Horizontal = HorizontalScroll;

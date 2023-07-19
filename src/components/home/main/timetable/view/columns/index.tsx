@@ -35,9 +35,7 @@ const TimetableColumns: React.FC<TProps> = ({
   );
 
   return (
-    <TimetableScroll.Vertical
-      css={{ overflow: selectedPlanId ? 'hidden' : 'auto' }}
-    >
+    <TimetableScroll.Vertical showScroll={!selectedPlanId}>
       <TimetableScroll.Horizontal
         scrollId="view"
         fixedComponent={<TimetableTimeline />}
