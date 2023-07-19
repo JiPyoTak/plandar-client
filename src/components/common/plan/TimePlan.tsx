@@ -14,6 +14,7 @@ import { isBgBright } from '@/utils/color';
 import { getTimeString } from '@/utils/date/getTimeString';
 
 type TProps = {
+  className?: string;
   plan: Plan;
   viewInfo: ITimeViewInfo;
   isFocused?: boolean;
@@ -26,6 +27,7 @@ type TProps = {
 
 const TimePlan: React.FC<TProps> = (props) => {
   const {
+    className: inheritedClassName,
     plan,
     viewInfo,
     isFocused = false,
@@ -41,6 +43,7 @@ const TimePlan: React.FC<TProps> = (props) => {
   const editDragPlan = useFocusedPlanState((state) => state.editDragPlan);
   const className: string[] = [];
 
+  if (inheritedClassName) className.push(inheritedClassName);
   if (isSelected) className.push('is_selected');
   if (isHovered) className.push('is_hovered');
 

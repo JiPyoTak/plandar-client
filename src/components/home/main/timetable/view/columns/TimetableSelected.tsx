@@ -4,6 +4,7 @@ import TimePlan from '@/components/common/plan/TimePlan';
 import TimePlanManager from '@/core/plan/TimePlanManager';
 import useTimetableViewMoment from '@/hooks/useTimetableViewMoment';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
+import { TIMETABLE_Z_INDEX } from '@/styles/timetable';
 
 const TimetableSelected: React.FC = () => {
   const viewMoment = useTimetableViewMoment();
@@ -27,7 +28,11 @@ const TimetableSelected: React.FC = () => {
   return (
     <div css={{ width: 'calc(100% - 0.75rem)', position: 'relative' }}>
       <div css={{ width: '100%', position: 'absolute' }}>
-        <TimePlan plan={focusedPlan} viewInfo={focusedViewInfo} />
+        <TimePlan
+          css={{ zIndex: TIMETABLE_Z_INDEX.timePlanCreate }}
+          plan={focusedPlan}
+          viewInfo={focusedViewInfo}
+        />
       </div>
     </div>
   );
