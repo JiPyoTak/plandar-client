@@ -7,7 +7,7 @@ import TimetableCellColumn from './TimetableCellColumn';
 import TimetablePlanColumn from './TimetablePlanColumn';
 import TimetableSelected from './TimetableSelected';
 import TimetableTimeline from './TimetableTimeline';
-import TimetableScroller from '@/components/home/main/timetable/TimetableScroller';
+import TimetableScroll from '@/components/home/main/timetable/TimetableScroll';
 import Plan from '@/core/plan/Plan';
 import usePlanDrag from '@/hooks/usePlanDrag';
 import { TimetableViewMomentProvider } from '@/hooks/useTimetableViewMoment';
@@ -35,10 +35,10 @@ const TimetableColumns: React.FC<TProps> = ({
   );
 
   return (
-    <TimetableScroller.Vertical
+    <TimetableScroll.Vertical
       css={{ overflow: selectedPlanId ? 'hidden' : 'auto' }}
     >
-      <TimetableScroller.Horizontal
+      <TimetableScroll.Horizontal
         scrollId="view"
         fixedComponent={<TimetableTimeline />}
       >
@@ -61,8 +61,8 @@ const TimetableColumns: React.FC<TProps> = ({
             );
           })}
         </Container>
-      </TimetableScroller.Horizontal>
-    </TimetableScroller.Vertical>
+      </TimetableScroll.Horizontal>
+    </TimetableScroll.Vertical>
   );
 };
 

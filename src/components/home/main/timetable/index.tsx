@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import moment from 'moment';
 
-import TimetableScroller from './TimetableScroller';
+import TimetableScroll from './TimetableScroll';
 import TimetableView from './view';
 import TimetableHeader from '@/components/home/main/timetable/TimetableHeader';
 import useDateState from '@/stores/date';
@@ -38,16 +38,16 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
 
   return (
     <Container>
-      <TimetableScroller>
+      <TimetableScroll>
         {showHeader && <TimetableHeader dateMoments={dateMoments} />}
         <TimetableView dateMoments={dateMoments} />
-        <TimetableScroller.Horizontal
+        <TimetableScroll.Horizontal
           css={{ marginRight: TIMETABLE_SCROLL_WIDTH }}
           showScroll={true}
         >
           <VerticalEmptyCell cellLength={dateMoments.length} />
-        </TimetableScroller.Horizontal>
-      </TimetableScroller>
+        </TimetableScroll.Horizontal>
+      </TimetableScroll>
     </Container>
   );
 };

@@ -3,7 +3,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import moment, { Moment } from 'moment';
 
-import TimetableScroller from './TimetableScroller';
+import TimetableScroll from './TimetableScroll';
 import CalendarDay from '@/components/core/calendar/CalendarDay';
 
 import { DAY_OF_WEEK_UNIT } from '@/constants';
@@ -41,7 +41,7 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
   const timezone = `GTM${dateMoments[0].format('Z')}`;
 
   return (
-    <TimetableScroller.Horizontal
+    <TimetableScroll.Horizontal
       scrollId="header"
       fixedComponent={<ZoneText>{timezone}</ZoneText>}
     >
@@ -65,7 +65,7 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
         })}
         <EmptySpace />
       </Container>
-    </TimetableScroller.Horizontal>
+    </TimetableScroll.Horizontal>
   );
 };
 

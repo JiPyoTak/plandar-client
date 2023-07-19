@@ -9,27 +9,27 @@ import { FONT_BOLD_8 } from '@/styles/font';
 import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
 
 type TCompounds = {
-  Horizontal: typeof HorizontalScroller;
-  Vertical: typeof VerticalScroller;
+  Horizontal: typeof HorizontalScroll;
+  Vertical: typeof VerticalScroll;
 };
 
 const Context = createContext<TTimetableScrollController | null>(null);
 
-const TimetableScroller: React.FC<PropsWithChildren> & TCompounds = ({
+const TimetableScroll: React.FC<PropsWithChildren> & TCompounds = ({
   children,
 }) => {
   const controller = useTimetableScroll();
   return <Context.Provider value={controller}>{children}</Context.Provider>;
 };
 
-type THorizontalScrollerProps = PropsWithChildren<{
+type THorizontalScrollProps = PropsWithChildren<{
   className?: string;
   fixedComponent?: React.ReactNode;
   scrollId?: string;
   showScroll?: boolean;
 }>;
 
-const HorizontalScroller: React.FC<THorizontalScrollerProps> = ({
+const HorizontalScroll: React.FC<THorizontalScrollProps> = ({
   className,
   fixedComponent,
   children,
@@ -38,11 +38,11 @@ const HorizontalScroller: React.FC<THorizontalScrollerProps> = ({
 }) => {
   const id = scrollId || '';
   const isReceiver = !showScroll && scrollId;
-  const { registTag, onMoveHorizontalScroll } = useContext(Context) || {};
+  const { signTag, onMoveHorizontalScroll } = useContext(Context) || {};
 
   const scrollCallbackRef: React.LegacyRef<HTMLDivElement> = (element) => {
-    if (isReceiver && registTag) {
-      registTag({ id, ref: element });
+    if (isReceiver && signTag) {
+      signTag({ id, ref: element });
     }
   };
 
@@ -86,7 +86,7 @@ const HorizontalScrollDiv = styled.div`
   overflow-y: hidden;
 `;
 
-const VerticalScroller = styled.div`
+const VerticalScroll = styled.div`
   ${TIMETABLE_SCROLL_STYLE}
 
   flex: 1 0 0;
@@ -96,6 +96,6 @@ const VerticalScroller = styled.div`
   overflow-y: scroll;
 `;
 
-TimetableScroller.Horizontal = HorizontalScroller;
-TimetableScroller.Vertical = VerticalScroller;
-export default TimetableScroller;
+TimetableScroll.Horizontal = HorizontalScroll;
+TimetableScroll.Vertical = VerticalScroll;
+export default TimetableScroll;
