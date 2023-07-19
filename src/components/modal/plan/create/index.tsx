@@ -4,9 +4,8 @@ import styled from '@emotion/styled';
 
 import { shallow } from 'zustand/shallow';
 
-import ModalContainer from '../../ModalPotal';
-
 import StylishButton from '@/components/core/buttons/StylishButton';
+import ModalContainer from '@/components/modal/ModalPortal';
 import PlanDate from '@/components/modal/plan/create/plan-date';
 import PlanAllDay from '@/components/modal/plan/create/PlanAllDay';
 import PlanCategory from '@/components/modal/plan/create/PlanCategory';

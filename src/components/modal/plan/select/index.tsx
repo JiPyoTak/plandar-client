@@ -8,7 +8,7 @@ import Category from '@/components/common/modal/Category';
 import { Color, TITLE_STYLE } from '@/components/common/modal/styles';
 import TimeStamp from '@/components/common/modal/Timestamp';
 import TagButton from '@/components/core/buttons/TagButton';
-import ModalContainer from '@/components/modal/ModalPotal';
+import ModalContainer from '@/components/modal/ModalPortal';
 import { toast } from '@/core/toast';
 import { useDeletePlanMutation } from '@/hooks/query/plan';
 import { useEffectModal } from '@/hooks/useEffectModal';

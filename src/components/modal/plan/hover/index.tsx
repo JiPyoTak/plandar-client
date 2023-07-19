@@ -7,7 +7,7 @@ import { shallow } from 'zustand/shallow';
 import Category from '@/components/common/modal/Category';
 import { Color, TITLE_STYLE } from '@/components/common/modal/styles';
 import TimeStamp from '@/components/common/modal/Timestamp';
-import Modal from '@/components/modal/ModalPotal';
+import Modal from '@/components/modal/ModalPortal';
 import { useEffectModal } from '@/hooks/useEffectModal';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 
