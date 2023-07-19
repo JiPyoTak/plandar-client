@@ -14,7 +14,7 @@ import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 import { FONT_REGULAR_5 } from '@/styles/font';
 import { getPositionByViewPort } from '@/utils/calendar/getPositionByViewPort';
 
-const Hovered = () => {
+const HoveredPlanModal = () => {
   const { hoveredPlan, rect } = useHoveredPlanState(
     (state) => ({
       hoveredPlan: state.hoveredPlan,
@@ -64,4 +64,4 @@ const HoveredModal = styled(Modal)`
   ${FONT_REGULAR_5}
 `;
 
-export default Hovered;
+export default HoveredPlanModal;

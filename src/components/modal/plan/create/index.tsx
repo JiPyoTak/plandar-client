@@ -21,19 +21,19 @@ import {
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { ColorCircle } from '@/styles/category';
 
-type TPlanModalProps = {
+type TCreatePlanModalProps = {
   onClose?: () => void;
   onDone?: () => void;
   openModal?: boolean;
 };
 
-type TPlanModal = React.FC<TPlanModalProps>;
+type TCreatePlanModal = React.FC<TCreatePlanModalProps>;
 
-const PlanModal: TPlanModal = ({
+const CreatePlanModal: TCreatePlanModal = ({
   openModal: initOpenModal,
   onClose,
   onDone,
-}: TPlanModalProps) => {
+}: TCreatePlanModalProps) => {
   const { focusedPlan, openModal, clearPlan, isDisabled, isEdit } =
     useFocusedPlanState(
       ({ focusedPlan, isDragging, clearDraggedPlan, type }) => ({
@@ -134,4 +134,4 @@ const Hr = styled.hr`
   background-color: ${({ theme }) => theme.border1};
 `;
 
-export default PlanModal;
+export default CreatePlanModal;

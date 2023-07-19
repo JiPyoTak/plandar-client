@@ -1,14 +1,14 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import PlanModal from '@/components/modal/plan/create';
+import CreatePlanModal from '@/components/modal/plan/create';
 
 export default {
   title: 'Modals/PlanModal',
-  component: PlanModal,
-} as ComponentMeta<typeof PlanModal>;
+  component: CreatePlanModal,
+} as ComponentMeta<typeof CreatePlanModal>;
 
-const Template: ComponentStory<typeof PlanModal> = (args) => (
-  <PlanModal {...args} />
+const Template: ComponentStory<typeof CreatePlanModal> = (args) => (
+  <CreatePlanModal {...args} />
 );
 
 export const Create = Template.bind({});

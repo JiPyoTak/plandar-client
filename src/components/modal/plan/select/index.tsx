@@ -17,7 +17,7 @@ import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { FONT_REGULAR_5 } from '@/styles/font';
 import { getPositionByViewPort } from '@/utils/calendar/getPositionByViewPort';
 
-const Selected = () => {
+const SelectedPlanModal = () => {
   const { mutate } = useDeletePlanMutation();
 
   const editDragPlan = useFocusedPlanState(
@@ -152,4 +152,4 @@ const TagList = styled.div`
   gap: 0.3rem;
 `;
 
-export default Selected;
+export default SelectedPlanModal;
