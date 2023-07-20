@@ -68,16 +68,11 @@ const Container = styled.button`
   gap: 15px;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.white};
+  background-color: ${({ theme }) => theme.background1};
 
   &:hover,
   &.focused {
     background-color: ${({ theme }) => theme.background3};
-  }
-
-  &:first-of-type {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
   }
 
   &:last-of-type {
