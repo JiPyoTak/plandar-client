@@ -1,14 +1,14 @@
 import { useRef } from 'react';
 
 type TTimetableScrollController = {
-  registTag: (arg: { id: string; ref: HTMLElement | null }) => void;
+  signTag: (arg: { id: string; ref: HTMLElement | null }) => void;
   onMoveHorizontalScroll: React.UIEventHandler<HTMLElement>;
 };
 
 const useTimetableScroll = () => {
   const scrollTargets = useRef<{ [key: string]: HTMLElement }>({});
 
-  const registTag: TTimetableScrollController['registTag'] = ({ id, ref }) => {
+  const signTag: TTimetableScrollController['signTag'] = ({ id, ref }) => {
     if (id && ref) {
       scrollTargets.current[id] = ref;
     }
@@ -24,7 +24,7 @@ const useTimetableScroll = () => {
       }
     };
 
-  return { registTag, onMoveHorizontalScroll };
+  return { signTag, onMoveHorizontalScroll };
 };
 
 export type { TTimetableScrollController };

@@ -6,7 +6,7 @@ import MainCalendar from '@/components/home/main/calendar';
 import Header from '@/components/home/main/header';
 import Timetable from '@/components/home/main/timetable';
 import SideBar from '@/components/home/sidebar';
-import PlanModal from '@/components/modal/plan/create';
+import CreatePlanModal from '@/components/modal/plan/create';
 import HoveredPlanModal from '@/components/modal/plan/hover';
 import SelectedPlanModal from '@/components/modal/plan/select';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
@@ -35,7 +35,7 @@ const Home: React.FC = () => {
       </Container>
       <HoveredPlanModal />
       <SelectedPlanModal />
-      <PlanModal />
+      <CreatePlanModal />
     </>
   );
 };

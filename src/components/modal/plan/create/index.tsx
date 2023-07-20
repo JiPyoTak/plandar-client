@@ -4,9 +4,8 @@ import styled from '@emotion/styled';
 
 import { shallow } from 'zustand/shallow';
 
-import ModalContainer from '../../ModalPotal';
-
 import StylishButton from '@/components/core/buttons/StylishButton';
+import ModalContainer from '@/components/modal/ModalPortal';
 import PlanDate from '@/components/modal/plan/create/plan-date';
 import PlanAllDay from '@/components/modal/plan/create/PlanAllDay';
 import PlanCategory from '@/components/modal/plan/create/PlanCategory';
@@ -22,19 +21,19 @@ import {
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { ColorCircle } from '@/styles/category';
 
-type TPlanModalProps = {
+type TCreatePlanModalProps = {
   onClose?: () => void;
   onDone?: () => void;
   openModal?: boolean;
 };
 
-type TPlanModal = React.FC<TPlanModalProps>;
+type TCreatePlanModal = React.FC<TCreatePlanModalProps>;
 
-const PlanModal: TPlanModal = ({
+const CreatePlanModal: TCreatePlanModal = ({
   openModal: initOpenModal,
   onClose,
   onDone,
-}: TPlanModalProps) => {
+}: TCreatePlanModalProps) => {
   const { focusedPlan, openModal, clearPlan, isDisabled, isEdit } =
     useFocusedPlanState(
       ({ focusedPlan, isDragging, clearDraggedPlan, type }) => ({
@@ -135,4 +134,4 @@ const Hr = styled.hr`
   background-color: ${({ theme }) => theme.border1};
 `;
 
-export default PlanModal;
+export default CreatePlanModal;

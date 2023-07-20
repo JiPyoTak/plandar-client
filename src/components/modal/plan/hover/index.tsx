@@ -7,14 +7,14 @@ import { shallow } from 'zustand/shallow';
 import Category from '@/components/common/modal/Category';
 import { Color, TITLE_STYLE } from '@/components/common/modal/styles';
 import TimeStamp from '@/components/common/modal/Timestamp';
-import Modal from '@/components/modal/ModalPotal';
+import Modal from '@/components/modal/ModalPortal';
 import { useEffectModal } from '@/hooks/useEffectModal';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 
 import { FONT_REGULAR_5 } from '@/styles/font';
 import { getPositionByViewPort } from '@/utils/calendar/getPositionByViewPort';
 
-const Hovered = () => {
+const HoveredPlanModal = () => {
   const { hoveredPlan, rect } = useHoveredPlanState(
     (state) => ({
       hoveredPlan: state.hoveredPlan,
@@ -64,4 +64,4 @@ const HoveredModal = styled(Modal)`
   ${FONT_REGULAR_5}
 `;
 
-export default Hovered;
+export default HoveredPlanModal;

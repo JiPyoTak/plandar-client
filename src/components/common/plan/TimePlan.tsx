@@ -14,6 +14,7 @@ import { isBgBright } from '@/utils/color';
 import { getTimeString } from '@/utils/date/getTimeString';
 
 type TProps = {
+  className?: string;
   plan: Plan;
   viewInfo: ITimeViewInfo;
   isFocused?: boolean;
@@ -26,6 +27,7 @@ type TProps = {
 
 const TimePlan: React.FC<TProps> = (props) => {
   const {
+    className: inheritedClassName,
     plan,
     viewInfo,
     isFocused = false,
@@ -41,6 +43,7 @@ const TimePlan: React.FC<TProps> = (props) => {
   const editDragPlan = useFocusedPlanState((state) => state.editDragPlan);
   const className: string[] = [];
 
+  if (inheritedClassName) className.push(inheritedClassName);
   if (isSelected) className.push('is_selected');
   if (isHovered) className.push('is_hovered');
 
@@ -84,6 +87,9 @@ const TimePlan: React.FC<TProps> = (props) => {
         {
           opacity: isFocused ? 0.6 : 1,
           backgroundColor: color,
+          zIndex: isSelected
+            ? TIMETABLE_Z_INDEX.timePlanHover
+            : TIMETABLE_Z_INDEX.timePlan,
         },
       ]}
       onMouseDown={onMouseDownPlan}
@@ -95,7 +101,7 @@ const TimePlan: React.FC<TProps> = (props) => {
         {getTimeString(new Date(startTime))}
       </TimeSpan>
       <TitleSpan backgroundColor={color}>{title}</TitleSpan>
-      <ScrollTargeter data-type="resizer" />
+      <ResizeButton data-type="resizer" />
     </Container>
   );
 };
@@ -140,7 +146,6 @@ const cellHeight = ({ term }: ITimeViewInfo) => {
 
 const Container = styled.div`
   position: absolute;
-  z-index: ${TIMETABLE_Z_INDEX['timePlan']};
 
   border: 1px solid white;
   border-radius: 8px;
@@ -184,7 +189,7 @@ const TitleSpan = styled.span<{ backgroundColor: TColor }>`
     isBgBright(backgroundColor) ? theme.white : theme.text1};
 `;
 
-const ScrollTargeter = styled.div`
+const ResizeButton = styled.div`
   width: 100%;
   height: 0.5rem;
   position: absolute;

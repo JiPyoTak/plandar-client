@@ -5,31 +5,35 @@ import styled from '@emotion/styled';
 import useTimetableScroll, {
   TTimetableScrollController,
 } from '@/hooks/useTimetableScroll';
+import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { FONT_BOLD_8 } from '@/styles/font';
-import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
+import {
+  TIMETABLE_SCROLL_STYLE,
+  TIMETABLE_SCROLL_WIDTH,
+} from '@/styles/timetable';
 
 type TCompounds = {
-  Horizontal: typeof HorizontalScroller;
-  Vertical: typeof VerticalScroller;
+  Horizontal: typeof HorizontalScroll;
+  Vertical: typeof VerticalScroll;
 };
 
 const Context = createContext<TTimetableScrollController | null>(null);
 
-const TimetableScroller: React.FC<PropsWithChildren> & TCompounds = ({
+const TimetableScroll: React.FC<PropsWithChildren> & TCompounds = ({
   children,
 }) => {
   const controller = useTimetableScroll();
   return <Context.Provider value={controller}>{children}</Context.Provider>;
 };
 
-type THorizontalScrollerProps = PropsWithChildren<{
+type THorizontalScrollProps = PropsWithChildren<{
   className?: string;
   fixedComponent?: React.ReactNode;
   scrollId?: string;
   showScroll?: boolean;
 }>;
 
-const HorizontalScroller: React.FC<THorizontalScrollerProps> = ({
+const HorizontalScroll: React.FC<THorizontalScrollProps> = ({
   className,
   fixedComponent,
   children,
@@ -38,11 +42,11 @@ const HorizontalScroller: React.FC<THorizontalScrollerProps> = ({
 }) => {
   const id = scrollId || '';
   const isReceiver = !showScroll && scrollId;
-  const { registTag, onMoveHorizontalScroll } = useContext(Context) || {};
+  const { signTag, onMoveHorizontalScroll } = useContext(Context) || {};
 
   const scrollCallbackRef: React.LegacyRef<HTMLDivElement> = (element) => {
-    if (isReceiver && registTag) {
-      registTag({ id, ref: element });
+    if (isReceiver && signTag) {
+      signTag({ id, ref: element });
     }
   };
 
@@ -59,6 +63,32 @@ const HorizontalScroller: React.FC<THorizontalScrollerProps> = ({
         {children}
       </HorizontalScrollDiv>
     </FlexibleContainer>
+  );
+};
+
+type TVerticalScrollProps = PropsWithChildren<{
+  className?: string;
+}>;
+
+const VerticalScroll: React.FC<TVerticalScrollProps> = ({
+  children,
+  className,
+}) => {
+  const selectedPlanId = useSelectedPlanState(
+    (state) => state.selectedPlan?.id,
+    (prev, next) => prev === next,
+  );
+  const showScroll = !selectedPlanId;
+
+  return (
+    <VerticalFlexibleContainer className={className}>
+      <VerticalScrollDiv css={{ overflowY: showScroll ? 'scroll' : 'hidden' }}>
+        {children}
+      </VerticalScrollDiv>
+      {!showScroll && (
+        <div css={{ flex: `0 0 ${TIMETABLE_SCROLL_WIDTH}` }}></div>
+      )}
+    </VerticalFlexibleContainer>
   );
 };
 
@@ -86,16 +116,21 @@ const HorizontalScrollDiv = styled.div`
   overflow-y: hidden;
 `;
 
-const VerticalScroller = styled.div`
-  ${TIMETABLE_SCROLL_STYLE}
-
+const VerticalFlexibleContainer = styled.div`
   flex: 1 0 0;
   min-width: 100%;
 
-  overflow-x: hidden;
-  overflow-y: scroll;
+  display: flex;
+  overflow: hidden;
 `;
 
-TimetableScroller.Horizontal = HorizontalScroller;
-TimetableScroller.Vertical = VerticalScroller;
-export default TimetableScroller;
+const VerticalScrollDiv = styled.div`
+  ${TIMETABLE_SCROLL_STYLE}
+
+  flex: 1 0 0;
+  overflow-x: hidden;
+`;
+
+TimetableScroll.Horizontal = HorizontalScroll;
+TimetableScroll.Vertical = VerticalScroll;
+export default TimetableScroll;
