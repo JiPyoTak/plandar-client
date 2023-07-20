@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
 
-import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
+import { BOX_SCROLL_Y } from '@/styles/scroll';
 import { IExtractedTimeInfo } from '@/types/time';
 import { padZero } from '@/utils/padZero';
 
@@ -52,14 +52,19 @@ const TimeOptionList = ({ timeInfo, setTime }: Props) => {
 
 const Container = styled.div`
   position: absolute;
-  top: calc(100% + 10px);
+  z-index: 20;
+
   width: 180px;
   height: 200px;
-  overflow-y: scroll;
+
+  margin-top: 0.75rem;
+  border-radius: 5px;
+
   background-color: ${({ theme }) => theme.white};
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-  z-index: 20;
-  ${TIMETABLE_SCROLL_STYLE}
+
+  box-shadow: rgb(0 0 0 / 15%) 0px 4px 16px 0px;
+  overflow-y: scroll;
+  ${BOX_SCROLL_Y}
 `;
 
 const TimeOption = styled.div`

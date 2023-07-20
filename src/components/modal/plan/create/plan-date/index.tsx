@@ -10,7 +10,7 @@ const PlanDate = () => {
 
   return (
     <Container>
-      <div css={{ position: 'relative' }}>
+      <div>
         <DatePicker onChangeDate={setDate('start')} date={date['start']} />
         {!isAllDay && (
           <TimeInput
@@ -20,18 +20,18 @@ const PlanDate = () => {
         )}
       </div>
       <span css={{ margin: 5 }}> ~ </span>
-      <div css={{ position: 'relative' }}>
+      <div>
+        <DatePicker
+          onChangeDate={setDate('end')}
+          date={date['end']}
+          isInvalid={!isValidEndDate}
+        />
         {!isAllDay && (
           <TimeInput
             setTime={setTime('end')}
             time={{ hour: date['end'].hour, minute: date['end'].minute }}
           />
         )}
-        <DatePicker
-          onChangeDate={setDate('end')}
-          date={date['end']}
-          isInvalid={!isValidEndDate}
-        />
       </div>
     </Container>
   );
@@ -41,8 +41,8 @@ const Container = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-  width: 100%;
-  height: 48px;
+
+  padding: 0.5rem 0;
 `;
 
 export default PlanDate;

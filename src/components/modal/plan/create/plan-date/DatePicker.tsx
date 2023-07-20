@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 
 import MiniCalendar from '@/components/common/mini-calendar';
 import { TDateYMD } from '@/stores/date';
-import { FONT_REGULAR_3 } from '@/styles/font';
+import { FONT_REGULAR_4 } from '@/styles/font';
 import { decreaseMonth, increaseMonth } from '@/utils/calendar/monthHandler';
 import { getDateString } from '@/utils/date/getTimeString';
 
@@ -53,8 +53,8 @@ const DatePicker = ({
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            right: 0;
+            bottom: 0;
           `}
         />
       )}
@@ -82,14 +82,17 @@ const DatePicker = ({
 
 const CalendarContainer = styled.div`
   position: absolute;
-  width: 250px;
-  height: fit-content;
-  top: 35px;
-  background-color: white;
+
   z-index: 20;
+
+  width: 280px;
+  height: fit-content;
+
+  margin-top: 0.75rem;
+  padding: 0.75rem;
   border-radius: 5px;
-  padding: 10px;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+  background-color: white;
+  box-shadow: rgb(0 0 0 / 15%) 0px 4px 16px 0px;
 `;
 
 const CalendarDateButton = styled.button<{ isInvalid?: boolean }>`
@@ -97,7 +100,7 @@ const CalendarDateButton = styled.button<{ isInvalid?: boolean }>`
   border-radius: 5px;
   background-color: ${({ isInvalid, theme }) =>
     isInvalid ? theme.red_light : theme.white};
-  ${FONT_REGULAR_3}
+  ${FONT_REGULAR_4}
   &:hover {
     background-color: ${({ isInvalid, theme }) =>
       isInvalid ? theme.red : theme.background3};

@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import moment from 'moment';
 
 import TimeOptionList from '@/components/modal/plan/create/plan-date/TimeOptionList';
-import { FONT_REGULAR_3 } from '@/styles/font';
+import { FONT_REGULAR_4 } from '@/styles/font';
 import { TTimeHM } from '@/types/time';
 import {
   extractTimeFromString,
@@ -51,7 +51,7 @@ const TimeInput = ({ setTime, time }: Props) => {
   };
 
   return (
-    <div css={{ position: 'relative', display: 'inline-block' }}>
+    <div css={{ display: 'inline-block' }}>
       <Input
         invalid={timeInfo.invalid}
         type="text"
@@ -70,13 +70,16 @@ const TimeInput = ({ setTime, time }: Props) => {
 };
 
 const Input = styled.input<{ invalid?: boolean }>`
-  outline: none;
-  border: none;
-  border-radius: 5px;
+  width: 80px;
+
   margin: 0 2px;
+  border-radius: 5px;
+  ${FONT_REGULAR_4}
+
   text-align: center;
-  width: 86px;
-  ${FONT_REGULAR_3}
+  border: none;
+  outline: none;
+
   &:hover {
     background-color: ${({ theme }) => theme.background3};
   }
