@@ -10,18 +10,12 @@ import { decreaseMonth, increaseMonth } from '@/utils/calendar/monthHandler';
 import { getDateString } from '@/utils/date/getTimeString';
 
 interface Props {
-  isInvalid?: boolean;
   date: TDateYMD;
-  onChangeDate: (date: TDateYMD) => void;
+  onChangeDate: (date: TDateYMD) => boolean;
   onCalendarClose?: () => void;
 }
 
-const DatePicker = ({
-  isInvalid,
-  date,
-  onChangeDate,
-  onCalendarClose,
-}: Props) => {
+const DatePicker = ({ date, onChangeDate, onCalendarClose }: Props) => {
   const today = new Date();
   const todayYMD = {
     year: today.getFullYear(),
@@ -38,13 +32,15 @@ const DatePicker = ({
   };
 
   const onChangeDateHandler = (date: TDateYMD) => {
-    onChangeDate(date);
-    setCurrentYMD(date);
+    const isValid = onChangeDate(date);
+
+    if (isValid) setCurrentYMD(date);
+
     setCalendarOpened(false);
   };
 
   return (
-    <>
+    <div>
       {calendarOpened && (
         <div
           onMouseDown={onCloseHandler}
@@ -58,10 +54,7 @@ const DatePicker = ({
           `}
         />
       )}
-      <CalendarDateButton
-        isInvalid={isInvalid}
-        onClick={() => setCalendarOpened(true)}
-      >
+      <CalendarDateButton onClick={() => setCalendarOpened(true)}>
         {getDateString(date)}
       </CalendarDateButton>
       {calendarOpened && (
@@ -76,7 +69,7 @@ const DatePicker = ({
           />
         </CalendarContainer>
       )}
-    </>
+    </div>
   );
 };
 
@@ -95,15 +88,14 @@ const CalendarContainer = styled.div`
   box-shadow: rgb(0 0 0 / 15%) 0px 4px 16px 0px;
 `;
 
-const CalendarDateButton = styled.button<{ isInvalid?: boolean }>`
+const CalendarDateButton = styled.button`
   padding: 3px 5px;
   border-radius: 5px;
-  background-color: ${({ isInvalid, theme }) =>
-    isInvalid ? theme.red_light : theme.white};
+  background-color: ${({ theme }) => theme.white};
   ${FONT_REGULAR_4}
+
   &:hover {
-    background-color: ${({ isInvalid, theme }) =>
-      isInvalid ? theme.red : theme.background3};
+    background-color: ${({ theme }) => theme.background3};
   }
 `;
 
