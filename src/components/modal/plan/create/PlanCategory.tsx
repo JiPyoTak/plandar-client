@@ -112,12 +112,14 @@ const PlanCategory: React.FC = () => {
         onClear={clearCategory}
         onChange={onInput}
         onKeyDown={onKeydown}
-        css={{
-          '&:focus': {
-            borderRadius: '0.5rem 0.5rem 0 0',
-            borderBottom: 'none',
-          },
-        }}
+        css={
+          filteredType === 'candidate' && {
+            '&:focus': {
+              borderRadius: '0.5rem 0.5rem 0 0',
+              borderBottom: 'none',
+            },
+          }
+        }
       />
       {filteredType === 'candidate' && (
         <Candidate.List type="category">
