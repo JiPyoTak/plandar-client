@@ -88,7 +88,7 @@ const TimePlan: React.FC<TProps> = (props) => {
           opacity: isFocused ? 0.6 : 1,
           backgroundColor: color,
           zIndex: isSelected
-            ? TIMETABLE_Z_INDEX.timePlanCreate
+            ? TIMETABLE_Z_INDEX.timePlanHover
             : TIMETABLE_Z_INDEX.timePlan,
         },
       ]}

@@ -23,8 +23,7 @@ const TIMETABLE_ALLDAY_PLAN_HEIGHT = 24;
 
 const TIMETABLE_Z_INDEX = {
   timePlan: 2,
-  timePlanCreate: 3,
-  timePlanHover: 4,
+  timePlanHover: 3,
   timeCellHover: 1,
 } as const;
 
