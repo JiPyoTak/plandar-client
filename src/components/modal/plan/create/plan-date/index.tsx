@@ -10,7 +10,7 @@ const PlanDate = () => {
 
   return (
     <Container>
-      <div>
+      <InnerItem>
         <DatePicker onChangeDate={setDate('start')} date={date['start']} />
         {!isAllDay && (
           <TimeInput
@@ -18,9 +18,9 @@ const PlanDate = () => {
             time={{ hour: date['start'].hour, minute: date['start'].minute }}
           />
         )}
-      </div>
+      </InnerItem>
       <span css={{ margin: 5 }}> ~ </span>
-      <div>
+      <InnerItem>
         <DatePicker
           onChangeDate={setDate('end')}
           date={date['end']}
@@ -32,7 +32,7 @@ const PlanDate = () => {
             time={{ hour: date['end'].hour, minute: date['end'].minute }}
           />
         )}
-      </div>
+      </InnerItem>
     </Container>
   );
 };
@@ -43,6 +43,12 @@ const Container = styled.div`
   align-items: center;
 
   padding: 0.5rem 0;
+`;
+
+const InnerItem = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default PlanDate;
