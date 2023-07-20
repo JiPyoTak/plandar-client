@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { css, Theme, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { shallow } from 'zustand/shallow';
@@ -35,8 +34,6 @@ const CreatePlanModal: TCreatePlanModal = ({
   onClose,
   onDone,
 }: TCreatePlanModalProps) => {
-  const theme = useTheme();
-
   const { focusedPlan, openModal, clearPlan, isDisabled, isEdit } =
     useFocusedPlanState(
       ({ focusedPlan, isDragging, clearDraggedPlan, type }) => ({
@@ -99,15 +96,11 @@ const CreatePlanModal: TCreatePlanModal = ({
         <PlanTitleInput />
         <PlanDate />
         <PlanAllDay />
-        <div css={BORDER_TOP({ theme })}>
-          <PlanMemo />
-        </div>
-        <div css={BORDER_TOP({ theme })}>
-          <PlanCategory />
-        </div>
-        <div css={BORDER_TOP({ theme })}>
-          <PlanTag />
-        </div>
+        {[PlanMemo, PlanCategory, PlanTag].map((Component) => (
+          <BorderBox key={Component.name}>
+            <Component />
+          </BorderBox>
+        ))}
       </Inner>
       <StylishButton
         isColor={true}
@@ -149,10 +142,11 @@ const Inner = styled.div`
   }
 `;
 
-const BORDER_TOP = ({ theme }: { theme: Theme }) => css`
+const BorderBox = styled.div`
   width: 100%;
   padding: 0.5rem 0;
-  border-top: 1px solid ${theme.border1};
+
+  border-top: 1px solid ${({ theme }) => theme.border1};
 `;
 
 export default CreatePlanModal;
