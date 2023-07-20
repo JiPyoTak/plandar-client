@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { MAX_CANDIDATE_LENGTH } from '@/constants';
 import { useCategoryQuery } from '@/hooks/query/category';
@@ -9,10 +9,6 @@ type TFilteredType = 'candidate' | 'noMatch';
 
 const usePlanModalCategory = () => {
   const { data: categoryData } = useCategoryQuery();
-
-  const [categoryInput, setCategoryInput] = useState('');
-  const [filteredType, setFilteredType] = useState<TFilteredType | null>(null);
-  const [filteredCategories, setFilteredCategories] = useState<ICategory[]>([]);
 
   const [selectedCategory, setSelectedCategory] = useFocusedPlanState(
     (store) => {
@@ -31,6 +27,13 @@ const usePlanModalCategory = () => {
     (prev, cur) => prev[0] === cur[0],
   );
 
+  const [categoryInput, setCategoryInput] = useState('');
+  const [filteredType, setFilteredType] = useState<TFilteredType | null>(null);
+  const [filteredCategories, setFilteredCategories] = useState<ICategory[]>([]);
+  const [focusedCategory, setFocusedCategory] = useState<ICategory | null>(
+    selectedCategory,
+  );
+
   const selectCategory = (category: ICategory) => {
     setSelectedCategory(category.id);
     clearCategory();
@@ -41,26 +44,70 @@ const usePlanModalCategory = () => {
       .filter((category) => category.name.match(categoryName))
       .slice(0, MAX_CANDIDATE_LENGTH); // 최대 4개까지 보이도록
 
+    setFocusedCategory(null);
     setFilteredCategories(filtered);
     setFilteredType(filtered.length > 0 ? 'candidate' : 'noMatch');
   };
 
   const clearCategory = () => {
     setFilteredCategories([]);
+    setFocusedCategory(null);
     setFilteredType(null);
     setCategoryInput('');
   };
+
+  const onKeydown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'Enter') {
+        return;
+      }
+
+      if (e.nativeEvent.isComposing) {
+        return;
+      }
+
+      if (filteredCategories.length === 0) {
+        return;
+      }
+
+      e.preventDefault();
+
+      if (e.key === 'Enter') {
+        focusedCategory && setSelectedCategory(focusedCategory.id);
+        return;
+      }
+
+      let index = filteredCategories.findIndex(
+        (category) => category.name === focusedCategory?.name,
+      );
+
+      const lastIndex = filteredCategories.length - 1;
+
+      if (index === -1) {
+        index = index === -1 ? 0 : index;
+      } else if (e.key === 'ArrowDown') {
+        index = index === lastIndex ? 0 : index + 1;
+      } else if (e.key === 'ArrowUp') {
+        index = index === 0 ? lastIndex : index - 1;
+      }
+
+      setFocusedCategory(filteredCategories[index]);
+    },
+    [filteredCategories, focusedCategory],
+  );
 
   return {
     categoryInput,
     filteredType,
     filteredCategories,
+    focusedCategory,
     selectedCategory,
     setSelectedCategory,
     setCategoryInput,
     selectCategory,
     filterCategoriesCb,
     clearCategory,
+    onKeydown,
   };
 };
 
