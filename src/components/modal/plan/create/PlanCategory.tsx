@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef } from 'react';
+import React, { ChangeEvent, useCallback, useRef } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -23,20 +23,19 @@ const PlanCategory: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const {
-    focusedCategory,
     categoryInput,
     filteredType,
+    focusedCategory,
     selectedCategory,
     filteredCategories,
     filterCategoriesCb,
     clearCategory,
     selectCategory,
     setCategoryInput,
+    setFocusedCategory,
     setSelectedCategory,
-    onKeydown,
   } = usePlanModalCategory();
 
-  // Debounce를 활용해서 카테고리 이름 입력시 카테고리 후보 필터링
   const [filterCategories] = useDebounce(filterCategoriesCb, 300);
 
   const onInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +44,46 @@ const PlanCategory: React.FC = () => {
     setCategoryInput(input);
     filterCategories(input.trim());
   };
+
+  const onKeydown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'Enter') {
+        return;
+      }
+
+      if (e.nativeEvent.isComposing) {
+        return;
+      }
+
+      if (filteredCategories.length === 0) {
+        return;
+      }
+
+      e.preventDefault();
+
+      if (e.key === 'Enter') {
+        focusedCategory && setSelectedCategory(focusedCategory.id);
+        return;
+      }
+
+      let index = filteredCategories.findIndex(
+        (category) => category.name === focusedCategory?.name,
+      );
+
+      const lastIndex = filteredCategories.length - 1;
+
+      if (index === -1) {
+        index = index === -1 ? 0 : index;
+      } else if (e.key === 'ArrowDown') {
+        index = index === lastIndex ? 0 : index + 1;
+      } else if (e.key === 'ArrowUp') {
+        index = index === 0 ? lastIndex : index - 1;
+      }
+
+      setFocusedCategory(filteredCategories[index]);
+    },
+    [filteredCategories, focusedCategory],
+  );
 
   return (
     <Container duration={PlanModalCollapseDuration}>
