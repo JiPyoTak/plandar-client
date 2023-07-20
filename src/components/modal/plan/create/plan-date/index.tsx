@@ -5,8 +5,7 @@ import TimeInput from '@/components/modal/plan/create/plan-date/TimeInput';
 import usePlanDateState from '@/hooks/usePlanDateState';
 
 const PlanDate = () => {
-  const { date, isValidEndDate, isAllDay, setDate, setTime } =
-    usePlanDateState();
+  const { date, isAllDay, setDate, setTime } = usePlanDateState();
 
   return (
     <Container>
@@ -21,11 +20,7 @@ const PlanDate = () => {
       </InnerItem>
       <span css={{ margin: 5 }}> ~ </span>
       <InnerItem>
-        <DatePicker
-          onChangeDate={setDate('end')}
-          date={date['end']}
-          isInvalid={!isValidEndDate}
-        />
+        <DatePicker onChangeDate={setDate('end')} date={date['end']} />
         {!isAllDay && (
           <TimeInput
             setTime={setTime('end')}
