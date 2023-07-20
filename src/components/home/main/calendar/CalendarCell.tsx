@@ -5,7 +5,8 @@ import styled from '@emotion/styled';
 import Day from '@/components/core/calendar/CalendarDay';
 import TimePlanList from '@/components/home/main/calendar/CalendarTimePlans';
 import Plan from '@/core/plan/Plan';
-import useDateState from '@/stores/date';
+import useDateState, { TDateYMD } from '@/stores/date';
+import useCalendarUnitState from '@/stores/date/calendarUnit';
 import { ICalendarInfo } from '@/utils/calendar/getCalendarInfo';
 
 interface IProps {
@@ -31,7 +32,15 @@ const CalendarCell: React.FC<IProps> = (props) => {
     onMouseDown,
   } = props;
 
+  const onChangeCalendarUnit = useCalendarUnitState(
+    (state) => state.selectCalendarUnit,
+  );
   const onChangeStoreDate = useDateState((state) => state.onChangeStoreDate);
+
+  const onClickDay = (date: TDateYMD) => {
+    onChangeCalendarUnit('일');
+    onChangeStoreDate(date);
+  };
 
   return (
     <Container
@@ -41,11 +50,7 @@ const CalendarCell: React.FC<IProps> = (props) => {
       data-date={format}
       onMouseDown={onMouseDown}
     >
-      <CellDay
-        {...dateInfo}
-        isSelected={isSelected}
-        onClick={onChangeStoreDate}
-      />
+      <CellDay {...dateInfo} isSelected={isSelected} onClick={onClickDay} />
       <div css={{ height, transition: 'height 0.2s' }} />
       <TimePlanList timePlans={timePlans} />
     </Container>
