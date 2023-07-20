@@ -16,11 +16,12 @@ const ITEM_COUNT_BY_HOUR = 4;
 const ITEM_COUNT_BY_MERIDIEM = 12 * ITEM_COUNT_BY_HOUR;
 
 interface Props {
+  inputTime: string;
   timeInfo: IExtractedTimeInfo;
   setTime: (time: string) => void;
 }
 
-const TimeOptionList = ({ timeInfo, setTime }: Props) => {
+const TimeOptionList = ({ inputTime, timeInfo, setTime }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -40,7 +41,11 @@ const TimeOptionList = ({ timeInfo, setTime }: Props) => {
         return options.map((option) => {
           const timeText = `${meridiem} ${option}`;
           return (
-            <TimeOption key={timeText} onMouseDown={() => setTime(timeText)}>
+            <TimeOption
+              className={inputTime === timeText ? 'selected' : ''}
+              key={timeText}
+              onMouseDown={() => setTime(timeText)}
+            >
               {timeText}
             </TimeOption>
           );
@@ -73,8 +78,15 @@ const TimeOption = styled.div`
   padding: 0 15px;
   height: ${ITEM_HEIGHT}px;
   align-items: center;
+
+  cursor: pointer;
+
   &:hover {
     background-color: ${({ theme }) => theme.background2};
+  }
+
+  &.selected {
+    background-color: ${({ theme }) => theme.background3};
   }
 `;
 
