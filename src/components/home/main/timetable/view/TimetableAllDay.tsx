@@ -5,7 +5,7 @@ import moment, { Moment } from 'moment';
 
 import CalendarLayer from '@/components/home/main/calendar/CalendarLayer';
 
-import TimetableScroller from '@/components/home/main/timetable/TimetableScroller';
+import TimetableScroll from '@/components/home/main/timetable/TimetableScroll';
 
 import DaysPlanManager from '@/core/plan/DaysPlanManager';
 import Plan from '@/core/plan/Plan';
@@ -82,8 +82,8 @@ const TimetableAllDay: React.FC<TProps> = ({
   );
 
   return (
-    <TimetableVerticalScroller>
-      <TimetableScroller.Horizontal
+    <TimetableVerticalScroll>
+      <TimetableScroll.Horizontal
         scrollId="allDay"
         fixedComponent={
           <GuideSizer>
@@ -117,14 +117,14 @@ const TimetableAllDay: React.FC<TProps> = ({
             })}
           </AllDayCellList>
         </div>
-      </TimetableScroller.Horizontal>
-    </TimetableVerticalScroller>
+      </TimetableScroll.Horizontal>
+    </TimetableVerticalScroll>
   );
 };
 
 const ALLDAY_MAX_HEIGHT = getAllDayHeight(8);
 
-const TimetableVerticalScroller = styled(TimetableScroller.Vertical)`
+const TimetableVerticalScroll = styled(TimetableScroll.Vertical)`
   flex: 0 0 auto;
   max-height: ${ALLDAY_MAX_HEIGHT}px;
 `;

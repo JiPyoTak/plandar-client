@@ -2,12 +2,11 @@ import React, { FormEvent, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import ModalContainer from '../ModalPotal';
-
 import ColorPicker from '@/components/common/ColorPicker';
 import ChevronIcon from '@/components/common/icons/ChevronIcon';
 import StylishButton from '@/components/core/buttons/StylishButton';
 import Input from '@/components/core/Input';
+import ModalContainer from '@/components/modal/ModalPortal';
 import { SELECTABLE_COLOR } from '@/constants';
 import { useCategoryQuery } from '@/hooks/query/category';
 import { FONT_BOLD_1, FONT_REGULAR_5 } from '@/styles/font';

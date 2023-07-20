@@ -26,8 +26,13 @@ const TimetablePlanColumn: React.FC<TProps> = ({ plans }) => {
     <div css={{ width: 'calc(100% - 0.75rem)', position: 'relative' }}>
       <div css={{ width: '100%', position: 'absolute' }}>
         {plans.map((plan) => {
-          const { id } = plan;
+          const { id, startMoment, endMoment } = plan;
           const viewInfo = planManager.viewInfo.get(id);
+          const isFocusedPlan = id === focusedPlan?.id;
+          const isFocusedPlanEdited = !(
+            focusedPlan?.startMoment.isSame(startMoment) &&
+            focusedPlan?.endMoment.isSame(endMoment)
+          );
 
           return (
             viewInfo && (
@@ -35,7 +40,7 @@ const TimetablePlanColumn: React.FC<TProps> = ({ plans }) => {
                 key={id}
                 plan={plan}
                 viewInfo={viewInfo}
-                isFocused={id === focusedPlan?.id}
+                isFocused={isFocusedPlan && isFocusedPlanEdited}
                 isSelected={id === selectedPlanId}
                 isHovered={id === hoveredPlanId}
                 onClick={onClick}

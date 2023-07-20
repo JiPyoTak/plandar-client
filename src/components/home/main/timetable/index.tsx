@@ -4,11 +4,12 @@ import styled from '@emotion/styled';
 
 import moment from 'moment';
 
-import TimetableScroller from './TimetableScroller';
+import TimetableScroll from './TimetableScroll';
 import TimetableView from './view';
 import TimetableHeader from '@/components/home/main/timetable/TimetableHeader';
 import useDateState from '@/stores/date';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
+import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import {
   TIMETABLE_CELL_MIN_WIDTH,
   TIMETABLE_SCROLL_WIDTH,
@@ -38,17 +39,29 @@ const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
 
   return (
     <Container>
-      <TimetableScroller>
+      <TimetableScroll>
         {showHeader && <TimetableHeader dateMoments={dateMoments} />}
         <TimetableView dateMoments={dateMoments} />
-        <TimetableScroller.Horizontal
-          css={{ marginRight: TIMETABLE_SCROLL_WIDTH }}
-          showScroll={true}
-        >
-          <VerticalEmptyCell cellLength={dateMoments.length} />
-        </TimetableScroller.Horizontal>
-      </TimetableScroller>
+        <VerticalScrollController cellLength={dateMoments.length} />
+      </TimetableScroll>
     </Container>
+  );
+};
+
+const VerticalScrollController = ({ cellLength }: { cellLength: number }) => {
+  const selectedPlanId = useSelectedPlanState(
+    (state) => state.selectedPlan?.id,
+    (prev, next) => prev === next,
+  );
+  const showScroll = !selectedPlanId;
+
+  return (
+    <TimetableScroll.Horizontal
+      css={{ marginRight: TIMETABLE_SCROLL_WIDTH }}
+      showScroll={showScroll}
+    >
+      <VerticalEmptyCell cellLength={cellLength} />
+    </TimetableScroll.Horizontal>
   );
 };
 
