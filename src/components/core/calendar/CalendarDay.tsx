@@ -44,14 +44,14 @@ const CalendarDay: React.FC<IProps> = (props) => {
     isWeeksStart,
     isWeeksEnd,
     className,
-    ...isBooleans
+    ...rest
   } = props;
   const containerClassName = getClassNames({
     isWeeks,
     isWeeksStart,
     isWeeksEnd,
   });
-  const dayNumberClassName = getDayClassName(isBooleans);
+  const dayNumberClassName = getDayClassName(rest);
 
   const onClickDay: React.MouseEventHandler = () => {
     onClick({ day, month, year });
