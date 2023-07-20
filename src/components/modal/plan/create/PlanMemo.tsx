@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useState } from 'react';
+import React, { ChangeEventHandler } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -16,8 +16,6 @@ import {
 import { BOX_SCROLL_Y } from '@/styles/scroll';
 
 const PlanMemo: React.FC = () => {
-  const [isFocsued, setIsFocused] = useState(false);
-
   const [description, setDescription] = useFocusedPlanState(
     (store) => {
       const { focusedPlan, updateFocusedPlan } = store;
@@ -50,10 +48,7 @@ const PlanMemo: React.FC = () => {
       <TextArea
         placeholder={`메모를 최대 ${MAX_MEMO_LENGTH}자까지 입력할 수 있습니다`}
         value={description}
-        className={isFocsued ? 'focused' : ''}
         onInput={onInputTextArea}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
       />
     </Container>
   );
@@ -82,7 +77,7 @@ const TextArea = styled.textarea`
   ${FONT_REGULAR_4}
   ${BOX_SCROLL_Y}
 
-  &.focused {
+  &:focus {
     background-color: ${({ theme }) => theme.background1};
     border-color: ${({ theme }) => theme.border2};
   }
