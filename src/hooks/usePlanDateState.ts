@@ -2,6 +2,7 @@ import moment from 'moment';
 
 import { shallow } from 'zustand/shallow';
 
+import { toast } from '@/core/toast';
 import { TDateYMD } from '@/stores/date';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { TDateType, TDateYMDHM, TTimeHM } from '@/types/time';
@@ -43,67 +44,75 @@ const usePlanDateState = () => {
         end: endDate,
       };
 
-      // 날짜 및 시간 유효성 검사
-      let startDateForCompare: TDateYMD | TDateYMDHM = {
-        year: startDate.year,
-        month: startDate.month - 1,
-        day: startDate.day,
-      };
-      let endDateForCompare: TDateYMD | TDateYMDHM = {
-        year: endDate.year,
-        month: endDate.month - 1,
-        day: endDate.day,
-      };
-      if (!focusedPlan?.isAllDay) {
-        startDateForCompare = {
-          ...startDateForCompare,
-          hour: startDate.hour,
-          minute: startDate.minute,
+      const checkValidDate = (type: TDateType, newDate: TDateYMDHM) => {
+        const prev = date[type === 'start' ? 'end' : 'start'];
+        const oppositeDate = {
+          ...prev,
+          month: prev.month - 1,
         };
-        endDateForCompare = {
-          ...endDateForCompare,
-          hour: endDate.hour,
-          minute: endDate.minute,
-        };
-      }
-      const isValidEndDate = isValidDate(
-        startDateForCompare,
-        endDateForCompare,
-      );
 
-      // focusedPlan의 startDate, endDate 업데이트
+        const start = type === 'start' ? newDate : oppositeDate;
+        const end = type === 'end' ? newDate : oppositeDate;
+
+        return isValidDate(start, end);
+      };
+
       const setDate = (type: TDateType) => {
         const key = type === 'start' ? 'startTime' : 'endTime';
         const originDate = date[type];
+
         return ({ year, month, day }: TDateYMD) => {
-          const newDateMoment = moment({
+          const newDate = {
             ...originDate,
             year,
             month: month - 1,
             day,
-          });
-          updateFocusedPlan({ [key]: newDateMoment.toString() });
+          };
+
+          const isValid = checkValidDate(type, newDate);
+
+          if (!isValid) {
+            toast('날짜를 변경할 수 없습니다.');
+          } else {
+            const newDateMoment = moment(newDate);
+
+            updateFocusedPlan({ [key]: newDateMoment.toString() });
+          }
+
+          return isValid;
         };
       };
 
       const setTime = (type: TDateType) => {
         const key = type === 'start' ? 'startTime' : 'endTime';
         const originDate = date[type];
+
         return ({ hour, minute }: TTimeHM) => {
           const { month, ...rest } = originDate;
-          const newDateMoment = moment({
+
+          const newDate = {
             ...rest,
             month: month - 1,
             hour,
             minute,
-          });
-          updateFocusedPlan({ [key]: newDateMoment.toString() });
+          };
+
+          const isValid = checkValidDate(type, newDate);
+
+          if (!isValid) {
+            toast('날짜를 변경할 수 없습니다.');
+          } else {
+            const newDateMoment = moment(newDate);
+
+            updateFocusedPlan({ [key]: newDateMoment.toString() });
+          }
+
+          return isValid;
         };
       };
 
       return {
         date,
-        isValidEndDate,
         isAllDay: focusedPlan?.isAllDay,
         setDate,
         setTime,

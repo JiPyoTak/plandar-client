@@ -106,8 +106,9 @@ const PlanTag: React.FC = () => {
 };
 
 const Container = styled(Dropdown)`
-  width: 100%;
   position: relative;
+
+  width: 100%;
 `;
 
 const TagButtonContainer = styled.div`

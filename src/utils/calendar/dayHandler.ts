@@ -1,7 +1,6 @@
 import moment from 'moment';
 
 import { TDateYMD } from '@/stores/date';
-import { ICalendarInfo } from '@/utils/calendar/getCalendarInfo';
 
 const compareDays = (props: TDateYMD) => {
   const { year, month, day } = props;

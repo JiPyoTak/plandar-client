@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useRef } from 'react';
+import React, { ChangeEventHandler } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -13,10 +13,9 @@ import {
   PlanModalClassifierTitle,
   PlanModalCollapseDuration,
 } from '@/styles/plan-modal';
+import { BOX_SCROLL_Y } from '@/styles/scroll';
 
 const PlanMemo: React.FC = () => {
-  const ref = useRef<HTMLTextAreaElement>(null);
-
   const [description, setDescription] = useFocusedPlanState(
     (store) => {
       const { focusedPlan, updateFocusedPlan } = store;
@@ -27,18 +26,10 @@ const PlanMemo: React.FC = () => {
     (prev, cur) => prev[0] === cur[0],
   );
 
-  const handleTextareaHeight = () => {
-    const current = ref.current;
-    if (!current) return;
-    current.style.height = '0px'; // 마지막 줄 공백을 없애주기 위해 0으로 초기화
-    current.style.height = current.scrollHeight + 'px';
-  };
+  const onInputTextArea: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+    if (e.target.value.length > MAX_MEMO_LENGTH) return;
 
-  const onChangeTextArea: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
-    handleTextareaHeight();
-    if (e.target.value.length <= MAX_MEMO_LENGTH) {
-      setDescription(e.target.value);
-    }
+    setDescription(e.target.value);
   };
 
   return (
@@ -54,14 +45,11 @@ const PlanMemo: React.FC = () => {
           }
         />
       </Dropdown.Controller>
-      <div>
-        <TextArea
-          placeholder={`메모를 최대 ${MAX_MEMO_LENGTH}자까지 입력할 수 있습니다`}
-          ref={ref}
-          value={description}
-          onChange={onChangeTextArea}
-        />
-      </div>
+      <TextArea
+        placeholder={`메모를 최대 ${MAX_MEMO_LENGTH}자까지 입력할 수 있습니다`}
+        value={description}
+        onInput={onInputTextArea}
+      />
     </Container>
   );
 };
@@ -72,15 +60,27 @@ const Container = styled(Dropdown)`
 
 const TextArea = styled.textarea`
   width: 100%;
-  resize: none;
-  border: none;
-  outline: none;
-  color: ${({ theme }) => theme.text1};
-  font-family: inherit;
+  min-height: 150px;
+
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+
   line-height: 1.5;
-  padding: 0 24px 0;
-  height: 18px;
+
+  color: ${({ theme }) => theme.text1};
+  border-color: ${({ theme }) => theme.white};
+  background-color: ${({ theme }) => theme.background2};
+
+  font-family: inherit;
+  resize: none;
+
   ${FONT_REGULAR_4}
+  ${BOX_SCROLL_Y}
+
+  &:focus {
+    background-color: ${({ theme }) => theme.background1};
+    border-color: ${({ theme }) => theme.border2};
+  }
 
   &::placeholder {
     color: ${({ theme }) => theme.text3};

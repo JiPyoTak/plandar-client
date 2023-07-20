@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import moment from 'moment';
 
 import TimeOptionList from '@/components/modal/plan/create/plan-date/TimeOptionList';
-import { FONT_REGULAR_3 } from '@/styles/font';
+import { FONT_REGULAR_4 } from '@/styles/font';
 import { TTimeHM } from '@/types/time';
 import {
   extractTimeFromString,
@@ -15,7 +15,7 @@ import { padZero } from '@/utils/padZero';
 
 interface Props {
   time: TTimeHM;
-  setTime: (time: TTimeHM) => void;
+  setTime: (time: TTimeHM) => boolean;
 }
 
 const initialTime = (time: TTimeHM) => {
@@ -31,27 +31,34 @@ const TimeInput = ({ setTime, time }: Props) => {
   const [inputTime, setInputTime] = useState<string>(initialTime(time));
   const inputRef = useRef<HTMLInputElement>(null);
   const [openedOptions, setOpenedOptions] = useState(false);
-  const onInputEnter = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      inputRef.current?.blur();
-    }
-  };
 
   const timeInfo = extractTimeFromString(inputTime);
 
   const onBlurHandler = () => {
-    const { invalid, hour, minute, meridiem } = timeInfo;
-    if (!invalid) {
+    const { hour, minute, meridiem } = timeInfo;
+
+    const isValid = setTime({
+      hour: meridiem === '오후' ? hour + 12 : hour,
+      minute,
+    });
+
+    if (isValid) {
       setInputTime(`${meridiem} ${hour}:${padZero(minute)}`);
-      setTime({ hour: meridiem === '오후' ? hour + 12 : hour, minute });
     } else {
       setInputTime(initialTime(time));
     }
+
     setOpenedOptions(false);
   };
 
+  const onInputEnter = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== 'Enter') return;
+
+    inputRef.current?.blur();
+  };
+
   return (
-    <div css={{ position: 'relative', display: 'inline-block' }}>
+    <div css={{ display: 'inline-block' }}>
       <Input
         invalid={timeInfo.invalid}
         type="text"
@@ -63,20 +70,27 @@ const TimeInput = ({ setTime, time }: Props) => {
         onBlur={onBlurHandler}
       />
       {openedOptions && (
-        <TimeOptionList timeInfo={timeInfo} setTime={setInputTime} />
+        <TimeOptionList
+          inputTime={inputTime}
+          timeInfo={timeInfo}
+          setTime={setInputTime}
+        />
       )}
     </div>
   );
 };
 
 const Input = styled.input<{ invalid?: boolean }>`
-  outline: none;
-  border: none;
-  border-radius: 5px;
+  width: 80px;
+
   margin: 0 2px;
+  border-radius: 5px;
+  ${FONT_REGULAR_4}
+
   text-align: center;
-  width: 86px;
-  ${FONT_REGULAR_3}
+  border: none;
+  outline: none;
+
   &:hover {
     background-color: ${({ theme }) => theme.background3};
   }
