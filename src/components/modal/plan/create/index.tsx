@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { css, Theme, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { shallow } from 'zustand/shallow';
@@ -35,6 +36,8 @@ const PlanModal: TPlanModal = ({
   onClose,
   onDone,
 }: TPlanModalProps) => {
+  const theme = useTheme();
+
   const { focusedPlan, openModal, clearPlan, isDisabled, isEdit } =
     useFocusedPlanState(
       ({ focusedPlan, isDragging, clearDraggedPlan, type }) => ({
@@ -93,15 +96,20 @@ const PlanModal: TPlanModal = ({
       isBgBlack={true}
       HeaderLeftComponent={<PlanColorPicker />}
     >
-      <PlanTitleInput />
-      <PlanDate />
-      <PlanAllDay />
-      <Hr />
-      <PlanMemo />
-      <Hr />
-      <PlanCategory />
-      <Hr />
-      <PlanTag />
+      <Inner>
+        <PlanTitleInput />
+        <PlanDate />
+        <PlanAllDay />
+        <div css={BORDER_TOP({ theme })}>
+          <PlanMemo />
+        </div>
+        <div css={BORDER_TOP({ theme })}>
+          <PlanCategory />
+        </div>
+        <div css={BORDER_TOP({ theme })}>
+          <PlanTag />
+        </div>
+      </Inner>
       <StylishButton
         isColor={true}
         size="large"
@@ -126,13 +134,26 @@ const Modal = styled(ModalContainer)`
   padding: 24px;
   box-shadow: 1px 10px 25px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
+
+  max-height: 80vh;
 `;
 
-const Hr = styled.hr`
+const Inner = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const BORDER_TOP = ({ theme }: { theme: Theme }) => css`
   width: 100%;
-  height: 1px;
-  border: none;
-  background-color: ${({ theme }) => theme.border1};
+  padding: 0.5rem 0;
+  border-top: 1px solid ${theme.border1};
 `;
 
 export default PlanModal;
