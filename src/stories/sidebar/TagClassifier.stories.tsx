@@ -1,31 +1,57 @@
+import { useLayoutEffect } from 'react';
+
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import TagClassifier from '@/components/home/sidebar/content/classifier/TagClassifier';
+import { CALENDAR_UNIT } from '@/constants';
 import { useCreatePlanMutation } from '@/hooks/query/plan';
-import useClassifiedPlans from '@/hooks/useClassifiedPlans';
 import useDateState from '@/stores/date';
+import useCalendarUnitState from '@/stores/date/calendarUnit';
 import planStubManager from '@/stories/apis/data/plan';
 import { createPlanApiHandler, getPlansApiHandler } from '@/stories/apis/plan';
-import { TIMETABLE_SCROLL_STYLE } from '@/styles/timetable';
 
 export default {
   title: 'Sidebar/Classifier',
   component: TagClassifier,
+  argTypes: {
+    date: { control: 'date', description: '현재 달력에 선택된 날짜입니다.' },
+    unit: {
+      options: [0, 1, 2],
+      control: {
+        type: 'select',
+        labels: CALENDAR_UNIT,
+      },
+      description: '현재 달력을 나타내는 단위입니다.',
+    },
+  },
 } as ComponentMeta<typeof TagClassifier>;
 
-const Template: ComponentStory<typeof TagClassifier> = (args) => {
-  const { year, month } = useDateState();
-  const { mutateAsync: createPlanMutateAsync } = useCreatePlanMutation();
-  const plans = useClassifiedPlans();
+type TArgs = {
+  date: number;
+  unit: number;
+};
 
-  const tagPlans: { [key: string]: number } = {};
-  plans.forEach(({ tags }) => {
-    tags.forEach((tag) => {
-      if (!Object.hasOwnProperty.call(tagPlans, tag)) tagPlans[tag] = 0;
-      tagPlans[tag]++;
+const Template: ComponentStory<
+  (args: TArgs) => ReturnType<typeof TagClassifier>
+> = ({ date: dateTime, unit, ...args }) => {
+  const date = new Date(dateTime);
+  const { onChangeStoreDate } = useDateState();
+  const { selectCalendarUnit } = useCalendarUnitState();
+
+  useLayoutEffect(() => {
+    onChangeStoreDate({
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
     });
-  });
+  }, [dateTime]);
+
+  useLayoutEffect(() => {
+    selectCalendarUnit(CALENDAR_UNIT[unit]);
+  }, [unit]);
+
+  const { mutateAsync: createPlanMutateAsync } = useCreatePlanMutation();
 
   const createRandomTagPlan = () => {
     const alphabetCount = 26;
@@ -34,27 +60,17 @@ const Template: ComponentStory<typeof TagClassifier> = (args) => {
     );
 
     createPlanMutateAsync(
-      planStubManager.createStub({ tags: [randomAlphabet] }),
+      planStubManager.createStub({
+        startTime: date,
+        endTime: date,
+        isAllDay: true,
+        tags: [randomAlphabet],
+      }),
     );
   };
 
   return (
     <Container>
-      <div className="category-classifier-plans">
-        <h4>
-          {year}년 {month}월 일정 렌더링
-        </h4>
-        <PlanSummary>
-          <div>총 {plans.length} 개의 일정</div>
-          {Object.entries(tagPlans).map(([name, count]) => {
-            return (
-              <div>
-                {name}({count}개)
-              </div>
-            );
-          })}
-        </PlanSummary>
-      </div>
       <div className="category-classifier-controls">
         <TestButton onClick={createRandomTagPlan}>
           랜덤 태그 일정 추가하기
@@ -82,26 +98,9 @@ const Container = styled.div`
     column-gap: 1rem;
   }
 
-  .category-classifier-plans {
-    width: 100%;
-    flex: 0;
-    padding: 0 1rem;
-  }
-
   .category-classifier-main {
     flex: 1 0 0;
   }
-`;
-
-const PlanSummary = styled.div`
-  ${TIMETABLE_SCROLL_STYLE}
-
-  padding-top: 1rem;
-  display: flex;
-  column-gap: 1rem;
-
-  overflow-x: scroll;
-  overflow-y: hidden;
 `;
 
 const TestButton = styled.button`
@@ -111,7 +110,10 @@ const TestButton = styled.button`
 `;
 
 export const Tag = Template.bind({});
-Tag.args = {};
+Tag.args = {
+  date: new Date().getTime(),
+  unit: 2,
+};
 Tag.parameters = {
   msw: {
     handlers: [getPlansApiHandler, createPlanApiHandler],
