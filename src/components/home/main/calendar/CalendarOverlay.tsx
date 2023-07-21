@@ -2,29 +2,37 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
+import { Moment } from 'moment';
+
 import useDateState from '@/stores/date';
-import { ICalendarInfo } from '@/utils/calendar/getCalendarInfo';
 
 interface IProps {
-  week: ICalendarInfo[];
+  dayMoments: Moment[];
 }
 
-const CalendarOverlay = ({ week }: IProps) => {
-  const { year, month } = useDateState();
+const COMPARE_FORMAT = 'YYYY-MM';
+
+const CalendarOverlay = ({ dayMoments }: IProps) => {
+  const referenceDate = useDateState(({ referenceDate }) => referenceDate);
+  const referenceFormat = referenceDate.format(COMPARE_FORMAT);
 
   return (
     <Container>
-      {week.map(({ year: y, month: m }, j) => (
-        <Inner
-          key={`${y}${m}${j}`}
-          css={{
-            backgroundColor:
-              y === year && m === month
-                ? 'transparent'
-                : 'rgba(255,255,255,.4)',
-          }}
-        />
-      ))}
+      {dayMoments.map((dayMoment, j) => {
+        const weekFormat = dayMoment.format('YYYY-MM');
+
+        return (
+          <Inner
+            key={`${weekFormat}-${j}`}
+            css={{
+              backgroundColor:
+                referenceFormat === weekFormat
+                  ? 'transparent'
+                  : 'rgba(255,255,255,.4)',
+            }}
+          />
+        );
+      })}
     </Container>
   );
 };

@@ -5,41 +5,37 @@ import moment from 'moment';
 import MiniCalendar from '@/components/common/mini-calendar';
 
 import useDateState from '@/stores/date';
-import { decreaseMonth, increaseMonth } from '@/utils/calendar/monthHandler';
 
 const SmallCalendar: React.FC = () => {
-  const { onChangeStoreDate, year, month, day } = useDateState();
-
-  const [date, setDate] = useState({ year, month, day });
+  const { referenceDate, setReferenceDate } = useDateState(
+    ({ referenceDate, setReferenceDate }) => ({
+      referenceDate,
+      setReferenceDate,
+    }),
+  );
+  const [date, setDate] = useState(moment(referenceDate));
 
   useEffect(() => {
-    setDate({ year, month, day });
-  }, [year, month, day]);
+    setDate(moment(referenceDate));
+  }, [referenceDate]);
 
   const increaseCalendarMonth = () => {
-    setDate(increaseMonth);
+    setDate((prev) => moment(prev).add(1, 'month'));
   };
 
   const decreaseCalendarMonth = () => {
-    setDate(decreaseMonth);
+    setDate((prev) => moment(prev).subtract(1, 'month'));
   };
 
   const onClickTodayButton = () => {
-    const today = moment();
-    const date = {
-      year: today.year(),
-      month: today.month() + 1,
-      day: today.date(),
-    };
-
-    setDate(date);
+    setDate(moment());
   };
 
   return (
     <MiniCalendar
-      today={{ year, month, day }}
-      currentDate={date}
-      onChangeDate={onChangeStoreDate}
+      referenceDate={referenceDate}
+      selectedDate={date}
+      setReferenceDate={setReferenceDate}
       increaseMonth={increaseCalendarMonth}
       decreaseMonth={decreaseCalendarMonth}
       onClickTodayButton={onClickTodayButton}

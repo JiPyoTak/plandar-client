@@ -1,7 +1,6 @@
 import moment from 'moment';
 
 import { getFirstAndLastWeek } from './getFirstAndLastWeek';
-import { TDateYMD } from '@/stores/date';
 
 const getStartAndEndDate = ({
   year,

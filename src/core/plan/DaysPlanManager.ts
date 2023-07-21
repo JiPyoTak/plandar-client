@@ -3,7 +3,6 @@ import moment, { Moment } from 'moment';
 import Plan from './Plan';
 import PlanManager from './PlanManager';
 import type { IViewInfo } from './PlanManager';
-import { TDateYMD } from '@/stores/date';
 import { divideTimePlans } from '@/utils/plan/divideTimePlans';
 
 export interface IDayViewInfo extends IViewInfo {

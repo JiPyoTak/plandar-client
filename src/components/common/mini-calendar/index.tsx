@@ -2,16 +2,17 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
+import { Moment, MomentInput } from 'moment';
+
 import CalendarHeader from './CalendarHeader';
 import CalendarView from './CalendarView';
 
 import DayOfWeek from '@/components/core/calendar/DayOfWeek';
-import { TDateYMD } from '@/stores/date';
 
 interface IProps {
-  today: TDateYMD;
-  currentDate: TDateYMD;
-  onChangeDate: (date: TDateYMD) => void;
+  referenceDate: Moment;
+  selectedDate: Moment;
+  setReferenceDate: (date: MomentInput) => void;
   increaseMonth: () => void;
   decreaseMonth: () => void;
   onClickTodayButton: () => void;
@@ -19,9 +20,9 @@ interface IProps {
 
 const MiniCalendar: React.FC<IProps> = (props) => {
   const {
-    today,
-    currentDate,
-    onChangeDate,
+    referenceDate,
+    selectedDate,
+    setReferenceDate,
     increaseMonth,
     decreaseMonth,
     onClickTodayButton,
@@ -30,17 +31,17 @@ const MiniCalendar: React.FC<IProps> = (props) => {
   return (
     <Container>
       <CalendarHeader
-        year={currentDate.year}
-        month={currentDate.month}
+        year={selectedDate.year()}
+        month={selectedDate.month()}
         increaseMonth={increaseMonth}
         decreaseMonth={decreaseMonth}
         onClickTodayButton={onClickTodayButton}
       />
       <DayOfWeek />
       <CalendarView
-        date={currentDate}
-        storeDate={today}
-        onChangeDate={onChangeDate}
+        referenceDate={referenceDate}
+        selectedDate={selectedDate}
+        onChangeDate={setReferenceDate}
       />
     </Container>
   );

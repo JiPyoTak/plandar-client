@@ -1,5 +1,13 @@
-import { compareDays } from './dayHandler';
-import { TDateYMD } from '@/stores/date';
+const compareDays = (props: TDateYMD) => {
+  const { year, month, day } = props;
+  const lastDay = parseInt(
+    moment({ year, month: month - 1 })
+      .endOf('month')
+      .format('D'),
+  );
+
+  return day > lastDay ? lastDay : day;
+};
 
 const increaseMonth = (state: TDateYMD) => {
   const newDate: TDateYMD = {

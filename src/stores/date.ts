@@ -1,41 +1,36 @@
 import moment from 'moment';
+import type { Moment, MomentInput } from 'moment';
 import { create } from 'zustand';
 
-import { decreaseMonth, increaseMonth } from '@/utils/calendar/monthHandler';
-
 type TDateState = {
-  year: number;
-  month: number;
-  day: number;
+  referenceDate: Moment;
 };
-type TDateYMD = Pick<TDateState, 'day' | 'month' | 'year'>;
+
+const initialState = {
+  referenceDate: moment(),
+} as const;
 
 type TDateAction = {
   increaseStoreMonth: () => void;
   decreaseStoreMonth: () => void;
-  onChangeStoreDate: (props: TDateYMD) => void;
+  setReferenceDate: (date: MomentInput) => void;
 };
-
-const getInitialDate = () => {
-  const today = moment();
-
-  return {
-    year: today.year(),
-    month: today.month() + 1,
-    day: today.date(),
-  };
-};
-
-const initialState = {
-  ...getInitialDate(),
-} as const;
 
 const useDateState = create<TDateState & TDateAction>((set) => ({
   ...initialState,
-  increaseStoreMonth: () => set(increaseMonth),
-  decreaseStoreMonth: () => set(decreaseMonth),
-  onChangeStoreDate: (props: TDateYMD) => set(props),
+  increaseStoreMonth: () =>
+    set(({ referenceDate }) => {
+      return {
+        referenceDate: moment(referenceDate).add(1, 'month'),
+      };
+    }),
+  decreaseStoreMonth: () =>
+    set(({ referenceDate }) => {
+      return {
+        referenceDate: moment(referenceDate).subtract(1, 'month'),
+      };
+    }),
+  setReferenceDate: (date) => set({ referenceDate: moment(date) }),
 }));
 
-export type { TDateYMD };
 export default useDateState;

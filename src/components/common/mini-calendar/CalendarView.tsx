@@ -2,42 +2,42 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
+import { Moment, MomentInput } from 'moment';
+
 import CalendarDay from '@/components/core/calendar/CalendarDay';
-import { TDateYMD } from '@/stores/date';
+import { DATE_FORMAT } from '@/constants';
 import useCalendarUnitState from '@/stores/date/calendarUnit';
-import { getCalendarInfo } from '@/utils/calendar/getCalendarInfo';
-import { compareDate } from '@/utils/date/compareDate';
+import { getDayMoments } from '@/utils/calendar/getDayMoments';
 
 interface IProps {
-  date: TDateYMD;
-  storeDate: TDateYMD;
-  onChangeDate: (date: TDateYMD) => void;
+  referenceDate: Moment;
+  selectedDate: Moment;
+  onChangeDate: (date: MomentInput) => void;
 }
 
-const CalendarView: React.FC<IProps> = ({ date, storeDate, onChangeDate }) => {
+const CalendarView: React.FC<IProps> = ({
+  referenceDate,
+  selectedDate,
+  onChangeDate,
+}) => {
   const { selectedCalendarUnit } = useCalendarUnitState();
-  const calendarInfos = getCalendarInfo(date).flat();
-
-  const weeks = calendarInfos.reduce((acc, cur, i) => {
-    const isSelected = compareDate(cur, storeDate) && cur.isInMonth;
-
-    return isSelected ? Math.floor(i / 7) : acc;
-  }, -1);
+  const dayMoments = getDayMoments(selectedDate);
 
   return (
     <Container>
-      {calendarInfos.map((info, i) => {
+      {dayMoments.map((dayMoment) => {
         const isWeeks =
-          Math.floor(i / 7) === weeks && selectedCalendarUnit === '주';
+          selectedDate.week() === dayMoment.week() &&
+          selectedCalendarUnit === '주';
         return (
           <CalendarDay
-            {...info}
+            date={dayMoment}
             isWeeks={isWeeks}
-            isWeeksStart={isWeeks && i % 7 === 0}
-            isWeeksEnd={isWeeks && i % 7 === 6}
-            isSelected={compareDate(info, date) && info.isInMonth}
+            isWeeksStart={isWeeks && dayMoment.weekday() === 0}
+            isWeeksEnd={isWeeks && dayMoment.weekday() === 6}
+            isSelected={selectedDate.isSame(referenceDate)}
             onClick={onChangeDate}
-            key={`${info.month}${info.day}`}
+            key={dayMoment.format(DATE_FORMAT)}
           />
         );
       })}

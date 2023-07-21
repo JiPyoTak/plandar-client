@@ -2,59 +2,52 @@ import React, { memo } from 'react';
 
 import styled from '@emotion/styled';
 
-import { TDateYMD } from '@/stores/date';
-import { ICalendarInfo } from '@/utils/calendar/getCalendarInfo';
-import { getDayClassName } from '@/utils/calendar/getDayClassName';
+import moment, { Moment, MomentInput } from 'moment';
+
 import { isBgBright } from '@/utils/color';
 
-interface IProps extends ICalendarInfo {
+interface IProps {
+  date: Moment;
   isSelected: boolean;
   isWeeks?: boolean;
   isWeeksStart?: boolean;
   isWeeksEnd?: boolean;
   className?: string;
-  onClick: (date: TDateYMD) => void;
+  onClick: (date: MomentInput) => void;
 }
 
 const getClassNames = ({
+  date,
   isWeeks,
   isWeeksStart,
   isWeeksEnd,
-}: {
-  isWeeks?: boolean;
-  isWeeksStart?: boolean;
-  isWeeksEnd?: boolean;
-}) => {
+  isSelected,
+}: IProps) => {
   const classNames = [];
+  const today = moment();
 
+  const isInMonth = today.month() === date.month();
+  const isWeekend = date.weekday() === 0 || date.weekday() === 6;
+  const isToday = moment().isSame(date, 'day');
+
+  if (!isInMonth) classNames.push('in_month');
+  if (isWeekend) classNames.push('is_weekend');
+  if (isToday) classNames.push('is_today');
+  if (!isToday && !isSelected) classNames.push('hover');
   if (isWeeks) classNames.push('is_weeks');
   if (isWeeksStart) classNames.push('is_weeks_start');
   if (isWeeksEnd) classNames.push('is_weeks_end');
+  if (isSelected) classNames.push('is_selected');
 
   return classNames.join(' ');
 };
 
 const CalendarDay: React.FC<IProps> = (props) => {
-  const {
-    day,
-    month,
-    year,
-    onClick,
-    isWeeks,
-    isWeeksStart,
-    isWeeksEnd,
-    className,
-    ...isBooleans
-  } = props;
-  const containerClassName = getClassNames({
-    isWeeks,
-    isWeeksStart,
-    isWeeksEnd,
-  });
-  const dayNumberClassName = getDayClassName(isBooleans);
+  const { date, onClick, className } = props;
+  const containerClassName = getClassNames(props);
 
   const onClickDay: React.MouseEventHandler = () => {
-    onClick({ day, month, year });
+    onClick(date);
   };
 
   const onMouseDown: React.MouseEventHandler = (e) => {
@@ -63,12 +56,8 @@ const CalendarDay: React.FC<IProps> = (props) => {
 
   return (
     <Container className={`${containerClassName} ${className ?? ''}`}>
-      <DayNumber
-        className={dayNumberClassName}
-        onClick={onClickDay}
-        onMouseDown={onMouseDown}
-      >
-        {day}
+      <DayNumber onClick={onClickDay} onMouseDown={onMouseDown}>
+        {date.date()}
       </DayNumber>
     </Container>
   );
@@ -98,6 +87,30 @@ const Container = styled.div`
     border-top-right-radius: 1rem;
     border-bottom-right-radius: 1rem;
   }
+
+  &.is_selected > button {
+    background-color: ${({ theme }) => theme.primary_light};
+    color: ${({ theme }) =>
+      isBgBright(theme.primary_light2) ? theme.text1 : theme.white};
+  }
+
+  &.in_month > button {
+    color: ${({ theme }) => theme.text3};
+    opacity: 0.5;
+  }
+
+  &.is_weekend > button {
+    color: ${({ theme }) => theme.text3};
+  }
+
+  &.is_today > button {
+    color: ${({ theme }) => theme.white};
+    background-color: ${({ theme }) => theme.primary};
+  }
+
+  &.hover > button:hover {
+    background-color: ${({ theme }) => theme.primary_light2};
+  }
 `;
 
 const DayNumber = styled.button`
@@ -117,30 +130,6 @@ const DayNumber = styled.button`
   cursor: pointer;
   transition: background-color 0.2s;
   background-color: transparent;
-
-  &.in_month {
-    color: ${({ theme }) => theme.text3};
-    opacity: 0.5;
-  }
-
-  &.is_weekend {
-    color: ${({ theme }) => theme.text3};
-  }
-
-  &.is_selected {
-    background-color: ${({ theme }) => theme.primary_light};
-    color: ${({ theme }) =>
-      isBgBright(theme.primary_light2) ? theme.text1 : theme.white};
-  }
-
-  &.is_today {
-    color: ${({ theme }) => theme.white};
-    background-color: ${({ theme }) => theme.primary};
-  }
-
-  &.hover:hover {
-    background-color: ${({ theme }) => theme.primary_light2};
-  }
 `;
 
 export default memo(CalendarDay);
