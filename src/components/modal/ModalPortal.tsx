@@ -33,6 +33,7 @@ const Modal: TModalPortal = (props, ref) => {
   if (!modalElement) {
     throw new Error('모달창을 열 수 없습니다');
   }
+
   return createPortal(
     <Container
       css={{

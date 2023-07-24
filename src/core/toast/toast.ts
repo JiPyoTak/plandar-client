@@ -18,6 +18,7 @@ const dispatchToast = (
   options: INotValidatedToastProps,
 ): TToastId => {
   eventManager.emit('show', content, options);
+
   return options.toastId;
 };
 

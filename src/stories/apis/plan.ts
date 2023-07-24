@@ -13,6 +13,7 @@ const getPlansApiHandler = serverAPI.get('/plan/between', (req, res, ctx) => {
   }
 
   const data = planStubManager.get({ timeMin, timeMax });
+
   return res(ctx.status(200), ctx.json({ data, success: true }));
 });
 
@@ -55,6 +56,7 @@ const deletePlanApiHandler = serverAPI.delete(
     }
 
     const plan = planStubManager.delete(id);
+
     return res(ctx.status(200), ctx.json({ data: plan, success: true }));
   },
 );

@@ -33,6 +33,7 @@ class DaysPlanManager extends PlanManager<IDayViewInfo> {
 
     const filteredPlans = plans.filter((plan) => {
       const { startMoment, endMoment } = plan;
+
       return (
         !currentStart.isAfter(endMoment) && !currentEnd.isBefore(startMoment)
       );
@@ -125,6 +126,7 @@ class DaysPlanManager extends PlanManager<IDayViewInfo> {
     }>((result, _, index) => {
       const targetDate = moment(this.startDate).add(index, 'd').format(format);
       result[targetDate] = [];
+
       return result;
     }, {});
 

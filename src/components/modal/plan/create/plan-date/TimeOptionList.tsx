@@ -40,6 +40,7 @@ const TimeOptionList = ({ inputTime, timeInfo, setTime }: Props) => {
       {['오전', '오후'].map((meridiem) => {
         return options.map((option) => {
           const timeText = `${meridiem} ${option}`;
+
           return (
             <TimeOption
               className={inputTime === timeText ? 'selected' : ''}

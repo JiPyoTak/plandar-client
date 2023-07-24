@@ -12,6 +12,7 @@ export default {
 
 export const Primary = () => {
   const [color, setColor] = useState<TColor>(SELECTABLE_COLOR[0]);
+
   return (
     <ColorPicker
       selectedColor={color}

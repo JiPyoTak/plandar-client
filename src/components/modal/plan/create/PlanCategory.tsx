@@ -63,6 +63,7 @@ const PlanCategory: React.FC = () => {
 
       if (e.key === 'Enter') {
         focusedCategory && setSelectedCategory(focusedCategory.id);
+
         return;
       }
 

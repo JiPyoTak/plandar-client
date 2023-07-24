@@ -42,7 +42,79 @@
         "newlines-between": "always-and-inside-groups"
       }
     ],
-    "import/default": "off"
+    "prettier/prettier": "error",
+    "no-undef": "off",
+    "no-var": "error",
+    "indent": "off",
+    "no-extra-boolean-cast": "off",
+    "no-implicit-coercion": ["error", { "allow": ["!!"] }],
+    "getter-return": "warn",
+    "no-async-promise-executor": "warn",
+    "prefer-const": "error",
+    "key-spacing": [
+      "error",
+      { "beforeColon": false, "afterColon": true, "mode": "strict" }
+    ],
+    "newline-before-return": "error",
+    "eqeqeq": ["error", "always", { "null": "ignore" }],
+    "prefer-template": "error",
+    "object-shorthand": ["error", "always"],
+    "import/no-named-as-default-member": "off",
+    "import/no-unresolved": "error",
+    "import/export": "off",
+    "import/default": "off",
+    "import/no-duplicates": ["error", { "prefer-inline": true }],
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/prefer-as-const": "warn",
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "warn",
+    "@typescript-eslint/ban-types": "warn",
+    "@typescript-eslint/no-inferrable-types": "warn",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-var-requires": "warn",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "format": ["camelCase", "UPPER_CASE", "PascalCase"],
+        "selector": "variable",
+        "leadingUnderscore": "allow"
+      },
+      { "format": ["camelCase", "PascalCase"], "selector": "function" },
+      { "format": ["PascalCase"], "selector": "interface" },
+      { "format": ["PascalCase"], "selector": "typeAlias" }
+    ],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/array-type": ["error", { "default": "array-simple" }],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { "ignoreRestSiblings": true }
+    ],
+    "@typescript-eslint/member-ordering": [
+      "error",
+      {
+        "default": [
+          "public-static-field",
+          "private-static-field",
+          "public-instance-field",
+          "private-instance-field",
+          "public-constructor",
+          "private-constructor",
+          "public-instance-method",
+          "private-instance-method"
+        ]
+      }
+    ],
+    "no-warning-comments": [
+      "warn",
+      {
+        "terms": ["TODO", "FIXME", "XXX", "BUG"],
+        "location": "anywhere"
+      }
+    ]
   },
   "env": {
     "browser": true,

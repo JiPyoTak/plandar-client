@@ -11,6 +11,7 @@ export default {
 
 const Template: ComponentStory<typeof Checkbox> = (args) => {
   const [checked, setChecked] = useState(false);
+
   return (
     <Checkbox
       onChange={(e) => setChecked(e.target.checked)}

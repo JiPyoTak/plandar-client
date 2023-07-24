@@ -36,6 +36,7 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
       <Container>
         {dateMoments.map((dateMoment) => {
           const format = dateMoment.format(DATE_FORMAT);
+
           return (
             <DaySizer key={dateMoment.format(DATE_FORMAT)}>
               <DayContent>

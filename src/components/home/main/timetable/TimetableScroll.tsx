@@ -23,6 +23,7 @@ const TimetableScroll: React.FC<PropsWithChildren> & TCompounds = ({
   children,
 }) => {
   const controller = useTimetableScroll();
+
   return <Context.Provider value={controller}>{children}</Context.Provider>;
 };
 

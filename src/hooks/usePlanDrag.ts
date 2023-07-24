@@ -116,6 +116,7 @@ const usePlanDrag = () => {
     };
 
     document.addEventListener('mouseup', onMouseUp);
+
     return () => {
       document.removeEventListener('mouseup', onMouseUp);
     };

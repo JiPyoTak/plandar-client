@@ -7,7 +7,7 @@ const CALENDAR_UNIT = ['day', 'week', 'month'] as const;
 
 const DAY_OF_WEEK_UNIT = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
-const SELECTABLE_COLOR: ReadonlyArray<TColor> = [
+const SELECTABLE_COLOR: readonly TColor[] = [
   'primary_light',
   'blue',
   'red',

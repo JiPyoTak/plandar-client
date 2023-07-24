@@ -18,6 +18,7 @@ class EventManager {
   on(event: TEvent, callback: TCallback): EventManager {
     this.list.has(event) || this.list.set(event, []);
     this.list.get(event)!.push(callback);
+
     return this;
   }
 
@@ -25,9 +26,11 @@ class EventManager {
     if (callback) {
       const cb = this.list.get(event)!.filter((cb) => cb !== callback);
       this.list.set(event, cb);
+
       return this;
     }
     this.list.delete(event);
+
     return this;
   }
 

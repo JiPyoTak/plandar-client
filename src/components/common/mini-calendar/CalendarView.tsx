@@ -28,6 +28,7 @@ const CalendarView: React.FC<IProps> = ({
       {dayMoments.map((dayMoment) => {
         const isWeeks =
           selectedDate.week() === dayMoment.week() && calendarUnit === 'week';
+
         return (
           <CalendarDay
             date={dayMoment}

@@ -29,6 +29,7 @@ const serverAPI = Object.keys(rest).reduce((newRest, key) => {
   };
 
   newRest[typedKey] = handler;
+
   return newRest;
 }, {} as typeof rest);
 

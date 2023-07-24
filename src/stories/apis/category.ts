@@ -3,6 +3,7 @@ import categoryStubManager from '@/stories/apis/data/category';
 
 const getCategoryAPIHandler = serverAPI.get(`/category`, (req, res, ctx) => {
   const data = categoryStubManager.get();
+
   return res(ctx.status(200), ctx.json({ data, success: true }));
 });
 

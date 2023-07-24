@@ -25,8 +25,10 @@ const getColumnPlans = (dateMoments: Moment[], plans: Plan[]): Plan[][] => {
 
   const columnPlans = dateMoments.map((dateMoment) => {
     const key = dateMoment.format(format);
+
     return planMap.get(key) || [];
   });
+
   return columnPlans;
 };
 

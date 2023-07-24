@@ -27,6 +27,7 @@ class StubManager<Data extends { id: number }> {
   public add(...args: Parameters<this['createStub']>) {
     const data = this.createStub.call(this, ...args);
     this.data.push(data);
+
     return data;
   }
 

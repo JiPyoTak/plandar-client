@@ -15,6 +15,7 @@ type TTagButton = React.FC<TTagButtonProps>;
 
 const TagButton: TTagButton = ({ children, onClick }: TTagButtonProps) => {
   const theme = useTheme();
+
   return (
     <Container>
       {children}

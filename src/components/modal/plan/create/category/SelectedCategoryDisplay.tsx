@@ -32,6 +32,7 @@ const SelectedCategoryDisplay: TSelectedCategoryDisplay = ({
     // id가 없다면 아직 서버로부터 생성되지 않은 상태므로 return
     if (!Object.hasOwnProperty.call(category, 'id')) {
       toast('카테고리가 생성되지 않았습니다');
+
       return;
     }
 

@@ -23,12 +23,14 @@ const CalendarView = () => {
     // TODO: utils
     /// 7일 단위로 끊어서 2단 배열로 만들어준다.
     let weekMoments: Moment[] = [];
+
     return getDayMoments(referenceDate).reduce((result, dayMoment) => {
       weekMoments.push(dayMoment);
       if (weekMoments.length === 7) {
         result.push(weekMoments);
         weekMoments = [];
       }
+
       return result;
     }, [] as Moment[][]);
   }, [referenceDate]);
