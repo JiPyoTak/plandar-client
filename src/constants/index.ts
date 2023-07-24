@@ -3,7 +3,7 @@ import { TColor } from '@/types';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
 
-const CALENDAR_UNIT = ['일', '주', '월'] as const;
+const CALENDAR_UNIT = ['day', 'week', 'month'] as const;
 
 const DAY_OF_WEEK_UNIT = ['일', '월', '화', '수', '목', '금', '토'] as const;
 

@@ -14,12 +14,7 @@ interface IUserState {
 }
 
 const useUserStore = create<IUserState>((set) => ({
-  user: {
-    id: 1,
-    username: '',
-    email: '',
-    profileImage: '',
-  },
+  user: null,
   setUser: (user) => set({ user }),
   reset: () => set({ user: null }),
 }));

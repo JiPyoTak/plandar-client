@@ -11,7 +11,6 @@ import CalendarHeader from '@/components/home/main/header';
 import { CALENDAR_UNIT } from '@/constants';
 import { useCreatePlanMutation } from '@/hooks/query/plan';
 import useDateState from '@/stores/date';
-import useCalendarUnitState from '@/stores/date/calendarUnit';
 import planStubManager from '@/stories/apis/data/plan';
 import {
   createPlanApiHandler,
@@ -26,9 +25,11 @@ export default {
 } as ComponentMeta<typeof CalendarView>;
 
 const Template: ComponentStory<typeof CalendarView> = () => {
-  const { selectCalendarUnit } = useCalendarUnitState();
+  const setCalendarUnit = useDateState(
+    ({ setCalendarUnit }) => setCalendarUnit,
+  );
   useEffect(() => {
-    selectCalendarUnit(CALENDAR_UNIT[2]);
+    setCalendarUnit(CALENDAR_UNIT[2]);
   }, []);
 
   const referenceDate = useDateState(({ referenceDate }) => referenceDate);

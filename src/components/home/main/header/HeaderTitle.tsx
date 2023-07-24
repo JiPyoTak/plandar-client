@@ -4,20 +4,22 @@ import styled from '@emotion/styled';
 
 import { DAY_OF_WEEK_UNIT } from '@/constants';
 import useDateState from '@/stores/date';
-import useCalendarUnitState from '@/stores/date/calendarUnit';
 import { FONT_BOLD_1 } from '@/styles/font';
 
 const HeaderTitle: React.FC = () => {
-  const referenceDate = useDateState(({ referenceDate }) => referenceDate);
-  const { selectedCalendarUnit } = useCalendarUnitState();
+  const { referenceDate, calendarUnit } = useDateState(
+    ({ referenceDate, calendarUnit }) => ({
+      referenceDate,
+      calendarUnit,
+    }),
+  );
 
   const year = referenceDate.year();
   const month = referenceDate.month() + 1;
   const day = referenceDate.date();
   const dayOfWeek = DAY_OF_WEEK_UNIT[referenceDate.day()];
 
-  const description =
-    selectedCalendarUnit === '일' ? `${day}일 (${dayOfWeek})` : '';
+  const description = calendarUnit === 'day' ? `${day}일 (${dayOfWeek})` : '';
 
   return (
     <Container>

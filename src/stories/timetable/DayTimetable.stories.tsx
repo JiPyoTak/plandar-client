@@ -11,7 +11,6 @@ import planStubManager from '../apis/data/plan';
 import Timetable from '@/components/home/main/timetable';
 import { useCreatePlanMutation } from '@/hooks/query/plan';
 import useDateState from '@/stores/date';
-import useCalendarUnitState from '@/stores/date/calendarUnit';
 import {
   createPlanApiHandler,
   deletePlanApiHandler,
@@ -28,11 +27,15 @@ export default {
 } as ComponentMeta<typeof Timetable>;
 
 const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
-  const referenceDate = useDateState(({ referenceDate }) => referenceDate);
+  const { referenceDate, setCalendarUnit } = useDateState(
+    ({ referenceDate, setCalendarUnit }) => ({
+      referenceDate,
+      setCalendarUnit,
+    }),
+  );
 
-  const { selectCalendarUnit } = useCalendarUnitState();
   useEffect(() => {
-    selectCalendarUnit('일');
+    setCalendarUnit('day');
   }, []);
 
   const { mutateAsync: createMutateAsync } = useCreatePlanMutation();

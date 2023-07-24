@@ -9,18 +9,18 @@ import SideBar from '@/components/home/sidebar';
 import CreatePlanModal from '@/components/modal/plan/create';
 import HoveredPlanModal from '@/components/modal/plan/hover';
 import SelectedPlanModal from '@/components/modal/plan/select';
-import useCalendarUnitState from '@/stores/date/calendarUnit';
+import useDateState from '@/stores/date';
 
 const CALENDAR_COMPONENTS = {
-  월: MainCalendar,
-  주: Timetable,
-  일: Timetable,
+  month: MainCalendar,
+  week: Timetable,
+  day: Timetable,
 } as const;
 
 const Home: React.FC = () => {
-  const { selectedCalendarUnit } = useCalendarUnitState();
+  const calendar = useDateState(({ calendarUnit }) => calendarUnit);
 
-  const CalendarComponent = CALENDAR_COMPONENTS[selectedCalendarUnit];
+  const CalendarComponent = CALENDAR_COMPONENTS[calendar];
 
   return (
     <>

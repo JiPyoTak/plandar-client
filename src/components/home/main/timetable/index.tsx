@@ -8,7 +8,6 @@ import TimetableScroll from './TimetableScroll';
 import TimetableView from './view';
 import TimetableHeader from '@/components/home/main/timetable/TimetableHeader';
 import useDateState from '@/stores/date';
-import useCalendarUnitState from '@/stores/date/calendarUnit';
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import {
   TIMETABLE_CELL_MIN_WIDTH,
@@ -20,14 +19,16 @@ type TProps = {
 };
 
 const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
-  const { selectedCalendarUnit } = useCalendarUnitState();
-  const { referenceDate } = useDateState(({ referenceDate }) => ({
-    referenceDate,
-  }));
+  const { referenceDate, calendarUnit } = useDateState(
+    ({ referenceDate, calendarUnit }) => ({
+      referenceDate,
+      calendarUnit,
+    }),
+  );
 
   // 주 선택하면 선택한 날짜 상관없이 해당 주를 보여주기
   const startMoment = moment(referenceDate);
-  if (selectedCalendarUnit === '주') {
+  if (calendarUnit === 'week') {
     rangeAmount = 7;
     startMoment.startOf('week');
   }

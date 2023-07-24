@@ -8,7 +8,6 @@ import DirectionButtons from '@/components/core/buttons/DirectionButtons';
 import PlusButton from '@/components/core/buttons/PlusButton';
 import TodayButton from '@/components/core/buttons/TodayButton';
 import useDateState from '@/stores/date';
-import useCalendarUnitState from '@/stores/date/calendarUnit';
 
 const HeaderButtons = () => {
   const {
@@ -17,23 +16,23 @@ const HeaderButtons = () => {
     decreaseStoreMonth,
     increaseStoreMonth,
   } = useDateState();
-  const { selectedCalendarUnit } = useCalendarUnitState();
+  const calendarUnit = useDateState(({ calendarUnit }) => calendarUnit);
 
   const onClickLeftButton = () => {
-    if (selectedCalendarUnit === '월') {
+    if (calendarUnit === 'month') {
       decreaseStoreMonth();
     } else {
-      const decreaseTerm = selectedCalendarUnit === '주' ? 7 : 1;
+      const decreaseTerm = calendarUnit === 'week' ? 7 : 1;
       const newDate = moment(referenceDate).subtract(decreaseTerm, 'day');
       setReferenceDate(newDate);
     }
   };
 
   const onClickRightButton = () => {
-    if (selectedCalendarUnit === '월') {
+    if (calendarUnit === 'month') {
       increaseStoreMonth();
     } else {
-      const decreaseTerm = selectedCalendarUnit === '주' ? 7 : 1;
+      const decreaseTerm = calendarUnit === 'week' ? 7 : 1;
       const newDate = moment(referenceDate).add(decreaseTerm, 'day');
       setReferenceDate(newDate);
     }

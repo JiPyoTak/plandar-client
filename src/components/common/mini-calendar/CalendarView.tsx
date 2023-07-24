@@ -6,7 +6,7 @@ import { Moment, MomentInput } from 'moment';
 
 import CalendarDay from '@/components/core/calendar/CalendarDay';
 import { DATE_FORMAT } from '@/constants';
-import useCalendarUnitState from '@/stores/date/calendarUnit';
+import useDateState from '@/stores/date';
 import { getDayMoments } from '@/utils/calendar/getDayMoments';
 
 interface IProps {
@@ -20,15 +20,14 @@ const CalendarView: React.FC<IProps> = ({
   selectedDate,
   onChangeDate,
 }) => {
-  const { selectedCalendarUnit } = useCalendarUnitState();
+  const calendarUnit = useDateState(({ calendarUnit }) => calendarUnit);
   const dayMoments = getDayMoments(selectedDate);
 
   return (
     <Container>
       {dayMoments.map((dayMoment) => {
         const isWeeks =
-          selectedDate.week() === dayMoment.week() &&
-          selectedCalendarUnit === '주';
+          selectedDate.week() === dayMoment.week() && calendarUnit === 'week';
         return (
           <CalendarDay
             date={dayMoment}

@@ -5,32 +5,43 @@ import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { CALENDAR_UNIT } from '@/constants';
-import useCalendarUnitState from '@/stores/date/calendarUnit';
+import useDateState from '@/stores/date';
 
-const labelLeft = {
+const LABEL_LEFT = {
   [CALENDAR_UNIT[0]]: '5px',
   [CALENDAR_UNIT[1]]: 'calc(50% - 25px)',
   [CALENDAR_UNIT[2]]: 'calc(100% - 55px)',
 } as const;
 
+const CALENDAR_UNIT_TEXT = {
+  [CALENDAR_UNIT[0]]: '일',
+  [CALENDAR_UNIT[1]]: '주',
+  [CALENDAR_UNIT[2]]: '월',
+} as const;
+
 const CalendarUnitButton: React.FC = () => {
-  const { selectedCalendarUnit, selectCalendarUnit } = useCalendarUnitState();
   const theme = useTheme();
+  const { calendarUnit, setCalendarUnit } = useDateState(
+    ({ calendarUnit, setCalendarUnit }) => ({
+      calendarUnit,
+      setCalendarUnit,
+    }),
+  );
 
   return (
     <CalendarUnitWrapper>
-      <CalendarUnitLabel css={{ left: labelLeft[selectedCalendarUnit] }} />
-      {CALENDAR_UNIT.map((calendarUnit) => (
+      <CalendarUnitLabel css={{ left: LABEL_LEFT[calendarUnit] }} />
+      {CALENDAR_UNIT.map((unit) => (
         <CalendarUnitText
-          key={calendarUnit}
+          key={unit}
           css={
-            selectedCalendarUnit === calendarUnit && {
+            calendarUnit === unit && {
               color: theme.title_active,
             }
           }
-          onClick={() => selectCalendarUnit(calendarUnit)}
+          onClick={() => setCalendarUnit(unit)}
         >
-          {calendarUnit}
+          {CALENDAR_UNIT_TEXT[unit]}
         </CalendarUnitText>
       ))}
     </CalendarUnitWrapper>

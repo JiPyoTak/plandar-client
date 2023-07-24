@@ -6,7 +6,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import MiniCalendar from '@/components/common/mini-calendar/index';
 import SmallCalendar from '@/components/home/sidebar/content/SmallCalendar';
 import { CALENDAR_UNIT } from '@/constants';
-import useCalendarUnitState from '@/stores/date/calendarUnit';
+import useDateState from '@/stores/date';
 
 export default {
   title: 'calendars/SmallCalendar',
@@ -31,10 +31,12 @@ const Template: ComponentStory<
     selectedCalendarIndex: 0 | 1 | 2;
   }>
 > = ({ selectedCalendarIndex }) => {
-  const { selectCalendarUnit } = useCalendarUnitState();
+  const setCalendarUnit = useDateState(
+    ({ setCalendarUnit }) => setCalendarUnit,
+  );
 
   useEffect(() => {
-    selectCalendarUnit(CALENDAR_UNIT[selectedCalendarIndex]);
+    setCalendarUnit(CALENDAR_UNIT[selectedCalendarIndex]);
   }, [selectedCalendarIndex]);
 
   return (
