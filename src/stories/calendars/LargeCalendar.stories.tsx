@@ -19,8 +19,6 @@ import {
   getPlansApiHandler,
   updatePlanApiHandler,
 } from '@/stories/apis/plan';
-import { getFormattedDate } from '@/utils/date/getFormattedDate';
-import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
 
 export default {
   title: 'calendars/LargeCalendar',
@@ -33,17 +31,14 @@ const Template: ComponentStory<typeof CalendarView> = () => {
     selectCalendarUnit(CALENDAR_UNIT[2]);
   }, []);
 
-  const { year, month, day } = useDateState();
-  const { startFormat } = getFormattedDate(
-    ...getStartAndEndDate({ year, month, day }),
-  );
+  const referenceDate = useDateState(({ referenceDate }) => referenceDate);
+  const startOfMonth = referenceDate.startOf('m').startOf('w').startOf('d');
   const { mutateAsync: createMutateAsync } = useCreatePlanMutation();
   const queryClient = useQueryClient();
   const forceUpdate = useReducer(() => ({}), {})[1];
 
-  const addRandomAlldayPlan = () => {
-    const daysInMonth = moment({ year, month: month - 1, day }).daysInMonth();
-    const startOfMonth = moment(startFormat);
+  const addRandomAllDayPlan = () => {
+    const daysInMonth = moment(referenceDate).daysInMonth();
     const planTerm = Math.round(Math.random() * (daysInMonth - 1)) + 1;
     const startGap =
       Math.floor(Math.random() * (planTerm + daysInMonth - 2)) - planTerm;
@@ -60,7 +55,6 @@ const Template: ComponentStory<typeof CalendarView> = () => {
   };
 
   const addRandomTimePlan = () => {
-    const startOfMonth = moment(startFormat);
     const startDay = Math.round(Math.random() * 42);
     const startHour = Math.round(Math.random() * 21);
     const startMinute = Math.round(Math.random() * 59);
@@ -91,7 +85,7 @@ const Template: ComponentStory<typeof CalendarView> = () => {
   return (
     <Container>
       <div className="large-calendar-controls">
-        <TestButton onClick={addRandomAlldayPlan}>
+        <TestButton onClick={addRandomAllDayPlan}>
           범위 안 종일 일정 추가하기
         </TestButton>
         <TestButton onClick={addRandomTimePlan}>

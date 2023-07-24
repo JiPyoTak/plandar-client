@@ -14,8 +14,8 @@ export interface IDayViewInfo extends IViewInfo {
 
 interface IDaysPlanManagerProps {
   plans: Plan[];
-  start: TDateYMD;
-  end: TDateYMD;
+  start: Moment;
+  end: Moment;
 }
 
 class DaysPlanManager extends PlanManager<IDayViewInfo> {

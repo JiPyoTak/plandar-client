@@ -1,41 +1,13 @@
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 
-import { getFirstAndLastWeek } from './getFirstAndLastWeek';
-
-const getStartAndEndDate = ({
-  year,
-  month,
-  day,
-}: TDateYMD): [TDateYMD, TDateYMD] => {
-  const [firstWeek, lastWeek] = getFirstAndLastWeek({ year, month, day });
-  const date = moment({ year, month: month - 1, day });
-
-  const startDate = date
-    .clone()
-    .startOf('year')
-    .week(firstWeek)
+const getStartAndEndDate = (targetDate: Moment) => {
+  const startDate = moment(targetDate)
+    .startOf('month')
     .startOf('week')
     .startOf('day');
+  const endDate = moment(startDate).add(5, 'week').endOf('week').endOf('day');
 
-  const endDate = date
-    .clone()
-    .startOf('year')
-    .week(lastWeek)
-    .endOf('week')
-    .endOf('day');
-
-  return [
-    {
-      year: startDate.year(),
-      month: startDate.month(),
-      day: startDate.date(),
-    },
-    {
-      year: endDate.year(),
-      month: endDate.month(),
-      day: endDate.date(),
-    },
-  ];
+  return [startDate, endDate];
 };
 
 export { getStartAndEndDate };

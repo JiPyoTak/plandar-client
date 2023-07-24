@@ -15,7 +15,7 @@ export default {
 } as ComponentMeta<typeof TagClassifier>;
 
 const Template: ComponentStory<typeof TagClassifier> = (args) => {
-  const { year, month } = useDateState();
+  const referenceDate = useDateState(({ referenceDate }) => referenceDate);
   const { mutateAsync: createPlanMutateAsync } = useCreatePlanMutation();
   const plans = useClassifiedPlans();
 
@@ -42,7 +42,7 @@ const Template: ComponentStory<typeof TagClassifier> = (args) => {
     <Container>
       <div className="category-classifier-plans">
         <h4>
-          {year}년 {month}월 일정 렌더링
+          {referenceDate.year()}년 {referenceDate.month()}월 일정 렌더링
         </h4>
         <PlanSummary>
           <div>총 {plans.length} 개의 일정</div>

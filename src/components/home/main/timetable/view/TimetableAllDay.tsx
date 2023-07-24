@@ -16,7 +16,6 @@ import {
   TIMETABLE_ALLDAY_VERTICAL_PADDING,
   TIMETABLE_CELL_MIN_WIDTH,
 } from '@/styles/timetable';
-import { getYMDByDateFormat } from '@/utils/date/getYMDByDateFormat';
 
 type TProps = {
   dateMoments: Moment[];
@@ -41,11 +40,6 @@ const TimetableAllDay: React.FC<TProps> = ({
   const focusedPlan = useFocusedPlanState((state) => state.focusedPlan);
   const createDragPlan = useFocusedPlanState((state) => state.createDragPlan);
 
-  const [start, end] = getYMDByDateFormat(
-    dateMoments[0].toString(),
-    dateMoments[dateMoments.length - 1].toString(),
-  );
-
   const planManager = useMemo(
     () =>
       new DaysPlanManager({
@@ -53,8 +47,8 @@ const TimetableAllDay: React.FC<TProps> = ({
           ...allDayPlans.filter((plan) => plan.id !== focusedPlan?.id),
           ...(focusedPlan ? [focusedPlan] : []),
         ],
-        start,
-        end,
+        start: dateMoments[0],
+        end: dateMoments[dateMoments.length - 1],
       }),
     [allDayPlans, focusedPlan, dateMoments],
   );

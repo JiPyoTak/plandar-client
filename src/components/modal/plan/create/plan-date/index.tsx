@@ -66,10 +66,7 @@ const PlanDate = () => {
         {!isAllDay && (
           <TimeInput
             setTime={setPlanDate('startTime', 'time')}
-            time={{
-              hour: date.startTime.hour(),
-              minute: date.startTime.minute(),
-            }}
+            time={date.startTime}
           />
         )}
       </InnerItem>
@@ -82,10 +79,7 @@ const PlanDate = () => {
         {!isAllDay && (
           <TimeInput
             setTime={setPlanDate('endTime', 'time')}
-            time={{
-              hour: date.endTime.hour(),
-              minute: date.endTime.minute(),
-            }}
+            time={date.endTime}
           />
         )}
       </InnerItem>

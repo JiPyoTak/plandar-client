@@ -6,20 +6,20 @@ import Dropdown from '@/components/core/dropdown';
 import { useGetPlansQuery } from '@/hooks/query/plan';
 import useTagClassifierState from '@/stores/classifier/tag';
 import useDateState from '@/stores/date';
-import { getFormattedDate } from '@/utils/date/getFormattedDate';
 import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
 
 const TagClassifier: React.FC = () => {
   const { hiddenTags, toggleTagShow } = useTagClassifierState();
 
-  const { year, month, day } = useDateState();
-  const { startFormat, endFormat } = getFormattedDate(
-    ...getStartAndEndDate({ year, month, day }),
-  );
+  // TODO : make hook
+  const { referenceDate } = useDateState(({ referenceDate }) => ({
+    referenceDate,
+  }));
+  const [startMoment, endMoment] = getStartAndEndDate(referenceDate);
 
   const { data: planData } = useGetPlansQuery({
-    timemin: startFormat,
-    timemax: endFormat,
+    timemin: startMoment.format(),
+    timemax: endMoment.format(),
   });
 
   const tags = useMemo(() => {

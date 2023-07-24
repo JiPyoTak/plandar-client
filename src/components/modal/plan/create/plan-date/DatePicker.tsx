@@ -62,7 +62,7 @@ const DatePicker = ({ date, onChangeDate, onCalendarClose }: Props) => {
         />
       )}
       <CalendarDateButton onClick={() => setCalendarOpened(true)}>
-        {getDateString(date)}
+        {getDateString(date.toDate())}
       </CalendarDateButton>
       {calendarOpened && (
         <CalendarContainer>

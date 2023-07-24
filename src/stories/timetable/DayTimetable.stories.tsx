@@ -18,7 +18,6 @@ import {
   getPlansApiHandler,
   updatePlanApiHandler,
 } from '@/stories/apis/plan';
-import { padZero } from '@/utils/padZero';
 
 export default {
   title: 'timetable/DayTimetable',
@@ -29,7 +28,7 @@ export default {
 } as ComponentMeta<typeof Timetable>;
 
 const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
-  const { year, month, day } = useDateState();
+  const referenceDate = useDateState(({ referenceDate }) => referenceDate);
 
   const { selectCalendarUnit } = useCalendarUnitState();
   useEffect(() => {
@@ -44,18 +43,19 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
     createMutateAsync(
       planStubManager.add({
         isAllDay: false,
-        startTime: `${year}-${padZero(month)}-${padZero(day)}T03:00:00.000`,
-        endTime: `${year}-${padZero(month)}-${padZero(day)}T06:00:00.000`,
+        startTime: moment(referenceDate).startOf('d').add(3, 'h'),
+        endTime: moment(referenceDate).startOf('d').add(6, 'h'),
       }),
     );
   };
 
   const addRandomTimePlan = () => {
     const startHour = Math.round(Math.random() * 21);
-    const startMinute = padZero(Math.round(Math.random() * 59));
-    const startTime = `${year}-${padZero(month)}-${padZero(day)}T${padZero(
-      startHour,
-    )}:${startMinute}:00.000`;
+    const startMinute = Math.round(Math.random() * 59);
+    const startTime = moment(referenceDate)
+      .startOf('d')
+      .set('h', startHour)
+      .set('m', startMinute);
 
     const periodMinutes = Math.round(Math.random() * 24 * 60);
     const endTime = moment(startTime).add(periodMinutes, 'minutes');

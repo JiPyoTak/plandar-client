@@ -21,10 +21,12 @@ type TProps = {
 
 const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
   const { selectedCalendarUnit } = useCalendarUnitState();
-  const { year, month, day } = useDateState();
+  const { referenceDate } = useDateState(({ referenceDate }) => ({
+    referenceDate,
+  }));
 
   // 주 선택하면 선택한 날짜 상관없이 해당 주를 보여주기
-  const startMoment = moment({ year, month: month - 1, day });
+  const startMoment = moment(referenceDate);
   if (selectedCalendarUnit === '주') {
     rangeAmount = 7;
     startMoment.startOf('week');
