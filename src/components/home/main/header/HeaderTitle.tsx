@@ -12,7 +12,7 @@ const HeaderTitle: React.FC = () => {
   const { selectedCalendarUnit } = useCalendarUnitState();
 
   const year = referenceDate.year();
-  const month = referenceDate.month();
+  const month = referenceDate.month() + 1;
   const day = referenceDate.date();
   const dayOfWeek = DAY_OF_WEEK_UNIT[referenceDate.day()];
 

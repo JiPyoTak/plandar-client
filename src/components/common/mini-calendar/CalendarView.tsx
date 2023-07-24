@@ -32,10 +32,11 @@ const CalendarView: React.FC<IProps> = ({
         return (
           <CalendarDay
             date={dayMoment}
+            isInMonth={dayMoment.month() === selectedDate.month()}
             isWeeks={isWeeks}
             isWeeksStart={isWeeks && dayMoment.weekday() === 0}
             isWeeksEnd={isWeeks && dayMoment.weekday() === 6}
-            isSelected={selectedDate.isSame(referenceDate)}
+            isSelected={dayMoment.isSame(referenceDate)}
             onClick={onChangeDate}
             key={dayMoment.format(DATE_FORMAT)}
           />

@@ -8,7 +8,7 @@ const getDayMoments = (
   dayAmount: number = CALENDAR_WEEK_COUNT * WEEK_DAY_COUNT,
 ) => {
   const result: Moment[] = [];
-  const startOfMonth = moment(referenceDate).startOf('month');
+  const startOfMonth = moment(referenceDate).startOf('month').startOf('week');
 
   for (let day = 0; day < dayAmount; day++) {
     const targetDay = moment(startOfMonth).add(day, 'day');

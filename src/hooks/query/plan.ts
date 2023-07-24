@@ -29,19 +29,17 @@ const executeCallbackByDate = (
   end: string,
   cb: (timemin: string, timemax: string) => void,
 ) => {
-  const startMoment = moment(start).startOf('w').startOf('d');
-  const endMoment = moment(end).endOf('w').endOf('d');
+  const startMoment = moment(start).startOf('w').startOf('month').startOf('d');
+  const endMoment = moment(end).endOf('w').endOf('month').endOf('d');
 
   const monthDiff = endMoment.diff(startMoment, 'month');
 
   // 일정의 시작, 끝 날짜를 기준으로 해당 일정이 포함되는 달의 일정을 모두 가져옴
   for (let i = 0; i <= monthDiff; i++) {
     const targetMoment = moment(startMoment).add(i, 'month');
-    const [startFormat, endFormat] = getStartAndEndDate(targetMoment).map((m) =>
-      m.format(),
-    );
+    const [from, to] = getStartAndEndDate(targetMoment);
 
-    cb(startFormat, endFormat);
+    cb(from.format(), to.format());
   }
 };
 

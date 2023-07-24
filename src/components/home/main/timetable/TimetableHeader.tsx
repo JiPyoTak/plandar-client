@@ -41,6 +41,7 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
               <DayContent>
                 <DayNumber
                   date={dateMoment}
+                  isInMonth={referenceDate.month() === dateMoment.month()}
                   isSelected={format === selectedFormat}
                   onClick={setReferenceDate}
                 />

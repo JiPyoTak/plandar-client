@@ -19,7 +19,7 @@ const CalendarView = () => {
   const { focusedPlan, isDragging, createDragPlan } = useFocusedPlanState();
   const { onMouseMove, changeCurrentDate } = usePlanDrag();
 
-  const calendarInfos = useMemo(() => {
+  const weekMoments = useMemo(() => {
     // TODO: utils
     /// 7일 단위로 끊어서 2단 배열로 만들어준다.
     let weekMoments: Moment[] = [];
@@ -39,8 +39,8 @@ const CalendarView = () => {
     const plans = (data ?? []).filter((plan) => plan.id !== focusedPlan?.id);
     if (focusedPlan) plans.push(focusedPlan);
 
-    return getDaysPlanManager(plans, calendarInfos);
-  }, [data, focusedPlan, calendarInfos]);
+    return getDaysPlanManager(plans, weekMoments);
+  }, [data, focusedPlan, weekMoments]);
 
   const onMouseDownCell: React.MouseEventHandler = useCallback((e) => {
     const target = e.target as HTMLElement;
@@ -66,8 +66,8 @@ const CalendarView = () => {
       onMouseMove={onMouseMove}
       onMouseDown={changeCurrentDate}
     >
-      {calendarInfos.map((dayMoments, i) => (
-        <Inner key={`${dayMoments[i].day()}${i}`}>
+      {weekMoments.map((dayMoments, i) => (
+        <Inner key={`Week-${i}`}>
           <CalendarWeek
             dayMoments={dayMoments}
             daysIndex={planManagers[i].daysIndex}

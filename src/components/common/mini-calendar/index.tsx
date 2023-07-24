@@ -32,7 +32,7 @@ const MiniCalendar: React.FC<IProps> = (props) => {
     <Container>
       <CalendarHeader
         year={selectedDate.year()}
-        month={selectedDate.month()}
+        month={selectedDate.month() + 1}
         increaseMonth={increaseMonth}
         decreaseMonth={decreaseMonth}
         onClickTodayButton={onClickTodayButton}

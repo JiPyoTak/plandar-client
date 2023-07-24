@@ -20,7 +20,7 @@ interface IProps {
 const CalendarCell: React.FC<IProps> = (props) => {
   const { height, dayMoment, timePlans, onMouseDown } = props;
 
-  const referenceDay = useDateState(({ referenceDate }) => referenceDate);
+  const referenceDate = useDateState(({ referenceDate }) => referenceDate);
 
   const setReferenceDate = useDateState((state) => state.setReferenceDate);
 
@@ -32,7 +32,8 @@ const CalendarCell: React.FC<IProps> = (props) => {
     >
       <CellDay
         date={dayMoment}
-        isSelected={referenceDay.isSame(dayMoment, 'day')}
+        isInMonth={referenceDate.month() === dayMoment.month()}
+        isSelected={referenceDate.isSame(dayMoment, 'day')}
         onClick={setReferenceDate}
       />
       <div css={{ height, transition: 'height 0.2s' }} />

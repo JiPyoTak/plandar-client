@@ -32,7 +32,10 @@ const Template: ComponentStory<typeof CalendarView> = () => {
   }, []);
 
   const referenceDate = useDateState(({ referenceDate }) => referenceDate);
-  const startOfMonth = referenceDate.startOf('m').startOf('w').startOf('d');
+  const startOfMonth = referenceDate
+    .startOf('month')
+    .startOf('week')
+    .startOf('day');
   const { mutateAsync: createMutateAsync } = useCreatePlanMutation();
   const queryClient = useQueryClient();
   const forceUpdate = useReducer(() => ({}), {})[1];

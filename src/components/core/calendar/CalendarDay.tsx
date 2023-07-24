@@ -8,6 +8,7 @@ import { isBgBright } from '@/utils/color';
 
 interface IProps {
   date: Moment;
+  isInMonth: boolean;
   isSelected: boolean;
   isWeeks?: boolean;
   isWeeksStart?: boolean;
@@ -18,19 +19,17 @@ interface IProps {
 
 const getClassNames = ({
   date,
+  isInMonth,
+  isSelected,
   isWeeks,
   isWeeksStart,
   isWeeksEnd,
-  isSelected,
 }: IProps) => {
   const classNames = [];
-  const today = moment();
-
-  const isInMonth = today.month() === date.month();
   const isWeekend = date.weekday() === 0 || date.weekday() === 6;
   const isToday = moment().isSame(date, 'day');
 
-  if (!isInMonth) classNames.push('in_month');
+  if (!isInMonth) classNames.push('not_in_month');
   if (isWeekend) classNames.push('is_weekend');
   if (isToday) classNames.push('is_today');
   if (!isToday && !isSelected) classNames.push('hover');
@@ -94,7 +93,7 @@ const Container = styled.div`
       isBgBright(theme.primary_light2) ? theme.text1 : theme.white};
   }
 
-  &.in_month > button {
+  &.not_in_month > button {
     color: ${({ theme }) => theme.text3};
     opacity: 0.5;
   }
