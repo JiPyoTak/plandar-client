@@ -30,16 +30,16 @@ const PlanDate = () => {
     const oppositeDate = date[key === 'startTime' ? 'endTime' : 'startTime'];
 
     return (input: MomentInput) => {
-      const prevDate = moment(targetDate);
       const newDate = moment(input);
+      const prevDate = moment(targetDate);
 
       if (changeType === 'time') {
-        prevDate.set('hour', newDate.get('hour'));
-        prevDate.set('minute', newDate.get('minute'));
+        newDate.set('year', prevDate.get('year'));
+        newDate.set('month', prevDate.get('month'));
+        newDate.set('date', prevDate.get('date'));
       } else if (changeType === 'date') {
-        prevDate.set('year', newDate.get('year'));
-        prevDate.set('month', newDate.get('month'));
-        prevDate.set('date', newDate.get('date'));
+        newDate.set('hour', prevDate.get('hour'));
+        newDate.set('minute', prevDate.get('minute'));
       }
 
       const start = key === 'startTime' ? moment(newDate) : oppositeDate;
