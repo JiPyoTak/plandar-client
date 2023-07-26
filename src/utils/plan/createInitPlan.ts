@@ -7,7 +7,7 @@ const createInitPlan = (planData: Partial<IPlan>) => {
     id: -1,
     title: '새로운 일정',
     description: null,
-    isAllDay: false,
+    isAllDay: true,
     type: 'task',
     color: theme.primary_light,
     categoryId: null,

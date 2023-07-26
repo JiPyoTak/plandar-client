@@ -10,7 +10,7 @@ const PlanAllDay = () => {
       const toggleIsAllDay = () =>
         updateFocusedPlan({ isAllDay: !focusedPlan?.isAllDay });
 
-      return [focusedPlan ? focusedPlan.isAllDay : false, toggleIsAllDay];
+      return [focusedPlan?.isAllDay ?? true, toggleIsAllDay];
     },
     (prev, cur) => prev[0] === cur[0],
   );
