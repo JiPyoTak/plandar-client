@@ -6,11 +6,10 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { useQueryClient } from '@tanstack/react-query';
 import moment from 'moment';
 
-import planStubManager from '../apis/data/plan';
-
 import Timetable from '@/components/home/main/timetable';
 import { useCreatePlanMutation } from '@/hooks/query/plan';
 import useDateState from '@/stores/date';
+import planStubManager from '@/stories/apis/data/plan';
 import {
   createPlanApiHandler,
   deletePlanApiHandler,
@@ -19,14 +18,14 @@ import {
 } from '@/stories/apis/plan';
 
 export default {
-  title: 'timetable/DayTimetable',
+  title: 'Timetable/DayTimetable',
   component: Timetable,
   argTypes: {
     rangeAmount: { control: 'number' },
   },
 } as ComponentMeta<typeof Timetable>;
 
-const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
+const Template: ComponentStory<typeof Timetable> = (args) => {
   const { referenceDate, setCalendarUnit } = useDateState(
     ({ referenceDate, setCalendarUnit }) => ({
       referenceDate,
@@ -46,8 +45,11 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
     createMutateAsync(
       planStubManager.add({
         isAllDay: false,
-        startTime: moment(referenceDate).startOf('d').add(3, 'h'),
-        endTime: moment(referenceDate).startOf('d').add(6, 'h'),
+        // * : Moment.add is errored with storybook-vite-source-loader-plugin (string.toLowerCase)
+        /// Use Literal String for props[0]
+        //// refs: https://github.com/storybookjs/storybook/issues/12208
+        startTime: moment(referenceDate).startOf('day').add(`${3}`, 'hour'),
+        endTime: moment(referenceDate).startOf('day').add(`${6}`, 'hour'),
       }),
     );
   };
@@ -56,9 +58,9 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
     const startHour = Math.round(Math.random() * 21);
     const startMinute = Math.round(Math.random() * 59);
     const startTime = moment(referenceDate)
-      .startOf('d')
-      .set('h', startHour)
-      .set('m', startMinute);
+      .startOf('day')
+      .set('hours', startHour)
+      .set('minutes', startMinute);
 
     const periodMinutes = Math.round(Math.random() * 24 * 60);
     const endTime = moment(startTime).add(periodMinutes, 'minutes');
@@ -119,9 +121,9 @@ const TestButton = styled.button`
   border-radius: 8px;
 `;
 
-export const DayTimetable = AddableTemplate.bind({});
-DayTimetable.args = { rangeAmount: 1 };
-DayTimetable.parameters = {
+export const Primary = Template.bind({});
+Primary.args = { rangeAmount: 1 };
+Primary.parameters = {
   msw: {
     handlers: [
       getPlansApiHandler,

@@ -18,7 +18,7 @@ import {
 } from '@/stories/apis/plan';
 
 export default {
-  title: 'timetable/DayTimetable',
+  title: 'Timetable/WeekTimetable',
   component: Timetable,
   argTypes: {
     rangeAmount: { control: 'number' },
@@ -141,9 +141,9 @@ const TestButton = styled.button`
   border-radius: 8px;
 `;
 
-export const WeekTimetable = Template.bind({});
-WeekTimetable.args = { rangeAmount: 7 };
-WeekTimetable.parameters = {
+export const Primary = Template.bind({});
+Primary.args = { rangeAmount: 7 };
+Primary.parameters = {
   msw: {
     handlers: [
       getPlansApiHandler,
