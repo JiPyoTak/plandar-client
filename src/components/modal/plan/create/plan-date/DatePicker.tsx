@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const DatePicker = ({ date, onChangeDate, onCalendarClose }: Props) => {
-  const referenceDate = moment();
+  const referenceDate = moment(date);
   const [currentDate, setCurrentDate] = useState(moment(date));
   const [calendarOpened, setCalendarOpened] = useState(false);
 
