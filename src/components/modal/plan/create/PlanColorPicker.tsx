@@ -11,10 +11,12 @@ const PlanColorPicker = () => {
     (store) => {
       const { focusedPlan, updateFocusedPlan } = store;
       const setColor = (color: TColor) => updateFocusedPlan({ color });
+
       return [focusedPlan?.color ?? SELECTABLE_COLOR[0], setColor];
     },
     (prev, cur) => prev[0] === cur[0],
   );
+
   return (
     <ColorPicker
       selectedColor={color}

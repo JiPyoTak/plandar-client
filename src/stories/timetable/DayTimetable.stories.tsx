@@ -6,34 +6,35 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { useQueryClient } from '@tanstack/react-query';
 import moment from 'moment';
 
-import planStubManager from '../apis/data/plan';
-
 import Timetable from '@/components/home/main/timetable';
 import { useCreatePlanMutation } from '@/hooks/query/plan';
 import useDateState from '@/stores/date';
-import useCalendarUnitState from '@/stores/date/calendarUnit';
+import planStubManager from '@/stories/apis/data/plan';
 import {
   createPlanApiHandler,
   deletePlanApiHandler,
   getPlansApiHandler,
   updatePlanApiHandler,
 } from '@/stories/apis/plan';
-import { padZero } from '@/utils/padZero';
 
 export default {
-  title: 'timetable/DayTimetable',
+  title: 'Timetable/DayTimetable',
   component: Timetable,
   argTypes: {
     rangeAmount: { control: 'number' },
   },
 } as ComponentMeta<typeof Timetable>;
 
-const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
-  const { year, month, day } = useDateState();
+const Template: ComponentStory<typeof Timetable> = (args) => {
+  const { referenceDate, setCalendarUnit } = useDateState(
+    ({ referenceDate, setCalendarUnit }) => ({
+      referenceDate,
+      setCalendarUnit,
+    }),
+  );
 
-  const { selectCalendarUnit } = useCalendarUnitState();
   useEffect(() => {
-    selectCalendarUnit('일');
+    setCalendarUnit('day');
   }, []);
 
   const { mutateAsync: createMutateAsync } = useCreatePlanMutation();
@@ -44,18 +45,22 @@ const AddableTemplate: ComponentStory<typeof Timetable> = (args) => {
     createMutateAsync(
       planStubManager.add({
         isAllDay: false,
-        startTime: `${year}-${padZero(month)}-${padZero(day)}T03:00:00.000`,
-        endTime: `${year}-${padZero(month)}-${padZero(day)}T06:00:00.000`,
+        // * : Moment.add is errored with storybook-vite-source-loader-plugin (string.toLowerCase)
+        /// Use Literal String for props[0]
+        //// refs: https://github.com/storybookjs/storybook/issues/12208
+        startTime: moment(referenceDate).startOf('day').add(`${3}`, 'hour'),
+        endTime: moment(referenceDate).startOf('day').add(`${6}`, 'hour'),
       }),
     );
   };
 
   const addRandomTimePlan = () => {
     const startHour = Math.round(Math.random() * 21);
-    const startMinute = padZero(Math.round(Math.random() * 59));
-    const startTime = `${year}-${padZero(month)}-${padZero(day)}T${padZero(
-      startHour,
-    )}:${startMinute}:00.000`;
+    const startMinute = Math.round(Math.random() * 59);
+    const startTime = moment(referenceDate)
+      .startOf('day')
+      .set('hours', startHour)
+      .set('minutes', startMinute);
 
     const periodMinutes = Math.round(Math.random() * 24 * 60);
     const endTime = moment(startTime).add(periodMinutes, 'minutes');
@@ -116,9 +121,9 @@ const TestButton = styled.button`
   border-radius: 8px;
 `;
 
-export const DayTimetable = AddableTemplate.bind({});
-DayTimetable.args = { rangeAmount: 1 };
-DayTimetable.parameters = {
+export const Primary = Template.bind({});
+Primary.args = { rangeAmount: 1 };
+Primary.parameters = {
   msw: {
     handlers: [
       getPlansApiHandler,

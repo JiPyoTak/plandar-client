@@ -4,7 +4,6 @@ import useTagClassifierState from '@/stores/classifier/tag';
 import useTypeClassifierState from '@/stores/classifier/type';
 import useDateState from '@/stores/date';
 import { IPlan } from '@/types/query/plan';
-import { getFormattedDate } from '@/utils/date/getFormattedDate';
 import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
 
 const useClassifiedPlans = () => {
@@ -20,14 +19,15 @@ const useClassifiedPlans = () => {
     }),
   );
 
-  const { year, month, day } = useDateState();
-  const { startFormat, endFormat } = getFormattedDate(
-    ...getStartAndEndDate({ year, month, day }),
-  );
+  // TODO : make hook
+  const { referenceDate } = useDateState(({ referenceDate }) => ({
+    referenceDate,
+  }));
+  const [startMoment, endMoment] = getStartAndEndDate(referenceDate);
 
   const { data: plans } = useGetPlansQuery({
-    timemin: startFormat,
-    timemax: endFormat,
+    timemin: startMoment.format(),
+    timemax: endMoment.format(),
   });
 
   const classifiedPlans = (plans ?? []).reduce((result, plan) => {

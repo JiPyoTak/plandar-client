@@ -1,11 +1,13 @@
 import { theme } from '@/styles/theme';
 import { TColor } from '@/types';
 
-const CALENDAR_UNIT = ['일', '주', '월'] as const;
+const DATE_FORMAT = 'YYYY-MM-DD';
+
+const CALENDAR_UNIT = ['day', 'week', 'month'] as const;
 
 const DAY_OF_WEEK_UNIT = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
-const SELECTABLE_COLOR: ReadonlyArray<TColor> = [
+const SELECTABLE_COLOR: readonly TColor[] = [
   'primary_light',
   'blue',
   'red',
@@ -22,6 +24,7 @@ const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 const ACCESS_TOKEN_KEY = import.meta.env.VITE_APP_ACCESS_TOKEN_KEY;
 
 export {
+  DATE_FORMAT,
   CALENDAR_UNIT,
   DAY_OF_WEEK_UNIT,
   SERVER_URL,

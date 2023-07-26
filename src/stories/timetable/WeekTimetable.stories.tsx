@@ -9,7 +9,6 @@ import moment from 'moment';
 import Timetable from '@/components/home/main/timetable';
 import { useCreatePlanMutation } from '@/hooks/query/plan';
 import useDateState from '@/stores/date';
-import useCalendarUnitState from '@/stores/date/calendarUnit';
 import planStubManager from '@/stories/apis/data/plan';
 import {
   createPlanApiHandler,
@@ -19,7 +18,7 @@ import {
 } from '@/stories/apis/plan';
 
 export default {
-  title: 'timetable/DayTimetable',
+  title: 'Timetable/WeekTimetable',
   component: Timetable,
   argTypes: {
     rangeAmount: { control: 'number' },
@@ -27,19 +26,23 @@ export default {
 } as ComponentMeta<typeof Timetable>;
 
 const Template: ComponentStory<typeof Timetable> = (args) => {
-  const { year, month, day } = useDateState();
+  const { referenceDate, setCalendarUnit } = useDateState(
+    ({ referenceDate, setCalendarUnit }) => ({
+      referenceDate,
+      setCalendarUnit,
+    }),
+  );
 
-  const { selectCalendarUnit } = useCalendarUnitState();
   useEffect(() => {
-    selectCalendarUnit('주');
+    setCalendarUnit('week');
   }, []);
 
   const { mutateAsync: createMutateAsync } = useCreatePlanMutation();
   const queryClient = useQueryClient();
   const forceUpdate = useReducer(() => ({}), {})[1];
 
-  const addRandomAlldayPlan = () => {
-    const startOfWeek = moment(`${year}-${month}-${day}`).startOf('week');
+  const addRandomAllDayPlan = () => {
+    const startOfWeek = moment(referenceDate).startOf('week');
     const startGap = Math.round(Math.random() * 7) - 1;
     const planTerm = Math.round(Math.random() * 7);
     const startTime = moment(startOfWeek).add(startGap, 'days');
@@ -59,7 +62,7 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
   };
 
   const addRandomTimePlan = () => {
-    const startOfWeek = moment(`${year}-${month}-${day}`).startOf('week');
+    const startOfWeek = moment(referenceDate).startOf('week');
     const dayPeriod = Math.round(Math.random() * 6);
     const startHour = Math.round(Math.random() * 21);
     const startMinute = Math.round(Math.random() * 59);
@@ -83,7 +86,7 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
 
   const addPlanGroup = () => {
     for (let i = 0; i < 10; i++) {
-      Math.random() < 0.5 ? addRandomAlldayPlan() : addRandomTimePlan();
+      Math.random() < 0.5 ? addRandomAllDayPlan() : addRandomTimePlan();
     }
   };
 
@@ -97,7 +100,7 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
     <Container>
       <div className="week-timetable-controls">
         <TestButton onClick={addPlanGroup}>랜덤 10개 일정 추가하기</TestButton>
-        <TestButton onClick={addRandomAlldayPlan}>
+        <TestButton onClick={addRandomAllDayPlan}>
           범위 안 종일 일정 추가하기
         </TestButton>
         <TestButton onClick={addRandomTimePlan}>
@@ -138,9 +141,9 @@ const TestButton = styled.button`
   border-radius: 8px;
 `;
 
-export const WeekTimetable = Template.bind({});
-WeekTimetable.args = { rangeAmount: 7 };
-WeekTimetable.parameters = {
+export const Primary = Template.bind({});
+Primary.args = { rangeAmount: 7 };
+Primary.parameters = {
   msw: {
     handlers: [
       getPlansApiHandler,

@@ -1,36 +1,22 @@
+import { Moment } from 'moment';
+
 import DaysPlanManager from '@/core/plan/DaysPlanManager';
 import Plan from '@/core/plan/Plan';
-import { TDateYMD } from '@/stores/date';
 import { IPlan } from '@/types/query/plan';
-import { ICalendarInfo } from '@/utils/calendar/getCalendarInfo';
 
-const getYMD = <T extends TDateYMD>(date: T) => {
-  return {
-    year: date.year,
-    month: date.month - 1,
-    day: date.day,
-  };
-};
-
-const getDaysPlanManager = (
-  plans: IPlan[],
-  calendarInfos: ICalendarInfo[][],
-) => {
+const getDaysPlanManager = (plans: IPlan[], weekMoments: Moment[][]) => {
   const arr: DaysPlanManager[] = [];
 
   const planClass = plans
     .filter((plan) => plan.type === 'task')
     .map((plan) => new Plan(plan));
 
-  for (let i = 0; i < calendarInfos.length; i++) {
-    const week = calendarInfos[i];
-
-    const firstDay = getYMD(week[0]);
-    const lastDay = getYMD(week[week.length - 1]);
+  for (let i = 0; i < weekMoments.length; i++) {
+    const week = weekMoments[i];
 
     const viewPlans = new DaysPlanManager({
-      end: lastDay,
-      start: firstDay,
+      start: week[0],
+      end: week[week.length - 1],
       plans: planClass,
     });
 

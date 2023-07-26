@@ -2,11 +2,10 @@ import { useRef, useState, KeyboardEvent } from 'react';
 
 import styled from '@emotion/styled';
 
-import moment from 'moment';
+import moment, { Moment, MomentInput } from 'moment';
 
 import TimeOptionList from '@/components/modal/plan/create/plan-date/TimeOptionList';
 import { FONT_REGULAR_4 } from '@/styles/font';
-import { TTimeHM } from '@/types/time';
 import {
   extractTimeFromString,
   getTimeString,
@@ -14,17 +13,14 @@ import {
 import { padZero } from '@/utils/padZero';
 
 interface Props {
-  time: TTimeHM;
-  setTime: (time: TTimeHM) => boolean;
+  time: Moment;
+  setTime: (time: MomentInput) => boolean;
 }
 
-const initialTime = (time: TTimeHM) => {
-  return getTimeString(
-    moment({ hour: time.hour, minute: time.minute }).toDate(),
-    {
-      hourPadZero: false,
-    },
-  );
+const initialTime = (time: Moment) => {
+  return getTimeString(moment(time).toDate(), {
+    hourPadZero: false,
+  });
 };
 
 const TimeInput = ({ setTime, time }: Props) => {

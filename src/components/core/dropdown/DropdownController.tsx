@@ -33,6 +33,7 @@ const DropdownController = ({
 
       return cloneElement(functionalChild, newProps);
     }
+
     return child;
   }) as React.ReactNode[];
 

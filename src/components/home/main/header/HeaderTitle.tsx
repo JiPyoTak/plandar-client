@@ -2,24 +2,24 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import { TDateYMD } from '@/stores/date';
+import { DAY_OF_WEEK_UNIT } from '@/constants';
+import useDateState from '@/stores/date';
 import { FONT_BOLD_1 } from '@/styles/font';
-import { TCalendarUnit, TDayOfWeekUnit } from '@/types';
 
-interface IProps extends TDateYMD {
-  dayOfWeek: TDayOfWeekUnit;
-  selectedCalendarUnit: TCalendarUnit;
-}
+const HeaderTitle: React.FC = () => {
+  const { referenceDate, calendarUnit } = useDateState(
+    ({ referenceDate, calendarUnit }) => ({
+      referenceDate,
+      calendarUnit,
+    }),
+  );
 
-const HeaderTitle: React.FC<IProps> = ({
-  day,
-  dayOfWeek,
-  month,
-  year,
-  selectedCalendarUnit,
-}) => {
-  const description =
-    selectedCalendarUnit === '일' ? `${day}일 (${dayOfWeek})` : '';
+  const year = referenceDate.year();
+  const month = referenceDate.month() + 1;
+  const day = referenceDate.date();
+  const dayOfWeek = DAY_OF_WEEK_UNIT[referenceDate.day()];
+
+  const description = calendarUnit === 'day' ? `${day}일 (${dayOfWeek})` : '';
 
   return (
     <Container>

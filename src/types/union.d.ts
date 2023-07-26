@@ -9,9 +9,9 @@
  type Tmp = Union<typeof tmp>; // Tmp = 'a' | 'b' | 'c'
  */
 
-type Array2Type<T extends ReadonlyArray<any>> = T[number];
+type Array2Type<T extends readonly any[]> = T[number];
 type ObjectKey2Type<T extends { [i: string]: any }> = keyof T;
-type Union<T> = T extends ReadonlyArray<any>
+type Union<T> = T extends readonly any[]
   ? Array2Type<T>
   : T extends { [i: string]: any }
   ? ObjectKey2Type<T>

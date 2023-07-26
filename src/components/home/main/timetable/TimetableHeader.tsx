@@ -1,12 +1,12 @@
 import React from 'react';
 
 import styled from '@emotion/styled';
-import moment, { Moment } from 'moment';
+import { Moment } from 'moment';
 
 import TimetableScroll from './TimetableScroll';
 import CalendarDay from '@/components/core/calendar/CalendarDay';
 
-import { DAY_OF_WEEK_UNIT } from '@/constants';
+import { DATE_FORMAT, DAY_OF_WEEK_UNIT } from '@/constants';
 import useDateState from '@/stores/date';
 import { FONT_REGULAR_5 } from '@/styles/font';
 import {
@@ -18,26 +18,14 @@ type TProps = {
   dateMoments: Moment[];
 };
 
-const DATE_FORMAT = 'YYYY-MM-DD';
-const getCalendarInfo = (dateMoment: Moment, selectedFormat: string) => {
-  const format = dateMoment.format(DATE_FORMAT);
-  const weekday = dateMoment.weekday();
-
-  return {
-    year: dateMoment.get('year'),
-    month: dateMoment.get('month') + 1,
-    day: dateMoment.get('date'),
-    format,
-    isToday: moment().format(DATE_FORMAT) === format,
-    isWeekend: weekday === 0 || weekday === 6,
-    isInMonth: true,
-    isSelected: format === selectedFormat,
-  };
-};
-
 const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
-  const { year, month, day, onChangeStoreDate } = useDateState();
-  const selectedFormat = moment(`${year}-${month}-${day}`).format(DATE_FORMAT);
+  const { referenceDate, setReferenceDate } = useDateState(
+    ({ referenceDate, setReferenceDate }) => ({
+      referenceDate,
+      setReferenceDate,
+    }),
+  );
+  const selectedFormat = referenceDate.format(DATE_FORMAT);
   const timezone = `GTM${dateMoments[0].format('Z')}`;
 
   return (
@@ -47,15 +35,16 @@ const TimetableHeader: React.FC<TProps> = ({ dateMoments }) => {
     >
       <Container>
         {dateMoments.map((dateMoment) => {
-          const calendarInfo = getCalendarInfo(dateMoment, selectedFormat);
-          const { year, month, day } = calendarInfo;
+          const format = dateMoment.format(DATE_FORMAT);
 
           return (
-            <DaySizer key={calendarInfo.format}>
+            <DaySizer key={dateMoment.format(DATE_FORMAT)}>
               <DayContent>
                 <DayNumber
-                  {...calendarInfo}
-                  onClick={() => onChangeStoreDate({ year, month, day })}
+                  date={dateMoment}
+                  isInMonth={referenceDate.month() === dateMoment.month()}
+                  isSelected={format === selectedFormat}
+                  onClick={setReferenceDate}
                 />
                 <span>{DAY_OF_WEEK_UNIT[dateMoment.day()]}</span>
               </DayContent>

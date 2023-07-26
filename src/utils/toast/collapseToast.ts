@@ -9,7 +9,7 @@ export const collapseToast = (
 
   requestAnimationFrame(() => {
     style.minHeight = 'initial';
-    style.height = scrollHeight + 'px';
+    style.height = `${scrollHeight}px`;
     style.transition = `all ${duration}ms`;
 
     requestAnimationFrame(() => {

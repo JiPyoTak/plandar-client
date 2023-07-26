@@ -16,9 +16,7 @@ import {
 
 import Plan from '@/core/plan/Plan';
 import { IPlan, TPlanInput } from '@/types/query/plan';
-import { getFormattedDate } from '@/utils/date/getFormattedDate';
 import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
-import { getYMDByDateFormat } from '@/utils/date/getYMDByDateFormat';
 
 export interface IGetPlansPayload {
   timemin: string;
@@ -31,26 +29,17 @@ const executeCallbackByDate = (
   end: string,
   cb: (timemin: string, timemax: string) => void,
 ) => {
-  const [startYMD, endYMD] = getYMDByDateFormat(
-    moment(start).startOf('w').startOf('d'),
-    moment(end).endOf('w').endOf('d'),
-  );
+  const startMoment = moment(start).startOf('w').startOf('month').startOf('d');
+  const endMoment = moment(end).endOf('w').endOf('month').endOf('d');
 
-  const diff =
-    endYMD.year * 12 + endYMD.month - (startYMD.year * 12 + startYMD.month);
+  const monthDiff = endMoment.diff(startMoment, 'month');
 
   // 일정의 시작, 끝 날짜를 기준으로 해당 일정이 포함되는 달의 일정을 모두 가져옴
-  for (let i = -1; i <= diff; i++) {
-    const YMD = {
-      year: startYMD.year + Math.floor((startYMD.month + i) / 12),
-      month: ((startYMD.month + i) % 12) + 1,
-      day: 1,
-    };
+  for (let i = 0; i <= monthDiff; i++) {
+    const targetMoment = moment(startMoment).add(i, 'month');
+    const [from, to] = getStartAndEndDate(targetMoment);
 
-    const dates = getStartAndEndDate(YMD);
-    const { startFormat, endFormat } = getFormattedDate(...dates);
-
-    cb(startFormat, endFormat);
+    cb(from.format(), to.format());
   }
 };
 

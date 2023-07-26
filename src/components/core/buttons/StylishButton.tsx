@@ -41,6 +41,7 @@ const StylishButton: TStylishButton = ({
   disabled = false,
 }: TStylishButtonProps) => {
   const theme = useTheme();
+
   return (
     <Container
       className={className}

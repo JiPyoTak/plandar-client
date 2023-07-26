@@ -44,7 +44,7 @@ const Dropdown: TDropdown = ({
     .map((child, index) =>
       cloneElement(child, {
         ...(child?.props && {}),
-        isShow: isShow,
+        isShow,
         toggleShow,
         key: `Controller-${index}`,
       }),

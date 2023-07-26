@@ -125,6 +125,7 @@ const useToastContainer = (props: TToastContainerProps) => {
 
   const getToastToRender = (cb: (toastList: IToast[]) => ReactNode) => {
     const toRender = Array.from(toastToRender.values());
+
     return cb(toRender);
   };
 

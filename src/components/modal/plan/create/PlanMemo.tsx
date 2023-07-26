@@ -21,6 +21,7 @@ const PlanMemo: React.FC = () => {
       const { focusedPlan, updateFocusedPlan } = store;
       const setDescription = (newDescription: string) =>
         updateFocusedPlan({ description: newDescription });
+
       return [focusedPlan?.description || '', setDescription];
     },
     (prev, cur) => prev[0] === cur[0],

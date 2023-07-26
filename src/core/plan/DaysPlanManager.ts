@@ -3,7 +3,6 @@ import moment, { Moment } from 'moment';
 import Plan from './Plan';
 import PlanManager from './PlanManager';
 import type { IViewInfo } from './PlanManager';
-import { TDateYMD } from '@/stores/date';
 import { divideTimePlans } from '@/utils/plan/divideTimePlans';
 
 export interface IDayViewInfo extends IViewInfo {
@@ -15,8 +14,8 @@ export interface IDayViewInfo extends IViewInfo {
 
 interface IDaysPlanManagerProps {
   plans: Plan[];
-  start: TDateYMD;
-  end: TDateYMD;
+  start: Moment;
+  end: Moment;
 }
 
 class DaysPlanManager extends PlanManager<IDayViewInfo> {
@@ -34,6 +33,7 @@ class DaysPlanManager extends PlanManager<IDayViewInfo> {
 
     const filteredPlans = plans.filter((plan) => {
       const { startMoment, endMoment } = plan;
+
       return (
         !currentStart.isAfter(endMoment) && !currentEnd.isBefore(startMoment)
       );
@@ -126,6 +126,7 @@ class DaysPlanManager extends PlanManager<IDayViewInfo> {
     }>((result, _, index) => {
       const targetDate = moment(this.startDate).add(index, 'd').format(format);
       result[targetDate] = [];
+
       return result;
     }, {});
 

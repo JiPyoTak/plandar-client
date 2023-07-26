@@ -73,6 +73,7 @@ const useCategoryUpdate = () => {
             (category) => category.id === newCategory.id,
           );
           newCategories[index] = newCategory;
+
           return newCategories;
         });
 

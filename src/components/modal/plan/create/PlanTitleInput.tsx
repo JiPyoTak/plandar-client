@@ -16,6 +16,7 @@ const PlanTitleInput = () => {
     },
     (prev, cur) => prev[0] === cur[0],
   );
+
   return (
     <PlanInput
       type="text"

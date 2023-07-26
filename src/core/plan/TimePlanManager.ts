@@ -32,6 +32,7 @@ class TimePlanManager extends PlanManager<ITimeViewInfo> {
     }
 
     const index = minutes / TIMETABLE_CELL_UNIT;
+
     return index;
   }
 

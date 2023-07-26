@@ -23,12 +23,14 @@ const PlanTag: React.FC = () => {
       const { focusedPlan, updateFocusedPlan } = store;
       const setSelectedTags = (newTags: string[]) =>
         updateFocusedPlan({ tags: newTags });
+
       return [focusedPlan?.tags || [], setSelectedTags];
     },
     (prev, cur) => {
       const prevTags = prev[0];
       const curTags = cur[0];
       if (prevTags.length !== curTags.length) return false;
+
       return prevTags.every((tag, i) => tag === curTags[i]);
     },
   );

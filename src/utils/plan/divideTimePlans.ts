@@ -6,6 +6,7 @@ const divideTimePlans = (plans: IPlan[]) => {
     ({ timePlans, allDayPlans }, planData) => {
       const plan = new Plan(planData);
       plan.isTimePlan ? timePlans.push(plan) : allDayPlans.push(plan);
+
       return { timePlans, allDayPlans };
     },
     { timePlans: [], allDayPlans: [] } as {

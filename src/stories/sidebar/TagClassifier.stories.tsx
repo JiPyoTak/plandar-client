@@ -3,11 +3,12 @@ import { useLayoutEffect } from 'react';
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
+import moment from 'moment';
+
 import TagClassifier from '@/components/home/sidebar/content/classifier/TagClassifier';
 import { CALENDAR_UNIT } from '@/constants';
 import { useCreatePlanMutation } from '@/hooks/query/plan';
 import useDateState from '@/stores/date';
-import useCalendarUnitState from '@/stores/date/calendarUnit';
 import planStubManager from '@/stories/apis/data/plan';
 import { createPlanApiHandler, getPlansApiHandler } from '@/stories/apis/plan';
 
@@ -35,23 +36,22 @@ type TArgs = {
 const Template: ComponentStory<
   (args: TArgs) => ReturnType<typeof TagClassifier>
 > = ({ date: dateTime, unit, ...args }) => {
-  const date = new Date(dateTime);
-  const { onChangeStoreDate } = useDateState();
-  const { selectCalendarUnit } = useCalendarUnitState();
+  const { referenceDate, setReferenceDate, setCalendarUnit } = useDateState(
+    ({ referenceDate, setReferenceDate, setCalendarUnit }) => ({
+      referenceDate,
+      setReferenceDate,
+      setCalendarUnit,
+    }),
+  );
+  const { mutateAsync: createPlanMutateAsync } = useCreatePlanMutation();
 
   useLayoutEffect(() => {
-    onChangeStoreDate({
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
-    });
+    setReferenceDate(moment(dateTime));
   }, [dateTime]);
 
   useLayoutEffect(() => {
-    selectCalendarUnit(CALENDAR_UNIT[unit]);
+    setCalendarUnit(CALENDAR_UNIT[unit]);
   }, [unit]);
-
-  const { mutateAsync: createPlanMutateAsync } = useCreatePlanMutation();
 
   const createRandomTagPlan = () => {
     const alphabetCount = 26;
@@ -61,8 +61,8 @@ const Template: ComponentStory<
 
     createPlanMutateAsync(
       planStubManager.createStub({
-        startTime: date,
-        endTime: date,
+        startTime: referenceDate,
+        endTime: referenceDate,
         isAllDay: true,
         tags: [randomAlphabet],
       }),

@@ -1,5 +1,6 @@
-import { TDateYMD } from '@/stores/date';
 import { IExtractedTimeInfo } from '@/types/time';
+
+// TODO : Moment로 통일
 
 const getTimeString = (
   date: Date,
@@ -18,17 +19,12 @@ const getTimeString = (
   }).format(date);
 };
 
-const getDateString = (date: Date | TDateYMD) => {
-  const dateObj =
-    date instanceof Date
-      ? date
-      : new Date(date.year, date.month - 1, date.day, 9);
-
+const getDateString = (date: Date) => {
   const todayYear = new Date().getFullYear();
 
   return `${
-    dateObj.getFullYear() === todayYear ? '' : `${dateObj.getFullYear()}년 `
-  }${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
+    date.getFullYear() === todayYear ? '' : `${date.getFullYear()}년 `
+  }${date.getMonth() + 1}월 ${date.getDate()}일`;
 };
 
 // '오전 10시 23분' 과 같은 문자열을 { meridiem: '오전', hour: 10, minute: 23 } 과 같은 객체로 변환

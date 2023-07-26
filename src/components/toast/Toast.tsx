@@ -28,6 +28,7 @@ export const Toast: React.FC<IToastProps> = (props) => {
     const timeout = setTimeout(() => {
       isIn && closeToast();
     }, autoClose);
+
     return () => {
       clearTimeout(timeout);
     };

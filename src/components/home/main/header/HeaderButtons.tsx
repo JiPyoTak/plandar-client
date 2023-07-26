@@ -8,55 +8,38 @@ import DirectionButtons from '@/components/core/buttons/DirectionButtons';
 import PlusButton from '@/components/core/buttons/PlusButton';
 import TodayButton from '@/components/core/buttons/TodayButton';
 import useDateState from '@/stores/date';
-import useCalendarUnitState from '@/stores/date/calendarUnit';
-import {
-  decreaseDayComparedFirstDay,
-  increaseDayComparedLastDay,
-} from '@/utils/calendar/dayHandler';
-
-// 일정 추가 버튼 클릭시: 현재 선택된 년, 월, 일을 기준으로 modal 생성
-// 좌우 버튼: 월 (이전달 다음달), 주 (선택된 일자를 기준으로 -7, +7), 일 (이전날 다음날)
 
 const HeaderButtons = () => {
   const {
-    year,
-    month,
-    day,
-    onChangeStoreDate,
+    referenceDate,
+    setReferenceDate,
     decreaseStoreMonth,
     increaseStoreMonth,
   } = useDateState();
-  const { selectedCalendarUnit } = useCalendarUnitState();
+  const calendarUnit = useDateState(({ calendarUnit }) => calendarUnit);
 
   const onClickLeftButton = () => {
-    if (selectedCalendarUnit === '월') {
+    if (calendarUnit === 'month') {
       decreaseStoreMonth();
     } else {
-      const newDay = selectedCalendarUnit === '주' ? day - 7 : day - 1;
-      const date = decreaseDayComparedFirstDay({ year, month, day: newDay });
-
-      onChangeStoreDate(date);
+      const decreaseTerm = calendarUnit === 'week' ? 7 : 1;
+      const newDate = moment(referenceDate).subtract(decreaseTerm, 'day');
+      setReferenceDate(newDate);
     }
   };
 
   const onClickRightButton = () => {
-    if (selectedCalendarUnit === '월') {
+    if (calendarUnit === 'month') {
       increaseStoreMonth();
     } else {
-      const newDay = selectedCalendarUnit === '주' ? day + 7 : day + 1;
-      const date = increaseDayComparedLastDay({ year, month, day: newDay });
-      onChangeStoreDate(date);
+      const decreaseTerm = calendarUnit === 'week' ? 7 : 1;
+      const newDate = moment(referenceDate).add(decreaseTerm, 'day');
+      setReferenceDate(newDate);
     }
   };
 
   const onClickTodayButton = () => {
-    const today = moment();
-
-    onChangeStoreDate({
-      year: today.year(),
-      month: today.month() + 1,
-      day: today.date(),
-    });
+    setReferenceDate(moment());
   };
 
   return (

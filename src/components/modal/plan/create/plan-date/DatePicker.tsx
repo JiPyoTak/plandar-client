@@ -3,40 +3,47 @@ import React, { useState } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
+import moment, { Moment, MomentInput } from 'moment';
+
 import MiniCalendar from '@/components/common/mini-calendar';
-import { TDateYMD } from '@/stores/date';
 import { FONT_REGULAR_4 } from '@/styles/font';
-import { decreaseMonth, increaseMonth } from '@/utils/calendar/monthHandler';
 import { getDateString } from '@/utils/date/getTimeString';
 
 interface Props {
-  date: TDateYMD;
-  onChangeDate: (date: TDateYMD) => boolean;
+  date: Moment;
+  onChangeDate: (date: MomentInput) => boolean;
   onCalendarClose?: () => void;
 }
 
 const DatePicker = ({ date, onChangeDate, onCalendarClose }: Props) => {
-  const today = new Date();
-  const todayYMD = {
-    year: today.getFullYear(),
-    month: today.getMonth() + 1,
-    day: today.getDate(),
-  };
+  const referenceDate = moment();
+  const [currentDate, setCurrentDate] = useState(moment(date));
   const [calendarOpened, setCalendarOpened] = useState(false);
-  const [currentYMD, setCurrentYMD] = useState({ ...date });
 
   const onCloseHandler = () => {
     onCalendarClose?.();
-    setCurrentYMD({ ...date });
+    setCurrentDate(moment(date));
     setCalendarOpened(false);
   };
 
-  const onChangeDateHandler = (date: TDateYMD) => {
+  const onChangeDateHandler = (date: MomentInput) => {
     const isValid = onChangeDate(date);
 
-    if (isValid) setCurrentYMD(date);
+    if (isValid) setCurrentDate(moment(date));
 
     setCalendarOpened(false);
+  };
+
+  const increaseMonth = () => {
+    setCurrentDate((prev) => moment(prev).add(1, 'month'));
+  };
+
+  const decreaseMonth = () => {
+    setCurrentDate((prev) => moment(prev).subtract(1, 'month'));
+  };
+
+  const onClickTodayButton = () => {
+    setCurrentDate(moment());
   };
 
   return (
@@ -55,17 +62,17 @@ const DatePicker = ({ date, onChangeDate, onCalendarClose }: Props) => {
         />
       )}
       <CalendarDateButton onClick={() => setCalendarOpened(true)}>
-        {getDateString(date)}
+        {getDateString(date.toDate())}
       </CalendarDateButton>
       {calendarOpened && (
         <CalendarContainer>
           <MiniCalendar
-            today={todayYMD}
-            currentDate={currentYMD}
-            onChangeDate={onChangeDateHandler}
-            increaseMonth={() => setCurrentYMD(increaseMonth)}
-            decreaseMonth={() => setCurrentYMD(decreaseMonth)}
-            onClickTodayButton={() => setCurrentYMD(todayYMD)}
+            referenceDate={referenceDate}
+            selectedDate={currentDate}
+            setReferenceDate={onChangeDateHandler}
+            increaseMonth={increaseMonth}
+            decreaseMonth={decreaseMonth}
+            onClickTodayButton={onClickTodayButton}
           />
         </CalendarContainer>
       )}

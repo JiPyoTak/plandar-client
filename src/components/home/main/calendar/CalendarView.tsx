@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 
 import styled from '@emotion/styled';
 
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 
 import CalendarLayer from './CalendarLayer';
 import CalendarOverlay from './CalendarOverlay';
@@ -11,18 +11,29 @@ import useClassifiedPlans from '@/hooks/useClassifiedPlans';
 import usePlanDrag from '@/hooks/usePlanDrag';
 import useDateState from '@/stores/date';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
-import { getCalendarInfo } from '@/utils/calendar/getCalendarInfo';
+import { getDayMoments } from '@/utils/calendar/getDayMoments';
 import { getDaysPlanManager } from '@/utils/plan/getDaysPlanManager';
 
 const CalendarView = () => {
-  const { year, month, day } = useDateState();
+  const referenceDate = useDateState(({ referenceDate }) => referenceDate);
   const { focusedPlan, isDragging, createDragPlan } = useFocusedPlanState();
   const { onMouseMove, changeCurrentDate } = usePlanDrag();
 
-  const calendarInfos = useMemo(
-    () => getCalendarInfo({ year, month, day }),
-    [year, month, day],
-  );
+  const weekMoments = useMemo(() => {
+    // TODO: utils
+    /// 7일 단위로 끊어서 2단 배열로 만들어준다.
+    let weekMoments: Moment[] = [];
+
+    return getDayMoments(referenceDate).reduce((result, dayMoment) => {
+      weekMoments.push(dayMoment);
+      if (weekMoments.length === 7) {
+        result.push(weekMoments);
+        weekMoments = [];
+      }
+
+      return result;
+    }, [] as Moment[][]);
+  }, [referenceDate]);
 
   const data = useClassifiedPlans();
 
@@ -30,8 +41,8 @@ const CalendarView = () => {
     const plans = (data ?? []).filter((plan) => plan.id !== focusedPlan?.id);
     if (focusedPlan) plans.push(focusedPlan);
 
-    return getDaysPlanManager(plans, calendarInfos);
-  }, [data, focusedPlan, calendarInfos]);
+    return getDaysPlanManager(plans, weekMoments);
+  }, [data, focusedPlan, weekMoments]);
 
   const onMouseDownCell: React.MouseEventHandler = useCallback((e) => {
     const target = e.target as HTMLElement;
@@ -57,11 +68,10 @@ const CalendarView = () => {
       onMouseMove={onMouseMove}
       onMouseDown={changeCurrentDate}
     >
-      {calendarInfos.map((week, i) => (
-        <Inner key={`${week[i].day}${i}`}>
+      {weekMoments.map((dayMoments, i) => (
+        <Inner key={`Week-${i}`}>
           <CalendarWeek
-            index={i}
-            week={week}
+            dayMoments={dayMoments}
             daysIndex={planManagers[i].daysIndex}
             daysTimePlans={planManagers[i].daysTimePlans}
             onMouseDown={onMouseDownCell}
@@ -69,7 +79,7 @@ const CalendarView = () => {
           {planManagers[i].plans.length !== 0 && (
             <CalendarLayer planManager={planManagers[i]} />
           )}
-          <CalendarOverlay week={week} />
+          <CalendarOverlay dayMoments={dayMoments} />
         </Inner>
       ))}
     </Container>

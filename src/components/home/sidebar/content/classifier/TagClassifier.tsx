@@ -8,33 +8,35 @@ import Dropdown from '@/components/core/dropdown';
 import { useGetPlansQuery } from '@/hooks/query/plan';
 import useTagClassifierState from '@/stores/classifier/tag';
 import useDateState from '@/stores/date';
-import useCalendarUnitState from '@/stores/date/calendarUnit';
-import { getFormattedDate } from '@/utils/date/getFormattedDate';
 import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
 
 const TagClassifier: React.FC = () => {
   const { hiddenTags, toggleTagShow } = useTagClassifierState();
 
-  const { year, month, day } = useDateState();
-  const { startFormat, endFormat } = getFormattedDate(
-    ...getStartAndEndDate({ year, month, day }),
+  // TODO : make hook
+  const { referenceDate, calendarUnit } = useDateState(
+    ({ referenceDate, calendarUnit }) => ({
+      referenceDate,
+      calendarUnit,
+    }),
   );
+  // FIXME : hook으로 빼내면서 변수 할당 해주겠습니다.
+  const [sm, em] = getStartAndEndDate(referenceDate);
 
   const { data } = useGetPlansQuery({
-    timemin: startFormat,
-    timemax: endFormat,
+    timemin: sm.format(),
+    timemax: em.format(),
   });
 
   // TODO: Timetable의 로직과 같은 로직을 사용하고 있습니다.
   /// State Store 변경을 해서 시간 개념을 통일하는게 좋아보입니다.
   //// 주 선택하면 선택한 날짜 상관없이 해당 주를 보여주기
-  const { selectedCalendarUnit } = useCalendarUnitState();
-  const startMoment = moment({ year, month: month - 1, day });
   let rangeAmount = 0;
-  if (selectedCalendarUnit === '월') {
+  const startMoment = moment(referenceDate);
+  if (calendarUnit === 'month') {
     rangeAmount = 42;
     startMoment.startOf('month').startOf('week');
-  } else if (selectedCalendarUnit === '주') {
+  } else if (calendarUnit === 'week') {
     rangeAmount = 7;
     startMoment.startOf('week');
   }
@@ -55,7 +57,7 @@ const TagClassifier: React.FC = () => {
     }
 
     return [...tagNameSet].sort();
-  }, [planData, selectedCalendarUnit, year, month, day]);
+  }, [planData, calendarUnit, referenceDate]);
 
   return (
     <div css={{ padding: '1rem 0' }}>

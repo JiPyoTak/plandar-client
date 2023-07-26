@@ -21,6 +21,7 @@ const useCategoryClassifierState = create<ICategoryClassifierState>((set) => ({
       if (newHiddenCategories.has(categoryId))
         newHiddenCategories.delete(categoryId);
       else newHiddenCategories.add(categoryId);
+
       return { hiddenCategories: newHiddenCategories };
     }),
 

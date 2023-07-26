@@ -52,6 +52,7 @@ const CategoryModal: TCategoryModal = ({
       selectedColor === originalCategory.color
     ) {
       setError('카테고리 이름 혹은 색상을 변경해야 합니다.');
+
       return false;
     }
     // 동일한 이름의 카테고리가 존재하는지 검사
@@ -63,8 +64,10 @@ const CategoryModal: TCategoryModal = ({
       )
     ) {
       setError('중복된 이름의 카테고리가 있습니다');
+
       return false;
     }
+
     return true;
   };
 

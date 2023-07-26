@@ -20,6 +20,7 @@ const useTagClassifierState = create<ITagClassifierState>((set) => ({
       const newHiddenTags = new Set(state.hiddenTags);
       if (newHiddenTags.has(tagId)) newHiddenTags.delete(tagId);
       else newHiddenTags.add(tagId);
+
       return { hiddenTags: newHiddenTags };
     }),
 

@@ -8,6 +8,7 @@ const TimetableViewMomentProvider = Context.Provider;
 
 const useTimetableViewMoment = () => {
   const moment = useContext(Context);
+
   return moment;
 };
 
