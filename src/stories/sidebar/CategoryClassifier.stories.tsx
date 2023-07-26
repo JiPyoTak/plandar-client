@@ -1,5 +1,9 @@
+import { useReducer } from 'react';
+
 import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+
+import { useQueryClient } from '@tanstack/react-query';
 
 import CategoryClassifier from '@/components/home/sidebar/content/classifier/CategoryClassifier';
 import { useCategoryCreate, useCategoryQuery } from '@/hooks/query/category';
@@ -26,6 +30,8 @@ const Template: ComponentStory<typeof CategoryClassifier> = (args) => {
   const plans = useClassifiedPlans();
   const { mutateAsync: createCategoryMutateAsync } = useCategoryCreate();
   const { mutateAsync: createPlanMutateAsync } = useCreatePlanMutation();
+  const queryClient = useQueryClient();
+  const forceUpdate = useReducer(() => ({}), {})[1];
 
   const createCategory = () => {
     createCategoryMutateAsync(categoryStubManager.createStub());
@@ -37,6 +43,12 @@ const Template: ComponentStory<typeof CategoryClassifier> = (args) => {
 
     const randomId = Math.round(Math.random() * (maxId - 1)) + 1;
     createPlanMutateAsync(planStubManager.createStub({ categoryId: randomId }));
+  };
+
+  const clearCategory = (forceClear: boolean) => () => {
+    categoryStubManager.clear(forceClear);
+    queryClient.clear();
+    forceUpdate();
   };
 
   const { data } = useCategoryQuery();
@@ -80,6 +92,12 @@ const Template: ComponentStory<typeof CategoryClassifier> = (args) => {
         <TestButton onClick={createCategory}>카테고리 추가하기</TestButton>
         <TestButton onClick={createPlan}>
           랜덤 카테고리 일정 생성하기
+        </TestButton>
+        <TestButton onClick={clearCategory(true)}>
+          카테고리 전부 삭제하기
+        </TestButton>
+        <TestButton onClick={clearCategory(false)}>
+          카테고리 리셋하기
         </TestButton>
       </div>
       <div className="category-classifier-main">

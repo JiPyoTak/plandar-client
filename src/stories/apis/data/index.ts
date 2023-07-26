@@ -58,9 +58,14 @@ class StubManager<Data extends { id: number }> {
     return this.data.splice(index, 1)[0];
   }
 
-  public clear() {
-    this.id = this.initialDataArray.length;
-    this.data = [...this.initialDataArray];
+  public clear(forceClear?: boolean) {
+    if (forceClear) {
+      this.id = 0;
+      this.data = [];
+    } else {
+      this.id = this.initialDataArray.length;
+      this.data = [...this.initialDataArray];
+    }
   }
 
   public getId() {
