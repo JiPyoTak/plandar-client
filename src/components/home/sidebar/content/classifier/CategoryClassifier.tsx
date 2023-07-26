@@ -8,7 +8,7 @@ import { PlusIcon } from '@/components/common/icons';
 import Dropdown from '@/components/core/dropdown';
 import CategoryModal, {
   TCategoryModalProps,
-} from '@/components/modal/cateogry';
+} from '@/components/modal/category';
 
 import { toast } from '@/core/toast';
 import {

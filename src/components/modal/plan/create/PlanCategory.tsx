@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, useCallback, useRef } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -8,82 +8,82 @@ import Input from '@/components/core/Input';
 import { Candidate } from '@/components/modal/plan/create/candidates';
 import CategoryCreateForm from '@/components/modal/plan/create/category/CategoryCreateForm';
 import SelectedCategoryDisplay from '@/components/modal/plan/create/category/SelectedCategoryDisplay';
-import { MAX_CANDIDATE_LENGTH } from '@/constants';
-import { useCategoryQuery } from '@/hooks/query/category';
+import usePlanModalCategory from '@/hooks/modal/usePlanModalCategory';
 import useDebounce from '@/hooks/useDebounce';
-import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import {
   PlanModalClassifierTitle,
   PlanModalCollapseDuration,
 } from '@/styles/plan-modal';
-import { ICategory } from '@/types/query/category';
 
 // 입력과 일치하는 category 존재여부에 따라 다른 것을 보여주기 위해 정의한 타입
 // 입력과 일치하는 category가 있을 경우: candidate
 // 일치하는 category가 없을 경우: noMatch
-type TFilteredType = 'candidate' | 'noMatch';
 
 const PlanCategory: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { data: categoryData } = useCategoryQuery();
-  const [filteredCategories, setFilteredCategories] = useState<ICategory[]>([]);
-  const [selectedCategory, setSelectedCategory] = useFocusedPlanState(
-    (store) => {
-      const { focusedPlan, updateFocusedPlan } = store;
-      const setSelectedCategory = (categoryId: number) =>
-        updateFocusedPlan({ categoryId });
 
-      return [
-        categoryData && focusedPlan?.categoryId
-          ? categoryData.find(
-              (category) => category.id === focusedPlan.categoryId,
-            )
-          : null,
-        setSelectedCategory,
-      ];
-    },
-    (prev, cur) => prev[0] === cur[0],
-  );
+  const {
+    categoryInput,
+    filteredType,
+    focusedCategory,
+    selectedCategory,
+    filteredCategories,
+    filterCategoriesCb,
+    clearCategory,
+    selectCategory,
+    setCategoryInput,
+    setFocusedCategory,
+    setSelectedCategory,
+  } = usePlanModalCategory();
 
-  const [categoryInput, setCategoryInput] = useState('');
-  const [filteredType, setFilteredType] = useState<TFilteredType | null>(null);
-
-  const onSelectCategory = (category: ICategory) => {
-    setSelectedCategory(category.id);
-    setFilteredCategories([]);
-    setFilteredType(null);
-    setCategoryInput('');
-  };
-
-  const filterCategoriesCb = (categoryName: string) => {
-    if (categoryName === '') return;
-
-    const filtered = (categoryData ?? [])
-      .filter((category) => category.name.match(categoryName))
-      .slice(0, MAX_CANDIDATE_LENGTH); // 최대 4개까지 보이도록
-
-    setFilteredCategories(filtered);
-    setFilteredType(filtered.length > 0 ? 'candidate' : 'noMatch');
-  };
-
-  // Debounce를 활용해서 카테고리 이름 입력시 카테고리 후보 필터링
   const [filterCategories] = useDebounce(filterCategoriesCb, 300);
-
-  const onClear = () => {
-    setFilteredCategories([]);
-    setFilteredType(null);
-    setCategoryInput('');
-  };
 
   const onInput = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
+
     setCategoryInput(input);
-    if (input === '') {
-      onClear();
-    } else {
-      filterCategories(input.trim());
-    }
+    filterCategories(input.trim());
   };
+
+  const onKeydown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'Enter') {
+        return;
+      }
+
+      if (e.nativeEvent.isComposing) {
+        return;
+      }
+
+      if (filteredCategories.length === 0) {
+        return;
+      }
+
+      e.preventDefault();
+
+      if (e.key === 'Enter') {
+        focusedCategory && setSelectedCategory(focusedCategory.id);
+        return;
+      }
+
+      let index = filteredCategories.findIndex(
+        (category) => category.name === focusedCategory?.name,
+      );
+
+      const lastIndex = filteredCategories.length - 1;
+
+      if (index === -1) {
+        index = index === -1 ? 0 : index;
+      } else if (e.key === 'ArrowDown') {
+        index = index === lastIndex ? 0 : index + 1;
+      } else if (e.key === 'ArrowUp') {
+        index = index === 0 ? lastIndex : index - 1;
+      }
+
+      setFocusedCategory(filteredCategories[index]);
+    },
+    [filteredCategories, focusedCategory],
+  );
 
   return (
     <Container duration={PlanModalCollapseDuration}>
@@ -103,15 +103,23 @@ const PlanCategory: React.FC = () => {
       </Dropdown.Controller>
       <Input
         type="text"
+        placeholder="카테고리를 입력하세요"
+        maxLength={20}
         ref={inputRef}
         value={categoryInput}
-        // onFocus에 filterCategoriesCb인 이유는 debounce 없이 바로 적용되기 위함
         onFocus={() => filterCategoriesCb(inputRef.current?.value.trim() || '')}
-        onBlur={() => setFilteredType(null)}
-        placeholder={'카테고리를 입력하세요'}
-        onClear={onClear}
+        onBlur={clearCategory}
+        onClear={clearCategory}
         onChange={onInput}
-        maxLength={20}
+        onKeyDown={onKeydown}
+        css={
+          filteredType === 'candidate' && {
+            '&:focus': {
+              borderRadius: '0.5rem 0.5rem 0 0',
+              borderBottom: 'none',
+            },
+          }
+        }
       />
       {filteredType === 'candidate' && (
         <Candidate.List type="category">
@@ -119,23 +127,25 @@ const PlanCategory: React.FC = () => {
             <Candidate.Item
               key={`Candidate-${category.name}`}
               isSelected={category.name === selectedCategory?.name}
+              isFocused={category.name === focusedCategory?.name}
               name={category.name}
               color={category.color}
-              onMouseDown={() => onSelectCategory(category)}
+              onMouseDown={() => selectCategory(category)}
             />
           ))}
         </Candidate.List>
       )}
       {filteredType === 'noMatch' && categoryInput && (
-        <CategoryCreateForm name={categoryInput} onSuccess={onSelectCategory} />
+        <CategoryCreateForm name={categoryInput} onSuccess={selectCategory} />
       )}
     </Container>
   );
 };
 
 const Container = styled(Dropdown)`
-  width: 100%;
   position: relative;
+
+  width: 100%;
 `;
 
 export default PlanCategory;

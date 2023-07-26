@@ -11,6 +11,7 @@ import { TColor } from '@/types';
 type TCandidateItemProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   type?: 'tag' | 'category';
   isSelected: boolean;
+  isFocused: boolean;
   name: string;
   color?: TColor;
 };
@@ -19,15 +20,19 @@ type TCandidateItem = React.FC<TCandidateItemProps>;
 
 const CandidateItem: TCandidateItem = ({
   type,
-  isSelected,
+  isSelected = false,
+  isFocused = false,
   name,
   color = SELECTABLE_COLOR[0],
   ...rest
 }: TCandidateItemProps) => {
   const theme = useTheme();
 
+  const className = isFocused ? 'focused' : '';
+
   return (
     <Container
+      className={[rest.className ?? '', className].join(' ')}
       css={isSelected && { backgroundColor: theme.background2 }}
       {...rest}
     >
@@ -63,15 +68,11 @@ const Container = styled.button`
   gap: 15px;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.white};
+  background-color: ${({ theme }) => theme.background1};
 
-  &:hover {
+  &:hover,
+  &.focused {
     background-color: ${({ theme }) => theme.background3};
-  }
-
-  &:first-of-type {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
   }
 
   &:last-of-type {

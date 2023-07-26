@@ -5,12 +5,11 @@ import TimeInput from '@/components/modal/plan/create/plan-date/TimeInput';
 import usePlanDateState from '@/hooks/usePlanDateState';
 
 const PlanDate = () => {
-  const { date, isValidEndDate, isAllDay, setDate, setTime } =
-    usePlanDateState();
+  const { date, isAllDay, setDate, setTime } = usePlanDateState();
 
   return (
     <Container>
-      <div css={{ position: 'relative' }}>
+      <InnerItem>
         <DatePicker onChangeDate={setDate('start')} date={date['start']} />
         {!isAllDay && (
           <TimeInput
@@ -18,21 +17,17 @@ const PlanDate = () => {
             time={{ hour: date['start'].hour, minute: date['start'].minute }}
           />
         )}
-      </div>
+      </InnerItem>
       <span css={{ margin: 5 }}> ~ </span>
-      <div css={{ position: 'relative' }}>
+      <InnerItem>
+        <DatePicker onChangeDate={setDate('end')} date={date['end']} />
         {!isAllDay && (
           <TimeInput
             setTime={setTime('end')}
             time={{ hour: date['end'].hour, minute: date['end'].minute }}
           />
         )}
-        <DatePicker
-          onChangeDate={setDate('end')}
-          date={date['end']}
-          isInvalid={!isValidEndDate}
-        />
-      </div>
+      </InnerItem>
     </Container>
   );
 };
@@ -41,8 +36,14 @@ const Container = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-  width: 100%;
-  height: 48px;
+
+  padding: 0.5rem 0;
+`;
+
+const InnerItem = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default PlanDate;

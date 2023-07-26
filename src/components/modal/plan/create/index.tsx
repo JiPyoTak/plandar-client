@@ -92,15 +92,16 @@ const CreatePlanModal: TCreatePlanModal = ({
       isBgBlack={true}
       HeaderLeftComponent={<PlanColorPicker />}
     >
-      <PlanTitleInput />
-      <PlanDate />
-      <PlanAllDay />
-      <Hr />
-      <PlanMemo />
-      <Hr />
-      <PlanCategory />
-      <Hr />
-      <PlanTag />
+      <Inner>
+        <PlanTitleInput />
+        <PlanDate />
+        <PlanAllDay />
+        {[PlanMemo, PlanCategory, PlanTag].map((Component) => (
+          <BorderBox key={Component.name}>
+            <Component />
+          </BorderBox>
+        ))}
+      </Inner>
       <StylishButton
         isColor={true}
         size="large"
@@ -125,13 +126,27 @@ const Modal = styled(ModalContainer)`
   padding: 24px;
   box-shadow: 1px 10px 25px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
+
+  max-height: 80vh;
 `;
 
-const Hr = styled.hr`
+const Inner = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const BorderBox = styled.div`
   width: 100%;
-  height: 1px;
-  border: none;
-  background-color: ${({ theme }) => theme.border1};
+  padding: 0.5rem 0;
+
+  border-top: 1px solid ${({ theme }) => theme.border1};
 `;
 
 export default CreatePlanModal;

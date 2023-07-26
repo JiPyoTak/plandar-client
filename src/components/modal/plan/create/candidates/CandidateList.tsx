@@ -41,7 +41,7 @@ const Border = (theme: Theme) => css`
 
 const Container = styled.div`
   width: 100%;
-  border-radius: 5px;
+  border-radius: 0 0 5px 5px;
 `;
 
 export default CandidateList;
