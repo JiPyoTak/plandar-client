@@ -1,10 +1,11 @@
 import React, { MouseEventHandler, useState } from 'react';
 
+import ClassifierGuide from '@/components/common/classifier/ClassifierGuide';
 import ClassifierItem from '@/components/common/classifier/ClassifierItem';
 import ClassifierTitle, {
   CLASSIFIER_TITLE_ICON_SIZE,
 } from '@/components/common/classifier/ClassifierTitle';
-import { PlusIcon } from '@/components/common/icons';
+import { CategoryIcon, PlusIcon } from '@/components/common/icons';
 import Dropdown from '@/components/core/dropdown';
 import CategoryModal, {
   TCategoryModalProps,
@@ -112,6 +113,10 @@ const CategoryClassifier: React.FC = () => {
               }
             />
           </Dropdown.Controller>
+          <ClassifierGuide icon={CategoryIcon} data={categoryData}>
+            <span>카테고리를 만들어서</span>
+            <span>일정을 관리해보세요!</span>
+          </ClassifierGuide>
           {categoryData?.map(({ id, name, color }) => (
             <ClassifierItem
               key={id}

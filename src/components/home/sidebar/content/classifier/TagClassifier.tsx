@@ -2,8 +2,10 @@ import React, { useMemo } from 'react';
 
 import moment from 'moment';
 
+import ClassifierGuide from '@/components/common/classifier/ClassifierGuide';
 import ClassifierItem from '@/components/common/classifier/ClassifierItem';
 import ClassifierTitle from '@/components/common/classifier/ClassifierTitle';
+import { TagIcon } from '@/components/common/icons';
 import Dropdown from '@/components/core/dropdown';
 import { useGetPlansQuery } from '@/hooks/query/plan';
 import useTagClassifierState from '@/stores/classifier/tag';
@@ -65,6 +67,10 @@ const TagClassifier: React.FC = () => {
         <Dropdown.Controller>
           <ClassifierTitle title={'태그'} />
         </Dropdown.Controller>
+        <ClassifierGuide icon={TagIcon} data={tags}>
+          <span>일정에 태그를 추가해서</span>
+          <span>일정을 분류해보세요!</span>
+        </ClassifierGuide>
         {tags.map((title) => (
           <ClassifierItem
             key={title}
