@@ -44,6 +44,8 @@ const HoveredPlanModal = () => {
 };
 
 const HoveredModal = styled(Modal)`
+  position: absolute;
+
   opacity: 0;
 
   z-index: 101;

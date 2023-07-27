@@ -126,6 +126,8 @@ const SelectedPlanModal = () => {
 };
 
 const Modal = styled(ModalContainer)`
+  position: absolute;
+
   opacity: 0;
 
   display: flex;
