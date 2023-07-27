@@ -33,7 +33,7 @@ const Template: ComponentStory<typeof CalendarView> = () => {
   }, []);
 
   const referenceDate = useDateState(({ referenceDate }) => referenceDate);
-  const startOfMonth = referenceDate
+  const startOfMonth = moment(referenceDate)
     .startOf('month')
     .startOf('week')
     .startOf('day');
