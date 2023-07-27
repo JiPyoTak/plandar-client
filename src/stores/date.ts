@@ -7,12 +7,14 @@ import { TCalendarUnit } from '@/types';
 
 type TDateState = {
   referenceDate: Moment;
+  referenceDateRange: number;
   calendarUnit: TCalendarUnit;
 };
 
 const initialState = {
   referenceDate: moment(),
-  calendarUnit: CALENDAR_UNIT[2],
+  referenceDateRange: 1,
+  calendarUnit: CALENDAR_UNIT.month,
 } as const;
 
 type TDateAction = {

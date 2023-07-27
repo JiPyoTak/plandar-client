@@ -8,15 +8,15 @@ import { CALENDAR_UNIT } from '@/constants';
 import useDateState from '@/stores/date';
 
 const LABEL_LEFT = {
-  [CALENDAR_UNIT[0]]: '5px',
-  [CALENDAR_UNIT[1]]: 'calc(50% - 25px)',
-  [CALENDAR_UNIT[2]]: 'calc(100% - 55px)',
+  [CALENDAR_UNIT.day]: '5px',
+  [CALENDAR_UNIT.week]: 'calc(50% - 25px)',
+  [CALENDAR_UNIT.month]: 'calc(100% - 55px)',
 } as const;
 
 const CALENDAR_UNIT_TEXT = {
-  [CALENDAR_UNIT[0]]: '일',
-  [CALENDAR_UNIT[1]]: '주',
-  [CALENDAR_UNIT[2]]: '월',
+  [CALENDAR_UNIT.day]: '일',
+  [CALENDAR_UNIT.week]: '주',
+  [CALENDAR_UNIT.month]: '월',
 } as const;
 
 const CalendarUnitButton: React.FC = () => {
@@ -31,7 +31,7 @@ const CalendarUnitButton: React.FC = () => {
   return (
     <CalendarUnitWrapper>
       <CalendarUnitLabel css={{ left: LABEL_LEFT[calendarUnit] }} />
-      {CALENDAR_UNIT.map((unit) => (
+      {Object.values(CALENDAR_UNIT).map((unit) => (
         <CalendarUnitText
           key={unit}
           css={

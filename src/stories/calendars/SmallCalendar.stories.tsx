@@ -13,10 +13,11 @@ export default {
   component: MiniCalendar,
   argTypes: {
     selectedCalendarIndex: {
-      options: [0, 1, 2],
+      options: Object.values(CALENDAR_UNIT),
+      mapping: Object.values(CALENDAR_UNIT),
       control: {
         type: 'select',
-        labels: CALENDAR_UNIT,
+        labels: Object.keys(CALENDAR_UNIT),
       },
     },
   },
@@ -28,7 +29,7 @@ const Container = styled.div`
 
 const Template: ComponentStory<
   React.FC<{
-    selectedCalendarIndex: 0 | 1 | 2;
+    selectedCalendarIndex: (typeof CALENDAR_UNIT)[keyof typeof CALENDAR_UNIT];
   }>
 > = ({ selectedCalendarIndex }) => {
   const setCalendarUnit = useDateState(
@@ -48,5 +49,5 @@ const Template: ComponentStory<
 
 export const Primary = Template.bind({});
 Primary.args = {
-  selectedCalendarIndex: 2,
+  selectedCalendarIndex: CALENDAR_UNIT.month,
 };

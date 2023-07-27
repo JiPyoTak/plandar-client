@@ -29,7 +29,7 @@ const Template: ComponentStory<typeof CalendarView> = () => {
     ({ setCalendarUnit }) => setCalendarUnit,
   );
   useEffect(() => {
-    setCalendarUnit(CALENDAR_UNIT[2]);
+    setCalendarUnit(CALENDAR_UNIT.month);
   }, []);
 
   const referenceDate = useDateState(({ referenceDate }) => referenceDate);
