@@ -2,7 +2,7 @@ import React, { FormEvent, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import ColorPicker from '@/components/common/ColorPicker';
+import ColorPicker from '@/components/common/color-picker';
 import ChevronIcon from '@/components/common/icons/ChevronIcon';
 import StylishButton from '@/components/core/buttons/StylishButton';
 import Input from '@/components/core/Input';
