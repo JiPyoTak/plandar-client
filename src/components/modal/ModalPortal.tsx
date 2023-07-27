@@ -40,8 +40,6 @@ const Modal: TModalPortal = (props, ref) => {
 
     if (!target.classList.contains('modal-container')) return;
 
-    console.log(target.className);
-
     onClose?.(e);
   };
 
