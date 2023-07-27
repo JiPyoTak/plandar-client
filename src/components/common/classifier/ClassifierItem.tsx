@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 
 import { CheckIcon, PencilIcon } from '@/components/common/icons';
 import { SELECTABLE_COLOR } from '@/constants';
+import { SKELETON_BACKGROUND_STYLE } from '@/styles';
 import { TColor } from '@/types';
 
 type TProps = {
@@ -14,9 +15,7 @@ type TProps = {
   onEdit?: (...args: unknown[]) => unknown;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const CLASSIFIER_EDITABLE_ITEM_CLASS = 'classifier-item-edit';
-
-const ClassifierItem: React.FC<TProps> = ({
+const ClassifierItem: React.FC<TProps> & { Skeleton: typeof SkeletonUI } = ({
   isActive,
   color = SELECTABLE_COLOR[0],
   text,
@@ -42,16 +41,19 @@ const ClassifierItem: React.FC<TProps> = ({
       <span css={{ flex: 1 }}>{text}</span>
       {onEdit && (
         <button onClick={onPencilEdit}>
-          <PencilIcon
-            className={CLASSIFIER_EDITABLE_ITEM_CLASS}
-            width={20}
-            height={20}
-          />
+          <PencilIcon width={20} height={20} />
         </button>
       )}
     </Wrapper>
   );
 };
+
+const SkeletonUI: React.FC = () => (
+  <Wrapper>
+    <CircleDiv css={SKELETON_BACKGROUND_STYLE} />
+    <div css={[{ flex: 1, height: '100%' }, SKELETON_BACKGROUND_STYLE]} />
+  </Wrapper>
+);
 
 const Wrapper = styled.div`
   width: 100%;
@@ -61,13 +63,6 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   column-gap: 1rem;
-
-  & > .${CLASSIFIER_EDITABLE_ITEM_CLASS} {
-    visibility: hidden;
-  }
-  &:hover > .${CLASSIFIER_EDITABLE_ITEM_CLASS} {
-    visibility: visible;
-  }
 
   cursor: pointer;
 `;
@@ -83,5 +78,5 @@ const CircleDiv = styled.div`
   border-radius: 50%;
 `;
 
-export { CLASSIFIER_EDITABLE_ITEM_CLASS };
+ClassifierItem.Skeleton = SkeletonUI;
 export default ClassifierItem;

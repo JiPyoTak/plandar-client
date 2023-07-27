@@ -2,8 +2,10 @@ import React, { useMemo } from 'react';
 
 import moment from 'moment';
 
+import ClassifierGuide from '@/components/common/classifier/ClassifierGuide';
 import ClassifierItem from '@/components/common/classifier/ClassifierItem';
 import ClassifierTitle from '@/components/common/classifier/ClassifierTitle';
+import { TagIcon } from '@/components/common/icons';
 import Dropdown from '@/components/core/dropdown';
 import { useGetPlansQuery } from '@/hooks/query/plan';
 import useTagClassifierState from '@/stores/classifier/tag';
@@ -23,7 +25,7 @@ const TagClassifier: React.FC = () => {
   // FIXME : hook으로 빼내면서 변수 할당 해주겠습니다.
   const [sm, em] = getStartAndEndDate(referenceDate);
 
-  const { data } = useGetPlansQuery({
+  const { data, isLoading: isLoadingPlan } = useGetPlansQuery({
     timemin: sm.format(),
     timemax: em.format(),
   });
@@ -65,6 +67,17 @@ const TagClassifier: React.FC = () => {
         <Dropdown.Controller>
           <ClassifierTitle title={'태그'} />
         </Dropdown.Controller>
+        <ClassifierGuide
+          icon={TagIcon}
+          isShow={!tags?.length && !isLoadingPlan}
+        >
+          <span>일정에 태그를 추가해서</span>
+          <span>일정을 분류해보세요!</span>
+        </ClassifierGuide>
+        {isLoadingPlan &&
+          [...Array(2)].map((_, index) => (
+            <ClassifierItem.Skeleton key={index} />
+          ))}
         {tags.map((title) => (
           <ClassifierItem
             key={title}
