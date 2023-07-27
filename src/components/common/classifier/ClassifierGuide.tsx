@@ -7,16 +7,16 @@ import IconFrameComponent from '@/components/core/IconFrameComponent';
 import { FONT_REGULAR_4 } from '@/styles/font';
 
 type TProps = PropsWithChildren<{
-  data?: unknown[];
+  isShow: boolean;
   icon?: ReturnType<typeof IconFrameComponent>;
 }>;
 
 const TEXT_COLOR = 'text3';
-const ClassifierGuide: React.FC<TProps> = ({ children, data = [], icon }) => {
+const ClassifierGuide: React.FC<TProps> = ({ children, isShow, icon }) => {
   const theme = useTheme();
   const IconComponent = icon;
 
-  if (data?.length) return <></>;
+  if (!isShow) return <></>;
 
   return (
     <Container>

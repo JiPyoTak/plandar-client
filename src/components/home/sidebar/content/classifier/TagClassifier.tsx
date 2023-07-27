@@ -67,7 +67,10 @@ const TagClassifier: React.FC = () => {
         <Dropdown.Controller>
           <ClassifierTitle title={'태그'} />
         </Dropdown.Controller>
-        <ClassifierGuide icon={TagIcon} data={tags}>
+        <ClassifierGuide
+          icon={TagIcon}
+          isShow={!!tags?.length && !isLoadingPlan}
+        >
           <span>일정에 태그를 추가해서</span>
           <span>일정을 분류해보세요!</span>
         </ClassifierGuide>
