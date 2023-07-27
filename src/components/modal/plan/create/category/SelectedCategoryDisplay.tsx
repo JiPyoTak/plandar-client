@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { MouseEventHandler, MouseEvent, useState } from 'react';
 
 import { css, Theme, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import ColorPicker from '@/components/common/ColorPicker';
+import ColorPopup from '@/components/common/color-picker/ColorList';
+import PickButton from '@/components/common/color-picker/PickButton';
+import Background from '@/components/modal/plan/create/Background';
 import { toast } from '@/core/toast';
+import useModalPopupPosition from '@/hooks/modal/useModalPopupPositon';
 import { useCategoryUpdate } from '@/hooks/query/category';
 import { ColorCircle } from '@/styles/category';
 import {
@@ -26,7 +29,10 @@ const SelectedCategoryDisplay: TSelectedCategoryDisplay = ({
   onUpdateCategory,
 }: TSelectedCategoryDisplayProps) => {
   const theme = useTheme();
+  const [popupOpened, setPopupOpened] = useState(false);
+
   const { mutateAsync: updateCategory } = useCategoryUpdate();
+  const { positionTopRef, setPositionTop } = useModalPopupPosition();
 
   const onSelect = async (newColor: TColor) => {
     // id가 없다면 아직 서버로부터 생성되지 않은 상태므로 return
@@ -53,15 +59,44 @@ const SelectedCategoryDisplay: TSelectedCategoryDisplay = ({
     }
   };
 
+  const onClickPickerButton: MouseEventHandler = (e) => {
+    e.stopPropagation();
+
+    const target = e.target as HTMLButtonElement;
+
+    setPositionTop(target.getBoundingClientRect());
+    setPopupOpened((prev) => !prev);
+  };
+
+  const onClickColor = (e: MouseEvent<HTMLButtonElement>, color: TColor) => {
+    e.stopPropagation();
+    onSelect(color);
+    setPopupOpened(false);
+  };
+
   return (
     <Container>
-      <ColorPicker
-        selectedColor={category.color}
-        onSelect={onSelect}
-        additionalComponent={<CategoryName>{category.name}</CategoryName>}
-        circleSize="small"
-        css={ColorPickerStyle(theme)}
-      />
+      <div>
+        <PickButton
+          selectedColor={category.color}
+          circleSize="small"
+          additionalComponent={<CategoryName>{category.name}</CategoryName>}
+          onClick={onClickPickerButton}
+          css={ColorPickerStyle(theme)}
+        />
+        <ColorPopup
+          css={{
+            top: positionTopRef.current,
+          }}
+          isOpen={popupOpened}
+          selectedColor={category.color}
+          onClick={onClickColor}
+        />
+        <Background
+          isOpen={popupOpened}
+          onClose={() => setPopupOpened(false)}
+        />
+      </div>
     </Container>
   );
 };
