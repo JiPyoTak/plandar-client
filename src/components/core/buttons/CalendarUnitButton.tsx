@@ -9,12 +9,14 @@ import useDateState from '@/stores/date';
 
 const LABEL_LEFT = {
   [CALENDAR_UNIT.day]: '5px',
+  [CALENDAR_UNIT.days]: '5px',
   [CALENDAR_UNIT.week]: 'calc(50% - 25px)',
   [CALENDAR_UNIT.month]: 'calc(100% - 55px)',
 } as const;
 
 const CALENDAR_UNIT_TEXT = {
   [CALENDAR_UNIT.day]: '일',
+  [CALENDAR_UNIT.days]: '일',
   [CALENDAR_UNIT.week]: '주',
   [CALENDAR_UNIT.month]: '월',
 } as const;

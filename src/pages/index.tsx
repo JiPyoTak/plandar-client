@@ -12,9 +12,10 @@ import SelectedPlanModal from '@/components/modal/plan/select';
 import useDateState from '@/stores/date';
 
 const CALENDAR_COMPONENTS = {
-  month: MainCalendar,
-  week: Timetable,
   day: Timetable,
+  days: Timetable,
+  week: Timetable,
+  month: MainCalendar,
 } as const;
 
 const Home: React.FC = () => {

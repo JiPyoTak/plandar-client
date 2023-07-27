@@ -5,6 +5,7 @@ const DATE_FORMAT = 'YYYY-MM-DD';
 
 const CALENDAR_UNIT = {
   day: 'day',
+  days: 'days',
   week: 'week',
   month: 'month',
 } as const;
