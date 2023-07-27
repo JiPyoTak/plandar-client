@@ -16,28 +16,28 @@ const initialState = {
 } as const;
 
 type TDateAction = {
-  increaseStoreMonth: () => void;
-  decreaseStoreMonth: () => void;
   setReferenceDate: (date: MomentInput) => void;
   setCalendarUnit: (calendarUnit: TCalendarUnit) => void;
+  increaseReferenceDate: () => void;
+  decreaseReferenceDate: () => void;
 };
 
 const useDateState = create<TDateState & TDateAction>((set) => ({
   ...initialState,
-  increaseStoreMonth: () =>
+  setReferenceDate: (date) => set({ referenceDate: moment(date) }),
+  setCalendarUnit: (calendarUnit) => set({ calendarUnit }),
+  increaseReferenceDate: () =>
     set(({ referenceDate, calendarUnit }) => {
       return {
         referenceDate: moment(referenceDate).add(1, calendarUnit),
       };
     }),
-  decreaseStoreMonth: () =>
+  decreaseReferenceDate: () =>
     set(({ referenceDate, calendarUnit }) => {
       return {
         referenceDate: moment(referenceDate).subtract(1, calendarUnit),
       };
     }),
-  setReferenceDate: (date) => set({ referenceDate: moment(date) }),
-  setCalendarUnit: (calendarUnit) => set({ calendarUnit }),
 }));
 
 export default useDateState;

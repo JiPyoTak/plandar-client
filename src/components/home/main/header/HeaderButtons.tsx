@@ -13,14 +13,14 @@ const HeaderButtons = () => {
   const {
     referenceDate,
     setReferenceDate,
-    decreaseStoreMonth,
-    increaseStoreMonth,
+    increaseReferenceDate,
+    decreaseReferenceDate,
   } = useDateState();
   const calendarUnit = useDateState(({ calendarUnit }) => calendarUnit);
 
   const onClickLeftButton = () => {
     if (calendarUnit === 'month') {
-      decreaseStoreMonth();
+      decreaseReferenceDate();
     } else {
       const decreaseTerm = calendarUnit === 'week' ? 7 : 1;
       const newDate = moment(referenceDate).subtract(decreaseTerm, 'day');
@@ -30,7 +30,7 @@ const HeaderButtons = () => {
 
   const onClickRightButton = () => {
     if (calendarUnit === 'month') {
-      increaseStoreMonth();
+      increaseReferenceDate();
     } else {
       const decreaseTerm = calendarUnit === 'week' ? 7 : 1;
       const newDate = moment(referenceDate).add(decreaseTerm, 'day');
