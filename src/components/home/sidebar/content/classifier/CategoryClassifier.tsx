@@ -116,7 +116,7 @@ const CategoryClassifier: React.FC = () => {
           </Dropdown.Controller>
           <ClassifierGuide
             icon={CategoryIcon}
-            isShow={!!categoryData?.length && !isLoadingCategory}
+            isShow={!categoryData?.length && !isLoadingCategory}
           >
             <span>카테고리를 만들어서</span>
             <span>일정을 관리해보세요!</span>
