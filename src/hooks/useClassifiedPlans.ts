@@ -1,10 +1,8 @@
-import { useGetPlansQuery } from '@/hooks/query/plan';
+import useRangedPlans from '@/hooks/useRangedPlans';
 import useCategoryClassifierState from '@/stores/classifier/category';
 import useTagClassifierState from '@/stores/classifier/tag';
 import useTypeClassifierState from '@/stores/classifier/type';
-import useDateState from '@/stores/date';
 import { IPlan } from '@/types/query/plan';
-import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
 
 const useClassifiedPlans = () => {
   const hiddenCategories = useCategoryClassifierState(
@@ -18,17 +16,7 @@ const useClassifiedPlans = () => {
       showTask,
     }),
   );
-
-  // TODO : make hook
-  const { referenceDate } = useDateState(({ referenceDate }) => ({
-    referenceDate,
-  }));
-  const [startMoment, endMoment] = getStartAndEndDate(referenceDate);
-
-  const { data: plans } = useGetPlansQuery({
-    timemin: startMoment.format(),
-    timemax: endMoment.format(),
-  });
+  const { data: plans } = useRangedPlans();
 
   const classifiedPlans = (plans ?? []).reduce((result, plan) => {
     const { categoryId, tags } = plan;

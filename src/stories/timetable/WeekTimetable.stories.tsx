@@ -7,6 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import moment from 'moment';
 
 import Timetable from '@/components/home/main/timetable';
+import { CALENDAR_UNIT } from '@/constants';
 import { useCreatePlanMutation } from '@/hooks/query/plan';
 import useDateState from '@/stores/date';
 import planStubManager from '@/stories/apis/data/plan';
@@ -21,21 +22,46 @@ export default {
   title: 'Timetable/WeekTimetable',
   component: Timetable,
   argTypes: {
-    rangeAmount: { control: 'number' },
+    storybookRangeAmount: {
+      name: '선택된 범위',
+      control: {
+        type: 'range',
+        min: 1,
+        max: 7,
+        step: 1,
+      },
+      description: '현재 달력에서 선택된 범위입니다.',
+    },
+    storybookReferenceDate: {
+      name: '선택된 날짜',
+      control: 'date',
+      description: '현재 달력에 선택된 날짜입니다.',
+    },
   },
 } as ComponentMeta<typeof Timetable>;
 
-const Template: ComponentStory<typeof Timetable> = (args) => {
-  const { referenceDate, setCalendarUnit } = useDateState(
-    ({ referenceDate, setCalendarUnit }) => ({
+type TArgs = {
+  storybookRangeAmount: number;
+  storybookReferenceDate: number;
+};
+
+const Template: ComponentStory<
+  (args: TArgs) => ReturnType<typeof Timetable>
+> = ({ storybookReferenceDate, storybookRangeAmount, ...args }) => {
+  const { referenceDate, setDateWithRange } = useDateState(
+    ({ referenceDate, setDateWithRange }) => ({
       referenceDate,
-      setCalendarUnit,
+      setDateWithRange,
     }),
   );
 
   useEffect(() => {
-    setCalendarUnit('week');
-  }, []);
+    setDateWithRange({
+      referenceDate: storybookReferenceDate,
+      calendarUnit: CALENDAR_UNIT.days,
+      rangeAmount: storybookRangeAmount,
+    });
+  }, [storybookRangeAmount, storybookReferenceDate]);
 
   const { mutateAsync: createMutateAsync } = useCreatePlanMutation();
   const queryClient = useQueryClient();
@@ -142,7 +168,10 @@ const TestButton = styled.button`
 `;
 
 export const Primary = Template.bind({});
-Primary.args = { rangeAmount: 7 };
+Primary.args = {
+  storybookReferenceDate: new Date().getTime(),
+  storybookRangeAmount: 7,
+};
 Primary.parameters = {
   msw: {
     handlers: [

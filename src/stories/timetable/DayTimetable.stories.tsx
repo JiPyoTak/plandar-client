@@ -20,9 +20,6 @@ import {
 export default {
   title: 'Timetable/DayTimetable',
   component: Timetable,
-  argTypes: {
-    rangeAmount: { control: 'number' },
-  },
 } as ComponentMeta<typeof Timetable>;
 
 const Template: ComponentStory<typeof Timetable> = (args) => {
@@ -122,7 +119,7 @@ const TestButton = styled.button`
 `;
 
 export const Primary = Template.bind({});
-Primary.args = { rangeAmount: 1 };
+Primary.args = {};
 Primary.parameters = {
   msw: {
     handlers: [
