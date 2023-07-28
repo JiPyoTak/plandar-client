@@ -7,11 +7,11 @@ import useDateState from '@/stores/date';
 import { IPlan } from '@/types/query/plan';
 import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
 
-const useRangedPlans = (function stateMaker() {
+const useRangedPlans = (function () {
   let plansCache: IPlan[] = [];
   let updateKeys = {};
 
-  return function useHook() {
+  return function () {
     const { referenceDate, referenceDateRange, calendarUnit } = useDateState(
       ({ referenceDate, referenceDateRange, calendarUnit }) => ({
         referenceDate,
