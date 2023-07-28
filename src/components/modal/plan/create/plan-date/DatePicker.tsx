@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import moment, { Moment, MomentInput } from 'moment';
 
 import MiniCalendar from '@/components/common/mini-calendar';
-import Background from '@/components/modal/plan/create/Background';
+import ModalBackground from '@/components/common/modal/ModalBackground';
 import useModalPopupPosition from '@/hooks/modal/useModalPopupPositon';
 import { FONT_REGULAR_4 } from '@/styles/font';
 import { getDateString } from '@/utils/date/getTimeString';
@@ -61,7 +61,7 @@ const DatePicker = ({ date, onChangeDate, onCalendarClose }: Props) => {
       <CalendarDateButton onClick={onClickDateButton}>
         {getDateString(date.toDate())}
       </CalendarDateButton>
-      <Background isOpen={calendarOpened} onClose={onCloseHandler} />
+      <ModalBackground isOpen={calendarOpened} onClose={onCloseHandler} />
       {calendarOpened && (
         <CalendarContainer
           css={{

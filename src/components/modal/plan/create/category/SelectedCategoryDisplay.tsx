@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 
 import ColorPopup from '@/components/common/color-picker/ColorList';
 import PickButton from '@/components/common/color-picker/PickButton';
-import Background from '@/components/modal/plan/create/Background';
+import ModalBackground from '@/components/common/modal/ModalBackground';
 import { toast } from '@/core/toast';
 import useModalPopupPosition from '@/hooks/modal/useModalPopupPositon';
 import { useCategoryUpdate } from '@/hooks/query/category';
@@ -92,7 +92,7 @@ const SelectedCategoryDisplay: TSelectedCategoryDisplay = ({
           selectedColor={category.color}
           onClick={onClickColor}
         />
-        <Background
+        <ModalBackground
           isOpen={popupOpened}
           onClose={() => setPopupOpened(false)}
         />

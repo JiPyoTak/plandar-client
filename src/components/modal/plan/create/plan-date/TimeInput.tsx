@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import moment, { Moment, MomentInput } from 'moment';
 
-import Background from '@/components/modal/plan/create/Background';
+import ModalBackground from '@/components/common/modal/ModalBackground';
 import TimeOptionList from '@/components/modal/plan/create/plan-date/TimeOptionList';
 import useModalPopupPosition from '@/hooks/modal/useModalPopupPositon';
 import { FONT_REGULAR_4 } from '@/styles/font';
@@ -65,7 +65,7 @@ const TimeInput = ({ setTime, time }: Props) => {
 
   return (
     <div css={{ display: 'inline-block' }}>
-      <Background isOpen={openedOptions} />
+      <ModalBackground isOpen={openedOptions} />
       <Input
         invalid={timeInfo.invalid}
         type="text"
