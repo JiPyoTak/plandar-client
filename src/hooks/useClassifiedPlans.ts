@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import useRangedPlans from '@/hooks/useRangedPlans';
 import useCategoryClassifierState from '@/stores/classifier/category';
 import useTagClassifierState from '@/stores/classifier/tag';
@@ -18,19 +20,22 @@ const useClassifiedPlans = () => {
   );
   const { data: plans } = useRangedPlans();
 
-  const classifiedPlans = (plans ?? []).reduce((result, plan) => {
-    const { categoryId, tags } = plan;
+  const classifiedPlans = useMemo(() => {
+    return plans.reduce((result, plan) => {
+      const { categoryId, tags } = plan;
 
-    if (categoryId && hiddenCategories.has(categoryId)) return result;
-    if (tags.length && tags.every((tag) => hiddenTags.has(tag))) return result;
-    if (!showAlarm && plan.type === 'alarm') return result;
-    if (!showEvent && plan.type === 'event') return result;
-    if (!showTask && plan.type === 'task') return result;
+      if (categoryId && hiddenCategories.has(categoryId)) return result;
+      if (tags.length && tags.every((tag) => hiddenTags.has(tag)))
+        return result;
+      if (!showAlarm && plan.type === 'alarm') return result;
+      if (!showEvent && plan.type === 'event') return result;
+      if (!showTask && plan.type === 'task') return result;
 
-    result.push(plan);
+      result.push(plan);
 
-    return result;
-  }, [] as IPlan[]);
+      return result;
+    }, [] as IPlan[]);
+  }, [plans, hiddenCategories, hiddenTags, showAlarm, showEvent, showTask]);
 
   return classifiedPlans;
 };
