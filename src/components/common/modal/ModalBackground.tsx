@@ -7,7 +7,7 @@ interface IProps {
   onClose?: () => void;
 }
 
-const Background: React.FC<IProps> = ({ isOpen, onClose }) => {
+const ModalBackground: React.FC<IProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
@@ -25,4 +25,4 @@ const Background: React.FC<IProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default Background;
+export default ModalBackground;
