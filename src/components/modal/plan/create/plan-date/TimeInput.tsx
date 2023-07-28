@@ -4,7 +4,9 @@ import styled from '@emotion/styled';
 
 import moment, { Moment, MomentInput } from 'moment';
 
+import ModalBackground from '@/components/common/modal/ModalBackground';
 import TimeOptionList from '@/components/modal/plan/create/plan-date/TimeOptionList';
+import useModalPopupPosition from '@/hooks/modal/useModalPopupPositon';
 import { FONT_REGULAR_4 } from '@/styles/font';
 import {
   extractTimeFromString,
@@ -24,6 +26,7 @@ const initialTime = (time: Moment) => {
 };
 
 const TimeInput = ({ setTime, time }: Props) => {
+  const { positionTopRef, setPositionTop } = useModalPopupPosition();
   const [inputTime, setInputTime] = useState<string>(initialTime(time));
   const inputRef = useRef<HTMLInputElement>(null);
   const [openedOptions, setOpenedOptions] = useState(false);
@@ -53,24 +56,39 @@ const TimeInput = ({ setTime, time }: Props) => {
     inputRef.current?.blur();
   };
 
+  const onFocus: React.FocusEventHandler = (e) => {
+    const target = e.target as HTMLInputElement;
+
+    setPositionTop(target.getBoundingClientRect());
+    setOpenedOptions(true);
+  };
+
   return (
     <div css={{ display: 'inline-block' }}>
+      <ModalBackground isOpen={openedOptions} />
       <Input
         invalid={timeInfo.invalid}
         type="text"
         ref={inputRef}
         value={inputTime}
-        onFocus={() => setOpenedOptions(true)}
+        onFocus={onFocus}
         onChange={(e) => setInputTime(e.target.value)}
         onKeyDown={onInputEnter}
         onBlur={onBlurHandler}
       />
       {openedOptions && (
-        <TimeOptionList
-          inputTime={inputTime}
-          timeInfo={timeInfo}
-          setTime={setInputTime}
-        />
+        <div
+          css={{
+            position: 'absolute',
+            top: positionTopRef.current,
+          }}
+        >
+          <TimeOptionList
+            inputTime={inputTime}
+            timeInfo={timeInfo}
+            setTime={setInputTime}
+          />
+        </div>
       )}
     </div>
   );

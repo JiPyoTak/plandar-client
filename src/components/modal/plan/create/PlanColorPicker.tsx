@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ColorPicker from '@/components/common/ColorPicker';
+import ColorPicker from '@/components/common/color-picker';
 import ChevronIcon from '@/components/common/icons/ChevronIcon';
 import { SELECTABLE_COLOR } from '@/constants';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';

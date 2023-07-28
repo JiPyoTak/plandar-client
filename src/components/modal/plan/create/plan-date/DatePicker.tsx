@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import moment, { Moment, MomentInput } from 'moment';
 
 import MiniCalendar from '@/components/common/mini-calendar';
+import ModalBackground from '@/components/common/modal/ModalBackground';
+import useModalPopupPosition from '@/hooks/modal/useModalPopupPositon';
 import { FONT_REGULAR_4 } from '@/styles/font';
 import { getDateString } from '@/utils/date/getTimeString';
 
@@ -16,7 +17,9 @@ interface Props {
 }
 
 const DatePicker = ({ date, onChangeDate, onCalendarClose }: Props) => {
-  const referenceDate = moment();
+  const { positionTopRef, setPositionTop } = useModalPopupPosition();
+
+  const referenceDate = moment(date);
   const [currentDate, setCurrentDate] = useState(moment(date));
   const [calendarOpened, setCalendarOpened] = useState(false);
 
@@ -46,26 +49,25 @@ const DatePicker = ({ date, onChangeDate, onCalendarClose }: Props) => {
     setCurrentDate(moment());
   };
 
+  const onClickDateButton: React.MouseEventHandler = (e) => {
+    const target = e.target as HTMLButtonElement;
+
+    setPositionTop(target.getBoundingClientRect());
+    setCalendarOpened(true);
+  };
+
   return (
     <div>
-      {calendarOpened && (
-        <div
-          onMouseDown={onCloseHandler}
-          css={css`
-            z-index: 20;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-          `}
-        />
-      )}
-      <CalendarDateButton onClick={() => setCalendarOpened(true)}>
+      <CalendarDateButton onClick={onClickDateButton}>
         {getDateString(date.toDate())}
       </CalendarDateButton>
+      <ModalBackground isOpen={calendarOpened} onClose={onCloseHandler} />
       {calendarOpened && (
-        <CalendarContainer>
+        <CalendarContainer
+          css={{
+            top: positionTopRef.current,
+          }}
+        >
           <MiniCalendar
             referenceDate={referenceDate}
             selectedDate={currentDate}

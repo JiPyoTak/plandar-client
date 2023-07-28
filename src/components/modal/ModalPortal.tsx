@@ -30,18 +30,28 @@ const Modal: TModalPortal = (props, ref) => {
 
   const theme = useTheme();
   const modalElement = document.getElementById('modal');
+
   if (!modalElement) {
     throw new Error('모달창을 열 수 없습니다');
   }
 
+  const onClickModal = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+
+    if (!target.classList.contains('modal-container')) return;
+
+    onClose?.(e);
+  };
+
   return createPortal(
     <Container
+      className="modal-container"
+      onClick={onClickModal}
       css={{
         width: isBgBlack ? '100vw' : 0,
         height: isBgBlack ? '100vh' : 0,
       }}
     >
-      {isBgBlack && <Background onClick={onClose} />}
       <Body className={className} ref={ref}>
         {(HeaderLeftComponent || HeaderRightComponent || isCloseBtn) && (
           <Header>
@@ -67,24 +77,17 @@ const Container = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-`;
+  right: 0;
+  bottom: 0;
 
-const Background = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: ${({ theme }) => theme.black};
-  opacity: 0.3;
-  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: ${({ theme }) => theme.black}30;
 `;
 
 const Body = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-
   max-height: 90vh;
 
   background-color: ${({ theme }) => theme.white};

@@ -88,8 +88,8 @@ const CreatePlanModal: TCreatePlanModal = ({
 
   return (
     <Modal
-      onClose={onCloseHandler}
       isBgBlack={true}
+      onClose={onCloseHandler}
       HeaderLeftComponent={<PlanColorPicker />}
     >
       <Inner>
@@ -116,26 +116,25 @@ const CreatePlanModal: TCreatePlanModal = ({
 };
 
 const Modal = styled(ModalContainer)`
-  position: absolute;
   display: flex;
   flex-direction: column;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+
   min-width: 400px;
+  max-height: 80vh;
+
   padding: 24px;
   box-shadow: 1px 10px 25px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
-
-  max-height: 80vh;
 `;
 
 const Inner = styled.div`
+  flex: 1;
+
   display: flex;
   flex-direction: column;
 
-  overflow-x: hidden;
   overflow-y: auto;
+  overflow-x: hidden;
 
   &::-webkit-scrollbar {
     display: none;
