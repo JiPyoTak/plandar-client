@@ -43,9 +43,12 @@ type TDateAction = {
 
 const useDateState = create<TDateState & TDateAction>((set, get) => ({
   ...createInitialState(),
-  setReferenceDate: (referenceDate) =>
-    get().setDateWithRange({ referenceDate }),
-  setCalendarUnit: (calendarUnit) => get().setDateWithRange({ calendarUnit }),
+  setReferenceDate: (referenceDate) => {
+    return get().setDateWithRange({ referenceDate });
+  },
+  setCalendarUnit: (calendarUnit) => {
+    return get().setDateWithRange({ calendarUnit });
+  },
   increaseReferenceDate: () => {
     const { referenceDate: prevDate, calendarUnit, setDateWithRange } = get();
     const referenceDate = moment(prevDate).add(1, calendarUnit);
