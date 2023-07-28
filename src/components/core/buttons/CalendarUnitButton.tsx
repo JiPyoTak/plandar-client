@@ -8,16 +8,22 @@ import { CALENDAR_UNIT } from '@/constants';
 import useDateState from '@/stores/date';
 
 const LABEL_LEFT = {
-  [CALENDAR_UNIT[0]]: '5px',
-  [CALENDAR_UNIT[1]]: 'calc(50% - 25px)',
-  [CALENDAR_UNIT[2]]: 'calc(100% - 55px)',
+  [CALENDAR_UNIT.day]: '5px',
+  [CALENDAR_UNIT.week]: 'calc(50% - 25px)',
+  [CALENDAR_UNIT.month]: 'calc(100% - 55px)',
 } as const;
 
 const CALENDAR_UNIT_TEXT = {
-  [CALENDAR_UNIT[0]]: '일',
-  [CALENDAR_UNIT[1]]: '주',
-  [CALENDAR_UNIT[2]]: '월',
+  [CALENDAR_UNIT.day]: '일',
+  [CALENDAR_UNIT.week]: '주',
+  [CALENDAR_UNIT.month]: '월',
 } as const;
+
+const CALENDAR_SELECTIONS = [
+  CALENDAR_UNIT.day,
+  CALENDAR_UNIT.week,
+  CALENDAR_UNIT.month,
+];
 
 const CalendarUnitButton: React.FC = () => {
   const theme = useTheme();
@@ -27,15 +33,18 @@ const CalendarUnitButton: React.FC = () => {
       setCalendarUnit,
     }),
   );
+  // * : days (range 선택 시) 주 단위 달력으로 판단
+  const selectedUnit =
+    calendarUnit === CALENDAR_UNIT.days ? CALENDAR_UNIT.week : calendarUnit;
 
   return (
     <CalendarUnitWrapper>
-      <CalendarUnitLabel css={{ left: LABEL_LEFT[calendarUnit] }} />
-      {CALENDAR_UNIT.map((unit) => (
+      <CalendarUnitLabel css={{ left: LABEL_LEFT[selectedUnit] }} />
+      {CALENDAR_SELECTIONS.map((unit) => (
         <CalendarUnitText
           key={unit}
           css={
-            calendarUnit === unit && {
+            selectedUnit === unit && {
               color: theme.title_active,
             }
           }

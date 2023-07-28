@@ -18,10 +18,11 @@ export default {
   argTypes: {
     date: { control: 'date', description: '현재 달력에 선택된 날짜입니다.' },
     unit: {
-      options: [0, 1, 2],
+      options: Object.values(CALENDAR_UNIT),
+      mapping: Object.values(CALENDAR_UNIT),
       control: {
         type: 'select',
-        labels: CALENDAR_UNIT,
+        labels: Object.keys(CALENDAR_UNIT),
       },
       description: '현재 달력을 나타내는 단위입니다.',
     },
@@ -30,7 +31,7 @@ export default {
 
 type TArgs = {
   date: number;
-  unit: number;
+  unit: (typeof CALENDAR_UNIT)[keyof typeof CALENDAR_UNIT];
 };
 
 const Template: ComponentStory<
@@ -112,7 +113,7 @@ const TestButton = styled.button`
 export const Tag = Template.bind({});
 Tag.args = {
   date: new Date().getTime(),
-  unit: 2,
+  unit: CALENDAR_UNIT.month,
 };
 Tag.parameters = {
   msw: {

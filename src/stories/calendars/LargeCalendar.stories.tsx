@@ -29,11 +29,11 @@ const Template: ComponentStory<typeof CalendarView> = () => {
     ({ setCalendarUnit }) => setCalendarUnit,
   );
   useEffect(() => {
-    setCalendarUnit(CALENDAR_UNIT[2]);
+    setCalendarUnit(CALENDAR_UNIT.month);
   }, []);
 
   const referenceDate = useDateState(({ referenceDate }) => referenceDate);
-  const startOfMonth = referenceDate
+  const startOfMonth = moment(referenceDate)
     .startOf('month')
     .startOf('week')
     .startOf('day');

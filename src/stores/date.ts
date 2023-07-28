@@ -4,40 +4,96 @@ import { create } from 'zustand';
 
 import { CALENDAR_UNIT } from '@/constants';
 import { TCalendarUnit } from '@/types';
+import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
 
 type TDateState = {
   referenceDate: Moment;
+  referenceDateRange: {
+    startMoment: Moment;
+    endMoment: Moment;
+  };
   calendarUnit: TCalendarUnit;
 };
 
-const initialState = {
-  referenceDate: moment(),
-  calendarUnit: CALENDAR_UNIT[2],
-} as const;
+const createInitialState = () => {
+  const referenceDate = moment();
+  const [startMoment, endMoment] = getStartAndEndDate(referenceDate);
 
-type TDateAction = {
-  increaseStoreMonth: () => void;
-  decreaseStoreMonth: () => void;
-  setReferenceDate: (date: MomentInput) => void;
-  setCalendarUnit: (calendarUnit: TCalendarUnit) => void;
+  return {
+    referenceDate,
+    referenceDateRange: {
+      startMoment,
+      endMoment,
+    },
+    calendarUnit: CALENDAR_UNIT.month,
+  } as const;
 };
 
-const useDateState = create<TDateState & TDateAction>((set) => ({
-  ...initialState,
-  increaseStoreMonth: () =>
-    set(({ referenceDate, calendarUnit }) => {
+type TDateAction = {
+  setReferenceDate: (referenceDate: MomentInput) => void;
+  setCalendarUnit: (calendarUnit: TCalendarUnit) => void;
+  increaseReferenceDate: () => void;
+  decreaseReferenceDate: () => void;
+  setDateWithRange: (options?: {
+    referenceDate?: MomentInput;
+    calendarUnit?: TCalendarUnit;
+    rangeAmount?: number;
+  }) => void;
+};
+
+const useDateState = create<TDateState & TDateAction>((set, get) => ({
+  ...createInitialState(),
+  setReferenceDate: (referenceDate) => {
+    return get().setDateWithRange({ referenceDate });
+  },
+  setCalendarUnit: (calendarUnit) => {
+    return get().setDateWithRange({ calendarUnit });
+  },
+  increaseReferenceDate: () => {
+    const { referenceDate: prevDate, calendarUnit, setDateWithRange } = get();
+    const referenceDate = moment(prevDate).add(1, calendarUnit);
+    setDateWithRange({ referenceDate });
+  },
+  decreaseReferenceDate: () => {
+    const { referenceDate: prevDate, calendarUnit, setDateWithRange } = get();
+    const referenceDate = moment(prevDate).subtract(1, calendarUnit);
+    setDateWithRange({ referenceDate });
+  },
+  setDateWithRange: ({ referenceDate, calendarUnit, rangeAmount } = {}) =>
+    set(({ referenceDate: prevDate, calendarUnit: prevUnit }) => {
+      referenceDate = moment(referenceDate ?? prevDate);
+      calendarUnit = calendarUnit ?? prevUnit;
+
+      let referenceDateRange = {} as TDateState['referenceDateRange'];
+      if (calendarUnit === CALENDAR_UNIT.month) {
+        const [startMoment, endMoment] = getStartAndEndDate(referenceDate);
+
+        referenceDateRange = { startMoment, endMoment };
+      } else if (calendarUnit === CALENDAR_UNIT.week) {
+        referenceDateRange = {
+          startMoment: moment(referenceDate).startOf('week').startOf('day'),
+          endMoment: moment(referenceDate).endOf('week').endOf('day'),
+        };
+      } else if (calendarUnit === CALENDAR_UNIT.days && rangeAmount) {
+        referenceDateRange = {
+          startMoment: moment(referenceDate).startOf('day'),
+          endMoment: moment(referenceDate)
+            .add(rangeAmount - 1, 'day')
+            .endOf('day'),
+        };
+      } else {
+        referenceDateRange = {
+          startMoment: moment(referenceDate).startOf('day'),
+          endMoment: moment(referenceDate).endOf('day'),
+        };
+      }
+
       return {
-        referenceDate: moment(referenceDate).add(1, calendarUnit),
+        referenceDate,
+        referenceDateRange,
+        calendarUnit,
       };
     }),
-  decreaseStoreMonth: () =>
-    set(({ referenceDate, calendarUnit }) => {
-      return {
-        referenceDate: moment(referenceDate).subtract(1, calendarUnit),
-      };
-    }),
-  setReferenceDate: (date) => set({ referenceDate: moment(date) }),
-  setCalendarUnit: (calendarUnit) => set({ calendarUnit }),
 }));
 
 export default useDateState;

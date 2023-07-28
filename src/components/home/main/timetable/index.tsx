@@ -2,8 +2,6 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import moment from 'moment';
-
 import TimetableScroll from './TimetableScroll';
 import TimetableView from './view';
 import TimetableHeader from '@/components/home/main/timetable/TimetableHeader';
@@ -14,29 +12,19 @@ import {
   TIMETABLE_SCROLL_WIDTH,
 } from '@/styles/timetable';
 
-type TProps = {
-  rangeAmount?: number;
-};
-
-const Timetable: React.FC<TProps> = ({ rangeAmount = 1 }) => {
-  const { referenceDate, calendarUnit } = useDateState(
-    ({ referenceDate, calendarUnit }) => ({
-      referenceDate,
-      calendarUnit,
-    }),
+const Timetable: React.FC = () => {
+  const referenceDateRange = useDateState(
+    ({ referenceDateRange }) => referenceDateRange,
   );
 
-  // 주 선택하면 선택한 날짜 상관없이 해당 주를 보여주기
-  const startMoment = moment(referenceDate);
-  if (calendarUnit === 'week') {
-    rangeAmount = 7;
-    startMoment.startOf('week');
-  }
-
   // 범위에 해당하는 일자의 Moment들 생성
-  const range = Math.min(rangeAmount, 7);
+  const { startMoment, endMoment } = referenceDateRange;
+  const range = Math.max(
+    endMoment.clone().add(1, 'ms').diff(startMoment, 'day'),
+    1,
+  );
   const dateMoments = Array.from(Array(range), (_, index) =>
-    startMoment.clone().add(index, 'days'),
+    startMoment.clone().add(index, 'day'),
   );
   const showHeader = range > 1;
 

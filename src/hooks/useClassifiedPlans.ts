@@ -1,10 +1,10 @@
-import { useGetPlansQuery } from '@/hooks/query/plan';
+import { useMemo } from 'react';
+
+import useRangedPlans from '@/hooks/useRangedPlans';
 import useCategoryClassifierState from '@/stores/classifier/category';
 import useTagClassifierState from '@/stores/classifier/tag';
 import useTypeClassifierState from '@/stores/classifier/type';
-import useDateState from '@/stores/date';
 import { IPlan } from '@/types/query/plan';
-import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
 
 const useClassifiedPlans = () => {
   const hiddenCategories = useCategoryClassifierState(
@@ -18,31 +18,24 @@ const useClassifiedPlans = () => {
       showTask,
     }),
   );
+  const { data: plans } = useRangedPlans();
 
-  // TODO : make hook
-  const { referenceDate } = useDateState(({ referenceDate }) => ({
-    referenceDate,
-  }));
-  const [startMoment, endMoment] = getStartAndEndDate(referenceDate);
+  const classifiedPlans = useMemo(() => {
+    return plans.reduce((result, plan) => {
+      const { categoryId, tags } = plan;
 
-  const { data: plans } = useGetPlansQuery({
-    timemin: startMoment.format(),
-    timemax: endMoment.format(),
-  });
+      if (categoryId && hiddenCategories.has(categoryId)) return result;
+      if (tags.length && tags.every((tag) => hiddenTags.has(tag)))
+        return result;
+      if (!showAlarm && plan.type === 'alarm') return result;
+      if (!showEvent && plan.type === 'event') return result;
+      if (!showTask && plan.type === 'task') return result;
 
-  const classifiedPlans = (plans ?? []).reduce((result, plan) => {
-    const { categoryId, tags } = plan;
+      result.push(plan);
 
-    if (categoryId && hiddenCategories.has(categoryId)) return result;
-    if (tags.length && tags.every((tag) => hiddenTags.has(tag))) return result;
-    if (!showAlarm && plan.type === 'alarm') return result;
-    if (!showEvent && plan.type === 'event') return result;
-    if (!showTask && plan.type === 'task') return result;
-
-    result.push(plan);
-
-    return result;
-  }, [] as IPlan[]);
+      return result;
+    }, [] as IPlan[]);
+  }, [plans, hiddenCategories, hiddenTags, showAlarm, showEvent, showTask]);
 
   return classifiedPlans;
 };
