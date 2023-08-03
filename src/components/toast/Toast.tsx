@@ -7,8 +7,8 @@ import { useToast } from '@/hooks/useToast';
 import {
   TOAST_MAX_HEIGHT,
   TOAST_MIN_HEIGHT,
-  TOAST_BOUNCE_OUT_RIGHT,
-  TOAST_BOUNCE_IN_RIGHT,
+  TOAST_BOUNCE_OUT_BOTTOM,
+  TOAST_BOUNCE_IN_BOTTOM,
 } from '@/styles/toast';
 import { IToastProps } from '@/types/toast';
 
@@ -51,41 +51,58 @@ export const Toast: React.FC<IToastProps> = (props) => {
 };
 
 const ToastBodyContainer = styled.div<{ closeOnClick?: boolean }>`
-  position: relative;
+  display: flex;
+  display: -ms-flexbox;
+  justify-content: space-between;
+  -ms-flex-pack: justify;
+
   min-height: ${TOAST_MIN_HEIGHT};
   max-height: ${TOAST_MAX_HEIGHT};
-  box-sizing: border-box;
+
   margin-bottom: 1rem;
-  padding: 8px;
-  border-radius: 4px;
-  box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 15px 0 rgba(0, 0, 0, 0.05);
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  overflow: hidden;
-  cursor: ${({ closeOnClick }) => (closeOnClick ? 'pointer' : 'default')};
+  border-radius: 0.25rem;
+
+  box-shadow: rgb(0 0 0 / 5%) 0px 4px 16px 0px;
+
   z-index: 0;
 
+  background-color: ${({ theme }) => theme.black}b3;
+  color: ${({ theme }) => theme.white};
+
+  overflow: hidden;
+  box-sizing: border-box;
+
+  cursor: ${({ closeOnClick }) => (closeOnClick ? 'pointer' : 'default')};
+
   animation-fill-mode: both;
-  animation-duration: 0.7s;
+  animation-duration: 300ms;
 
   &.bounce-enter {
-    animation-name: ${TOAST_BOUNCE_IN_RIGHT};
+    animation-name: ${TOAST_BOUNCE_IN_BOTTOM};
   }
 
   &.bounce-exit {
-    animation-name: ${TOAST_BOUNCE_OUT_RIGHT};
+    animation-name: ${TOAST_BOUNCE_OUT_BOTTOM};
   }
-
-  background: ${({ theme }) => theme.white};
-  color: ${({ theme }) => theme.black};
 `;
 
 const ToastBody = styled.div`
-  margin: auto 0;
   flex: 1 1 auto;
-  padding: 6px;
+
   display: flex;
   align-items: center;
+  justify-content: center;
+
+  margin: auto 0;
+
+  padding: 0.5rem 0.75rem;
+
+  font-size: 0.9rem;
+
+  & > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
 `;

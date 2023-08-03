@@ -36,22 +36,29 @@ const ToastContainer = (props: TToastContainerProps) => {
 };
 
 ToastContainer.defaultProps = {
-  autoClose: 5000,
+  autoClose: 2000,
   closeOnClick: true,
 };
 
 const Container = styled.div`
-  z-index: ${TOAST_Z_INDEX};
   position: fixed;
+
+  min-width: 200px;
+  max-width: ${TOAST_WIDTH};
+
   padding: 4px;
-  width: ${TOAST_WIDTH};
-  box-sizing: border-box;
   color: ${({ theme }) => theme.white};
+
+  box-sizing: border-box;
+
+  z-index: ${TOAST_Z_INDEX};
 `;
 
 const ToastWrapper = styled(Container)`
-  top: 1em;
-  right: 1em;
+  bottom: 0;
+  left: 50%;
+
+  transition: all 300ms;
 `;
 
 export { ToastContainer };
