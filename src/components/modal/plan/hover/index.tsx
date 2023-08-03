@@ -2,8 +2,6 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import { shallow } from 'zustand/shallow';
-
 import Category from '@/components/common/modal/Category';
 import { Color, TITLE_STYLE } from '@/components/common/modal/styles';
 import TimeStamp from '@/components/common/modal/Timestamp';
@@ -12,29 +10,18 @@ import { useEffectModal } from '@/hooks/useEffectModal';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 
 import { FONT_REGULAR_5 } from '@/styles/font';
-import { getPositionByViewPort } from '@/utils/calendar/getPositionByViewPort';
 
 const HoveredPlanModal = () => {
-  const { hoveredPlan, rect } = useHoveredPlanState(
-    (state) => ({
-      hoveredPlan: state.hoveredPlan,
-      rect: state.rect,
-    }),
-    shallow,
-  );
+  const { hoveredPlan, rect } = useHoveredPlanState();
 
-  const [plan, ref] = useEffectModal({ initialPlan: hoveredPlan });
+  const [plan, ref] = useEffectModal({ initialPlan: hoveredPlan, rect });
 
   if (!plan) return null;
 
   const { startTime, endTime, title, isAllDay, categoryId, color } = plan;
-  const position = getPositionByViewPort(rect, {
-    width: 300,
-    height: categoryId === null ? 100 : 150,
-  });
 
   return (
-    <HoveredModal ref={ref} isCloseBtn={false} css={position}>
+    <HoveredModal ref={ref} isCloseBtn={false}>
       <Color width={12} height={12} backgroundColor={color} />
       <h3 css={TITLE_STYLE}>{title}</h3>
       {categoryId !== null && <Category categoryId={categoryId} />}

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 
 import styled from '@emotion/styled';
-import { shallow } from 'zustand/shallow';
 
 import { PencilIcon, TrashcanIcon } from '@/components/common/icons';
 import Category from '@/components/common/modal/Category';
@@ -15,29 +14,19 @@ import { useEffectModal } from '@/hooks/useEffectModal';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { FONT_REGULAR_5 } from '@/styles/font';
-import { getPositionByViewPort } from '@/utils/calendar/getPositionByViewPort';
 
 const SelectedPlanModal = () => {
   const { mutate } = useDeletePlanMutation();
 
-  const editDragPlan = useFocusedPlanState(
-    (state) => state.editDragPlan,
-    (prev, next) => prev === next,
-  );
+  const editDragPlan = useFocusedPlanState((state) => state.editDragPlan);
 
-  const { selectedPlan, rect, clearPlan } = useSelectedPlanState(
-    (state) => ({
-      selectedPlan: state.selectedPlan,
-      rect: state.rect,
-      clearPlan: state.clearSelectedPlan,
-    }),
-    shallow,
-  );
+  const {
+    selectedPlan: initialPlan,
+    rect,
+    clearSelectedPlan,
+  } = useSelectedPlanState();
 
-  const [plan, ref] = useEffectModal({
-    initialPlan: selectedPlan,
-    delay: 0,
-  });
+  const [plan, ref] = useEffectModal({ initialPlan, rect, delay: 0 });
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -47,7 +36,7 @@ const SelectedPlanModal = () => {
 
       if (element || !(ref.current && !ref.current.contains(target))) return;
 
-      clearPlan();
+      clearSelectedPlan();
     };
 
     document.addEventListener('click', handleClickOutside);
@@ -60,6 +49,7 @@ const SelectedPlanModal = () => {
   if (!plan) return null;
 
   const {
+    id,
     title,
     description,
     color,
@@ -70,16 +60,11 @@ const SelectedPlanModal = () => {
     isAllDay,
   } = plan;
 
-  const position = getPositionByViewPort(rect, {
-    width: 350,
-    height: categoryId === null ? 160 : 210,
-  });
-
   const deletePlan = () => {
-    mutate(plan.id, {
+    mutate(id, {
       onSuccess: () => {
-        clearPlan();
-        toast(`${plan.title} 일정이 삭제되었습니다`);
+        clearSelectedPlan();
+        toast(`${title} 일정이 삭제되었습니다`);
       },
       onError: () => {
         toast('일정 삭제에 실패했습니다');
@@ -89,14 +74,14 @@ const SelectedPlanModal = () => {
 
   const editPlan = () => {
     editDragPlan(plan);
-    clearPlan();
+    clearSelectedPlan();
   };
 
   return (
     <Modal
       ref={ref}
       isCloseBtn={true}
-      onClose={clearPlan}
+      onClose={clearSelectedPlan}
       HeaderLeftComponent={
         <Color width={12} height={12} backgroundColor={color} />
       }
@@ -110,7 +95,6 @@ const SelectedPlanModal = () => {
           </button>
         </>
       }
-      css={{ ...position }}
     >
       <h3 css={TITLE_STYLE}>{title}</h3>
       {description && <p>{description}</p>}
