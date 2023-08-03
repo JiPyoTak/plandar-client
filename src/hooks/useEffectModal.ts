@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 
 import Plan from '@/core/plan/Plan';
+import { getPositionByViewPort } from '@/utils/calendar/getPositionByViewPort';
 
 interface IProps {
   initialPlan: Plan | null;
+  rect: Pick<DOMRect, 'top' | 'left' | 'right'>;
   delay?: number;
 }
 
-const useEffectModal = ({ initialPlan, delay = 300 }: IProps) => {
+const useEffectModal = ({ initialPlan, rect, delay = 300 }: IProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const timeRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -37,6 +39,17 @@ const useEffectModal = ({ initialPlan, delay = 300 }: IProps) => {
       }, delay);
     }
   }, [initialPlan]);
+
+  useEffect(() => {
+    if (!plan || !ref.current) return;
+
+    const { width, height } = ref.current.getBoundingClientRect();
+
+    const { left, top } = getPositionByViewPort(rect, { width, height });
+
+    ref.current.style.left = `${left}px`;
+    ref.current.style.top = `${top}px`;
+  }, [plan]);
 
   return [plan, ref] as const;
 };
