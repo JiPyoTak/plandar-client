@@ -3,11 +3,11 @@ import React from 'react';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import CategoryClassifier from './classifier/CategoryClassifier';
 import TagClassifier from './classifier/TagClassifier';
 import SmallCalendar from './SmallCalendar';
 import ChevronIcon from '@/components/common/icons/ChevronIcon';
 import Logo from '@/components/common/Logo';
+import CategoryClassifier from '@/components/home/sidebar/content/classifier/category';
 import UserInfo from '@/components/home/sidebar/content/user/UserInfo';
 import useMenuState from '@/stores/menu';
 import {
