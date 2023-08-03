@@ -11,8 +11,8 @@ import useSelectedPlanState from '@/stores/plan/selectedPlan';
 const usePlanActive = () => {
   const focusedPlanState = useFocusedPlanState(
     (store) => ({
-      isDragging: store.isDragging,
       focusedPlanId: store.focusedPlan?.id,
+      isDragging: store.isDragging,
       moveDragPlan: store.moveDragPlan,
     }),
     shallow,
@@ -30,15 +30,16 @@ const usePlanActive = () => {
   const selectedPlanState = useSelectedPlanState(
     (store) => ({
       selectedPlanId: store.selectedPlan?.id,
-      selectedPlan: store.selectedPlan,
       setSelectedPlan: store.setSelectedPlan,
+      clearSelectedPlan: store.clearSelectedPlan,
     }),
     shallow,
   );
 
   const { focusedPlanId, isDragging, moveDragPlan } = focusedPlanState;
   const { hoveredPlanId, setHoveredPlan, clearHoveredPlan } = hoveredPlanState;
-  const { selectedPlanId, setSelectedPlan } = selectedPlanState;
+  const { selectedPlanId, setSelectedPlan, clearSelectedPlan } =
+    selectedPlanState;
 
   const [debounceToSetHoveredPlan, clearDebounce] = useDebounce(
     setHoveredPlan,
@@ -70,8 +71,9 @@ const usePlanActive = () => {
     (plan: Plan) => {
       moveDragPlan(plan);
       onMouseLeave();
+      clearSelectedPlan();
     },
-    [moveDragPlan, clearHoveredPlan, onMouseLeave],
+    [moveDragPlan, onMouseLeave, clearSelectedPlan],
   );
 
   const onClick = useCallback(
