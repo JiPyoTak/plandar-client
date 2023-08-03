@@ -34,7 +34,6 @@ const useToastContainer = (props: TToastContainerProps) => {
   const [toastIds, setToastIds] = useState<TToastId[]>([]);
   const containerRef = useRef(null);
   const toastToRender = useRef(new Map<TToastId, IToast>()).current;
-  const isToastActive = (id: TToastId) => toastIds.indexOf(id) !== -1;
   const instance = useRef<IContainerInstance>({
     toastKey: 1,
     displayedToast: 0,
@@ -60,6 +59,10 @@ const useToastContainer = (props: TToastContainerProps) => {
     instance.isToastActive = isToastActive;
     instance.displayedToast = toastIds.length;
   });
+
+  function isToastActive(id: TToastId) {
+    return toastIds.indexOf(id) !== -1;
+  }
 
   const removeToast = (toastId?: TToastId) => {
     setToastIds((state) =>
