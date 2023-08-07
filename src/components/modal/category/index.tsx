@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useLayoutEffect, useState } from 'react';
+import React, { ComponentProps, FormEvent, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -17,26 +17,31 @@ import {
   useCategoryQuery,
   useCategoryUpdate,
 } from '@/hooks/query/category';
+import useCategoryModalState from '@/stores/modal/category';
 import { ColorCircle } from '@/styles/category';
 import { FONT_BOLD_1, FONT_REGULAR_5 } from '@/styles/font';
 import { TColor } from '@/types';
 import { ICategory } from '@/types/query/category';
 
-type TEditId = number | null;
-
-type TProps = {
-  setEditableIdRef: React.MutableRefObject<
-    React.Dispatch<React.SetStateAction<TEditId>> | undefined
-  >;
-};
-
 const DEFAULT_NAME = '';
 const DEFAULT_COLOR = SELECTABLE_COLOR[0];
 
-const CategoryModal: React.FC<TProps> = ({ setEditableIdRef }) => {
-  const [id, setId] = useState<TEditId>(null);
-  const [newName, setNewName] = useState<string>(DEFAULT_NAME);
-  const [selectedColor, setSelectedColor] = useState<TColor>(DEFAULT_COLOR);
+// isOpen에 따라 Category Modal State를 리셋해줌에 따라 initial State를 original Category 값을 넣을 수 있다.
+const CategoryModal: React.FC<ComponentProps<typeof CategoryModalViewer>> = (
+  props,
+) => {
+  const isOpen = useCategoryModalState(({ isOpen }) => isOpen);
+
+  if (!isOpen) {
+    return <></>;
+  }
+
+  return <CategoryModalViewer {...props} />;
+};
+
+const CategoryModalViewer: React.FC<object> = () => {
+  const { type, id, closeCategoryModal } = useCategoryModalState();
+
   const queryClient = useQueryClient();
   const originalCategory = queryClient.getQueryData<ICategory>([
     CATEGORY_KEY,
@@ -46,17 +51,14 @@ const CategoryModal: React.FC<TProps> = ({ setEditableIdRef }) => {
   const { mutate: categoryCreate } = useCategoryCreate();
   const { mutate: categoryUpdate } = useCategoryUpdate();
 
+  const [newName, setNewName] = useState<string>(
+    originalCategory?.name ?? DEFAULT_NAME,
+  );
+  const [selectedColor, setSelectedColor] = useState<TColor>(
+    originalCategory?.color ?? DEFAULT_COLOR,
+  );
   const [error, setError] = useState<string>('');
-  const actionText = id !== -1 ? '수정' : '생성';
-
-  useEffect(() => {
-    setEditableIdRef.current = setId;
-  }, [setId]);
-  useLayoutEffect(() => {
-    const { name, color } = originalCategory ?? {};
-    setNewName(name ?? '');
-    setSelectedColor(color ?? SELECTABLE_COLOR[0]);
-  }, [originalCategory]);
+  const actionText = type === 'edit' ? '수정' : '생성';
 
   const checkCategoryValid = () => {
     // 색상 혹은 이름 변경 여부 검사
@@ -90,12 +92,12 @@ const CategoryModal: React.FC<TProps> = ({ setEditableIdRef }) => {
 
     try {
       const newData = { name: newName, color: selectedColor };
-      if (id === -1) {
+      if (type === 'create') {
         categoryCreate(newData);
-      } else if (id !== null && id > 0) {
+      } else if (type === 'edit' && id !== null) {
         categoryUpdate({ id, ...newData });
       }
-      setId(null);
+      closeCategoryModal();
       toast(
         <div>
           <ColorCircle color={newData.color} />
@@ -108,14 +110,9 @@ const CategoryModal: React.FC<TProps> = ({ setEditableIdRef }) => {
     }
   };
 
-  // id 대상이 없으면 수정, 추가 무엇도 아니다
-  if (id === null) {
-    return <></>;
-  }
-
   return (
     <Modal
-      onClose={() => setId(null)}
+      onClose={closeCategoryModal}
       isBgBlack={true}
       HeaderLeftComponent={
         <ColorPicker

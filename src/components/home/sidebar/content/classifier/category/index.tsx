@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 import ClassifierGuide from '@/components/common/classifier/ClassifierGuide';
 import ClassifierItem from '@/components/common/classifier/ClassifierItem';
@@ -10,23 +10,18 @@ import Dropdown from '@/components/core/dropdown';
 import CategoryClassifierItem from '@/components/home/sidebar/content/classifier/category/CategoryClassifierItem';
 import CategoryModal from '@/components/modal/category';
 import { useCategoryQuery } from '@/hooks/query/category';
+import useCategoryModalState from '@/stores/modal/category';
 
 const CategoryClassifier = () => {
   const { data: categoryData, isLoading: isLoadingCategory } =
     useCategoryQuery();
-  const setEditableIdRef = useRef<
-    React.Dispatch<React.SetStateAction<number | null>> | undefined
-  >(undefined);
+  const openCreateCategory = useCategoryModalState(
+    ({ openCreateCategory }) => openCreateCategory,
+  );
 
-  const openModal = (id: number | null = null) => {
-    setEditableIdRef.current?.(id);
-  };
-
-  const setAddableCategory = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
+  const openModal: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
-    openModal(-1);
+    openCreateCategory();
   };
 
   return (
@@ -37,7 +32,7 @@ const CategoryClassifier = () => {
             <ClassifierTitle
               title={'카테고리'}
               additionalComponent={
-                <button onClick={setAddableCategory}>
+                <button onClick={openModal}>
                   <PlusIcon
                     width={CLASSIFIER_TITLE_ICON_SIZE}
                     height={CLASSIFIER_TITLE_ICON_SIZE}
@@ -58,11 +53,11 @@ const CategoryClassifier = () => {
               <ClassifierItem.Skeleton key={index} />
             ))}
           {categoryData?.map((category) => (
-            <CategoryClassifierItem category={category} onEdit={openModal} />
+            <CategoryClassifierItem category={category} />
           ))}
         </Dropdown>
       </div>
-      <CategoryModal setEditableIdRef={setEditableIdRef} />
+      <CategoryModal />
     </>
   );
 };

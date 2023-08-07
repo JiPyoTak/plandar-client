@@ -4,20 +4,23 @@ import { shallow } from 'zustand/shallow';
 
 import ClassifierItem from '@/components/common/classifier/ClassifierItem';
 import useCategoryClassifierState from '@/stores/classifier/category';
+import useCategoryModalState from '@/stores/modal/category';
 import { ICategory } from '@/types/query/category';
 
 type TProps = {
   category: ICategory;
-  onEdit: (id: number) => void;
 };
 
-const CategoryClassifierItem: React.FC<TProps> = ({ category, onEdit }) => {
+const CategoryClassifierItem: React.FC<TProps> = ({ category }) => {
   const { id, name, color } = category;
   const { isActive, toggleCategoryShow } = useCategoryClassifierState(
     ({ hiddenCategories, toggleCategoryShow }) => {
       return { isActive: !hiddenCategories.has(id), toggleCategoryShow };
     },
     shallow,
+  );
+  const onEdit = useCategoryModalState(
+    ({ setCategoryEditable }) => setCategoryEditable,
   );
 
   return (
