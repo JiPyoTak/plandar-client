@@ -11,6 +11,7 @@ type TProps = {
   additionalComponent?: ReactNode;
   titleIcon?: ReactNode;
   isShow?: boolean;
+  toggleShow?: () => undefined;
 };
 
 const CLASSIFIER_TITLE_ICON_SIZE = 18;

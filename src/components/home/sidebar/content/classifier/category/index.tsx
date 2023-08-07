@@ -2,44 +2,23 @@ import React from 'react';
 
 import ClassifierGuide from '@/components/common/classifier/ClassifierGuide';
 import ClassifierItem from '@/components/common/classifier/ClassifierItem';
-import ClassifierTitle, {
-  CLASSIFIER_TITLE_ICON_SIZE,
-} from '@/components/common/classifier/ClassifierTitle';
-import { CategoryIcon, PlusIcon } from '@/components/common/icons';
+import { CategoryIcon } from '@/components/common/icons';
 import Dropdown from '@/components/core/dropdown';
 import CategoryClassifierItem from '@/components/home/sidebar/content/classifier/category/CategoryClassifierItem';
+import CategoryClassifierTitle from '@/components/home/sidebar/content/classifier/category/CategoryClassifierTitle';
 import CategoryModal from '@/components/modal/category';
 import { useCategoryQuery } from '@/hooks/query/category';
-import useCategoryModalState from '@/stores/modal/category';
 
 const CategoryClassifier = () => {
   const { data: categoryData, isLoading: isLoadingCategory } =
     useCategoryQuery();
-  const openCreateCategory = useCategoryModalState(
-    ({ openCreateCategory }) => openCreateCategory,
-  );
-
-  const openModal: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation();
-    openCreateCategory();
-  };
 
   return (
     <>
       <div css={{ padding: '1rem 0' }}>
         <Dropdown>
           <Dropdown.Controller>
-            <ClassifierTitle
-              title={'카테고리'}
-              additionalComponent={
-                <button onClick={openModal}>
-                  <PlusIcon
-                    width={CLASSIFIER_TITLE_ICON_SIZE}
-                    height={CLASSIFIER_TITLE_ICON_SIZE}
-                  />
-                </button>
-              }
-            />
+            <CategoryClassifierTitle />
           </Dropdown.Controller>
           <ClassifierGuide
             icon={CategoryIcon}
