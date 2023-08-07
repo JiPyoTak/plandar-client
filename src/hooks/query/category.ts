@@ -17,10 +17,9 @@ import { ICategory, ICategoryWithoutId } from '@/types/query/category';
 function useCategoryQuery(): UseQueryResult<ICategory[], unknown>;
 function useCategoryQuery({ id }: { id?: number | null }): ICategory | null;
 function useCategoryQuery(props?: { id?: number | null }) {
-  const { id } = props ?? {};
   const queryClient = useQueryClient();
 
-  if (id === undefined || id === null) {
+  if (!props) {
     return useQuery<ICategory[]>([CATEGORY_KEY], getCategoryAPI, {
       staleTime: 1000 * 60 * 60 * 24,
       onSuccess(data) {
@@ -33,6 +32,8 @@ function useCategoryQuery(props?: { id?: number | null }) {
       },
     });
   }
+
+  const { id } = props;
 
   return queryClient.getQueryData<ICategory>([CATEGORY_KEY, { id }]) ?? null;
 }
