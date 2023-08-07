@@ -2,15 +2,12 @@ import React, { ComponentProps, FormEvent, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { useQueryClient } from '@tanstack/react-query';
-
 import ColorPicker from '@/components/common/color-picker';
 import ChevronIcon from '@/components/common/icons/ChevronIcon';
 import StylishButton from '@/components/core/buttons/StylishButton';
 import Input from '@/components/core/Input';
 import ModalContainer from '@/components/modal/ModalPortal';
 import { SELECTABLE_COLOR } from '@/constants';
-import { CATEGORY_KEY } from '@/constants/rqKeys';
 import { toast } from '@/core/toast';
 import {
   useCategoryCreate,
@@ -22,7 +19,6 @@ import useCategoryModalState from '@/stores/modal/category';
 import { ColorCircle } from '@/styles/category';
 import { FONT_BOLD_1, FONT_REGULAR_5 } from '@/styles/font';
 import { TColor } from '@/types';
-import { ICategory } from '@/types/query/category';
 
 const DEFAULT_NAME = '';
 const DEFAULT_COLOR = SELECTABLE_COLOR[0];
@@ -43,11 +39,7 @@ const CategoryModal: React.FC<ComponentProps<typeof CategoryModalViewer>> = (
 const CategoryModalViewer: React.FC<object> = () => {
   const { type, id, closeCategoryModal } = useCategoryModalState();
 
-  const queryClient = useQueryClient();
-  const originalCategory = queryClient.getQueryData<ICategory>([
-    CATEGORY_KEY,
-    { id },
-  ]);
+  const originalCategory = useCategoryQuery({ id });
   const { data: categoryData } = useCategoryQuery();
   const { mutate: createCategory } = useCategoryCreate();
   const { mutate: updateCategory } = useCategoryUpdate();
