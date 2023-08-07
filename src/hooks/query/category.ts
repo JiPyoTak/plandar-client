@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
   createCategoryAPI,
+  deleteCategoryAPI,
   getCategoryAPI,
   updateCategoryAPI,
 } from '@/apis/category';
@@ -117,4 +118,54 @@ const useCategoryUpdate = () => {
   );
 };
 
-export { useCategoryQuery, useCategoryUpdate, useCategoryCreate };
+const useCategoryDelete = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    // api 호출
+    deleteCategoryAPI,
+    {
+      onMutate: async (targetCategory: ICategory) => {
+        const id = targetCategory.id;
+
+        // 실패했을 때 복구를 위한 기존 캐시 데이터 가져오기
+        const previousCategory = queryClient.getQueryData<ICategory>([
+          CATEGORY_KEY,
+          { id },
+        ]);
+
+        // 낙관적 업데이트를 위한 새로운 데이터 캐싱
+        queryClient.removeQueries([CATEGORY_KEY, { id }]);
+        queryClient.setQueryData<ICategory[]>([CATEGORY_KEY], (old) => {
+          const newCategories = [...(old ?? [])];
+
+          return newCategories.filter(
+            (category) => category.id !== targetCategory.id,
+          );
+        });
+
+        // onError의 context에 들어갈 값
+        return { previousCategory };
+      },
+      // 에러 발생시 원래 캐싱된 데이터로 복구
+      onError: (err, targetCategory, context) => {
+        const previousCategory = context?.previousCategory;
+        if (!previousCategory) return;
+
+        const id = previousCategory.id;
+        queryClient.setQueryData([CATEGORY_KEY, { id }], previousCategory);
+        queryClient.setQueryData<ICategory[]>([CATEGORY_KEY], (old) => [
+          ...(old ?? []),
+          previousCategory,
+        ]);
+      },
+    },
+  );
+};
+
+export {
+  useCategoryQuery,
+  useCategoryUpdate,
+  useCategoryCreate,
+  useCategoryDelete,
+};
