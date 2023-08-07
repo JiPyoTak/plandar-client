@@ -53,7 +53,7 @@ const CategoryClassifier = () => {
               <ClassifierItem.Skeleton key={index} />
             ))}
           {categoryData?.map((category) => (
-            <CategoryClassifierItem category={category} />
+            <CategoryClassifierItem key={category.id} category={category} />
           ))}
         </Dropdown>
       </div>
