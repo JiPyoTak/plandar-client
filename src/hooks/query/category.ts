@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  UseQueryResult,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import {
   createCategoryAPI,
@@ -9,20 +14,28 @@ import {
 import { CATEGORY_KEY } from '@/constants/rqKeys';
 import { ICategory, ICategoryWithoutId } from '@/types/query/category';
 
-// 카테고리 캐싱을 위한 키
-const KEY = [CATEGORY_KEY];
-const useCategoryQuery = () => {
+function useCategoryQuery(): UseQueryResult<ICategory[], unknown>;
+function useCategoryQuery({ id }: { id?: number | null }): ICategory | null;
+function useCategoryQuery(props?: { id?: number | null }) {
+  const { id } = props ?? {};
   const queryClient = useQueryClient();
 
-  return useQuery<ICategory[]>([CATEGORY_KEY], getCategoryAPI, {
-    staleTime: 1000 * 60 * 60 * 24,
-    onSuccess(data) {
-      data.forEach((category) => {
-        queryClient.setQueryData([CATEGORY_KEY, { id: category.id }], category);
-      });
-    },
-  });
-};
+  if (id === undefined || id === null) {
+    return useQuery<ICategory[]>([CATEGORY_KEY], getCategoryAPI, {
+      staleTime: 1000 * 60 * 60 * 24,
+      onSuccess(data) {
+        data.forEach((category) => {
+          queryClient.setQueryData(
+            [CATEGORY_KEY, { id: category.id }],
+            category,
+          );
+        });
+      },
+    });
+  }
+
+  return queryClient.getQueryData<ICategory>([CATEGORY_KEY, { id }]) ?? null;
+}
 
 // 카테고리 추가
 const useCategoryCreate = () => {
@@ -35,7 +48,9 @@ const useCategoryCreate = () => {
     {
       onMutate: async (newCategory: ICategoryWithoutId) => {
         // 실패했을 때 복구를 위한 기존 캐시 데이터 가져오기
-        const previousCategories = queryClient.getQueryData<ICategory[]>(KEY);
+        const previousCategories = queryClient.getQueryData<ICategory[]>([
+          CATEGORY_KEY,
+        ]);
 
         // 낙관적 업데이트를 위한 새로운 데이터 캐싱
         queryClient.setQueryData<ICategory[]>([CATEGORY_KEY], (old) => [
