@@ -14,6 +14,7 @@ import { CATEGORY_KEY } from '@/constants/rqKeys';
 import { toast } from '@/core/toast';
 import {
   useCategoryCreate,
+  useCategoryDelete,
   useCategoryQuery,
   useCategoryUpdate,
 } from '@/hooks/query/category';
@@ -48,8 +49,9 @@ const CategoryModalViewer: React.FC<object> = () => {
     { id },
   ]);
   const { data: categoryData } = useCategoryQuery();
-  const { mutate: categoryCreate } = useCategoryCreate();
-  const { mutate: categoryUpdate } = useCategoryUpdate();
+  const { mutate: createCategory } = useCategoryCreate();
+  const { mutate: updateCategory } = useCategoryUpdate();
+  const { mutate: deleteCategory } = useCategoryDelete();
 
   const [newName, setNewName] = useState<string>(
     originalCategory?.name ?? DEFAULT_NAME,
@@ -58,7 +60,8 @@ const CategoryModalViewer: React.FC<object> = () => {
     originalCategory?.color ?? DEFAULT_COLOR,
   );
   const [error, setError] = useState<string>('');
-  const actionText = type === 'edit' ? '수정' : '생성';
+  const isEdit = type === 'edit';
+  const actionText = isEdit ? '수정' : '생성';
 
   const checkCategoryValid = () => {
     // 색상 혹은 이름 변경 여부 검사
@@ -93,9 +96,9 @@ const CategoryModalViewer: React.FC<object> = () => {
     try {
       const newData = { name: newName, color: selectedColor };
       if (type === 'create') {
-        categoryCreate(newData);
-      } else if (type === 'edit' && id !== null) {
-        categoryUpdate({ id, ...newData });
+        createCategory(newData);
+      } else if (isEdit && id !== null) {
+        updateCategory({ id, ...newData });
       }
       closeCategoryModal();
       toast(
@@ -107,6 +110,27 @@ const CategoryModalViewer: React.FC<object> = () => {
       );
     } catch (e) {
       toast('카테고리 생성에 실패했습니다');
+    }
+  };
+
+  const onDelete: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    // *: prevent from submit
+    e.preventDefault();
+    // *: if editing or no category info, don't execute
+    if (!isEdit || !originalCategory) return;
+
+    try {
+      deleteCategory(originalCategory);
+      closeCategoryModal();
+      toast(
+        <div>
+          <ColorCircle color={originalCategory.color} />
+          {` ${originalCategory.name} `}
+          카테고리를 삭제했습니다
+        </div>,
+      );
+    } catch (e) {
+      toast('카테고리 삭제에 실패했습니다');
     }
   };
 
@@ -135,14 +159,26 @@ const CategoryModalViewer: React.FC<object> = () => {
           isInline={true}
         />
         <Warning>{error}</Warning>
-        <StylishButton
-          type="submit"
-          isColor={true}
-          size="large"
-          disabled={!newName}
-        >
-          {actionText}
-        </StylishButton>
+        <ButtonContainer>
+          {isEdit && (
+            <ErrorButton
+              type="button"
+              size="large"
+              disabled={!newName}
+              onClick={onDelete}
+            >
+              삭제
+            </ErrorButton>
+          )}
+          <StylishButton
+            type="submit"
+            isColor={true}
+            size="large"
+            disabled={!newName}
+          >
+            {actionText}
+          </StylishButton>
+        </ButtonContainer>
       </Form>
     </Modal>
   );
@@ -178,6 +214,21 @@ const Warning = styled.div`
   text-align: left;
   color: ${({ theme }) => theme.red_dark};
   ${FONT_REGULAR_5}
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  column-gap: 1rem;
+`;
+
+const ErrorButton = styled(StylishButton)`
+  color: ${({ theme }) => theme.white};
+  background-color: ${({ theme }) => theme.red_dark};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.red};
+  }
 `;
 
 export default CategoryModal;
