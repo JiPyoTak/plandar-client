@@ -20,13 +20,19 @@ const SelectedPlanModal = () => {
 
   const editDragPlan = useFocusedPlanState((state) => state.editDragPlan);
 
-  const {
-    selectedPlan: initialPlan,
-    rect,
-    clearSelectedPlan,
-  } = useSelectedPlanState();
+  const { dom, initialPlan, clearSelectedPlan } = useSelectedPlanState(
+    (state) => ({
+      dom: state.dom,
+      initialPlan: state.selectedPlan,
+      clearSelectedPlan: state.clearSelectedPlan,
+    }),
+  );
 
-  const [plan, ref] = useEffectModal({ initialPlan, rect, delay: 0 });
+  const [plan, ref] = useEffectModal({
+    initialPlan,
+    rect: dom?.getBoundingClientRect(),
+    delay: 0,
+  });
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {

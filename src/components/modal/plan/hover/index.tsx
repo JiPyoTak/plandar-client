@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import styled from '@emotion/styled';
+
+import { shallow } from 'zustand/shallow';
 
 import Category from '@/components/common/modal/Category';
 import { Color, TITLE_STYLE } from '@/components/common/modal/styles';
@@ -9,12 +11,31 @@ import Modal from '@/components/modal/ModalPortal';
 import { useEffectModal } from '@/hooks/useEffectModal';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 
+import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { FONT_REGULAR_5 } from '@/styles/font';
 
 const HoveredPlanModal = () => {
-  const { hoveredPlan, rect } = useHoveredPlanState();
+  const { hoveredPlan, dom, clearHoveredPlan } = useHoveredPlanState(
+    ({ hoveredPlan, dom, clearHoveredPlan }) => ({
+      hoveredPlan,
+      dom,
+      clearHoveredPlan,
+    }),
+    shallow,
+  );
+  const selectedPlan = useSelectedPlanState((state) => state.selectedPlan);
 
-  const [plan, ref] = useEffectModal({ initialPlan: hoveredPlan, rect });
+  const [plan, ref] = useEffectModal({
+    initialPlan: hoveredPlan,
+    rect: dom?.getBoundingClientRect(),
+    delay: 0,
+  });
+
+  useEffect(() => {
+    if (!selectedPlan) return;
+
+    clearHoveredPlan();
+  }, [selectedPlan]);
 
   if (!plan) return null;
 
