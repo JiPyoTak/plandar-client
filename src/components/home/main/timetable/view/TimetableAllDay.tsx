@@ -92,7 +92,11 @@ const TimetableAllDay: React.FC<TProps> = ({
           onMouseMove={onMouseMove}
           onMouseDown={changeCurrentDate}
         >
-          <AllDayPlanPositioner>
+          <AllDayPlanPositioner
+            css={{
+              minWidth: `calc(${TIMETABLE_CELL_MIN_WIDTH} * ${dateMoments.length})`,
+            }}
+          >
             <CalendarLayer
               css={{ top: TIMETABLE_ALLDAY_VERTICAL_PADDING }}
               planManager={planManager}

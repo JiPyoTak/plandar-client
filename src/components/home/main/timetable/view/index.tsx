@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { Moment } from 'moment';
 
 import TimetableColumns from './columns';
-import TimetableAllDay from './TimetableAllDay';
+import TimetableAllDay from '@/components/home/main/timetable/view/TimetableAllDay';
 import useClassifiedPlans from '@/hooks/useClassifiedPlans';
 import usePlanDrag from '@/hooks/usePlanDrag';
 import { divideTimePlans } from '@/utils/plan/divideTimePlans';
