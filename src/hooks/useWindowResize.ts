@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 
-import useWindowSizes from '@/stores/window-size';
+import useWindowSize from '@/stores/window-size';
 
 const useWindowResize = () => {
-  const setWindowSizes = useWindowSizes((state) => state.setWindowSizes);
+  const setWindowSizes = useWindowSize((state) => state.setWindowSizes);
 
   const debounce = (func: () => void, delay: number) => {
     let timer: NodeJS.Timeout;
