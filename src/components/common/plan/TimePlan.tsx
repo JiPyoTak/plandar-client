@@ -142,7 +142,10 @@ const cellWidth = ({
 
 const cellHeight = ({ term }: ITimeViewInfo) => {
   return css`
-    height: calc(${TIMETABLE_CELL_HEIGHT} * ${term});
+    height: max(
+      calc(${TIMETABLE_CELL_HEIGHT} * ${term}),
+      ${TIMETABLE_CELL_HEIGHT}
+    );
   `;
 };
 
