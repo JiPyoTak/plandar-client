@@ -2,11 +2,9 @@ import { create } from 'zustand';
 
 import Plan from '@/core/plan/Plan';
 
-type TRect = 'top' | 'left' | 'right' | 'bottom';
-
 interface IHoveredPlanState {
+  dom: HTMLElement | null;
   hoveredPlan: Plan | null;
-  rect: Record<TRect, number>;
 }
 
 interface IHoveredPlanAction {
@@ -15,13 +13,8 @@ interface IHoveredPlanAction {
 }
 
 const initialState: IHoveredPlanState = {
+  dom: null,
   hoveredPlan: null,
-  rect: {
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
 } as const;
 
 const useHoveredPlanState = create<IHoveredPlanState & IHoveredPlanAction>(
