@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import SelectedModal from '@/components/modal/plan/select';
@@ -10,21 +12,21 @@ export default {
 } as ComponentMeta<typeof SelectedModal>;
 
 const Template: ComponentStory<typeof SelectedModal> = () => {
+  const ref = useRef<HTMLDivElement>(document.createElement('div'));
   const set = useSelectedPlanState((state) => state.setSelectedPlan);
 
   const MODKED_PLAN = planStubManager.createStub({});
 
   set({
     selectedPlan: MODKED_PLAN,
-    rect: {
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-    },
+    dom: ref.current,
   });
 
-  return <SelectedModal />;
+  return (
+    <div style={{ position: 'relative' }}>
+      <SelectedModal />
+    </div>
+  );
 };
 
 export const Default = Template.bind({});
