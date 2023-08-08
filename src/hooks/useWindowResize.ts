@@ -1,21 +1,10 @@
 import { useEffect } from 'react';
 
 import useWindowSize from '@/stores/window-size';
+import { debounce } from '@/utils/debounce';
 
 const useWindowResize = () => {
   const setWindowSizes = useWindowSize((state) => state.setWindowSizes);
-
-  const debounce = (func: () => void, delay: number) => {
-    let timer: NodeJS.Timeout;
-
-    return () => {
-      clearTimeout(timer);
-
-      timer = setTimeout(() => {
-        func();
-      }, delay);
-    };
-  };
 
   const onResize = () => {
     const { innerWidth, innerHeight } = window;
