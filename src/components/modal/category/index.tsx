@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef, useState } from 'react';
+import React, { ComponentProps, FormEvent, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -8,48 +8,58 @@ import StylishButton from '@/components/core/buttons/StylishButton';
 import Input from '@/components/core/Input';
 import ModalContainer from '@/components/modal/ModalPortal';
 import { SELECTABLE_COLOR } from '@/constants';
-import { useCategoryQuery } from '@/hooks/query/category';
+import { toast } from '@/core/toast';
+import {
+  useCategoryCreate,
+  useCategoryDelete,
+  useCategoryQuery,
+  useCategoryUpdate,
+} from '@/hooks/query/category';
+import useCategoryModalState from '@/stores/modal/category';
+import { ColorCircle } from '@/styles/category';
 import { FONT_BOLD_1, FONT_REGULAR_5 } from '@/styles/font';
 import { TColor } from '@/types';
-import { ICategoryWithoutId } from '@/types/query/category';
 
-type TCategoryModalProps = {
-  onClose: () => void;
-  onDone: (obj: { categoryName: string; color: TColor }) => void;
-  isEdit?: boolean;
-  category?: ICategoryWithoutId & { id?: number };
+const DEFAULT_NAME = '';
+const DEFAULT_COLOR = SELECTABLE_COLOR[0];
+
+// isOpen에 따라 Category Modal State를 리셋해줌에 따라 initial State를 original Category 값을 넣을 수 있다.
+const CategoryModal: React.FC<ComponentProps<typeof CategoryModalViewer>> = (
+  props,
+) => {
+  const isOpen = useCategoryModalState(({ isOpen }) => isOpen);
+
+  if (!isOpen) {
+    return <></>;
+  }
+
+  return <CategoryModalViewer {...props} />;
 };
 
-type TCategoryModal = React.FC<TCategoryModalProps>;
+const CategoryModalViewer: React.FC<object> = () => {
+  const { type, id, closeCategoryModal } = useCategoryModalState();
 
-const CategoryModal: TCategoryModal = ({
-  onClose,
-  onDone,
-  isEdit,
-  category: originalCategory = { name: '', color: SELECTABLE_COLOR[0] },
-}: TCategoryModalProps) => {
+  const originalCategory = useCategoryQuery({ id });
   const { data: categoryData } = useCategoryQuery();
-  const inputRef: React.RefObject<HTMLInputElement> =
-    useRef<HTMLInputElement>(null);
+  const { mutate: createCategory } = useCategoryCreate();
+  const { mutate: updateCategory } = useCategoryUpdate();
+  const { mutate: deleteCategory } = useCategoryDelete();
+
+  const [newName, setNewName] = useState<string>(
+    originalCategory?.name ?? DEFAULT_NAME,
+  );
   const [selectedColor, setSelectedColor] = useState<TColor>(
-    originalCategory?.color,
+    originalCategory?.color ?? DEFAULT_COLOR,
   );
   const [error, setError] = useState<string>('');
-  const [newCategoryName, setNewCategoryName] = useState<string>(
-    originalCategory?.name,
-  );
-
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!checkCategoryValid()) return;
-    onDone({ categoryName: newCategoryName.trim(), color: selectedColor });
-  };
+  const isEdit = type === 'edit';
+  const actionText = isEdit ? '수정' : '생성';
 
   const checkCategoryValid = () => {
     // 색상 혹은 이름 변경 여부 검사
     if (
-      newCategoryName === originalCategory.name &&
-      selectedColor === originalCategory.color
+      newName === originalCategory?.name &&
+      selectedColor === originalCategory?.color
     ) {
       setError('카테고리 이름 혹은 색상을 변경해야 합니다.');
 
@@ -60,7 +70,7 @@ const CategoryModal: TCategoryModal = ({
       categoryData?.some(
         (category) =>
           category.id !== originalCategory?.id &&
-          category.name === newCategoryName.trim(),
+          category.name === newName.trim(),
       )
     ) {
       setError('중복된 이름의 카테고리가 있습니다');
@@ -71,9 +81,54 @@ const CategoryModal: TCategoryModal = ({
     return true;
   };
 
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!checkCategoryValid()) return;
+
+    try {
+      const newData = { name: newName, color: selectedColor };
+      if (type === 'create') {
+        createCategory(newData);
+      } else if (isEdit && id !== null) {
+        updateCategory({ id, ...newData });
+      }
+      closeCategoryModal();
+      toast(
+        <div>
+          <ColorCircle color={newData.color} />
+          {` ${newData.name} `}
+          카테고리를 {actionText}했습니다
+        </div>,
+      );
+    } catch (e) {
+      toast('카테고리 생성에 실패했습니다');
+    }
+  };
+
+  const onDelete: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    // *: prevent from submit
+    e.preventDefault();
+    // *: if editing or no category info, don't execute
+    if (!isEdit || !originalCategory) return;
+
+    try {
+      deleteCategory(originalCategory);
+      closeCategoryModal();
+      toast(
+        <div>
+          <ColorCircle color={originalCategory.color} />
+          {` ${originalCategory.name} `}
+          카테고리를 삭제했습니다
+        </div>,
+      );
+    } catch (e) {
+      toast('카테고리 삭제에 실패했습니다');
+    }
+  };
+
   return (
     <Modal
-      onClose={onClose}
+      onClose={closeCategoryModal}
       isBgBlack={true}
       HeaderLeftComponent={
         <ColorPicker
@@ -87,24 +142,35 @@ const CategoryModal: TCategoryModal = ({
     >
       <Form onSubmit={onSubmit}>
         <CategoryInput
-          ref={inputRef}
           type="text"
           onChange={(e: FormEvent<HTMLInputElement>) =>
-            setNewCategoryName((e.target as HTMLInputElement).value)
+            setNewName((e.target as HTMLInputElement).value)
           }
-          value={newCategoryName}
+          value={newName}
           placeholder="카테고리 이름"
           isInline={true}
         />
         <Warning>{error}</Warning>
-        <StylishButton
-          type="submit"
-          isColor={true}
-          size="large"
-          disabled={!newCategoryName}
-        >
-          {isEdit ? '수정' : '생성'}
-        </StylishButton>
+        <ButtonContainer>
+          {isEdit && (
+            <ErrorButton
+              type="button"
+              size="large"
+              disabled={!newName}
+              onClick={onDelete}
+            >
+              삭제
+            </ErrorButton>
+          )}
+          <StylishButton
+            type="submit"
+            isColor={true}
+            size="large"
+            disabled={!newName}
+          >
+            {actionText}
+          </StylishButton>
+        </ButtonContainer>
       </Form>
     </Modal>
   );
@@ -142,5 +208,19 @@ const Warning = styled.div`
   ${FONT_REGULAR_5}
 `;
 
-export type { TCategoryModalProps };
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  column-gap: 1rem;
+`;
+
+const ErrorButton = styled(StylishButton)`
+  color: ${({ theme }) => theme.white};
+  background-color: ${({ theme }) => theme.red_dark};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.red};
+  }
+`;
+
 export default CategoryModal;

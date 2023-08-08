@@ -21,4 +21,15 @@ const updateCategoryAPI = async (category: ICategory): Promise<ICategory> => {
   return data;
 };
 
-export { getCategoryAPI, createCategoryAPI, updateCategoryAPI };
+const deleteCategoryAPI = async (category: ICategory): Promise<ICategory> => {
+  const { data } = await axiosAPI.delete(`/category/${category.id}`);
+
+  return data;
+};
+
+export {
+  getCategoryAPI,
+  createCategoryAPI,
+  updateCategoryAPI,
+  deleteCategoryAPI,
+};

@@ -6,15 +6,15 @@ import { Color } from './styles';
 import { useCategoryQuery } from '@/hooks/query/category';
 
 interface IProps {
-  categoryId: number;
+  categoryId: number | null;
 }
 
 const Category: React.FC<IProps> = ({ categoryId }) => {
-  const { data: categoryData } = useCategoryQuery();
+  const category = useCategoryQuery({ id: categoryId });
 
-  const category = categoryData?.find((category) => category.id === categoryId);
-
-  if (!category) return null;
+  if (!category) {
+    return null;
+  }
 
   const { color, name } = category;
 

@@ -28,7 +28,7 @@ const DropdownController = ({
         Object.hasOwnProperty.call(childType, 'render') ||
         typeof childType === 'function'
       ) {
-        newProps = { ...newProps, isShow };
+        newProps = { ...newProps, isShow, toggleShow };
       }
 
       return cloneElement(functionalChild, newProps);

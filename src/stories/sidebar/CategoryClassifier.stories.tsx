@@ -5,7 +5,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import CategoryClassifier from '@/components/home/sidebar/content/classifier/CategoryClassifier';
+import CategoryClassifier from '@/components/home/sidebar/content/classifier/category';
 import { useCategoryCreate, useCategoryQuery } from '@/hooks/query/category';
 import { useCreatePlanMutation } from '@/hooks/query/plan';
 import useClassifiedPlans from '@/hooks/useClassifiedPlans';
@@ -25,7 +25,7 @@ export default {
   component: CategoryClassifier,
 } as ComponentMeta<typeof CategoryClassifier>;
 
-const Template: ComponentStory<typeof CategoryClassifier> = (args) => {
+const Template: ComponentStory<typeof CategoryClassifier> = () => {
   const referenceDate = useDateState(({ referenceDate }) => referenceDate);
   const plans = useClassifiedPlans();
   const { mutateAsync: createCategoryMutateAsync } = useCategoryCreate();
@@ -101,7 +101,7 @@ const Template: ComponentStory<typeof CategoryClassifier> = (args) => {
         </TestButton>
       </div>
       <div className="category-classifier-main">
-        <CategoryClassifier {...args} />
+        <CategoryClassifier />
       </div>
     </Container>
   );

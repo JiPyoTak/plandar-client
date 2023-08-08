@@ -114,7 +114,7 @@ const SelectedPlanModal = () => {
     >
       <h3 css={TITLE_STYLE}>{title}</h3>
       {description && <p>{description}</p>}
-      {categoryId !== null && <Category categoryId={categoryId} />}
+      <Category categoryId={categoryId} />
       <TimeStamp startTime={startTime} endTime={endTime} hasTime={!isAllDay} />
       <TagList>
         {tags.map((tag) => (

@@ -37,7 +37,7 @@ const HoveredPlanModal = () => {
     <HoveredModal ref={ref} isCloseBtn={false} css={position}>
       <Color width={12} height={12} backgroundColor={color} />
       <h3 css={TITLE_STYLE}>{title}</h3>
-      {categoryId !== null && <Category categoryId={categoryId} />}
+      <Category categoryId={categoryId} />
       <TimeStamp startTime={startTime} endTime={endTime} hasTime={!isAllDay} />
     </HoveredModal>
   );
