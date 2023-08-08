@@ -2,11 +2,9 @@ import { create } from 'zustand';
 
 import Plan from '@/core/plan/Plan';
 
-type TRect = 'top' | 'left' | 'right' | 'bottom';
-
 interface ISelectedPlanState {
+  dom: HTMLElement | null;
   selectedPlan: Plan | null;
-  rect: Record<TRect, number>;
 }
 
 interface ISelectedPlanAction {
@@ -15,19 +13,14 @@ interface ISelectedPlanAction {
 }
 
 const initialState: ISelectedPlanState = {
+  dom: null,
   selectedPlan: null,
-  rect: {
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
 } as const;
 
 const useSelectedPlanState = create<ISelectedPlanState & ISelectedPlanAction>(
   (set) => ({
     ...initialState,
-    setSelectedPlan: (data: NonNullable<ISelectedPlanState>) => {
+    setSelectedPlan: (data: ISelectedPlanState) => {
       set(data);
     },
     clearSelectedPlan: () => {

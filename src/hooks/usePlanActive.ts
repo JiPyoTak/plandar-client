@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-
 import { shallow } from 'zustand/shallow';
 
 import Plan from '@/core/plan/Plan';
@@ -8,87 +6,67 @@ import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
 
+type TReturnPlanActive = ReturnType<typeof usePlanActive>;
+
 const usePlanActive = () => {
-  const focusedPlanState = useFocusedPlanState(
-    (store) => ({
-      isDragging: store.isDragging,
-      focusedPlanId: store.focusedPlan?.id,
-      moveDragPlan: store.moveDragPlan,
+  const { focusedPlanId, isDragging, moveDragPlan } = useFocusedPlanState(
+    ({ focusedPlan, isDragging, moveDragPlan }) => ({
+      focusedPlanId: focusedPlan?.id,
+      isDragging,
+      moveDragPlan,
     }),
     shallow,
   );
 
-  const hoveredPlanState = useHoveredPlanState(
-    (store) => ({
-      hoveredPlanId: store.hoveredPlan?.id,
-      setHoveredPlan: store.setHoveredPlan,
-      clearHoveredPlan: store.clearHoveredPlan,
+  const { hoveredPlanId, clearHoveredPlan, setHoveredPlan } =
+    useHoveredPlanState(
+      ({ hoveredPlan, clearHoveredPlan, setHoveredPlan }) => ({
+        hoveredPlanId: hoveredPlan?.id,
+        clearHoveredPlan,
+        setHoveredPlan,
+      }),
+      shallow,
+    );
+
+  const { selectedPlanId, setSelectedPlan } = useSelectedPlanState(
+    ({ selectedPlan, setSelectedPlan, clearSelectedPlan }) => ({
+      selectedPlanId: selectedPlan?.id,
+      setSelectedPlan,
+      clearSelectedPlan,
     }),
     shallow,
   );
-
-  const selectedPlanState = useSelectedPlanState(
-    (store) => ({
-      selectedPlanId: store.selectedPlan?.id,
-      selectedPlan: store.selectedPlan,
-      setSelectedPlan: store.setSelectedPlan,
-    }),
-    shallow,
-  );
-
-  const { focusedPlanId, isDragging, moveDragPlan } = focusedPlanState;
-  const { hoveredPlanId, setHoveredPlan, clearHoveredPlan } = hoveredPlanState;
-  const { selectedPlanId, setSelectedPlan } = selectedPlanState;
 
   const [debounceToSetHoveredPlan, clearDebounce] = useDebounce(
     setHoveredPlan,
     200,
   );
 
-  const onMouseEnter = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>, plan: Plan) => {
-      if (isDragging || selectedPlanId === plan.id) return;
+  const onClick = (e: React.MouseEvent<HTMLDivElement>, plan: Plan) => {
+    if (isDragging || selectedPlanId === plan.id) return;
 
-      const target = e.currentTarget as HTMLElement;
+    const target = e.currentTarget as HTMLElement;
 
-      const { top, left, right, bottom } = target.getBoundingClientRect();
+    setSelectedPlan({ dom: target, selectedPlan: plan });
+  };
 
-      debounceToSetHoveredPlan({
-        hoveredPlan: plan,
-        rect: { top, left, right, bottom },
-      });
-    },
-    [isDragging, selectedPlanId, debounceToSetHoveredPlan],
-  );
+  const onMouseEnter = (e: React.MouseEvent<HTMLDivElement>, plan: Plan) => {
+    if (isDragging || selectedPlanId === plan.id) return;
 
-  const onMouseLeave = useCallback(() => {
-    clearDebounce();
+    const target = e.currentTarget as HTMLElement;
+
+    debounceToSetHoveredPlan({ dom: target, hoveredPlan: plan });
+  };
+
+  const onMouseLeave = () => {
     clearHoveredPlan();
-  }, [clearHoveredPlan, clearDebounce]);
+    clearDebounce();
+  };
 
-  const onMouseDown = useCallback(
-    (plan: Plan) => {
-      moveDragPlan(plan);
-      onMouseLeave();
-    },
-    [moveDragPlan, clearHoveredPlan, onMouseLeave],
-  );
-
-  const onClick = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>, plan: Plan) => {
-      if (isDragging || selectedPlanId === plan.id) return;
-
-      const target = e.currentTarget as HTMLElement;
-
-      const { top, left, right, bottom } = target.getBoundingClientRect();
-
-      setSelectedPlan({
-        selectedPlan: plan,
-        rect: { top, left, right, bottom },
-      });
-    },
-    [isDragging, selectedPlanId, setSelectedPlan],
-  );
+  const onMouseDown = (plan: Plan) => {
+    clearHoveredPlan();
+    moveDragPlan(plan);
+  };
 
   return {
     focusedPlanId,
@@ -101,4 +79,5 @@ const usePlanActive = () => {
   } as const;
 };
 
+export type { TReturnPlanActive };
 export default usePlanActive;

@@ -1,12 +1,14 @@
 const getPositionByViewPort = (
   rect: Pick<DOMRect, 'left' | 'right' | 'top'>,
   size: Pick<DOMRect, 'width' | 'height'>,
+  windowSize: Pick<Window, 'innerWidth' | 'innerHeight'>,
 ) => {
   const result = { top: 0, left: 0 };
 
   const { width, height } = size;
   const { left, right, top } = rect;
-  const { innerWidth, innerHeight } = window;
+
+  const { innerWidth, innerHeight } = windowSize;
 
   if (right + width + 10 < innerWidth) {
     result.left = right + 10;

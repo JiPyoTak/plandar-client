@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import HoveredModal from '@/components/modal/plan/hover';
@@ -10,18 +12,14 @@ export default {
 } as ComponentMeta<typeof HoveredModal>;
 
 const Template: ComponentStory<typeof HoveredModal> = () => {
+  const ref = useRef<HTMLDivElement>(document.createElement('div'));
   const set = useHoveredPlanState((state) => state.setHoveredPlan);
 
   const MODKED_PLAN = planStubManager.createStub({});
 
   set({
     hoveredPlan: MODKED_PLAN,
-    rect: {
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-    },
+    dom: ref.current,
   });
 
   return (

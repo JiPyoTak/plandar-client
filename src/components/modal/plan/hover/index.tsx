@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -11,30 +11,38 @@ import Modal from '@/components/modal/ModalPortal';
 import { useEffectModal } from '@/hooks/useEffectModal';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 
+import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { FONT_REGULAR_5 } from '@/styles/font';
-import { getPositionByViewPort } from '@/utils/calendar/getPositionByViewPort';
 
 const HoveredPlanModal = () => {
-  const { hoveredPlan, rect } = useHoveredPlanState(
-    (state) => ({
-      hoveredPlan: state.hoveredPlan,
-      rect: state.rect,
+  const { hoveredPlan, dom, clearHoveredPlan } = useHoveredPlanState(
+    ({ hoveredPlan, dom, clearHoveredPlan }) => ({
+      hoveredPlan,
+      dom,
+      clearHoveredPlan,
     }),
     shallow,
   );
+  const selectedPlan = useSelectedPlanState((state) => state.selectedPlan);
 
-  const [plan, ref] = useEffectModal({ initialPlan: hoveredPlan });
+  const [plan, ref] = useEffectModal({
+    initialPlan: hoveredPlan,
+    rect: dom?.getBoundingClientRect(),
+    delay: 0,
+  });
+
+  useEffect(() => {
+    if (!selectedPlan) return;
+
+    clearHoveredPlan();
+  }, [selectedPlan]);
 
   if (!plan) return null;
 
   const { startTime, endTime, title, isAllDay, categoryId, color } = plan;
-  const position = getPositionByViewPort(rect, {
-    width: 300,
-    height: categoryId === null ? 100 : 150,
-  });
 
   return (
-    <HoveredModal ref={ref} isCloseBtn={false} css={position}>
+    <HoveredModal ref={ref} isCloseBtn={false}>
       <Color width={12} height={12} backgroundColor={color} />
       <h3 css={TITLE_STYLE}>{title}</h3>
       <Category categoryId={categoryId} />
