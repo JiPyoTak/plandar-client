@@ -36,8 +36,18 @@ const TimeInput = ({ setTime, time }: Props) => {
   const onBlurHandler = () => {
     const { hour, minute, meridiem } = timeInfo;
 
+    // ?: meridiem, hour, minute 계산을 라이브러리로 진행해야 하는지?
+    let realHour = hour;
+    if (meridiem === '오전' && hour === 12) {
+      realHour = 0;
+    } else if (meridiem === '오후' && hour === 12) {
+      realHour = 12;
+    } else if (meridiem === '오후') {
+      realHour += 12;
+    }
+
     const isValid = setTime({
-      hour: meridiem === '오후' ? hour + 12 : hour,
+      hour: realHour,
       minute,
     });
 
