@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 
 import Plan from '@/core/plan/Plan';
+import useWindowResize from '@/hooks/useWindowResize';
+import useWindowSize from '@/stores/window-size';
 import { getPositionByViewPort } from '@/utils/calendar/getPositionByViewPort';
 
 interface IProps {
   initialPlan: Plan | null;
-  rect: Pick<DOMRect, 'top' | 'left' | 'right'>;
+  rect?: Pick<DOMRect, 'top' | 'left' | 'right'>;
   delay?: number;
 }
 
@@ -14,6 +16,9 @@ const useEffectModal = ({ initialPlan, rect, delay = 300 }: IProps) => {
   const timeRef = useRef<NodeJS.Timeout | null>(null);
 
   const [plan, setPlan] = useState<Plan | null>(null);
+  const { innerWidth, innerHeight } = useWindowSize();
+
+  useWindowResize();
 
   useEffect(() => {
     if (timeRef.current) {
@@ -41,15 +46,18 @@ const useEffectModal = ({ initialPlan, rect, delay = 300 }: IProps) => {
   }, [initialPlan]);
 
   useEffect(() => {
-    if (!plan || !ref.current) return;
+    if (!plan || !rect || !ref.current) return;
 
     const { width, height } = ref.current.getBoundingClientRect();
-
-    const { left, top } = getPositionByViewPort(rect, { width, height });
+    const { left, top } = getPositionByViewPort(
+      rect,
+      { width, height },
+      { innerWidth, innerHeight },
+    );
 
     ref.current.style.left = `${left}px`;
     ref.current.style.top = `${top}px`;
-  }, [plan]);
+  }, [plan, innerWidth, innerHeight]);
 
   return [plan, ref] as const;
 };
