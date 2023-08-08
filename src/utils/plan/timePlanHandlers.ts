@@ -70,5 +70,6 @@ const getMovedTimePlan = (props: TProps) => {
 export const timePlanHandlers = {
   create: getCreatedTimePlan,
   move: getMovedTimePlan,
-  edit: getCreatedTimePlan,
+  edit: () => undefined,
+  resize: getCreatedTimePlan,
 };

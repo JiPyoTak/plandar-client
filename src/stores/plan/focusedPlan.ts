@@ -7,7 +7,7 @@ import { createInitPlan } from '@/utils/plan/createInitPlan';
 import { changePlanView } from '@/utils/plan/planViewHandlerToMonth';
 import { timePlanHandlers } from '@/utils/plan/timePlanHandlers';
 
-export type IChangePlanViewType = 'create' | 'move' | 'edit' | null;
+export type IChangePlanViewType = 'create' | 'move' | 'resize' | 'edit' | null;
 
 type TMovePlanProps = {
   targetDate: string;
@@ -28,8 +28,9 @@ interface IFocusedPlanAction {
   createDragPlan: (
     planData: Pick<IPlan, 'startTime' | 'endTime'> & Partial<IPlan>,
   ) => void;
-  moveDragPlan: (plan: Plan) => void;
   editDragPlan: (plan: Plan) => void;
+  moveDragPlan: (plan: Plan) => void;
+  resizeDragPlan: (plan: Plan) => void;
   onMoveMonthPlan: (args: TMovePlanProps) => void;
   onDragTimePlan: (args: TMovePlanProps) => void;
   onDragEndPlan: () => void;
@@ -57,6 +58,13 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
         isDragging: true,
       });
     },
+    editDragPlan: (plan) => {
+      set({
+        type: 'edit',
+        focusedPlan: new Plan(plan),
+        currentPlan: plan,
+      });
+    },
     moveDragPlan: (plan) => {
       set({
         type: 'move',
@@ -65,11 +73,12 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
         isDragging: true,
       });
     },
-    editDragPlan: (plan) => {
+    resizeDragPlan: (plan) => {
       set({
-        type: 'edit',
+        type: 'resize',
         focusedPlan: new Plan(plan),
         currentPlan: plan,
+        isDragging: true,
       });
     },
     onMoveMonthPlan: ({
@@ -108,7 +117,7 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
         const plan = timePlanHandlers[type]({
           targetDate: moment(targetDateString),
           currentDate:
-            type === 'edit'
+            type === 'resize'
               ? currentPlan.startMoment
               : moment(currentDateString),
           focusedPlan,
