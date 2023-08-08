@@ -11,7 +11,7 @@ type TReturnPlanActive = ReturnType<typeof usePlanActive>;
 const usePlanActive = () => {
   const { focusedPlanId, isDragging, moveDragPlan } = useFocusedPlanState(
     ({ focusedPlan, isDragging, moveDragPlan }) => ({
-      focusedPlanId: focusedPlan?.id ?? -1,
+      focusedPlanId: focusedPlan?.id,
       isDragging,
       moveDragPlan,
     }),
@@ -21,7 +21,7 @@ const usePlanActive = () => {
   const { hoveredPlanId, clearHoveredPlan, setHoveredPlan } =
     useHoveredPlanState(
       ({ hoveredPlan, clearHoveredPlan, setHoveredPlan }) => ({
-        hoveredPlanId: hoveredPlan?.id ?? -1,
+        hoveredPlanId: hoveredPlan?.id,
         clearHoveredPlan,
         setHoveredPlan,
       }),
@@ -30,7 +30,7 @@ const usePlanActive = () => {
 
   const { selectedPlanId, setSelectedPlan } = useSelectedPlanState(
     ({ selectedPlan, setSelectedPlan, clearSelectedPlan }) => ({
-      selectedPlanId: selectedPlan?.id ?? -1,
+      selectedPlanId: selectedPlan?.id,
       setSelectedPlan,
       clearSelectedPlan,
     }),
