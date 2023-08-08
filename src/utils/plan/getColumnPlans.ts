@@ -13,8 +13,13 @@ const getColumnPlans = (dateMoments: Moment[], plans: Plan[]): Plan[][] => {
     startColumn.push(timePlan);
     planMap.set(startDay, startColumn);
 
+    // *: startDay랑 날짜가 다른데 endDay가 00:00:00
+    /// -> 해당 timetable column에 추가할 필요가 없다.
     const endDay = timePlan.endMoment.format(DATE_FORMAT);
-    if (startDay !== endDay) {
+    if (
+      startDay !== endDay &&
+      timePlan.endMoment.format('HH:mm:ss') !== '00:00:00'
+    ) {
       const endColumn = planMap.get(endDay) || [];
 
       endColumn.push(timePlan);
