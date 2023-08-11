@@ -31,6 +31,7 @@ const TimetableCellColumn: React.FC = () => {
         endTime: moment(targetDate)
           .add(15, 'minute')
           .format('YYYY-MM-DDThh:mm:ss'),
+        isAllDay: false,
       });
     },
     [],
