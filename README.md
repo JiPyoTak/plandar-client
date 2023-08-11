@@ -95,10 +95,10 @@
 
 ```bash
 # Clone this repository
-$ git clone https://github.com/JiPyoTak/plandar-server
+$ git clone https://github.com/JiPyoTak/plandar-client
 
 # Go into the repository
-$ cd plandar-server
+$ cd plandar-client
 
 # Install dependencies
 $ npm install
