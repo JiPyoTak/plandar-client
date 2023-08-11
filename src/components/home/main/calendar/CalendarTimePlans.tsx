@@ -4,13 +4,14 @@ import styled from '@emotion/styled';
 
 import DayTimePlan from '@/components/common/plan/DayTimePlan';
 import Plan from '@/core/plan/Plan';
-import usePlanActive from '@/hooks/usePlanActive';
+import { TReturnPlanActive } from '@/hooks/usePlanPreviewEvent';
 
 interface IProps {
   timePlans: Plan[];
+  previewPlan: TReturnPlanActive;
 }
 
-const CalendarTimePlans: React.FC<IProps> = ({ timePlans }) => {
+const CalendarTimePlans: React.FC<IProps> = ({ timePlans, previewPlan }) => {
   const {
     focusedPlanId,
     hoveredPlanId,
@@ -19,7 +20,7 @@ const CalendarTimePlans: React.FC<IProps> = ({ timePlans }) => {
     onMouseDown,
     onMouseEnter,
     onMouseLeave,
-  } = usePlanActive();
+  } = previewPlan;
 
   return (
     <Container>

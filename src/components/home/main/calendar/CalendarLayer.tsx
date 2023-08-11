@@ -5,24 +5,15 @@ import styled from '@emotion/styled';
 import DayPlan from '@/components/common/plan/DayPlan';
 
 import DaysPlanManager, { IDayViewInfo } from '@/core/plan/DaysPlanManager';
-import usePlanActive from '@/hooks/usePlanActive';
+import { TReturnPlanActive } from '@/hooks/usePlanPreviewEvent';
 
 interface IProps {
   className?: string;
+  previewPlan: TReturnPlanActive;
   planManager: DaysPlanManager;
 }
 
-const CalendarLayer = ({ className, planManager }: IProps) => {
-  const {
-    focusedPlanId,
-    hoveredPlanId,
-    selectedPlanId,
-    onClick,
-    onMouseDown,
-    onMouseEnter,
-    onMouseLeave,
-  } = usePlanActive();
-
+const CalendarLayer = ({ className, planManager, previewPlan }: IProps) => {
   const plans = planManager.plans;
   const viewPlans = planManager.viewInfo;
 
@@ -32,13 +23,8 @@ const CalendarLayer = ({ className, planManager }: IProps) => {
         <DayPlan
           key={i}
           plan={plan}
+          previewPlan={previewPlan}
           view={viewPlans.get(plan.id) as IDayViewInfo}
-          isSelected={focusedPlanId === plan.id || selectedPlanId === plan.id}
-          isHovered={hoveredPlanId === plan.id}
-          onMouseEnter={onMouseEnter}
-          onMouseDown={onMouseDown}
-          onMouseLeave={onMouseLeave}
-          onClick={onClick}
         />
       ))}
     </Container>
