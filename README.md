@@ -1,33 +1,127 @@
-# React BoilerPlate
+<h1 align="center">
+  <br>
+  <a href="https://github.com/JiPyoTak/plandar-client"><img src="https://github.com/JiPyoTak/plandar-client/assets/55688122/84f1948f-73ff-4074-808d-356ff4ab9aee" alt="Plandar" width=200></a>
+  <br>
+  Plandar
+  <br>
+</h1>
 
-* typescript v4.9.5
-* vite v4.1.4
-    - vite-tsconfig-paths 를 이용한 절대 경로 설정
-* React v18.2.0
-    - + react-router-dom
-    - emotion
-        * react
-        * styled
-* prettier
-* eslint
+<h4 align="center">사용자 별 개인 일정 관리 기능이 있는 달력 웹 서비스</h4>
 
-### scripts
+<p align="center">
+  <br />
+  <a href="https://maze-giant-106.notion.site/Plandar-3aa929cd5234440b94690fd1c65be27a?pvs=4">
+    <strong>
+      Notion docs »
+    </strong>
+  </a>
+  <br />
+</p>
 
- * dev: 개발 서버를 돌릴 수 있음
- * build: 배포용 빌드 파일을 만듬
- * preview: 배포용 빌드 파일을 미리 봄
+<p align="center">
+  <a href="#contributors-%EF%B8%8F">Contributors</a> •
+  <a href="#key-features-%EF%B8%8F">Key Features</a> •
+  <a href="#how-to-use-%EF%B8%8F">How To Use</a> •
+  <a href="#credits-">Credits</a> •
+  <a href="#related-">Related</a>
+</p>
 
-### settings
+<div align="center">
+<img src="https://github.com/JiPyoTak/plandar-client/assets/60173534/82117794-1efd-4785-bb3c-55bda63fef92"/>
+</div>
 
-* emotion 설정
-    - `src/styles/theme` 에서 테마 코드 설정 (`src/dtypes/emotion.d.ts`)
-        * 테마 설정을 하지 않을 것이라면 코드 삭제도 좋음
-        * Theme Type과 코드 설정 바람 (디자인 색상 설정 필요)
-    - `src/styles/GlobalStyle` 에서 initial css 설정
-* `index.html` 파일에서 title, favicon 등의 설정
-* `public/manifest.json` 파일에서 title, description, logo 등의 설정
-* `package.json` 파일에서 title, description 등의 설정
+## Contributors 🙋🏼‍♂️
 
-### publics
+<table align="center">
+  <tr>
+    <td>
+      <a href="https://github.com/seoko97">
+        <img src="https://avatars.githubusercontent.com/seoko97" width="100"/>
+      </a>
+    </td>
+    <td>
+      <a href="https://github.com/pyo-sh">
+        <img src="https://avatars.githubusercontent.com/pyo-sh" width="100"/>
+      </a>
+    </td>
+    <td>
+      <a href="https://github.com/jintak0401">
+        <img src="https://avatars.githubusercontent.com/jintak0401" width="100"/>
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/seoko97">
+        <strong>
+          지석호
+        </strong>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/pyo-sh">
+        <strong>
+          표석훈
+        </strong>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/jintak0401">
+        <strong>
+          한진탁
+        </strong>
+      </a>
+    </td>
+  </tr>
+</table>
 
-`/public` 폴더 아래에 static assets를 넣고 index.html에서 제공한다.
+## Key Features ⚒️
+
+- 원하는 날짜의 달력을 볼 수 있습니다.
+  - 일간, 주간, 월간 달력 제공합니다.
+  - 사이드바와 헤더를 통해 달력을 제어할 수 있습니다.
+- 일정을 추가하여 관리할 수 있습니다.
+  - 일정을 달력에서 볼 수 있습니다.
+  - 일정에 대한 메모를 남길 수 있습니다.
+- 드래그를 통해 일정을 생성 및 수정할 수 있습니다.
+- 카테고리 기능을 이용해 비슷한 일정을 한번에 관리할 수 있습니다.
+- 태그 기능을 이용해 일정 필터링을 사용할 수 있습니다.
+
+## How To Use ⚙️
+
+어플리케이션을 실행하기 위해선 [Git](https://git-scm.com)과 [Node.js](https://nodejs.org/en/download/) ([npm](http://npmjs.com)) 을 설치해야 합니다.
+
+이후 아래의 명령어를 통해 실행할 수 있습니다.
+
+```bash
+# Clone this repository
+$ git clone https://github.com/JiPyoTak/plandar-client
+
+# Go into the repository
+$ cd plandar-client
+
+# Install dependencies
+$ npm install
+
+# Run the app
+$ npm start
+```
+
+> **Note**
+>
+> 1. 이 어플리케이션을 정상적으로 실행하려면 .env 파일을 생성하고 내용을 기입해야 합니다.
+> 2. plandar-server 어플리케이션이 동작하고 있어야 합니다.
+
+## Credits 📚
+
+아래와 같은 오픈소스 패키지를 사용하고 있습니다.
+
+- [Node.js](https://nodejs.org/)
+- [React](https://legacy.reactjs.org/)
+- [React-Query](https://tanstack.com/query/v3/)
+- [Emotion](https://emotion.sh/docs/introduction)
+- [zustand](https://github.com/pmndrs/zustand)
+
+## Related 🔗
+
+[plandar-server](https://github.com/JiPyoTak/plandar-server) - Plandar API를 제공할 수 있는 서버
