@@ -32,6 +32,7 @@ const createInitialState = () => {
 type TDateAction = {
   setReferenceDate: (referenceDate: MomentInput) => void;
   setCalendarUnit: (calendarUnit: TCalendarUnit) => void;
+  setReferenceDateAndCalendarUnit: (referenceDate: MomentInput) => void;
   increaseReferenceDate: () => void;
   decreaseReferenceDate: () => void;
   setDateWithRange: (options?: {
@@ -48,6 +49,12 @@ const useDateState = create<TDateState & TDateAction>((set, get) => ({
   },
   setCalendarUnit: (calendarUnit) => {
     return get().setDateWithRange({ calendarUnit });
+  },
+  setReferenceDateAndCalendarUnit: (referenceDate: MomentInput) => {
+    return get().setDateWithRange({
+      referenceDate: moment(referenceDate),
+      calendarUnit: 'week',
+    });
   },
   increaseReferenceDate: () => {
     const { referenceDate: prevDate, calendarUnit, setDateWithRange } = get();

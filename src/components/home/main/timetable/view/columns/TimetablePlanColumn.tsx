@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import TimePlan from '@/components/common/plan/TimePlan';
 import Plan from '@/core/plan/Plan';
 import TimePlanManager from '@/core/plan/TimePlanManager';
-import usePlanActive from '@/hooks/usePlanActive';
+import usePlanPreviewEvent from '@/hooks/usePlanPreviewEvent';
 import useTimetableViewMoment from '@/hooks/useTimetableViewMoment';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 
@@ -20,7 +20,7 @@ const TimetablePlanColumn: React.FC<TProps> = ({ plans }) => {
   );
 
   const { selectedPlanId, hoveredPlanId, onClick, onMouseEnter, onMouseLeave } =
-    usePlanActive();
+    usePlanPreviewEvent();
 
   return (
     <div css={{ width: 'calc(100% - 0.75rem)', position: 'relative' }}>

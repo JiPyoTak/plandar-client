@@ -68,30 +68,24 @@ const CreatePlanModal: TCreatePlanModal = ({
       focusedPlan.categoryId = null;
     }
 
-    const { id, ...rest } = focusedPlan;
+    const message = isEdit ? '수정' : '생성';
+
+    const id = isEdit ? focusedPlan.id : undefined;
+    const mutate = isEdit ? updateMutate : createMutate;
 
     try {
-      if (isEdit) {
-        await updateMutate({ id, ...rest });
-        toast(
-          <div>
-            <ColorCircle color={focusedPlan.color} />
-            {` ${focusedPlan.title}`} 으로 일정을 수정했습니다
-          </div>,
-        );
-      } else {
-        await createMutate(rest);
-        toast(
-          <div>
-            <ColorCircle color={focusedPlan.color} />
-            {` ${focusedPlan.title}`} 일정을 생성했습니다
-          </div>,
-        );
-      }
+      await mutate({ ...focusedPlan, id });
+
+      toast(
+        <div>
+          <ColorCircle color={focusedPlan.color} />
+          {`${focusedPlan.title} 일정을 ${message}했습니다.`}
+        </div>,
+      );
       onDone?.();
       clearPlan();
     } catch (e) {
-      toast(`일정 ${isEdit ? '수정' : '생성'}에 실패했습니다.`);
+      toast(`일정 ${message}에 실패했습니다.`);
     }
   };
 

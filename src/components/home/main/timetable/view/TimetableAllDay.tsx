@@ -10,6 +10,7 @@ import TimetableScroll from '@/components/home/main/timetable/TimetableScroll';
 import DaysPlanManager from '@/core/plan/DaysPlanManager';
 import Plan from '@/core/plan/Plan';
 import usePlanDrag from '@/hooks/usePlanDrag';
+import usePlanPreviewEvent from '@/hooks/usePlanPreviewEvent';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import {
   TIMETABLE_ALLDAY_PLAN_HEIGHT,
@@ -37,6 +38,7 @@ const TimetableAllDay: React.FC<TProps> = ({
   onMouseMove,
   changeCurrentDate,
 }) => {
+  const previewPlan = usePlanPreviewEvent();
   const focusedPlan = useFocusedPlanState((state) => state.focusedPlan);
   const createDragPlan = useFocusedPlanState((state) => state.createDragPlan);
 
@@ -96,6 +98,7 @@ const TimetableAllDay: React.FC<TProps> = ({
             <CalendarLayer
               css={{ top: TIMETABLE_ALLDAY_VERTICAL_PADDING }}
               planManager={planManager}
+              previewPlan={previewPlan}
             />
           </AllDayPlanPositioner>
           <AllDayCellList css={{ height: getAllDayHeight(itemMaxLength) }}>

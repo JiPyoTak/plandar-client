@@ -9,23 +9,28 @@ import CalendarOverlay from './CalendarOverlay';
 import CalendarWeek from './CalendarWeek';
 import useClassifiedPlans from '@/hooks/useClassifiedPlans';
 import usePlanDrag from '@/hooks/usePlanDrag';
+import usePlanPreviewEvent from '@/hooks/usePlanPreviewEvent';
 import useDateState from '@/stores/date';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { getDayMoments } from '@/utils/calendar/getDayMoments';
 import { getDaysPlanManager } from '@/utils/plan/getDaysPlanManager';
 
 const CalendarView = () => {
-  const referenceDate = useDateState(({ referenceDate }) => referenceDate);
-  const { focusedPlan, isDragging, createDragPlan } = useFocusedPlanState();
+  const previewPlan = usePlanPreviewEvent();
+
   const { onMouseMove, changeCurrentDate } = usePlanDrag();
+  const { focusedPlan, isDragging, createDragPlan } = useFocusedPlanState();
+
+  const referenceDate = useDateState(({ referenceDate }) => referenceDate);
+
+  const data = useClassifiedPlans();
 
   const weekMoments = useMemo(() => {
-    // TODO: utils
-    /// 7일 단위로 끊어서 2단 배열로 만들어준다.
     let weekMoments: Moment[] = [];
 
     return getDayMoments(referenceDate).reduce((result, dayMoment) => {
       weekMoments.push(dayMoment);
+
       if (weekMoments.length === 7) {
         result.push(weekMoments);
         weekMoments = [];
@@ -34,8 +39,6 @@ const CalendarView = () => {
       return result;
     }, [] as Moment[][]);
   }, [referenceDate]);
-
-  const data = useClassifiedPlans();
 
   const planManagers = useMemo(() => {
     const plans = (data ?? []).filter((plan) => plan.id !== focusedPlan?.id);
@@ -72,12 +75,16 @@ const CalendarView = () => {
         <Inner key={`Week-${i}`}>
           <CalendarWeek
             dayMoments={dayMoments}
+            previewPlan={previewPlan}
             daysIndex={planManagers[i].daysIndex}
             daysTimePlans={planManagers[i].daysTimePlans}
             onMouseDown={onMouseDownCell}
           />
           {planManagers[i].plans.length !== 0 && (
-            <CalendarLayer planManager={planManagers[i]} />
+            <CalendarLayer
+              previewPlan={previewPlan}
+              planManager={planManagers[i]}
+            />
           )}
           <CalendarOverlay dayMoments={dayMoments} />
         </Inner>

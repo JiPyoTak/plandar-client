@@ -103,7 +103,7 @@ const SelectedPlanModal = () => {
       }
     >
       <h3 css={TITLE_STYLE}>{title}</h3>
-      {description && <p>{description}</p>}
+      {description && <p css={{ whiteSpace: 'pre-wrap' }}>{description}</p>}
       <Category categoryId={categoryId} />
       <TimeStamp startTime={startTime} endTime={endTime} hasTime={!isAllDay} />
       <TagList>

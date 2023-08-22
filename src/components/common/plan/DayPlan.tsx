@@ -8,6 +8,7 @@ import ChevronIcon from '@/components/common/icons/ChevronIcon';
 import { IDayViewInfo } from '@/core/plan/DaysPlanManager';
 import Plan from '@/core/plan/Plan';
 
+import { TReturnPlanActive } from '@/hooks/usePlanPreviewEvent';
 import { FONT_REGULAR_5 } from '@/styles/font';
 import { TColor } from '@/types';
 import { isBgBright } from '@/utils/color';
@@ -15,37 +16,30 @@ import { isBgBright } from '@/utils/color';
 interface IProps {
   view: IDayViewInfo;
   plan: Plan;
-  isSelected?: boolean;
-  isHovered?: boolean;
-  onMouseEnter: (e: React.MouseEvent<HTMLDivElement>, plan: Plan) => void;
-  onClick: (e: React.MouseEvent<HTMLDivElement>, plan: Plan) => void;
-  onMouseDown: (plan: Plan) => void;
-  onMouseLeave: React.MouseEventHandler<HTMLDivElement>;
+  previewPlan: TReturnPlanActive;
 }
 
 const DayPlan: React.FC<IProps> = (props) => {
-  const {
-    plan,
-    view,
-    isHovered,
-    isSelected,
-    onClick,
-    onMouseEnter,
-    onMouseLeave,
-    onMouseDown,
-  } = props;
   const theme = useTheme();
+  const { plan, view, previewPlan } = props;
+
   const textColor = isBgBright(plan.color) ? theme.white : theme.text1;
 
   const { id, start, index, term, termAmount, st, et } = view;
+  const { focusedPlanId, hoveredPlanId, selectedPlanId } = previewPlan;
+  const { onClick, onMouseDown, onMouseEnter, onMouseLeave } = previewPlan;
 
   const isEqualStart = st.isSame(plan.startTime);
   const isEqualEnd = et.isSame(plan.endTime);
 
   const className: string[] = [];
 
-  if (isSelected) className.push('is_selected');
-  if (isHovered) className.push('is_hovered');
+  if (focusedPlanId === id || selectedPlanId === id) {
+    className.push('is_selected');
+  }
+  if (hoveredPlanId === id) {
+    className.push('is_hovered');
+  }
 
   const cellPercent = (1 / termAmount) * 100;
 
@@ -64,8 +58,8 @@ const DayPlan: React.FC<IProps> = (props) => {
         css={{ color: textColor }}
         onMouseDown={() => onMouseDown(plan)}
         onMouseEnter={(e) => onMouseEnter(e, plan)}
-        onClick={(e) => onClick(e, plan)}
         onMouseLeave={onMouseLeave}
+        onClick={(e) => onClick(e, plan)}
       >
         <div>
           {!isEqualStart && (

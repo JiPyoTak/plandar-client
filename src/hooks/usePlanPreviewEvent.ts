@@ -6,9 +6,9 @@ import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useHoveredPlanState from '@/stores/plan/hoveredPlan';
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
 
-type TReturnPlanActive = ReturnType<typeof usePlanActive>;
+type TReturnPlanActive = ReturnType<typeof usePlanPreviewEvent>;
 
-const usePlanActive = () => {
+const usePlanPreviewEvent = () => {
   const { focusedPlanId, isDragging, moveDragPlan } = useFocusedPlanState(
     ({ focusedPlan, isDragging, moveDragPlan }) => ({
       focusedPlanId: focusedPlan?.id,
@@ -80,4 +80,4 @@ const usePlanActive = () => {
 };
 
 export type { TReturnPlanActive };
-export default usePlanActive;
+export default usePlanPreviewEvent;
