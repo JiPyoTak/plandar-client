@@ -39,7 +39,7 @@ function useCategoryQuery(props?: { id?: number | null }) {
 }
 
 // 카테고리 추가
-const useCategoryCreate = () => {
+const useCreateCategory = () => {
   const queryClient = useQueryClient();
   let id = 0;
 
@@ -83,7 +83,7 @@ const useCategoryCreate = () => {
   );
 };
 
-const useCategoryUpdate = () => {
+const useUpdateCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
@@ -134,7 +134,7 @@ const useCategoryUpdate = () => {
   );
 };
 
-const useCategoryDelete = () => {
+const useDeleteCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
@@ -181,7 +181,7 @@ const useCategoryDelete = () => {
 
 export {
   useCategoryQuery,
-  useCategoryUpdate,
-  useCategoryCreate,
-  useCategoryDelete,
+  useUpdateCategory,
+  useCreateCategory,
+  useDeleteCategory,
 };

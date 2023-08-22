@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { SELECTABLE_COLOR } from '@/constants';
-import { useCategoryCreate } from '@/hooks/query/category';
+import { useCreateCategory } from '@/hooks/query/category';
 import { FONT_REGULAR_3 } from '@/styles/font';
 import { ICategory } from '@/types/query/category';
 
@@ -20,7 +20,7 @@ const CategoryCreateForm: TCategoryCreate = ({
 }: TCategoryCreateProps) => {
   const [error, setError] = useState('');
   const loadingRef = useRef(false);
-  const { mutateAsync: createCategory } = useCategoryCreate();
+  const { mutateAsync: createCategory } = useCreateCategory();
   const newCategoryName = name.trim();
 
   const onMouseDown = async () => {

@@ -81,7 +81,7 @@ const removeQueriesData =
     });
   };
 
-const useGetPlansQuery = ({ timemin, timemax }: IGetPlansPayload) => {
+const usePlanQuery = ({ timemin, timemax }: IGetPlansPayload) => {
   const queryClient = useQueryClient();
 
   return useQuery<IPlan[]>(
@@ -99,7 +99,7 @@ const useGetPlansQuery = ({ timemin, timemax }: IGetPlansPayload) => {
 };
 
 // 해당 요청 성공시 캐시 업데이트
-const useCreatePlanMutation = () => {
+const useCreatePlan = () => {
   const queryClient = useQueryClient();
 
   return useMutation<IPlan, unknown, TPlanInput>(createPlanApi, {
@@ -115,7 +115,7 @@ const useCreatePlanMutation = () => {
 };
 
 // 기존 존재하던 일정을 제거하고 변경된 일정을 추가
-const useUpdatePlanMutation = () => {
+const useUpdatePlan = () => {
   const queryClient = useQueryClient();
 
   return useMutation<IPlan, unknown, TPlanInput>(updatePlanApi, {
@@ -143,7 +143,7 @@ const useUpdatePlanMutation = () => {
   });
 };
 
-const useDeletePlanMutation = () => {
+const useDeletePlan = () => {
   const queryClient = useQueryClient();
 
   return useMutation<IPlan, unknown, number>(deletePlanApi, {
@@ -158,9 +158,4 @@ const useDeletePlanMutation = () => {
   });
 };
 
-export {
-  useGetPlansQuery,
-  useCreatePlanMutation,
-  useUpdatePlanMutation,
-  useDeletePlanMutation,
-};
+export { usePlanQuery, useCreatePlan, useUpdatePlan, useDeletePlan };

@@ -15,10 +15,7 @@ import PlanTag from '@/components/modal/plan/create/PlanTag';
 import PlanTitleInput from '@/components/modal/plan/create/PlanTitleInput';
 import { toast } from '@/core/toast';
 import { useCategoryQuery } from '@/hooks/query/category';
-import {
-  useCreatePlanMutation,
-  useUpdatePlanMutation,
-} from '@/hooks/query/plan';
+import { useCreatePlan, useUpdatePlan } from '@/hooks/query/plan';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { ColorCircle } from '@/styles/category';
 
@@ -46,8 +43,8 @@ const CreatePlanModal: TCreatePlanModal = ({
       }),
       shallow,
     );
-  const { mutateAsync: createMutate } = useCreatePlanMutation();
-  const { mutateAsync: updateMutate } = useUpdatePlanMutation();
+  const { mutateAsync: createMutate } = useCreatePlan();
+  const { mutateAsync: updateMutate } = useUpdatePlan();
   const category = useCategoryQuery();
 
   const onCloseHandler = () => {

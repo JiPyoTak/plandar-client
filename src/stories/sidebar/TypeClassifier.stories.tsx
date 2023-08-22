@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import TypeClassifier from '@/components/home/sidebar/content/classifier/TypeClassifier';
-import { useCreatePlanMutation } from '@/hooks/query/plan';
+import { useCreatePlan } from '@/hooks/query/plan';
 import useClassifiedPlans from '@/hooks/useClassifiedPlans';
 import useDateState from '@/stores/date';
 import planStubManager from '@/stories/apis/data/plan';
@@ -17,7 +17,7 @@ export default {
 
 const Template: ComponentStory<typeof TypeClassifier> = (args) => {
   const referenceDate = useDateState(({ referenceDate }) => referenceDate);
-  const { mutateAsync: createPlanMutateAsync } = useCreatePlanMutation();
+  const { mutateAsync: createPlanMutateAsync } = useCreatePlan();
   const plans = useClassifiedPlans();
 
   const typePlans = {

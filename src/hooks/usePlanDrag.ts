@@ -2,14 +2,14 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { shallow } from 'zustand/shallow';
 
-import { useUpdatePlanMutation } from './query/plan';
+import { useUpdatePlan } from './query/plan';
 import { toast } from '@/core/toast';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 
 export type MouseEventHandler = React.MouseEventHandler<HTMLDivElement>;
 
 const usePlanDrag = () => {
-  const { mutateAsync } = useUpdatePlanMutation();
+  const { mutateAsync } = useUpdatePlan();
 
   const {
     currentPlan,

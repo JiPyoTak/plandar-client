@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { shallow } from 'zustand/shallow';
 
-import { useGetPlansQuery } from '@/hooks/query/plan';
+import { usePlanQuery } from '@/hooks/query/plan';
 import useDateState from '@/stores/date';
 import { IPlan } from '@/types/query/plan';
 import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
@@ -21,7 +21,7 @@ const useRangedPlans = (function () {
     );
     const [startDate, endDate] = getStartAndEndDate(referenceDate);
 
-    const { data, ...rest } = useGetPlansQuery({
+    const { data, ...rest } = usePlanQuery({
       timemin: startDate.format(),
       timemax: endDate.format(),
     });

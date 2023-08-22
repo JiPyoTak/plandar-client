@@ -6,8 +6,8 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import CategoryClassifier from '@/components/home/sidebar/content/classifier/category';
-import { useCategoryCreate, useCategoryQuery } from '@/hooks/query/category';
-import { useCreatePlanMutation } from '@/hooks/query/plan';
+import { useCreateCategory, useCategoryQuery } from '@/hooks/query/category';
+import { useCreatePlan } from '@/hooks/query/plan';
 import useClassifiedPlans from '@/hooks/useClassifiedPlans';
 import useDateState from '@/stores/date';
 import {
@@ -28,8 +28,8 @@ export default {
 const Template: ComponentStory<typeof CategoryClassifier> = () => {
   const referenceDate = useDateState(({ referenceDate }) => referenceDate);
   const plans = useClassifiedPlans();
-  const { mutateAsync: createCategoryMutateAsync } = useCategoryCreate();
-  const { mutateAsync: createPlanMutateAsync } = useCreatePlanMutation();
+  const { mutateAsync: createCategoryMutateAsync } = useCreateCategory();
+  const { mutateAsync: createPlanMutateAsync } = useCreatePlan();
   const queryClient = useQueryClient();
   const forceUpdate = useReducer(() => ({}), {})[1];
 
