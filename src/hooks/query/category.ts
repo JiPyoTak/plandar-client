@@ -42,9 +42,9 @@ function useCategoryQuery(props?: { id?: number | null }) {
 }
 
 // 카테고리 추가
+let tempId = 0;
 const useCreateCategory = () => {
   const queryClient = useQueryClient();
-  let id = 0;
 
   return useMutation(
     // api 호출
@@ -59,11 +59,11 @@ const useCreateCategory = () => {
         // 낙관적 업데이트를 위한 새로운 데이터 캐싱
         queryClient.setQueryData<ICategory[]>(
           [QUERY_KEY.CATEGORY_KEY],
-          (old) => [...(old ?? []), { ...newCategory, id: --id }],
+          (old) => [...(old ?? []), { ...newCategory, id: --tempId }],
         );
 
         // onError의 context에 들어갈 값
-        return { previousCategories, id };
+        return { previousCategories, id: tempId };
       },
       // 에러 발생시 원래 캐싱된 데이터로 복구
       onError: (err, newCategory, context) => {
