@@ -39,8 +39,10 @@ const TimePlan: React.FC<TProps> = (props) => {
   } = props;
 
   const { title, startTime, color } = plan;
-  const moveDragPlan = useFocusedPlanState((state) => state.moveDragPlan);
-  const editDragPlan = useFocusedPlanState((state) => state.editDragPlan);
+  const { moveDragPlan, resizeDragPlan } = useFocusedPlanState((state) => ({
+    moveDragPlan: state.moveDragPlan,
+    resizeDragPlan: state.resizeDragPlan,
+  }));
   const className: string[] = [];
 
   if (inheritedClassName) className.push(inheritedClassName);
@@ -54,7 +56,7 @@ const TimePlan: React.FC<TProps> = (props) => {
     const type = target.getAttribute('data-type');
 
     if (type === 'resizer') {
-      editDragPlan(plan);
+      resizeDragPlan(plan);
     } else {
       moveDragPlan(plan);
     }
@@ -140,7 +142,10 @@ const cellWidth = ({
 
 const cellHeight = ({ term }: ITimeViewInfo) => {
   return css`
-    height: calc(${TIMETABLE_CELL_HEIGHT} * ${term});
+    height: max(
+      calc(${TIMETABLE_CELL_HEIGHT} * ${term}),
+      ${TIMETABLE_CELL_HEIGHT}
+    );
   `;
 };
 

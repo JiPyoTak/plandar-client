@@ -13,8 +13,8 @@ import usePlanDrag from '@/hooks/usePlanDrag';
 import usePlanPreviewEvent from '@/hooks/usePlanPreviewEvent';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import {
-  TIMETABLE_ALLDAY_PLAN_HEIGHT,
-  TIMETABLE_ALLDAY_VERTICAL_PADDING,
+  TIMETABLE_ALL_DAY_PLAN_HEIGHT,
+  TIMETABLE_ALL_DAY_VERTICAL_PADDING,
   TIMETABLE_CELL_MIN_WIDTH,
 } from '@/styles/timetable';
 
@@ -27,8 +27,8 @@ type TProps = {
 
 const getAllDayHeight = (itemLength: number) => {
   return (
-    itemLength * TIMETABLE_ALLDAY_PLAN_HEIGHT +
-    TIMETABLE_ALLDAY_VERTICAL_PADDING * 2
+    itemLength * TIMETABLE_ALL_DAY_PLAN_HEIGHT +
+    TIMETABLE_ALL_DAY_VERTICAL_PADDING * 2
   );
 };
 
@@ -94,9 +94,13 @@ const TimetableAllDay: React.FC<TProps> = ({
           onMouseMove={onMouseMove}
           onMouseDown={changeCurrentDate}
         >
-          <AllDayPlanPositioner>
+          <AllDayPlanPositioner
+            css={{
+              minWidth: `calc(${TIMETABLE_CELL_MIN_WIDTH} * ${dateMoments.length})`,
+            }}
+          >
             <CalendarLayer
-              css={{ top: TIMETABLE_ALLDAY_VERTICAL_PADDING }}
+              css={{ top: TIMETABLE_ALL_DAY_VERTICAL_PADDING }}
               planManager={planManager}
               previewPlan={previewPlan}
             />

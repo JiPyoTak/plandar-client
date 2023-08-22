@@ -36,10 +36,11 @@ class TimePlanManager extends PlanManager<ITimeViewInfo> {
     return index;
   }
 
+  // 12시 00분 일 때 문제가 된다.
   getPlanOrderArray(orderArrays: number[][], plan: Plan) {
     const [startIndex, endIndex] = [
-      Math.ceil(this.getTimetableIndex(plan.startMoment)),
-      Math.ceil(this.getTimetableIndex(plan.endMoment)),
+      Math.floor(this.getTimetableIndex(plan.startMoment)),
+      Math.floor(this.getTimetableIndex(plan.endMoment)) + 1,
     ];
 
     return orderArrays.slice(startIndex, endIndex);
