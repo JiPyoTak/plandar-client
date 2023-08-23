@@ -13,7 +13,6 @@ const TimetableSelected: React.FC = () => {
       focusedPlan,
     }),
   );
-
   if (!focusedPlan || !focusedPlan.isTimePlan) return <></>;
 
   const isPlanInRange = viewMoment.isBetween(
@@ -24,7 +23,8 @@ const TimetableSelected: React.FC = () => {
   );
   const isPlanUnedited =
     currentPlan?.startMoment.isSame(focusedPlan.startMoment) &&
-    currentPlan?.endMoment.isSame(focusedPlan.endMoment);
+    currentPlan?.endMoment.isSame(focusedPlan.endMoment) &&
+    currentPlan?.id !== -1;
   if (!isPlanInRange || isPlanUnedited) return <></>;
 
   const manager = new TimePlanManager([focusedPlan], viewMoment);

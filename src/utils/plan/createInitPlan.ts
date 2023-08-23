@@ -18,9 +18,13 @@ const createInitPlan = (planData: Partial<IPlan>) => {
   });
   if (!planData.startTime) {
     newPlan._startTime = Date.now();
+  } else {
+    newPlan._startTime = newPlan.startTime;
   }
   if (!planData.endTime) {
     newPlan._endTime = Date.now() + 1000 * 60 * 30;
+  } else {
+    newPlan._endTime = newPlan.endTime;
   }
 
   return newPlan;
