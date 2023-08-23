@@ -4,6 +4,7 @@ import { shallow } from 'zustand/shallow';
 
 import { useUpdatePlan } from './query/plan';
 import { toast } from '@/core/toast';
+import useCreateModalState from '@/stores/modal/create';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 
 export type MouseEventHandler = React.MouseEventHandler<HTMLDivElement>;
@@ -27,6 +28,9 @@ const usePlanDrag = () => {
     }),
     shallow,
   );
+
+  const openModal = useCreateModalState((state) => state.openModal);
+
   const currentDateRef = useRef<string | null>(null);
   const draggingDateRef = useRef<string | null>(null);
   const focusedPlanRef = useRef<typeof focusedPlan>(focusedPlan);
@@ -109,9 +113,14 @@ const usePlanDrag = () => {
         toast(`${focusedPlan.title} 일정 날짜가 변경되었습니다`);
       }
 
+      if (focusedPlan.id === -1) {
+        openModal();
+      }
+
       timeTypeRef.current = null;
       currentDateRef.current = null;
       draggingDateRef.current = null;
+
       onDragEndPlan();
     };
 

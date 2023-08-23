@@ -145,10 +145,7 @@ const useFocusedPlanState = create<IFocusedPlanState & IFocusedPlanAction>(
       set(initialState);
     },
     createNewPlan: (planData) => {
-      const newPlan = createInitPlan({
-        title: '',
-        ...planData,
-      });
+      const newPlan = createInitPlan(planData);
 
       set((state) => ({
         ...state,
