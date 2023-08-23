@@ -19,6 +19,7 @@ import {
   useCreatePlanMutation,
   useUpdatePlanMutation,
 } from '@/hooks/query/plan';
+import useModalState from '@/stores/modal';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { ColorCircle } from '@/styles/category';
 
@@ -35,17 +36,23 @@ const CreatePlanModal: TCreatePlanModal = ({
   onClose,
   onDone,
 }: TCreatePlanModalProps) => {
-  const { focusedPlan, openModal, clearPlan, isDisabled, isEdit } =
-    useFocusedPlanState(
-      ({ focusedPlan, isDragging, clearDraggedPlan, type }) => ({
-        focusedPlan,
-        openModal: initOpenModal || (!isDragging && !!focusedPlan),
-        clearPlan: clearDraggedPlan,
-        isDisabled: !focusedPlan?.startTime || !focusedPlan?.endTime,
-        isEdit: type === 'edit',
-      }),
-      shallow,
-    );
+  const { focusedPlan, isDisabled, isEdit, clearPlan } = useFocusedPlanState(
+    ({ focusedPlan, clearDraggedPlan, type }) => ({
+      focusedPlan,
+      isEdit: type === 'edit',
+      isDisabled: !focusedPlan?.startTime || !focusedPlan?.endTime,
+      clearPlan: clearDraggedPlan,
+    }),
+    shallow,
+  );
+
+  const [isOpen, closeModal] = useModalState(
+    (state) => {
+      return [(initOpenModal || state.isOpen) && focusedPlan, state.closeModal];
+    },
+    (prev, cur) => prev === cur,
+  );
+
   const { mutateAsync: createMutate } = useCreatePlanMutation();
   const { mutateAsync: updateMutate } = useUpdatePlanMutation();
   const category = useCategoryQuery();
@@ -53,6 +60,7 @@ const CreatePlanModal: TCreatePlanModal = ({
   const onCloseHandler = () => {
     onClose?.();
     clearPlan();
+    closeModal();
   };
 
   const onSubmit = async () => {
@@ -89,7 +97,7 @@ const CreatePlanModal: TCreatePlanModal = ({
     }
   };
 
-  if (!openModal) {
+  if (!isOpen) {
     return null;
   }
 
