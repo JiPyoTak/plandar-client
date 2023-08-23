@@ -101,7 +101,7 @@
       "target": [
         "default"
       ],
-      "icon": "./public/images/apple-icon-512x512.png"
+      "icon": "./public/images/apple-icon-512x512.icns"
     },
     "dmg": {
       "title": "Plandar"
@@ -116,15 +116,15 @@
           ]
         }
       ],
-      "icon": "./public/images/android-icon-512x512.png"
+      "icon": "./public/images/android-icon-512x512.ico"
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "shortcutName": "Plandar",
-      "artifactName": "Plandar",
-      "uninstallDisplayName": "Plandar"
+      "uninstallDisplayName": "Plandar_Uninstall"
     },
     "directories": {
       "output": "./build",
