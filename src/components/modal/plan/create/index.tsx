@@ -19,7 +19,7 @@ import {
   useCreatePlanMutation,
   useUpdatePlanMutation,
 } from '@/hooks/query/plan';
-import useModalState from '@/stores/modal';
+import useCreateModalState from '@/stores/modal/create';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import { ColorCircle } from '@/styles/category';
 
@@ -46,7 +46,7 @@ const CreatePlanModal: TCreatePlanModal = ({
     shallow,
   );
 
-  const [isOpen, closeModal] = useModalState(
+  const [isOpen, closeModal] = useCreateModalState(
     (state) => {
       return [(initOpenModal || state.isOpen) && focusedPlan, state.closeModal];
     },

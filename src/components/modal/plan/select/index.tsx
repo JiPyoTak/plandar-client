@@ -11,7 +11,7 @@ import ModalContainer from '@/components/modal/ModalPortal';
 import { toast } from '@/core/toast';
 import { useDeletePlanMutation } from '@/hooks/query/plan';
 import { useEffectModal } from '@/hooks/useEffectModal';
-import useModalState from '@/stores/modal';
+import useCreateModalState from '@/stores/modal/create';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { FONT_REGULAR_5 } from '@/styles/font';
@@ -20,7 +20,7 @@ const SelectedPlanModal = () => {
   const { mutate } = useDeletePlanMutation();
 
   const editDragPlan = useFocusedPlanState((state) => state.editDragPlan);
-  const openModal = useModalState((state) => state.openModal);
+  const openModal = useCreateModalState((state) => state.openModal);
 
   const { dom, initialPlan, clearSelectedPlan } = useSelectedPlanState(
     (state) => ({

@@ -4,7 +4,7 @@ import { shallow } from 'zustand/shallow';
 
 import { useUpdatePlanMutation } from './query/plan';
 import { toast } from '@/core/toast';
-import useModalState from '@/stores/modal';
+import useCreateModalState from '@/stores/modal/create';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
 
 export type MouseEventHandler = React.MouseEventHandler<HTMLDivElement>;
@@ -29,7 +29,7 @@ const usePlanDrag = () => {
     shallow,
   );
 
-  const openModal = useModalState((state) => state.openModal);
+  const openModal = useCreateModalState((state) => state.openModal);
 
   const currentDateRef = useRef<string | null>(null);
   const draggingDateRef = useRef<string | null>(null);

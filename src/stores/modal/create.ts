@@ -13,7 +13,7 @@ const initialState: IModalState = {
   isOpen: false,
 } as const;
 
-const useModalState = create<IModalState & IModalAction>((set) => ({
+const useCreateModalState = create<IModalState & IModalAction>((set) => ({
   ...initialState,
   openModal: () => {
     set({ isOpen: true });
@@ -23,4 +23,4 @@ const useModalState = create<IModalState & IModalAction>((set) => ({
   },
 }));
 
-export default useModalState;
+export default useCreateModalState;
