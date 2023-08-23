@@ -2,7 +2,7 @@ import Plan from '@/core/plan/Plan';
 import { theme } from '@/styles/theme';
 import { IPlan } from '@/types/query/plan';
 
-const createInitPlan = (planData: Partial<IPlan>) => {
+const createInitPlan = (planData: Partial<IPlan> = {}) => {
   const newPlan = new Plan({
     id: -1,
     title: '새로운 일정',
