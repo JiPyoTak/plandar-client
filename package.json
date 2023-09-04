@@ -1,16 +1,25 @@
 {
-  "version": "0.1.0",
+  "version": "0.2.0",
   "name": "plandar-client",
-  "description": "",
+  "author": "JiPyoTak",
+  "description": "Planner with flexible calendar",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:all": "tsc && vite build && npm run build:electron",
     "preview": "vite preview",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
-    "compile:types": "tsc --noEmit"
+    "compile:types": "tsc --noEmit",
+    "electron": "electron ./electron.js",
+    "dev:electron": "ELECTRON_DEV=true electron ./electron.js",
+    "build:electron": "npm run build:electron-osx && npm run build:electron-win",
+    "build:electron-osx": "electron-builder --mac",
+    "build:electron-win": "npm run build:electron-win32 && npm run build:electron-win64",
+    "build:electron-win32": "electron-builder --win nsis:ia32",
+    "build:electron-win64": "electron-builder --win nsis:x64"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -18,6 +27,7 @@
     "@tanstack/react-query": "^4.24.10",
     "@tanstack/react-query-devtools": "^4.24.12",
     "axios": "^1.3.4",
+    "dotenv": "^16.3.1",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -38,6 +48,8 @@
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
     "@vitejs/plugin-react": "^3.1.0",
+    "electron": "^26.0.0",
+    "electron-builder": "^24.6.3",
     "eslint": "^8.35.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-import-resolver-typescript": "^3.5.3",
@@ -80,5 +92,53 @@
   },
   "msw": {
     "workerDirectory": "public"
+  },
+  "build": {
+    "productName": "Plandar",
+    "appId": "kr.o-r.plandar",
+    "asar": true,
+    "mac": {
+      "target": [
+        "default"
+      ],
+      "icon": "./public/images/apple-icon-512x512.icns"
+    },
+    "dmg": {
+      "title": "Plandar"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "icon": "./public/images/android-icon-512x512.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Plandar",
+      "uninstallDisplayName": "Plandar_Uninstall"
+    },
+    "directories": {
+      "output": "./build",
+      "app": "."
+    },
+    "files": [
+      "node_modules/dotenv",
+      "node_modules/dotenv-expand",
+      "electron.js",
+      "package.json",
+      ".env.production"
+    ],
+    "extraMetadata": {
+      "main": "electron.js"
+    }
   }
 }
