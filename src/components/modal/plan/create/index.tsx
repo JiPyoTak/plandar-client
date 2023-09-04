@@ -65,10 +65,6 @@ const CreatePlanModal: TCreatePlanModal = ({
       return;
     }
 
-    // *: React-Query의 Category 값과 동기화시키고 서버에 데이터 값을 보낸다.
-    /// Category 값이 없음에도 categoryId 값이 있는 것으로 보낼 수 있기 때문이다.
-    /// + 서버에서는 categoryId 값에 대한 Validation을 하고 있다.
-    /// + 클라이언트도 React-Query의 categoryId 값이 있는지에 대해 Validation을 해주는 것이 맞다고 판단
     if (!category) {
       focusedPlan.categoryId = null;
     }
@@ -91,6 +87,8 @@ const CreatePlanModal: TCreatePlanModal = ({
       clearPlan();
     } catch (e) {
       toast(`일정 ${message}에 실패했습니다.`);
+    } finally {
+      onCloseHandler();
     }
   };
 
