@@ -14,6 +14,7 @@ import {
   updatePlanApi,
 } from '@/apis/plan';
 
+import { QUERY_KEY } from '@/constants/queryKey';
 import Plan from '@/core/plan/Plan';
 import { IPlan, TPlanInput } from '@/types/query/plan';
 import { getStartAndEndDate } from '@/utils/date/getStartAndEndDate';
@@ -54,7 +55,7 @@ const executeCallbackByDate = (
 const addQueriesData =
   (data: IPlan, queryClient: QueryClient) =>
   (timemin: string, timemax: string) => {
-    const key = ['plans', { timemin, timemax }];
+    const key = [QUERY_KEY.MONTH_PLAN_KEY, { timemin, timemax }];
 
     const prevData = queryClient.getQueryData<IPlan[] | undefined>(key);
 
@@ -68,7 +69,7 @@ const addQueriesData =
 const removeQueriesData =
   (id: number, queryClient: QueryClient) =>
   (timemin: string, timemax: string) => {
-    const key = ['plans', { timemin, timemax }];
+    const key = [QUERY_KEY.MONTH_PLAN_KEY, { timemin, timemax }];
 
     const prevData = queryClient.getQueryData<IPlan[] | undefined>(key);
 
@@ -81,17 +82,20 @@ const removeQueriesData =
     });
   };
 
-const useGetPlansQuery = ({ timemin, timemax }: IGetPlansPayload) => {
+const usePlanQuery = ({ timemin, timemax }: IGetPlansPayload) => {
   const queryClient = useQueryClient();
 
   return useQuery<IPlan[]>(
-    ['plans', { timemin, timemax }],
+    [QUERY_KEY.MONTH_PLAN_KEY, { timemin, timemax }],
     () => getPlansApi({ timemin, timemax }),
     {
       staleTime: 1000 * 60 * 60 * 24,
       onSuccess(data) {
         data.forEach((plan) =>
-          queryClient.setQueryData(['plan', { id: plan.id }], new Plan(plan)),
+          queryClient.setQueryData(
+            [QUERY_KEY.PLAN_KEY, { id: plan.id }],
+            new Plan(plan),
+          ),
         );
       },
     },
@@ -99,7 +103,7 @@ const useGetPlansQuery = ({ timemin, timemax }: IGetPlansPayload) => {
 };
 
 // 해당 요청 성공시 캐시 업데이트
-const useCreatePlanMutation = () => {
+const useCreatePlan = () => {
   const queryClient = useQueryClient();
 
   return useMutation<IPlan, unknown, TPlanInput>(createPlanApi, {
@@ -109,19 +113,25 @@ const useCreatePlanMutation = () => {
       const callback = addQueriesData(data, queryClient);
 
       executeCallbackByDate(startTime, endTime, callback);
-      queryClient.setQueryData(['plan', { id: data.id }], new Plan(data));
+      queryClient.setQueryData(
+        [QUERY_KEY.PLAN_KEY, { id: data.id }],
+        new Plan(data),
+      );
     },
   });
 };
 
 // 기존 존재하던 일정을 제거하고 변경된 일정을 추가
-const useUpdatePlanMutation = () => {
+const useUpdatePlan = () => {
   const queryClient = useQueryClient();
 
   return useMutation<IPlan, unknown, TPlanInput>(updatePlanApi, {
     onSuccess(data, variables) {
       // 기존 일정을 제거
-      const prev = queryClient.getQueryData<Plan>(['plan', { id: data.id }]);
+      const prev = queryClient.getQueryData<Plan>([
+        QUERY_KEY.PLAN_KEY,
+        { id: data.id },
+      ]);
 
       if (!prev) return;
 
@@ -138,12 +148,15 @@ const useUpdatePlanMutation = () => {
 
       executeCallbackByDate(newStartTime, newEndTime, cbByAdd);
 
-      queryClient.setQueryData(['plan', { id: data.id }], new Plan(data));
+      queryClient.setQueryData(
+        [QUERY_KEY.PLAN_KEY, { id: data.id }],
+        new Plan(data),
+      );
     },
   });
 };
 
-const useDeletePlanMutation = () => {
+const useDeletePlan = () => {
   const queryClient = useQueryClient();
 
   return useMutation<IPlan, unknown, number>(deletePlanApi, {
@@ -153,14 +166,9 @@ const useDeletePlanMutation = () => {
       const callback = removeQueriesData(variables, queryClient);
 
       executeCallbackByDate(startTime, endTime, callback);
-      queryClient.removeQueries(['plan', { id: data.id }]);
+      queryClient.removeQueries([QUERY_KEY.PLAN_KEY, { id: data.id }]);
     },
   });
 };
 
-export {
-  useGetPlansQuery,
-  useCreatePlanMutation,
-  useUpdatePlanMutation,
-  useDeletePlanMutation,
-};
+export { usePlanQuery, useCreatePlan, useUpdatePlan, useDeletePlan };

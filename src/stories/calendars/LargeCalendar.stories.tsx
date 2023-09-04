@@ -9,7 +9,7 @@ import moment from 'moment';
 import CalendarView from '@/components/home/main/calendar';
 import CalendarHeader from '@/components/home/main/header';
 import { CALENDAR_UNIT } from '@/constants';
-import { useCreatePlanMutation } from '@/hooks/query/plan';
+import { useCreatePlan } from '@/hooks/query/plan';
 import useDateState from '@/stores/date';
 import planStubManager from '@/stories/apis/data/plan';
 import {
@@ -37,7 +37,7 @@ const Template: ComponentStory<typeof CalendarView> = () => {
     .startOf('month')
     .startOf('week')
     .startOf('day');
-  const { mutateAsync: createMutateAsync } = useCreatePlanMutation();
+  const { mutateAsync: createMutateAsync } = useCreatePlan();
   const queryClient = useQueryClient();
   const forceUpdate = useReducer(() => ({}), {})[1];
 

@@ -8,7 +8,7 @@ import PickButton from '@/components/common/color-picker/PickButton';
 import ModalBackground from '@/components/common/modal/ModalBackground';
 import { toast } from '@/core/toast';
 import useModalPopupPosition from '@/hooks/modal/useModalPopupPositon';
-import { useCategoryUpdate } from '@/hooks/query/category';
+import { useUpdateCategory } from '@/hooks/query/category';
 import { ColorCircle } from '@/styles/category';
 import {
   ClassifierAdditionalFontStyle,
@@ -31,7 +31,7 @@ const SelectedCategoryDisplay: TSelectedCategoryDisplay = ({
   const theme = useTheme();
   const [popupOpened, setPopupOpened] = useState(false);
 
-  const { mutateAsync: updateCategory } = useCategoryUpdate();
+  const { mutateAsync: updateCategory } = useUpdateCategory();
   const { positionTopRef, setPositionTop } = useModalPopupPosition();
 
   const onSelect = async (newColor: TColor) => {

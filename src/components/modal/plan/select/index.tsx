@@ -9,7 +9,7 @@ import TimeStamp from '@/components/common/modal/Timestamp';
 import TagButton from '@/components/core/buttons/TagButton';
 import ModalContainer from '@/components/modal/ModalPortal';
 import { toast } from '@/core/toast';
-import { useDeletePlanMutation } from '@/hooks/query/plan';
+import { useDeletePlan } from '@/hooks/query/plan';
 import { useEffectModal } from '@/hooks/useEffectModal';
 import useCreateModalState from '@/stores/modal/create';
 import useFocusedPlanState from '@/stores/plan/focusedPlan';
@@ -17,7 +17,7 @@ import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { FONT_REGULAR_5 } from '@/styles/font';
 
 const SelectedPlanModal = () => {
-  const { mutate } = useDeletePlanMutation();
+  const { mutate } = useDeletePlan();
 
   const editDragPlan = useFocusedPlanState((state) => state.editDragPlan);
   const openModal = useCreateModalState((state) => state.openModal);

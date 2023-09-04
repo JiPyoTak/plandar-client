@@ -10,10 +10,10 @@ import ModalContainer from '@/components/modal/ModalPortal';
 import { SELECTABLE_COLOR } from '@/constants';
 import { toast } from '@/core/toast';
 import {
-  useCategoryCreate,
-  useCategoryDelete,
+  useCreateCategory,
+  useDeleteCategory,
   useCategoryQuery,
-  useCategoryUpdate,
+  useUpdateCategory,
 } from '@/hooks/query/category';
 import useCategoryModalState from '@/stores/modal/category';
 import { ColorCircle } from '@/styles/category';
@@ -41,9 +41,9 @@ const CategoryModalViewer: React.FC<object> = () => {
 
   const originalCategory = useCategoryQuery({ id });
   const { data: categoryData } = useCategoryQuery();
-  const { mutate: createCategory } = useCategoryCreate();
-  const { mutate: updateCategory } = useCategoryUpdate();
-  const { mutate: deleteCategory } = useCategoryDelete();
+  const { mutate: createCategory } = useCreateCategory();
+  const { mutate: updateCategory } = useUpdateCategory();
+  const { mutate: deleteCategory } = useDeleteCategory();
 
   const [newName, setNewName] = useState<string>(
     originalCategory?.name ?? DEFAULT_NAME,

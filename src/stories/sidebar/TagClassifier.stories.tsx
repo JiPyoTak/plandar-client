@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import TagClassifier from '@/components/home/sidebar/content/classifier/TagClassifier';
 import { CALENDAR_UNIT } from '@/constants';
-import { useCreatePlanMutation } from '@/hooks/query/plan';
+import { useCreatePlan } from '@/hooks/query/plan';
 import useDateState from '@/stores/date';
 import planStubManager from '@/stories/apis/data/plan';
 import { createPlanApiHandler, getPlansApiHandler } from '@/stories/apis/plan';
@@ -44,7 +44,7 @@ const Template: ComponentStory<
       setCalendarUnit,
     }),
   );
-  const { mutateAsync: createPlanMutateAsync } = useCreatePlanMutation();
+  const { mutateAsync: createPlanMutateAsync } = useCreatePlan();
 
   useLayoutEffect(() => {
     setReferenceDate(moment(dateTime));

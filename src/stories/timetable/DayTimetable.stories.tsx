@@ -7,7 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import moment from 'moment';
 
 import Timetable from '@/components/home/main/timetable';
-import { useCreatePlanMutation } from '@/hooks/query/plan';
+import { useCreatePlan } from '@/hooks/query/plan';
 import useDateState from '@/stores/date';
 import planStubManager from '@/stories/apis/data/plan';
 import {
@@ -34,7 +34,7 @@ const Template: ComponentStory<typeof Timetable> = (args) => {
     setCalendarUnit('day');
   }, []);
 
-  const { mutateAsync: createMutateAsync } = useCreatePlanMutation();
+  const { mutateAsync: createMutateAsync } = useCreatePlan();
   const queryClient = useQueryClient();
   const forceUpdate = useReducer(() => ({}), {})[1];
 

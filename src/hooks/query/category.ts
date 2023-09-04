@@ -11,7 +11,7 @@ import {
   getCategoryAPI,
   updateCategoryAPI,
 } from '@/apis/category';
-import { CATEGORY_KEY } from '@/constants/rqKeys';
+import { QUERY_KEY } from '@/constants/queryKey';
 import { ICategory, ICategoryWithoutId } from '@/types/query/category';
 
 function useCategoryQuery(): UseQueryResult<ICategory[], unknown>;
@@ -20,12 +20,12 @@ function useCategoryQuery(props?: { id?: number | null }) {
   const queryClient = useQueryClient();
 
   if (!props) {
-    return useQuery<ICategory[]>([CATEGORY_KEY], getCategoryAPI, {
+    return useQuery<ICategory[]>([QUERY_KEY.CATEGORY_KEY], getCategoryAPI, {
       staleTime: 1000 * 60 * 60 * 24,
       onSuccess(data) {
         data.forEach((category) => {
           queryClient.setQueryData(
-            [CATEGORY_KEY, { id: category.id }],
+            [QUERY_KEY.CATEGORY_KEY, { id: category.id }],
             category,
           );
         });
@@ -35,13 +35,16 @@ function useCategoryQuery(props?: { id?: number | null }) {
 
   const { id } = props;
 
-  return queryClient.getQueryData<ICategory>([CATEGORY_KEY, { id }]) ?? null;
+  return (
+    queryClient.getQueryData<ICategory>([QUERY_KEY.CATEGORY_KEY, { id }]) ??
+    null
+  );
 }
 
 // 카테고리 추가
-const useCategoryCreate = () => {
+let tempId = 0;
+const useCreateCategory = () => {
   const queryClient = useQueryClient();
-  let id = 0;
 
   return useMutation(
     // api 호출
@@ -50,40 +53,46 @@ const useCategoryCreate = () => {
       onMutate: async (newCategory: ICategoryWithoutId) => {
         // 실패했을 때 복구를 위한 기존 캐시 데이터 가져오기
         const previousCategories = queryClient.getQueryData<ICategory[]>([
-          CATEGORY_KEY,
+          QUERY_KEY.CATEGORY_KEY,
         ]);
 
         // 낙관적 업데이트를 위한 새로운 데이터 캐싱
-        queryClient.setQueryData<ICategory[]>([CATEGORY_KEY], (old) => [
-          ...(old ?? []),
-          { ...newCategory, id: --id },
-        ]);
+        queryClient.setQueryData<ICategory[]>(
+          [QUERY_KEY.CATEGORY_KEY],
+          (old) => [...(old ?? []), { ...newCategory, id: --tempId }],
+        );
 
         // onError의 context에 들어갈 값
-        return { previousCategories, id };
+        return { previousCategories, id: tempId };
       },
       // 에러 발생시 원래 캐싱된 데이터로 복구
       onError: (err, newCategory, context) => {
         queryClient.setQueryData<ICategory[]>(
-          [CATEGORY_KEY],
+          [QUERY_KEY.CATEGORY_KEY],
           context?.previousCategories ?? [],
         );
       },
       onSuccess: (data, _, context) => {
-        queryClient.setQueryData([CATEGORY_KEY, { id: data.id }], data);
-        queryClient.setQueryData<ICategory[]>([CATEGORY_KEY], (oldData) => {
-          return [
-            ...(oldData?.filter((category) => category.id !== context?.id) ??
-              []),
-            data,
-          ];
-        });
+        queryClient.setQueryData(
+          [QUERY_KEY.CATEGORY_KEY, { id: data.id }],
+          data,
+        );
+        queryClient.setQueryData<ICategory[]>(
+          [QUERY_KEY.CATEGORY_KEY],
+          (oldData) => {
+            return [
+              ...(oldData?.filter((category) => category.id !== context?.id) ??
+                []),
+              data,
+            ];
+          },
+        );
       },
     },
   );
 };
 
-const useCategoryUpdate = () => {
+const useUpdateCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
@@ -94,21 +103,24 @@ const useCategoryUpdate = () => {
         const id = newCategory.id;
         // 실패했을 때 복구를 위한 기존 캐시 데이터 가져오기
         const previousCategory = queryClient.getQueryData<ICategory>([
-          CATEGORY_KEY,
+          QUERY_KEY.CATEGORY_KEY,
           { id },
         ]);
 
         // 낙관적 업데이트를 위한 새로운 데이터 캐싱
-        queryClient.setQueryData([CATEGORY_KEY, { id }], newCategory);
-        queryClient.setQueryData<ICategory[]>([CATEGORY_KEY], (old) => {
-          const newCategories = [...(old ?? [])];
-          const index = newCategories.findIndex(
-            (category) => category.id === newCategory.id,
-          );
-          newCategories[index] = newCategory;
+        queryClient.setQueryData([QUERY_KEY.CATEGORY_KEY, { id }], newCategory);
+        queryClient.setQueryData<ICategory[]>(
+          [QUERY_KEY.CATEGORY_KEY],
+          (old) => {
+            const newCategories = [...(old ?? [])];
+            const index = newCategories.findIndex(
+              (category) => category.id === newCategory.id,
+            );
+            newCategories[index] = newCategory;
 
-          return newCategories;
-        });
+            return newCategories;
+          },
+        );
 
         // onError의 context에 들어갈 값
         return { previousCategory };
@@ -119,22 +131,28 @@ const useCategoryUpdate = () => {
         if (!previousCategory) return;
 
         const id = previousCategory.id;
-        queryClient.setQueryData([CATEGORY_KEY, { id }], previousCategory);
-        queryClient.setQueryData<ICategory[]>([CATEGORY_KEY], (old) => {
-          const previousCategories = [...(old ?? [])];
-          const index = previousCategories.findIndex(
-            (category) => category.id === newCategory.id,
-          );
-          previousCategories[index] = previousCategory;
+        queryClient.setQueryData(
+          [QUERY_KEY.CATEGORY_KEY, { id }],
+          previousCategory,
+        );
+        queryClient.setQueryData<ICategory[]>(
+          [QUERY_KEY.CATEGORY_KEY],
+          (old) => {
+            const previousCategories = [...(old ?? [])];
+            const index = previousCategories.findIndex(
+              (category) => category.id === newCategory.id,
+            );
+            previousCategories[index] = previousCategory;
 
-          return previousCategories;
-        });
+            return previousCategories;
+          },
+        );
       },
     },
   );
 };
 
-const useCategoryDelete = () => {
+const useDeleteCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
@@ -146,19 +164,22 @@ const useCategoryDelete = () => {
 
         // 실패했을 때 복구를 위한 기존 캐시 데이터 가져오기
         const previousCategory = queryClient.getQueryData<ICategory>([
-          CATEGORY_KEY,
+          QUERY_KEY.CATEGORY_KEY,
           { id },
         ]);
 
         // 낙관적 업데이트를 위한 새로운 데이터 캐싱
-        queryClient.removeQueries([CATEGORY_KEY, { id }]);
-        queryClient.setQueryData<ICategory[]>([CATEGORY_KEY], (old) => {
-          const newCategories = [...(old ?? [])];
+        queryClient.removeQueries([QUERY_KEY.CATEGORY_KEY, { id }]);
+        queryClient.setQueryData<ICategory[]>(
+          [QUERY_KEY.CATEGORY_KEY],
+          (old) => {
+            const newCategories = [...(old ?? [])];
 
-          return newCategories.filter(
-            (category) => category.id !== targetCategory.id,
-          );
-        });
+            return newCategories.filter(
+              (category) => category.id !== targetCategory.id,
+            );
+          },
+        );
 
         // onError의 context에 들어갈 값
         return { previousCategory };
@@ -169,11 +190,14 @@ const useCategoryDelete = () => {
         if (!previousCategory) return;
 
         const id = previousCategory.id;
-        queryClient.setQueryData([CATEGORY_KEY, { id }], previousCategory);
-        queryClient.setQueryData<ICategory[]>([CATEGORY_KEY], (old) => [
-          ...(old ?? []),
+        queryClient.setQueryData(
+          [QUERY_KEY.CATEGORY_KEY, { id }],
           previousCategory,
-        ]);
+        );
+        queryClient.setQueryData<ICategory[]>(
+          [QUERY_KEY.CATEGORY_KEY],
+          (old) => [...(old ?? []), previousCategory],
+        );
       },
     },
   );
@@ -181,7 +205,7 @@ const useCategoryDelete = () => {
 
 export {
   useCategoryQuery,
-  useCategoryUpdate,
-  useCategoryCreate,
-  useCategoryDelete,
+  useUpdateCategory,
+  useCreateCategory,
+  useDeleteCategory,
 };
