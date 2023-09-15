@@ -15,6 +15,15 @@ const TIMETABLE_SCROLL_STYLE = ({ theme }: { theme: Theme }) => css`
   }
 `;
 
+const TIMETABLE_HIDE_SCROLL_STYLE = css`
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  &::-webkit-scrollbar-thumb {
+    display: none;
+  }
+`;
+
 const TIMETABLE_CELL_MIN_WIDTH = '4.875rem';
 const TIMETABLE_CELL_HEIGHT = '1rem';
 
@@ -30,6 +39,7 @@ const TIMETABLE_Z_INDEX = {
 export {
   TIMETABLE_SCROLL_WIDTH,
   TIMETABLE_SCROLL_STYLE,
+  TIMETABLE_HIDE_SCROLL_STYLE,
   TIMETABLE_CELL_MIN_WIDTH,
   TIMETABLE_CELL_HEIGHT,
   TIMETABLE_ALL_DAY_VERTICAL_PADDING,
