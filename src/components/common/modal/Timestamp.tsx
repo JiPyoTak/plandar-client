@@ -20,11 +20,11 @@ const TimeStamp = ({ startTime, endTime, hasTime }: IProps) => {
     isTimeStyle: hasTime,
   });
 
-  const isSameDate = st.toDateString() === et?.toDateString();
+  const isNeedOnlyOneDay = !hasTime && st.toDateString() === et?.toDateString();
 
   return (
     <Container>
-      {isSameDate ? (
+      {isNeedOnlyOneDay ? (
         <div>{stDate}</div>
       ) : (
         <>

@@ -57,6 +57,7 @@ const Container = styled.div`
 const ToastWrapper = styled(Container)`
   bottom: 0;
   left: 50%;
+  transform: translateX(-50%);
 
   transition: all 300ms;
 `;

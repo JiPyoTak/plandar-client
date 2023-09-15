@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 
 import ClassifierGuide from '@/components/common/classifier/ClassifierGuide';
 import ClassifierItem from '@/components/common/classifier/ClassifierItem';
@@ -11,6 +11,13 @@ import useTagClassifierState from '@/stores/classifier/tag';
 const TagClassifier: React.FC = () => {
   const { hiddenTags, toggleTagShow } = useTagClassifierState();
   const { data: plans, isLoading: isLoadingPlan } = useRangedPlans();
+  const isFirstRef = useRef(true);
+
+  useEffect(() => {
+    if (!isLoadingPlan) {
+      isFirstRef.current = false;
+    }
+  }, [isLoadingPlan]);
 
   const tags = useMemo(() => {
     const tagNameSet = new Set<string>();
@@ -24,20 +31,19 @@ const TagClassifier: React.FC = () => {
     return [...tagNameSet].sort();
   }, [plans]);
 
+  const isEmpty = isFirstRef.current && isLoadingPlan;
+
   return (
     <div css={{ padding: '1rem 0' }}>
       <Dropdown>
         <Dropdown.Controller>
           <ClassifierTitle title={'태그'} />
         </Dropdown.Controller>
-        <ClassifierGuide
-          icon={TagIcon}
-          isShow={!tags?.length && !isLoadingPlan}
-        >
+        <ClassifierGuide icon={TagIcon} isShow={!tags?.length && !isEmpty}>
           <span>일정에 태그를 추가해서</span>
           <span>일정을 분류해보세요!</span>
         </ClassifierGuide>
-        {isLoadingPlan &&
+        {isEmpty &&
           [...Array(2)].map((_, index) => (
             <ClassifierItem.Skeleton key={index} />
           ))}

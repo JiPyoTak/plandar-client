@@ -6,12 +6,24 @@ const BOX_SCROLL_Y = ({ theme }: { theme: Theme }) => css`
   }
 
   &::-webkit-scrollbar-thumb {
-    border: 4px solid transparent;
-
-    border-radius: 8px;
+    height: 50px;
+    border: 2px solid transparent;
+    border-top: none;
+    border-bottom: none;
+    border-radius: 4px;
 
     background-clip: padding-box;
     background-color: ${theme.border2};
+  }
+
+  &::-webkit-scrollbar-track-piece:end {
+    background-color: transparent;
+    margin-bottom: 6px;
+  }
+
+  &::-webkit-scrollbar-track-piece:start {
+    background-color: transparent;
+    margin-top: 6px;
   }
 `;
 
