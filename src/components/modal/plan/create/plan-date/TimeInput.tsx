@@ -106,23 +106,21 @@ const TimeInput = ({ setTime, time }: Props) => {
 
 const Input = styled.input<{ invalid?: boolean }>`
   width: 80px;
-
-  margin: 0 2px;
-  border-radius: 5px;
+  padding: 3px 5px;
   ${FONT_REGULAR_4}
 
   text-align: center;
-  border: none;
+  border-radius: 5px;
+  border: 2px solid transparent;
   outline: none;
 
   &:hover {
     background-color: ${({ theme }) => theme.background3};
   }
   &:focus {
-    background-color: ${({ theme }) => theme.background3};
-    border-radius: 5px 5px 0 0;
-    border-bottom: 2px solid
-      ${({ invalid, theme }) => (invalid ? theme.red : theme.primary)};
+    background-color: ${({ theme }) => theme.background1};
+    border: 2px solid
+      ${({ invalid, theme }) => (invalid ? theme.red : '#1053C0')};
   }
 `;
 

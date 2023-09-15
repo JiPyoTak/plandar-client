@@ -1,5 +1,6 @@
 import React, { PropsWithChildren, createContext, useContext } from 'react';
 
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import useTimetableScroll, {
@@ -8,6 +9,7 @@ import useTimetableScroll, {
 import useSelectedPlanState from '@/stores/plan/selectedPlan';
 import { FONT_BOLD_8 } from '@/styles/font';
 import {
+  TIMETABLE_HIDE_SCROLL_STYLE,
   TIMETABLE_SCROLL_STYLE,
   TIMETABLE_SCROLL_WIDTH,
 } from '@/styles/timetable';
@@ -41,12 +43,13 @@ const HorizontalScroll: React.FC<THorizontalScrollProps> = ({
   scrollId,
   showScroll,
 }) => {
+  const theme = useTheme();
   const id = scrollId || '';
   const isReceiver = !showScroll && scrollId;
   const { signTag, onMoveHorizontalScroll } = useContext(Context) || {};
 
   const scrollCallbackRef: React.LegacyRef<HTMLDivElement> = (element) => {
-    if (isReceiver && signTag) {
+    if (signTag) {
       signTag({ id, ref: element });
     }
   };
@@ -57,7 +60,11 @@ const HorizontalScroll: React.FC<THorizontalScrollProps> = ({
     <FlexibleContainer className={className}>
       <FixedDiv>{fixedComponent}</FixedDiv>
       <HorizontalScrollDiv
-        css={{ overflowX: showScroll ? 'auto' : 'hidden' }}
+        css={
+          isReceiver
+            ? TIMETABLE_HIDE_SCROLL_STYLE
+            : TIMETABLE_SCROLL_STYLE({ theme })
+        }
         ref={scrollCallbackRef}
         onScroll={onMoveHorizontalScroll}
       >
@@ -110,10 +117,9 @@ const FixedDiv = styled.div`
 `;
 
 const HorizontalScrollDiv = styled.div`
-  ${TIMETABLE_SCROLL_STYLE}
-
   flex: 1 0 0;
 
+  overflow-x: auto;
   overflow-y: hidden;
 `;
 

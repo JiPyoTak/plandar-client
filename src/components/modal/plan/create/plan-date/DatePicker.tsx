@@ -58,7 +58,10 @@ const DatePicker = ({ date, onChangeDate, onCalendarClose }: Props) => {
 
   return (
     <div>
-      <CalendarDateButton onClick={onClickDateButton}>
+      <CalendarDateButton
+        calendarOpened={calendarOpened}
+        onClick={onClickDateButton}
+      >
         {getDateString(date.toDate())}
       </CalendarDateButton>
       <ModalBackground isOpen={calendarOpened} onClose={onCloseHandler} />
@@ -97,9 +100,11 @@ const CalendarContainer = styled.div`
   box-shadow: rgb(0 0 0 / 15%) 0px 4px 16px 0px;
 `;
 
-const CalendarDateButton = styled.button`
+const CalendarDateButton = styled.button<{ calendarOpened: boolean }>`
   padding: 3px 5px;
   border-radius: 5px;
+  border: 2px solid
+    ${({ calendarOpened }) => (calendarOpened ? '#1053C0' : 'transparent')};
   background-color: ${({ theme }) => theme.white};
   ${FONT_REGULAR_4}
 
