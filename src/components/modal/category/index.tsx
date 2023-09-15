@@ -41,9 +41,9 @@ const CategoryModalViewer: React.FC<object> = () => {
 
   const originalCategory = useCategoryQuery({ id });
   const { data: categoryData } = useCategoryQuery();
-  const { mutate: createCategory } = useCreateCategory();
-  const { mutate: updateCategory } = useUpdateCategory();
-  const { mutate: deleteCategory } = useDeleteCategory();
+  const { mutateAsync: createCategory } = useCreateCategory();
+  const { mutateAsync: updateCategory } = useUpdateCategory();
+  const { mutateAsync: deleteCategory } = useDeleteCategory();
 
   const [newName, setNewName] = useState<string>(
     originalCategory?.name ?? DEFAULT_NAME,
@@ -81,16 +81,16 @@ const CategoryModalViewer: React.FC<object> = () => {
     return true;
   };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!checkCategoryValid()) return;
 
     try {
       const newData = { name: newName, color: selectedColor };
       if (type === 'create') {
-        createCategory(newData);
+        await createCategory(newData);
       } else if (isEdit && id !== null) {
-        updateCategory({ id, ...newData });
+        await updateCategory({ id, ...newData });
       }
       closeCategoryModal();
       toast(
@@ -105,14 +105,14 @@ const CategoryModalViewer: React.FC<object> = () => {
     }
   };
 
-  const onDelete: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+  const onDelete: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
     // *: prevent from submit
     e.preventDefault();
     // *: if editing or no category info, don't execute
     if (!isEdit || !originalCategory) return;
 
     try {
-      deleteCategory(originalCategory);
+      await deleteCategory(originalCategory);
       closeCategoryModal();
       toast(
         <div>
