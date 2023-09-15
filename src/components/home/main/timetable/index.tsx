@@ -50,6 +50,7 @@ const VerticalScrollController = ({ cellLength }: { cellLength: number }) => {
     <TimetableScroll.Horizontal
       css={{ marginRight: TIMETABLE_SCROLL_WIDTH }}
       showScroll={showScroll}
+      scrollId="controller"
     >
       <VerticalEmptyCell cellLength={cellLength} />
     </TimetableScroll.Horizontal>

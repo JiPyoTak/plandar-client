@@ -43,13 +43,13 @@ const HorizontalScroll: React.FC<THorizontalScrollProps> = ({
   scrollId,
   showScroll,
 }) => {
+  const theme = useTheme();
   const id = scrollId || '';
   const isReceiver = !showScroll && scrollId;
   const { signTag, onMoveHorizontalScroll } = useContext(Context) || {};
-  const theme = useTheme();
 
   const scrollCallbackRef: React.LegacyRef<HTMLDivElement> = (element) => {
-    if (isReceiver && signTag) {
+    if (signTag) {
       signTag({ id, ref: element });
     }
   };
