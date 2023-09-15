@@ -101,7 +101,6 @@ const CalendarContainer = styled.div`
 `;
 
 const CalendarDateButton = styled.button<{ calendarOpened: boolean }>`
-  width: 75px;
   padding: 3px 5px;
   border-radius: 5px;
   border: 2px solid
