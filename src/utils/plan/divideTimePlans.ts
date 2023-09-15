@@ -16,4 +16,25 @@ const divideTimePlans = (plans: IPlan[]) => {
   );
 };
 
-export { divideTimePlans };
+const divideTimePlansByDate = (plans: Plan[]) => {
+  return plans.reduce(
+    ({ timePlans, allDayPlans }, planData) => {
+      const { startMoment, endMoment } = planData;
+      const isSameDate = startMoment.isSame(endMoment, 'd');
+
+      if (isSameDate) {
+        timePlans.push(planData);
+      } else {
+        allDayPlans.push(planData);
+      }
+
+      return { timePlans, allDayPlans };
+    },
+    { timePlans: [], allDayPlans: [] } as {
+      timePlans: Plan[];
+      allDayPlans: Plan[];
+    },
+  );
+};
+
+export { divideTimePlans, divideTimePlansByDate };

@@ -47,7 +47,7 @@ const TimetableAllDay: React.FC<TProps> = ({
       new DaysPlanManager({
         plans: [
           ...allDayPlans.filter((plan) => plan.id !== focusedPlan?.id),
-          ...(focusedPlan ? [focusedPlan] : []),
+          ...(focusedPlan?.isAllDay ? [focusedPlan] : []),
         ],
         start: dateMoments[0],
         end: dateMoments[dateMoments.length - 1],

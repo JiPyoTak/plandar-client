@@ -66,6 +66,8 @@ const SidebarIcons = () => {
 };
 
 const Container = styled.div`
+  position: relative;
+
   height: 100%;
   max-height: 100vh;
 
@@ -98,6 +100,8 @@ const Menu = styled.div`
 `;
 
 const Footer = styled(Header)`
+  position: absolute;
+  bottom: 0;
   height: ${MENU_PROFILE_HEIGHT};
   position: absolute;
   bottom: 0;
