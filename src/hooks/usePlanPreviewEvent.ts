@@ -28,14 +28,15 @@ const usePlanPreviewEvent = () => {
       shallow,
     );
 
-  const { selectedPlanId, setSelectedPlan } = useSelectedPlanState(
-    ({ selectedPlan, setSelectedPlan, clearSelectedPlan }) => ({
-      selectedPlanId: selectedPlan?.id,
-      setSelectedPlan,
-      clearSelectedPlan,
-    }),
-    shallow,
-  );
+  const { selectedPlanId, setSelectedPlan, clearSelectedPlan } =
+    useSelectedPlanState(
+      ({ selectedPlan, setSelectedPlan, clearSelectedPlan }) => ({
+        selectedPlanId: selectedPlan?.id,
+        setSelectedPlan,
+        clearSelectedPlan,
+      }),
+      shallow,
+    );
 
   const [debounceToSetHoveredPlan, clearDebounce] = useDebounce(
     setHoveredPlan,
@@ -65,6 +66,7 @@ const usePlanPreviewEvent = () => {
 
   const onMouseDown = (plan: Plan) => {
     clearHoveredPlan();
+    clearSelectedPlan();
     moveDragPlan(plan);
   };
 
