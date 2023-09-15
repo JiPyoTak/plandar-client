@@ -3,7 +3,7 @@ import moment, { Moment } from 'moment';
 import Plan from './Plan';
 import PlanManager from './PlanManager';
 import type { IViewInfo } from './PlanManager';
-import { divideTimePlans } from '@/utils/plan/divideTimePlans';
+import { divideTimePlansByDate } from '@/utils/plan/divideTimePlans';
 
 export interface IDayViewInfo extends IViewInfo {
   id: number;
@@ -38,7 +38,7 @@ class DaysPlanManager extends PlanManager<IDayViewInfo> {
         !currentStart.isAfter(endMoment) && !currentEnd.isBefore(startMoment)
       );
     });
-    const { timePlans, allDayPlans } = divideTimePlans(filteredPlans);
+    const { timePlans, allDayPlans } = divideTimePlansByDate(filteredPlans);
 
     super(allDayPlans);
     this.startDate = currentStart;
@@ -62,7 +62,8 @@ class DaysPlanManager extends PlanManager<IDayViewInfo> {
         : currentEnd.clone(),
     ];
 
-    const term = Math.abs(viewStart.diff(viewEnd, 'd')) + 1;
+    const term =
+      viewEnd.clone().endOf('d').diff(viewStart.clone().startOf('d'), 'd') + 1;
 
     return {
       id: plan.id,
